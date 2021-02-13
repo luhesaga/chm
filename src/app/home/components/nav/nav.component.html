@@ -1,0 +1,19 @@
+<nav>
+    <div class="menu-button-container" (click)="classToogle()">
+        <span class="material-icons">{{ icon }}</span>
+        <p>{{ menuText }}</p>
+    </div>
+    <div [class]="material">
+        <ul>
+            <li routerLink="/home/inicio" (click)="classToogle()"><a>Inicio</a></li>
+            <li routerLink="/home/cursos" (click)="classToogle()"><a>Cursos</a></li>
+            <li (click)="classToogle()"><a target="_blank" href="https://chym-ndt.com/">Conoce a CH&M NDT</a></li>
+            <li routerLink="/home/contactanos" (click)="classToogle()"><a>Contáctanos</a></li>
+        </ul>
+    </div>
+    <div class="auth-options">
+        <a routerLink="/home/login" (click)="classToogle()">Iniciar Sesión</a>
+    </div>
+</nav>
+
+

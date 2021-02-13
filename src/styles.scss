@@ -1,1 +1,24 @@
 /* You can add global styles to this file, and also import other style files */
+@import "../node_modules/ag-grid-community/dist/styles/ag-grid.css";
+@import "../node_modules/ag-grid-community/dist/styles/ag-theme-alpine.css";
+@import url('https://fonts.googleapis.com/css?family=Roboto+Mono:400,500,700|Roboto+Slab:400,700|Roboto:400,500,700,900&amp;display=swap');
+
+:root {
+    --main-color1: #01c2d8;
+    --main-color2: #046a79;
+    --secondary1: #eceff1;
+    --main-color-rgb1: rgba(1, 194, 216, 0.5);
+    --main-color-rgb2: rgba(4, 106, 121, 0.95);
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Roboto Mono', monospace;
+    margin: 0 !important;
+    padding: 0;
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

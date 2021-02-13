@@ -1,0 +1,31 @@
+footer {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background: var(--main-color-rgb2);
+    height: 70px;
+}
+
+footer p {
+    color: white;
+    font-size: 1.1rem;
+}
+
+footer p a {
+    text-decoration: none;
+    color: white;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+@media (max-width: 600px) {
+    footer {
+        flex-direction: column;
+        padding: 10px 0;
+        height: 50px;
+    }
+
+    footer p {
+        margin: 0;
+    }
+}
