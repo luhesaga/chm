@@ -31,7 +31,7 @@ export class HomeComponent implements OnInit {
       } else {
         const element = document.querySelector(`#${this.tag}`);
         if (element) {
-          element.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' })
         }
       }
     }

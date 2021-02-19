@@ -1,0 +1,87 @@
+.main-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 48px 32px 32px 32px;
+}
+
+.recover-container {
+    -webkit-box-shadow: 0 1px 8px 0 rgb(0 0 0 / 8%);
+    box-shadow: 0 10px 8px 0 rgb(0 0 0 / 18%);
+    border: 2px solid var(--main-color2);
+    border-radius: 5px;
+    background: #eceff1;
+    min-height: 50%;
+}
+
+.recover-container .recover {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 36px;
+    margin-bottom: 36px;
+}
+
+.recover-container .recover form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.recover-container .recover form h2 {
+    color: var(--main-color2);
+}
+
+.recover-container .recover form p {
+    font-size: 0.9rem;
+    margin: 8px;
+    text-align: justify;
+}
+
+.recover-container .recover form input {
+    margin: 10px;
+    height: 30px;
+    width: 300px;
+    border: 1px solid var(--main-color2);
+    padding-left: 16px;
+    color: var(--main-color2);
+    border-radius: 3px;
+}
+
+.recover-container .recover form input:focus {
+    outline: none;
+    border: 2px solid var(--main-color1);
+}
+
+.recover-container .recover form input::placeholder {
+    color: var(--main-color-rgb1);
+    padding-left: 5px;
+}
+
+.recover-container .recover form button {
+    width: 320px;
+    height: 40px;
+    background: var(--main-color2);
+    color: white;
+    margin-top: 20px;
+    cursor: pointer;
+    border: 1px solid white;
+    border-radius: 5px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    padding: 5px;
+}
+
+app-footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+@media (max-width: 480px) {
+    .recover-container .recover {
+        padding: 5px;
+    }
+}

@@ -23,6 +23,8 @@
     "@angular/router": "~11.1.2",
     "ag-grid-angular": "^25.0.1",
     "ag-grid-community": "^25.0.1",
+    "angular-star-rating": "^4.0.0-beta.3",
+    "css-star-rating": "^1.2.4",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.10.2"

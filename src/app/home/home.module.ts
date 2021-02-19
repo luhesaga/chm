@@ -12,13 +12,18 @@ import { HeroComponent } from './components/hero/hero.component';
 import { CoursesComponent } from './components/courses/courses.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { ContactComponent } from './components/contact/contact.component';
+import { StarRatingModule } from 'angular-star-rating';
+import { CourseInfoComponent } from './components/courses/course-info/course-info.component';
+import { MaterialModule } from '../material/material.module';
 
 
 @NgModule({
-  declarations: [NavComponent, HomeComponent, LoginComponent, RegisterComponent, HeaderComponent, RecoverComponent, HeroComponent, CoursesComponent, FooterComponent, ContactComponent],
+  declarations: [NavComponent, HomeComponent, LoginComponent, RegisterComponent, HeaderComponent, RecoverComponent, HeroComponent, CoursesComponent, FooterComponent, ContactComponent, CourseInfoComponent],
   imports: [
     CommonModule,
-    HomeRoutingModule
+    StarRatingModule.forRoot(),
+    HomeRoutingModule,
+    MaterialModule,
   ]
 })
 export class HomeModule { }

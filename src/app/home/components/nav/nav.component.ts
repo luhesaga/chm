@@ -9,6 +9,7 @@ import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 export class NavComponent implements OnInit {
 
   material = 'main-options';
+  sticky = '';
   icon = 'menu';
   menuText = 'Menú';
   isMobile = false;
@@ -26,11 +27,13 @@ export class NavComponent implements OnInit {
     ]).subscribe(result => {
       if (!result.matches) {
         this.isMobile = true;
+        this.sticky = 'mobile-sticky';
       } else {
         this.isMobile = false;
         this.material = 'main-options';
         this.menuText = 'Menú';
         this.icon = 'menu';
+        this.sticky = '';
       }
     });
 

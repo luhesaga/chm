@@ -6,6 +6,7 @@ import { LoginComponent } from './components/auth/login/login.component';
 import { RegisterComponent } from './components/auth/register/register.component';
 import { HeaderComponent } from './components/header/header.component';
 import { RecoverComponent } from './components/auth/recover/recover.component';
+import { ContactComponent } from './components/contact/contact.component';
 
 const routes: Routes = [
   {
@@ -23,6 +24,10 @@ const routes: Routes = [
   {
     path: 'recover',
     component: RecoverComponent
+  },
+  {
+    path: 'c',
+    component: ContactComponent
   },
   {
     path: ':tag',
