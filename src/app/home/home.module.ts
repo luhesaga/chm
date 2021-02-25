@@ -15,10 +15,11 @@ import { ContactComponent } from './components/contact/contact.component';
 import { StarRatingModule } from 'angular-star-rating';
 import { CourseInfoComponent } from './components/courses/course-info/course-info.component';
 import { MaterialModule } from '../material/material.module';
+import { CourseDetailComponent } from './components/courses/course-detail/course-detail.component';
 
 
 @NgModule({
-  declarations: [NavComponent, HomeComponent, LoginComponent, RegisterComponent, HeaderComponent, RecoverComponent, HeroComponent, CoursesComponent, FooterComponent, ContactComponent, CourseInfoComponent],
+  declarations: [NavComponent, HomeComponent, LoginComponent, RegisterComponent, HeaderComponent, RecoverComponent, HeroComponent, CoursesComponent, FooterComponent, ContactComponent, CourseInfoComponent, CourseDetailComponent],
   imports: [
     CommonModule,
     StarRatingModule.forRoot(),

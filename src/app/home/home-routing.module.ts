@@ -7,6 +7,8 @@ import { RegisterComponent } from './components/auth/register/register.component
 import { HeaderComponent } from './components/header/header.component';
 import { RecoverComponent } from './components/auth/recover/recover.component';
 import { ContactComponent } from './components/contact/contact.component';
+import { CourseInfoComponent } from './components/courses/course-info/course-info.component';
+import { CourseDetailComponent } from './components/courses/course-detail/course-detail.component';
 
 const routes: Routes = [
   {
@@ -26,8 +28,8 @@ const routes: Routes = [
     component: RecoverComponent
   },
   {
-    path: 'c',
-    component: ContactComponent
+    path: 'detalle-curso',
+    component: CourseDetailComponent
   },
   {
     path: ':tag',
