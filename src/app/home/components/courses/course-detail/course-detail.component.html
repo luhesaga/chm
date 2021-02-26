@@ -3,7 +3,7 @@
 <main>
     <section class="introduction-container">
         <div class="introduction-title">
-            <h1>Introduccion a los Ensayos No Destructivos</h1>
+            <h1>Introducción a los Ensayos No Destructivos</h1>
             <p>Profesores <span>Alvarez Gomez, Geovanny</span></p>
         </div>
         <div class="img-container">
@@ -24,9 +24,9 @@
                         <mat-panel-title>
                             <span class="material-icons">menu_book</span> <h3>Objetivos</h3>
                         </mat-panel-title>
-                        <mat-panel-description>
+                        <!-- <mat-panel-description>
                             {{panelOpenState ? 'cerrar' : 'ver'}}
-                        </mat-panel-description>
+                        </mat-panel-description> -->
                     </mat-expansion-panel-header>
                         <p>Dar a conocer o reforzar a los participantes las diferentes técnicas de ensayos no destructivos (END) empleadas actualmente en la inspección, su fundamentación, importancia, aplicaciones, ventajas y desventajas, así como la normatividad aplicable, además de dar a conocer los requisitos para la capacitación, calificación y certificación de personal de END.</p>
                 </mat-expansion-panel>
@@ -36,9 +36,9 @@
                         <mat-panel-title>
                             <span class="material-icons">menu_book</span> <h3>Contenido</h3>
                         </mat-panel-title>
-                        <mat-panel-description>
+                        <!-- <mat-panel-description>
                             {{panelOpenState ? 'cerrar' : 'ver'}}
-                        </mat-panel-description>
+                        </mat-panel-description> -->
                     </mat-expansion-panel-header>
                     <h4>INTRODUCCIÓN</h4>
                     <ul>
@@ -73,11 +73,63 @@
                         <li>4.5. Exámenes de calificación</li>
                     </ul>
                 </mat-expansion-panel>
+                <mat-expansion-panel (opened)="panelOpenState = true"
+                                    (closed)="panelOpenState = false">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <span class="material-icons">menu_book</span> <h3>Duración</h3>
+                        </mat-panel-title>
+                        <!-- <mat-panel-description>
+                            {{panelOpenState ? 'cerrar' : 'ver'}}
+                        </mat-panel-description> -->
+                    </mat-expansion-panel-header>
+                        <p>De 1 a 3 semanas de manera virtual (el periodo de tiempo depende de la disponibilidad y dedicación del participante)</p>
+                        <p>3 días de manera presencial (los cursos presenciales estan sujetos a un cupo mínimo de 8 participantes)</p>
+                </mat-expansion-panel>
+                <mat-expansion-panel (opened)="panelOpenState = true"
+                                    (closed)="panelOpenState = false">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <span class="material-icons">menu_book</span> <h3>Requisitos previos</h3>
+                        </mat-panel-title>
+                        <!-- <mat-panel-description>
+                            {{panelOpenState ? 'cerrar' : 'ver'}}
+                        </mat-panel-description> -->
+                    </mat-expansion-panel-header>
+                        <p>Los participantes deben tener conocimientos básicos sobre ensayos no destructivos. Se recomienda que el participante tenga mínimo 1 año de experiencia en soldaduras, materiales o directamente en la aplicación de algún método de ensayo no destructivo.</p>
+                </mat-expansion-panel>
+                <mat-expansion-panel (opened)="panelOpenState = true"
+                                    (closed)="panelOpenState = false">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <span class="material-icons">menu_book</span> <h3>Dirigido a</h3>
+                        </mat-panel-title>
+                        <!-- <mat-panel-description>
+                            {{panelOpenState ? 'cerrar' : 'ver'}}
+                        </mat-panel-description> -->
+                    </mat-expansion-panel-header>
+                        <p>Este curso está orientado a ingenieros y técnicos relacionados con mantenimiento,  inspección, control de calidad, ingeniería, producción, diseño o afin, tanto de la industria metal mecánica, química, minera, del transporte, de la energía o de ramas cercanas de la ingeniería. Principalmente para inspectores, supervisores, coordinadores, jefes de área, auditores, interventores, capataces, soldadores, entre otros.</p>
+                </mat-expansion-panel>
+                <mat-expansion-panel (opened)="panelOpenState = true"
+                                    (closed)="panelOpenState = false">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <span class="material-icons">menu_book</span> <h3>Evaluación de aprendizaje</h3>
+                        </mat-panel-title>
+                        <!-- <mat-panel-description>
+                            {{panelOpenState ? 'cerrar' : 'ver'}}
+                        </mat-panel-description> -->
+                    </mat-expansion-panel-header>
+                        <p>Los participantes que realicen este curso, recibirán un certificado de participación que acredite su asistencia a esta actividad. Se realizaran evaluaciones por cada uno de los capítulos tratados en el curso, la nota promedio deberá ser mayor o igual al 80% para obtener la aprobación del mismo.</p>
+                </mat-expansion-panel>
             </mat-accordion>
         </div>
         <div class="tutores">
-            <img src="https://chym-elearning.com/app/upload/users/1/1168/1168_5f7e7d11ecfc6_Solo-Logo-alta.jpg?rand=6037016948a33" alt="">
-            <p>Alvarez Gomez, Geovanny</p>
+            <h2>Tutores</h2>
+            <div class="tutor-info">
+                <img src="https://chym-elearning.com/app/upload/users/1/1168/1168_5f7e7d11ecfc6_Solo-Logo-alta.jpg?rand=6037016948a33" alt="">
+                <p>Alvarez Gomez, Geovanny</p>
+            </div>
         </div>
     </section>
 </main>
