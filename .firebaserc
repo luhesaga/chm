@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "chym-e-learning": {
+      "hosting": {
+        "chm": [
+          "chym-e-learning"
+        ]
+      }
+    }
+  }
+}

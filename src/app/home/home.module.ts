@@ -16,6 +16,7 @@ import { StarRatingModule } from 'angular-star-rating';
 import { CourseInfoComponent } from './components/courses/course-info/course-info.component';
 import { MaterialModule } from '../material/material.module';
 import { CourseDetailComponent } from './components/courses/course-detail/course-detail.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -25,6 +26,8 @@ import { CourseDetailComponent } from './components/courses/course-detail/course
     StarRatingModule.forRoot(),
     HomeRoutingModule,
     MaterialModule,
+    ReactiveFormsModule,
+    FormsModule
   ]
 })
 export class HomeModule { }

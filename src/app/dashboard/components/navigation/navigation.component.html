@@ -1,0 +1,94 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport
+      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+      [mode]="(isHandset$ | async) ? 'over' : 'side'"
+      [opened]="(isHandset$ | async) === false">
+    <mat-toolbar>
+      <a routerLink="/dashboard">
+        <img src="../assets/img/header-logo-custom1.png" alt="logo de la plataforma">
+      </a>
+    </mat-toolbar>
+    <!-- <mat-nav-list style="margin-top: 48px;">
+      <a mat-list-item routerLink="/dashboard/usuarios">Usuarios</a>
+      <a mat-list-item routerLink="/dashboard/cursos">cursos</a>
+      <a mat-list-item href="#">Link 3</a>
+    </mat-nav-list> -->
+    <mat-accordion>
+      <mat-expansion-panel (opened)="panelOpenState = true"
+                          (closed)="panelOpenState = false">
+        <mat-expansion-panel-header class="admin-header">
+          <mat-panel-title class="admin">
+            <mat-list>
+              <mat-list-item> 
+                <button mat-icon-button>
+                  <mat-icon>cases</mat-icon>
+                </button>
+                Administración 
+              </mat-list-item>
+            </mat-list>
+          </mat-panel-title>
+          <mat-panel-description>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <mat-list>
+          <mat-list-item>
+            <button mat-icon-button>
+              <mat-icon>group</mat-icon>
+            </button>
+            <a mat-list-item routerLink="/dashboard/usuarios">Usuarios</a>
+          </mat-list-item>
+          <mat-list-item>
+            <button mat-icon-button>
+              <mat-icon>menu_book</mat-icon>
+            </button>
+            <a mat-list-item routerLink="/dashboard/cursos">Cursos</a>
+          </mat-list-item>
+        </mat-list>
+      </mat-expansion-panel>
+      <mat-expansion-panel (opened)="panelOpenState = true"
+                            (closed)="panelOpenState = false">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Mis cursos
+          </mat-panel-title>
+          <mat-panel-description>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <mat-list>
+          <mat-list-item>
+            <button mat-icon-button>
+              <mat-icon>info</mat-icon>
+            </button>
+            <a mat-list-item routerLink="/dashboard/cursos">Cursos</a>
+          </mat-list-item>
+          <mat-list-item> Salt </mat-list-item>
+          <mat-list-item> Paprika </mat-list-item>
+         </mat-list>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar>
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span>chm</span>
+      <span class="example-spacer"></span>
+      <button mat-button [matMenuTriggerFor]="menu">
+        Luis Sarmiento
+        <mat-icon>arrow_drop_down</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item>Item 1</button>
+        <button mat-menu-item (click)="logout()">cerrar sesión</button>
+      </mat-menu>
+    </mat-toolbar>
+    <!-- Add Content Here -->
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

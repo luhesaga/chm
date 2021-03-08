@@ -105,6 +105,18 @@
     background: #eceff1;
 }
 
+mat-hint {
+    margin-left: 16px;
+    margin-bottom: 16px;
+    color: #ff5252;
+    padding: 2px 24px;
+    font-size: 0.7rem;
+    background: #ffcdd2;
+    border-radius: 5px;
+    align-self: flex-start;
+    justify-self: flex-start;
+}
+
 @media (max-width: 480px) {
     .login-container .login {
         padding: 5px;

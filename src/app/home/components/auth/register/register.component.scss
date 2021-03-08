@@ -101,6 +101,16 @@ section p {
     padding-left: 5px;
 }
 
+mat-hint {
+    margin-left: 16px;
+    margin-bottom: 16px;
+    color: #ff5252;
+    padding: 2px 24px;
+    font-size: 0.7rem;
+    background: #ffcdd2;
+    border-radius: 5px;
+}
+
 .register-container .register form p {
     font-size: 0.7rem;
     margin-left: 8px;
@@ -108,17 +118,17 @@ section p {
 }
 
 .register-container .register form button {
-    width: 320px;
-    height: 40px;
+    // width: 320px;
+    // height: 40px;
     background: var(--main-color2);
-    color: white;
+    // color: white;
     margin-top: 20px;
-    cursor: pointer;
-    border: 1px solid white;
-    border-radius: 5px;
-    font-weight: 700;
-    font-size: 1.1rem;
-    padding: 5px;
+    // cursor: pointer;
+    // border: 1px solid white;
+    // border-radius: 5px;
+    // font-weight: 700;
+    // font-size: 1.1rem;
+    // padding: 5px;
 }
 
 .register-container .register a {

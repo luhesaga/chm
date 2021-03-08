@@ -11,19 +11,90 @@
     <div class="register-container">
         <h2>Crear cuenta</h2>
         <div class="register">
-            <form action="">
-                <label for="Email">Correo electrónico</label>
-                <input type="email" id="Email" placeholder="Su email">
-                <p>su nombre y apellido completo, así aparecerá en sus certificados</p>
-                <label for="Nombre">Nombres</label>
-                <input type="text" id="Nombre" placeholder="nombres">
-                <label for="Apellido">Apellidos</label>
-                <input type="text" id="Apellido" placeholder="apellidos">
-                <label for="Pass">Contraseña</label>
-                <input type="password" id="Pass" placeholder="contraseña">
-                <label for="PassConf">Confirmar contraseña</label>
-                <input type="password" id="PassConf" placeholder="confirmar contraseña">
-                <button type="submit">Crear Cuenta</button>
+            <form
+                [formGroup]="userForm"
+                (ngSubmit)="saveUser(userForm.value)">
+                    <label for="Email">Correo electrónico</label>
+                    <input
+                        type="email"
+                        id="Email"
+                        placeholder="Su email"
+                        formControlName="mail">
+                        <ng-container *ngFor="let validation of validationMessages.mail">
+                            <div *ngIf="
+                                    userForm.get('mail').hasError(validation.type) &&
+                                    (userForm.get('mail').dirty ||
+                                    userForm.get('mail').touched)
+                                    ">
+                                <mat-hint>{{ validation.message}}</mat-hint>
+                            </div>
+                        </ng-container>
+                    <p>su nombre y apellido completo, así aparecerá en sus certificados</p>
+                    <label for="Nombre">Nombres</label>
+                    <input
+                        type="text"
+                        id="Nombre"
+                        placeholder="nombres"
+                        formControlName="nombres">
+                        <ng-container *ngFor="let validation of validationMessages.nombres">
+                            <div *ngIf="
+                                    userForm.get('nombres').hasError(validation.type) &&
+                                    (userForm.get('nombres').dirty ||
+                                    userForm.get('nombres').touched)
+                                    ">
+                                <mat-hint>{{ validation.message}}</mat-hint>
+                            </div>
+                        </ng-container>
+                    <label for="Apellido">Apellidos</label>
+                    <input
+                        type="text"
+                        id="Apellido"
+                        placeholder="apellidos"
+                        formControlName="apellidos">
+                        <ng-container *ngFor="let validation of validationMessages.apellidos">
+                            <div *ngIf="
+                                    userForm.get('apellidos').hasError(validation.type) &&
+                                    (userForm.get('apellidos').dirty ||
+                                    userForm.get('apellidos').touched)
+                                    ">
+                                <mat-hint>{{ validation.message}}</mat-hint>
+                            </div>
+                        </ng-container>
+                    <label for="Pass">Contraseña</label>
+                    <input
+                        type="password"
+                        id="Pass"
+                        placeholder="contraseña"
+                        formControlName="password"
+                        [(ngModel)]="pass">
+                        <ng-container *ngFor="let validation of validationMessages.password">
+                            <div *ngIf="
+                                    userForm.get('password').hasError(validation.type) &&
+                                    (userForm.get('password').dirty ||
+                                    userForm.get('password').touched)
+                                    ">
+                                <mat-hint>{{ validation.message}}</mat-hint>
+                            </div>
+                        </ng-container>
+                    <label for="PassConf">Confirmar contraseña</label>
+                    <input
+                        type="password"
+                        id="PassConf"
+                        placeholder="confirmar contraseña"
+                        formControlName="confirmation"
+                        [(ngModel)]="confPass">
+                        <ng-container *ngIf="userForm.get('confirmation').dirty ||
+                                            userForm.get('confirmation').touched">
+                            <div *ngIf="pass !== confPass">
+                                <mat-hint>Las contraseñas no coinciden.</mat-hint>
+                            </div>
+                        </ng-container>
+                    <button
+                        mat-raised-button color="primary"
+                        type="submit"
+                        [disabled]="!userForm.valid">
+                            Crear Cuenta
+                    </button>
             </form>
         </div>
         <div class="login">

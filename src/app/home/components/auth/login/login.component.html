@@ -3,11 +3,37 @@
 <div class="main-container">
     <div class="login-container">
         <div class="login" id="login">
-            <form action="">
-                <h2>Iniciar sesión</h2>
-                <input type="email" placeholder="Su email">
-                <input type="password" placeholder="Su contraseña">
-                <button type="submit">Iniciar sesión</button>
+            <form
+                [formGroup]="loginForm"
+                (ngSubmit)="loginUser(loginForm.value)">
+                    <h2>Iniciar sesión</h2>
+                    <input
+                        type="email"
+                        placeholder="Su email"
+                        formControlName="mail">
+                        <ng-container *ngFor="let validation of validationMessages.mail">
+                            <div *ngIf="
+                                    loginForm.get('mail').hasError(validation.type) &&
+                                    (loginForm.get('mail').dirty ||
+                                    loginForm.get('mail').touched)
+                                    ">
+                                <mat-hint>{{ validation.message}}</mat-hint>
+                            </div>
+                        </ng-container>
+                    <input
+                        type="password"
+                        placeholder="Su contraseña"
+                        formControlName="password">
+                        <ng-container *ngFor="let validation of validationMessages.password">
+                            <div *ngIf="
+                                    loginForm.get('password').hasError(validation.type) &&
+                                    (loginForm.get('password').dirty ||
+                                    loginForm.get('password').touched)
+                                    ">
+                                <mat-hint>{{ validation.message}}</mat-hint>
+                            </div>
+                        </ng-container>
+                    <button type="submit">Iniciar sesión</button>
             </form>
             <a routerLink="/home/recover">¿Olvido su contraseña?</a>
         </div>
