@@ -17,10 +17,11 @@ import { CourseInfoComponent } from './components/courses/course-info/course-inf
 import { MaterialModule } from '../material/material.module';
 import { CourseDetailComponent } from './components/courses/course-detail/course-detail.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MainComponent } from './components/main/main.component';
 
 
 @NgModule({
-  declarations: [NavComponent, HomeComponent, LoginComponent, RegisterComponent, HeaderComponent, RecoverComponent, HeroComponent, CoursesComponent, FooterComponent, ContactComponent, CourseInfoComponent, CourseDetailComponent],
+  declarations: [NavComponent, HomeComponent, LoginComponent, RegisterComponent, HeaderComponent, RecoverComponent, HeroComponent, CoursesComponent, FooterComponent, ContactComponent, CourseInfoComponent, CourseDetailComponent, MainComponent],
   imports: [
     CommonModule,
     StarRatingModule.forRoot(),
