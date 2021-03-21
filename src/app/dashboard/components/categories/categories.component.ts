@@ -3,15 +3,15 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import Swal from 'sweetalert2';
-import { CourseService } from 'src/app/core/services/courses/course.service';
+import { CategoryService } from '../../../core/services/categories/category.service';
 
 
 @Component({
-  selector: 'app-cursos',
-  templateUrl: './cursos.component.html',
-  styleUrls: ['./cursos.component.scss']
+  selector: 'app-categories',
+  templateUrl: './categories.component.html',
+  styleUrls: ['./categories.component.scss']
 })
-export class CursosComponent implements OnInit, AfterViewInit {
+export class CategoriesComponent implements OnInit {
 
   displayedColumns: string[] = ['nombre', 'actions'];
   dataSource = new MatTableDataSource();
@@ -20,14 +20,15 @@ export class CursosComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(
-    private courseService: CourseService,
+    private catService: CategoryService,
+
   ) { }
 
   ngOnInit(): void {
-    this.courseService
-      .listCourses()
+    this.catService
+      .listCategories()
       .valueChanges()
-      .subscribe(courses => (this.dataSource.data = courses));
+      .subscribe(categories => (this.dataSource.data = categories));
   }
 
   ngAfterViewInit(): void {

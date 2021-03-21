@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { CourseInfoComponent } from './course-info/course-info.component';
+import { CourseService } from '../../../core/services/courses/course.service';
 
 @Component({
   selector: 'app-courses',
@@ -9,9 +10,15 @@ import { CourseInfoComponent } from './course-info/course-info.component';
 })
 export class CoursesComponent implements OnInit {
 
-  constructor(public dialog: MatDialog,) { }
+  cursos;
+
+  constructor(
+    public dialog: MatDialog,
+    public courseService: CourseService
+  ) { }
 
   ngOnInit(): void {
+    this.cursos = this.courseService.listCourses().valueChanges();
   }
 
   openDialog(data): void {

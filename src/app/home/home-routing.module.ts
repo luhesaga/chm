@@ -33,7 +33,7 @@ const routes: Routes = [
         component: RecoverComponent
       },
       {
-        path: 'detalle-curso',
+        path: 'detalle-curso/:id',
         component: CourseDetailComponent
       },
       {

@@ -4,6 +4,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import Swal from 'sweetalert2';
+import { MatDialog } from '@angular/material/dialog';
+import { UserEditComponent } from './user-edit/user-edit.component';
 
 @Component({
   selector: 'app-users',
@@ -12,13 +14,16 @@ import Swal from 'sweetalert2';
 })
 export class UsersComponent implements OnInit, AfterViewInit {
 
-  displayedColumns: string[] = ['nombres', 'apellidos', 'correo', 'actions'];
+  displayedColumns: string[] = ['apellidos', 'nombres', 'correo', 'perfil', 'actions'];
   dataSource = new MatTableDataSource();
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private userService: UsersService) { }
+  constructor(
+    private userService: UsersService,
+    public dialog: MatDialog,
+  ) { }
 
   ngOnInit(): void {
     this.userService
@@ -68,6 +73,20 @@ export class UsersComponent implements OnInit, AfterViewInit {
           })
           .catch(error => console.log(error));
       }
+    });
+  }
+
+  openDialog(data): void {
+    const config = {
+      data: {
+        message: data ? 'Editar usuario' : 'Agregar nuevo usuario',
+        content: data
+      }
+    };
+
+    const dialogRef = this.dialog.open(UserEditComponent, config);
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result ${result}`);
     });
   }
 

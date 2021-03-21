@@ -1,7 +1,44 @@
-<p>cursos works!</p>
-<div *ngFor="let item of cursos |async">
-    <h1>{{ item.nombre }}</h1>
-    <img src="{{ item.imagen }}" alt="">
-    <p>{{ item.descripcion }}</p>
-    <p>{{ item.introduccion }}</p>
+<div class="container">
+  <h2>Gestión de Cursos</h2>
+  <mat-form-field appearance="legacy" class="search">
+      <mat-label>Buscar</mat-label>
+      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Placeholder">
+      <mat-icon matSuffix>search</mat-icon>
+      <mat-hint>puede buscar por cualquier campo</mat-hint>
+  </mat-form-field>
+  <button
+    mat-raised-button
+    routerLink="/cursos/create"
+    style="background: var(--main-color2); color: white;">Crear nuevo</button>
+  <table mat-table [dataSource]="dataSource" matSort>
+    <ng-container matColumnDef="nombre">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header id="nombre">Nombres</th>
+      <td mat-cell *matCellDef="let element">{{ element.nombre }}</td>
+    </ng-container>
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef id="acciones">Acciones</th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-stroked-button color="primary" (click)="openDialog(element)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-stroked-button color="secondary" (click)="deleteUser(element)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+
+    <mat-paginator
+      [pageSizeOptions]="[10, 15, 20]"
+      showFirstLastButtons
+    ></mat-paginator>
+    <button
+      mat-stroked-button
+      color="primary"
+      routerLink="/dashboard/categorias"
+      style="background: var(--main-color2); color: white;">
+      Categorias de Cursos >>
+    </button>
 </div>

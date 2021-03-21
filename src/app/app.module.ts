@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule} from '@angular/fire/auth';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireStorageModule } from '@angular/fire/storage';
 // import { environment } from 'src/environments/environment';
 import { environment } from 'src/environments/environment.prod';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -24,6 +25,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
     AngularFirestoreModule,
+    AngularFireStorageModule,
     FormsModule,
     ReactiveFormsModule,
     HomeModule,

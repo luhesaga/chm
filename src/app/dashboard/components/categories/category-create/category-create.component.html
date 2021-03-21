@@ -1,0 +1,30 @@
+<main>
+    <form [formGroup]="form" (ngSubmit)="saveOrEditCategory($event)">
+        <div class="title">
+            <mat-icon>feed</mat-icon>
+            <h2>Crear Categoria</h2>
+        </div>
+
+        <div class="form-inputs">
+            <mat-form-field>
+                <mat-label>Nombre de la categoria</mat-label>
+                <input type="text" matInput formControlName="name" />
+                <mat-error *ngIf="nameField.touched && nameField.invalid">
+                    <ng-container *ngIf="nameField.hasError('required')">
+                        El nombre es requerido
+                    </ng-container>
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="buttons">
+            <button
+                type="submit"
+                mat-raised-button
+                [disabled]="form.invalid">
+                    Guardar
+            </button>
+            <a routerLink="/dashboard/cursos" mat-raised-button>Cancelar</a>
+        </div>
+    </form>
+</main>

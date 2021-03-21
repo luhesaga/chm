@@ -23,7 +23,9 @@ export class UsersService {
           nombres: data.nombres,
           apellidos: data.apellidos,
           password: data.password,
-          correo: data.mail, });
+          correo: data.mail,
+          perfil: 'estudiante'
+      });
   }
 
   becomeAdmin(id, admin) {

@@ -77,10 +77,11 @@
         *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span>chm</span>
+      <span></span>
       <span class="example-spacer"></span>
       <button mat-button [matMenuTriggerFor]="menu">
-        Luis Sarmiento
+        <!-- <mat-icon>person</mat-icon> -->
+        {{ logguedUser? logguedUser.nombres + ' ' + logguedUser.apellidos : 'Invitado' }}
         <mat-icon>arrow_drop_down</mat-icon>
       </button>
       <mat-menu #menu="matMenu">

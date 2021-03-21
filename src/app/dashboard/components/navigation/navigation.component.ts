@@ -20,11 +20,20 @@ export class NavigationComponent {
       shareReplay()
     );
 
+  logguedUser;
+
   constructor(
     private breakpointObserver: BreakpointObserver,
     private auth: AuthService,
     private route: Router
-    ) {}
+  ) {}
+
+  ngOnInit(): void {
+    this.auth.user$.subscribe((user) => {
+      console.log(user);
+      this.logguedUser = user;
+    });
+  }
 
   logout():void {
     this.auth.logout();

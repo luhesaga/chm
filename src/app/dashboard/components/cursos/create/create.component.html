@@ -1,1 +1,95 @@
-<p>create works!</p>
+<main>
+    <form [formGroup]="form" (ngSubmit)="saveOrEditCourse($event)">
+      <div class="title">
+        <mat-icon>menu_book</mat-icon>
+        <h2>Crear nuevo curso</h2>
+      </div>
+      <div class="upload-image-main">
+        <div class="image-upload">
+          <label class="btn-upload">
+            <button
+            color="primary"
+              class="up-btn"
+              [disabled]="showProgressBar"
+              type="button"
+              mat-raised-button
+              (click)="fileInput.click()"
+              matTooltip="Cargar foto del curso">
+              <mat-icon aria-hidden="false" aria-label="Carga de archivo">cloud_upload</mat-icon>
+                Cargar Imagen
+            </button>
+            <input type="file" #fileInput (change)="uploadImage($event)" />
+          </label>
+          <mat-error *ngIf="imageField.touched && imageField.invalid">
+            <ng-container *ngIf="imageField.hasError('required')">La imagen es requerida</ng-container>
+          </mat-error>
+        </div>
+        <div class="progress">
+          <mat-hint>Puede añadir una imagen de portada para el curso, debe estar en formato JPG o PNG.</mat-hint>
+          <mat-progress-bar *ngIf="showProgressBar" mode="determinate" [value]="percentageProgressBar"></mat-progress-bar>
+          <p *ngIf="showProgressBar">{{ 'cargando ' + percentageProgressBar + '%' }}</p>
+        </div>
+        <picture>
+          <img *ngIf="imageField.value" [src]="imageField.value" alt="portada del curso">
+        </picture>
+      </div>
+      <div class="form-inputs">
+        <mat-form-field>
+          <mat-label>Nombre del curso</mat-label>
+          <input type="text" matInput formControlName="name" />
+          <mat-error *ngIf="nameField.touched && nameField.invalid">
+            <ng-container *ngIf="nameField.hasError('required')">El nombre es requerido</ng-container>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Introducción</mat-label>
+          <textarea
+            matInput
+            formControlName="introduction"
+            cdkAutosizeMinRows="1"
+            cdkAutosizeMaxRows="5"
+            cdkTextareaAutosize
+            #autosize="cdkTextareaAutosize"></textarea>
+          <mat-error *ngIf="introductionField.touched && introductionField.invalid">
+            <ng-container *ngIf="introductionField.hasError('required')">El nombre es requerido</ng-container>
+            <ng-container *ngIf="introductionField.hasError('not_available')">Esta categoría ya existe</ng-container>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Objetivo</mat-label>
+          <textarea
+            matInput
+            formControlName="objetive"
+            cdkAutosizeMinRows="1"
+            cdkAutosizeMaxRows="5"
+            cdkTextareaAutosize
+            #autosize="cdkTextareaAutosize"></textarea>
+          <mat-error *ngIf="objetiveField.touched && objetiveField.invalid">
+            <ng-container *ngIf="objetiveField.hasError('required')">El nombre es requerido</ng-container>
+            <ng-container *ngIf="objetiveField.hasError('not_available')">Esta categoría ya existe</ng-container>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Descripción</mat-label>
+          <textarea
+            matInput
+            formControlName="description"
+            cdkAutosizeMinRows="1"
+            cdkAutosizeMaxRows="5"
+            cdkTextareaAutosize
+            #autosize="cdkTextareaAutosize"></textarea>
+          <mat-error *ngIf="descriptionField.touched && descriptionField.invalid">
+            <ng-container *ngIf="descriptionField.hasError('required')">El nombre es requerido</ng-container>
+            <ng-container *ngIf="descriptionField.hasError('not_available')">Esta categoría ya existe</ng-container>
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="buttons">
+        <button
+          type="submit"
+          mat-raised-button
+          [disabled]="form.invalid">Guardar</button>
+				<a routerLink="/dashboard/cursos" mat-raised-button>Cancelar</a>
+      </div>
+    </form>
+  </main>
