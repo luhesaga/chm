@@ -31,21 +31,24 @@ export class UsersService {
   becomeAdmin(id, admin) {
     return this.fireStore.doc(`usuarios/${id}`)
       .update({
-        admin
+        admin,
+        perfil: 'administrador'
       });
   }
 
   editUser(data, id): Promise<void> {
     data.password = btoa(data.password);
+    let admin = false;
+    if (data.perfil === 'administrador') {
+      admin = true;
+    }
     return this.fireStore.doc(`usuarios/${id}`)
       .update({
           nombres: data.nombres,
           apellidos: data.apellidos,
-          identificacion: data.identificacion,
-          rol: data.rol,
-          estado: data.estado,
-          password: data.password,
-          telefono: data.telefono,
-          correo: data.correo, });
+          correo: data.correo,
+          perfil: data.perfil,
+          admin
+      });
   }
 }
