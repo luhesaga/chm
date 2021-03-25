@@ -9,6 +9,7 @@ import { CreateComponent } from './components/cursos/create/create.component';
 import { CategoriesComponent } from './components/categories/categories.component';
 import { CategoryCreateComponent } from './components/categories/category-create/category-create.component';
 import { UserEditComponent } from './components/users/user-edit/user-edit.component';
+import { CourseEditComponent } from './components/course-edit/course-edit.component';
 
 const routes: Routes = [
   {
@@ -38,6 +39,10 @@ const routes: Routes = [
       {
         path: 'cursos/detail',
         component: CourseDetailComponent
+      },
+      {
+        path: 'cursos/edit',
+        component: CourseEditComponent
       },
       {
         path: 'categorias',

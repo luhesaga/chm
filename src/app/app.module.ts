@@ -13,6 +13,7 @@ import { environment } from 'src/environments/environment.prod';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HomeModule } from './home/home.module';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { EditorModule } from "@tinymce/tinymce-angular";
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { DashboardModule } from './dashboard/dashboard.module';
     FormsModule,
     ReactiveFormsModule,
     HomeModule,
-    DashboardModule
+    DashboardModule,
+    EditorModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -12,6 +12,8 @@ import { CreateComponent } from './components/cursos/create/create.component';
 import { CategoriesComponent } from './components/categories/categories.component';
 import { CategoryCreateComponent } from './components/categories/category-create/category-create.component';
 import { UserEditComponent } from './components/users/user-edit/user-edit.component';
+import { CourseEditComponent } from './components/course-edit/course-edit.component';
+import { EditorModule } from "@tinymce/tinymce-angular";
 
 
 
@@ -25,14 +27,17 @@ import { UserEditComponent } from './components/users/user-edit/user-edit.compon
     CategoriesComponent,
     CategoryCreateComponent,
     UserEditComponent,
+    CourseEditComponent,
     ],
   imports: [
     CommonModule,
     DashboardRoutingModule,
+    EditorModule,
     MaterialModule,
     LayoutModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    
   ]
 })
 export class DashboardModule { }

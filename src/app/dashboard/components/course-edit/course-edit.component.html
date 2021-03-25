@@ -1,0 +1,54 @@
+<!-- <p>course-edit works!</p>
+<form [formGroup]="form">
+    <input [formControl]="form.controls.title" />
+        <editor
+            apiKey="fa82nlmdggdzt2rwcpx7k706ohjcnf9wo3ioar2p06d10yyk"
+            [init]="{
+                icons: 'material',
+                skin: 'borderless',
+                plugins: ['wordcount', 'lists'],
+                menubar: false,
+                min_height: 150,
+                toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist'
+            }"
+    ></editor>
+</form> -->
+
+<form (ngSubmit)="onSubmit()" [formGroup]="form">
+    <mat-form-field class="title">
+      <input
+        matInput
+        [formControl]="form.controls.title"
+        placeholder="Title"
+        type="text"/>
+  
+      <mat-error *ngIf="form.controls.title.hasError('required')">
+        Title is required
+      </mat-error>
+    </mat-form-field>
+  
+    <div class="mat-form-field-wrapper">
+      <editor
+        apiKey="fa82nlmdggdzt2rwcpx7k706ohjcnf9wo3ioar2p06d10yyk"
+        [formControl]="form.controls.body"
+        class="mat-elevation-z1"
+        (onInit)="handleEditorInit($event)"
+        [init]="{
+            icons: 'material',
+            skin: 'borderless',
+            plugins: ['wordcount', 'lists'],
+            menubar: false,
+            min_height: 150,
+            toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist'
+        }"
+      ></editor>
+  
+      <div class="mat-form-field-subscript-wrapper">
+  
+        <mat-error *ngIf="form.controls.body.touched && form.controls.body.hasError('required')">
+          This form is required
+        </mat-error>
+      </div>
+    </div>
+    <button type="submit">submit</button>
+  </form>

@@ -22,6 +22,7 @@
     "@angular/platform-browser": "~11.1.2",
     "@angular/platform-browser-dynamic": "~11.1.2",
     "@angular/router": "~11.1.2",
+    "@tinymce/tinymce-angular": "^4.2.2",
     "angular-star-rating": "^4.0.0-beta.3",
     "css-star-rating": "^1.2.4",
     "firebase": "^8.2.9",
