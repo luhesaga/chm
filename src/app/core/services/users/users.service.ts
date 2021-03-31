@@ -15,6 +15,11 @@ export class UsersService {
     return this.fireStore.collection(`usuarios`);
   }
 
+  listTeachers(): AngularFirestoreCollection {
+    return this.fireStore.collection('usuarios', ref =>
+      ref.where('perfil', '==', 'profesor'));
+  }
+
   createUser(data, id): Promise<void> {
     data.password = btoa(data.password);
     return this.fireStore.doc(`usuarios/${id}`)
@@ -46,7 +51,6 @@ export class UsersService {
       .update({
           nombres: data.nombres,
           apellidos: data.apellidos,
-          correo: data.correo,
           perfil: data.perfil,
           admin
       });

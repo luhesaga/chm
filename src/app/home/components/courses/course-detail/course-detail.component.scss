@@ -11,6 +11,14 @@ main {
     width: 100%;
 }
 
+.btn-back {
+    background: var(--main-color2);
+    color: white;
+    padding: 8px;
+    margin: 16px 24px;
+    border-radius: 5px;
+}
+
 .introduction-container {
     margin-top: 36px;
     width: 85%;

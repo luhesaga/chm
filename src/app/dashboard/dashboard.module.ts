@@ -12,8 +12,9 @@ import { CreateComponent } from './components/cursos/create/create.component';
 import { CategoriesComponent } from './components/categories/categories.component';
 import { CategoryCreateComponent } from './components/categories/category-create/category-create.component';
 import { UserEditComponent } from './components/users/user-edit/user-edit.component';
-import { CourseEditComponent } from './components/course-edit/course-edit.component';
+import { CourseEditComponent } from './components/cursos/course-edit/course-edit.component';
 import { EditorModule } from "@tinymce/tinymce-angular";
+import { CourseDescriptionComponent } from './components/cursos/course-description/course-description.component';
 
 
 
@@ -28,6 +29,7 @@ import { EditorModule } from "@tinymce/tinymce-angular";
     CategoryCreateComponent,
     UserEditComponent,
     CourseEditComponent,
+    CourseDescriptionComponent,
     ],
   imports: [
     CommonModule,

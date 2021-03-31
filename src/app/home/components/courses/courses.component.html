@@ -4,7 +4,9 @@
         <div class="single-course" *ngFor="let item of cursos |async">
             <div class="course-image">
                 <img src="{{ item.imagen }}" alt="" loading="lazy">
-                <span class="category">Ensayos no destructivos</span>
+                <span class="category">{{ 
+                    item.categoria.substring(0, item.categoria.indexOf('('))
+                    }}</span>
                 <div class="cribbon"></div>
                 <div class="course-info">
                     <span (click)="openDialog('hola')" class="material-icons">info</span>

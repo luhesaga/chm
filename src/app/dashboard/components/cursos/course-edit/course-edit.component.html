@@ -1,0 +1,47 @@
+<main>
+  <div class="title dialog-header-close">
+    <mat-icon>edit</mat-icon>
+    <h2>Editar {{ data.content.type }} del curso</h2>
+    <mat-icon mat-dialog-close style="color: red;">close</mat-icon>
+  </div>
+  <mat-dialog-content>
+    <form (ngSubmit)="onSubmit()" [formGroup]="form">
+      <div class="mat-form-field-wrapper">
+        <editor
+          apiKey="fa82nlmdggdzt2rwcpx7k706ohjcnf9wo3ioar2p06d10yyk"
+          [formControl]="form.controls.body"
+          class="mat-elevation-z1"
+          [(ngModel)]="description"
+          (onInit)="handleEditorInit($event)"
+          [init]="{
+              icons: 'material',
+              skin: 'borderless',
+              plugins: ['wordcount', 'lists'],
+              menubar: false,
+              min_height: 350,
+              width : '750',
+              toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist'
+          }"
+        ></editor>
+        <div class="mat-form-field-subscript-wrapper">
+          <mat-error *ngIf="form.controls.body.touched && form.controls.body.hasError('required')">
+            Debe ingresar una descripción.
+          </mat-error>
+        </div>
+      </div>
+      <div class="buttons">
+        <button
+          mat-stroked-button
+          [disabled]="!form.valid"
+          style="background: var(--main-color2); color: white;"
+          type="submit">
+            Guardar
+        </button>
+        <button mat-raised-button mat-dialog-close cdkFocusInitial>Cerrar</button>
+      </div>
+    </form>
+  </mat-dialog-content>
+</main>
+
+
+

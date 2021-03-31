@@ -1,128 +1,105 @@
-<!-- <app-header></app-header>
-<app-nav></app-nav> -->
-<main *ngFor="let item of cursos">
+<main>
     <section class="introduction-container">
         <div class="introduction-title">
-            <h1>{{item.nombre}}</h1>
+            <h1>{{nombre}}</h1>
             <p>Profesores <span>Alvarez Gomez, Geovanny</span></p>
         </div>
         <div class="img-container">
-            <img src="{{ item.imagen }}" alt="imagen curso {{ item.nombre }}">
-
+            <img [src]="imagen" alt="imagen curso">
         </div>
         <div class="introduction-text">
-            <p>{{ item.descripcion }}</p>
+            <div id="descripcion"></div>
         </div>
     </section>
     <section class="information-container">
         <div class="information">
             <h2>Información del curso</h2>
             <mat-accordion>
-                <mat-expansion-panel (opened)="panelOpenState = true"
-                                    (closed)="panelOpenState = false">
-                    <mat-expansion-panel-header>
-                        <mat-panel-title>
-                            <span class="material-icons">menu_book</span> <h3>Objetivos</h3>
-                        </mat-panel-title>
-                        <!-- <mat-panel-description>
-                            {{panelOpenState ? 'cerrar' : 'ver'}}
-                        </mat-panel-description> -->
-                    </mat-expansion-panel-header>
-                        <p>{{ item.objetivo }}</p>
+                <mat-expansion-panel
+                    *ngIf="objetivo"
+                    (opened)="panelOpenState = true"
+                    (closed)="panelOpenState = false">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                <h3>Objetivos</h3>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div id="objetivo"></div>
                 </mat-expansion-panel>
-                <mat-expansion-panel (opened)="panelOpenState = true"
-                                        (closed)="panelOpenState = false">
-                    <mat-expansion-panel-header>
-                        <mat-panel-title>
-                            <span class="material-icons">menu_book</span> <h3>Contenido</h3>
-                        </mat-panel-title>
-                        <!-- <mat-panel-description>
-                            {{panelOpenState ? 'cerrar' : 'ver'}}
-                        </mat-panel-description> -->
-                    </mat-expansion-panel-header>
-                    <h4>INTRODUCCIÓN</h4>
-                    <ul>
-                        <li>1.1. ¿Qué son?</li>
-                        <li>1.2. Definiciones</li>
-                        <li>1.3. Pruebas destructivas y no destructivas</li>
-                        <li>1.4. Técnicas de inspección (superficial, volumétrica y de hermeticidad)</li>
-                        <li>1.5. Ventajas de los ensayos no destructivos</li>
-                        <li>1.6. Limitaciones de los ensayos no destructivos</li>
-                        <li>1.7. Beneficios del empleo de los ensayos no destructivos</li>
-                        <li>1.8. Selección del ensayo no destructivo adecuado</li>
-                    </ul>
-                    <h4>TÉCNICAS DE INSPECCIÓN SUPERFICIAL</h4>
-                    <ul>
-                        <li>2.1. Inspección visual</li>
-                        <li>2.2. Líquidos penetrantes</li>
-                        <li>2.3. Partículas magnéticas</li>
-                        <li>2.4. Electromagnetismo (corrientes Eddy)</li>
-                    </ul>
-                    <h4>TÉCNICAS DE INSPECCIÓN VOLUMÉTRICA</h4>
-                    <ul>
-                        <li>3.1. Radiografía industrial</li>
-                        <li>3.2. Ultrasonido industrial</li>
-                        <li>3.3. Emisión acústica</li>
-                    </ul>
-                    <h4>CAPACITACIÓN, CALIFICACIÓN Y CERTIFICACIÓN</h4>
-                    <ul>
-                        <li>4.1. Introducción</li>
-                        <li>4.2. Entrenamiento</li>
-                        <li>4.3. Calificación</li>
-                        <li>4.4. Certificación</li>
-                        <li>4.5. Exámenes de calificación</li>
-                    </ul>
+
+                <mat-expansion-panel
+                    *ngIf="contenido"
+                    (opened)="panelOpenState = true"
+                    (closed)="panelOpenState = false">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                <h3>Contenido</h3>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div id="contenido"></div>
                 </mat-expansion-panel>
-                <mat-expansion-panel (opened)="panelOpenState = true"
-                                    (closed)="panelOpenState = false">
-                    <mat-expansion-panel-header>
-                        <mat-panel-title>
-                            <span class="material-icons">menu_book</span> <h3>Duración</h3>
-                        </mat-panel-title>
-                        <!-- <mat-panel-description>
-                            {{panelOpenState ? 'cerrar' : 'ver'}}
-                        </mat-panel-description> -->
-                    </mat-expansion-panel-header>
-                        <p>De 1 a 3 semanas de manera virtual (el periodo de tiempo depende de la disponibilidad y dedicación del participante)</p>
-                        <p>3 días de manera presencial (los cursos presenciales estan sujetos a un cupo mínimo de 8 participantes)</p>
+
+                <mat-expansion-panel
+                    *ngIf="duracion"
+                    (opened)="panelOpenState = true"
+                    (closed)="panelOpenState = false">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                <h3>Duración</h3>
+                            </mat-panel-title>
+                            </mat-expansion-panel-header>
+                        <div id="duracion"></div>
                 </mat-expansion-panel>
-                <mat-expansion-panel (opened)="panelOpenState = true"
-                                    (closed)="panelOpenState = false">
-                    <mat-expansion-panel-header>
-                        <mat-panel-title>
-                            <span class="material-icons">menu_book</span> <h3>Requisitos previos</h3>
-                        </mat-panel-title>
-                        <!-- <mat-panel-description>
-                            {{panelOpenState ? 'cerrar' : 'ver'}}
-                        </mat-panel-description> -->
-                    </mat-expansion-panel-header>
-                        <p>Los participantes deben tener conocimientos básicos sobre ensayos no destructivos. Se recomienda que el participante tenga mínimo 1 año de experiencia en soldaduras, materiales o directamente en la aplicación de algún método de ensayo no destructivo.</p>
+
+                <mat-expansion-panel
+                    *ngIf="requisitos"
+                    (opened)="panelOpenState = true"
+                    (closed)="panelOpenState = false">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                <h3>Requisitos previos</h3>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div id="requisitos"></div>
                 </mat-expansion-panel>
-                <mat-expansion-panel (opened)="panelOpenState = true"
-                                    (closed)="panelOpenState = false">
-                    <mat-expansion-panel-header>
-                        <mat-panel-title>
-                            <span class="material-icons">menu_book</span> <h3>Dirigido a</h3>
-                        </mat-panel-title>
-                        <!-- <mat-panel-description>
-                            {{panelOpenState ? 'cerrar' : 'ver'}}
-                        </mat-panel-description> -->
-                    </mat-expansion-panel-header>
-                        <p>Este curso está orientado a ingenieros y técnicos relacionados con mantenimiento,  inspección, control de calidad, ingeniería, producción, diseño o afin, tanto de la industria metal mecánica, química, minera, del transporte, de la energía o de ramas cercanas de la ingeniería. Principalmente para inspectores, supervisores, coordinadores, jefes de área, auditores, interventores, capataces, soldadores, entre otros.</p>
+
+                <mat-expansion-panel
+                    *ngIf="dirigido"
+                    (opened)="panelOpenState = true"
+                    (closed)="panelOpenState = false">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                <h3>Dirigido a</h3>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div id="dirigido"></div>
                 </mat-expansion-panel>
-                <mat-expansion-panel (opened)="panelOpenState = true"
-                                    (closed)="panelOpenState = false">
-                    <mat-expansion-panel-header>
-                        <mat-panel-title>
-                            <span class="material-icons">menu_book</span> <h3>Evaluación de aprendizaje</h3>
-                        </mat-panel-title>
-                        <!-- <mat-panel-description>
-                            {{panelOpenState ? 'cerrar' : 'ver'}}
-                        </mat-panel-description> -->
-                    </mat-expansion-panel-header>
-                        <p>Los participantes que realicen este curso, recibirán un certificado de participación que acredite su asistencia a esta actividad. Se realizaran evaluaciones por cada uno de los capítulos tratados en el curso, la nota promedio deberá ser mayor o igual al 80% para obtener la aprobación del mismo.</p>
+
+                <mat-expansion-panel
+                    *ngIf="evaluacion"
+                    (opened)="panelOpenState = true"
+                    (closed)="panelOpenState = false">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                <h3>Evaluación de aprendizaje</h3>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div id="evaluacion"></div>
+                </mat-expansion-panel>
+
+                <mat-expansion-panel
+                    *ngIf="calificacion"
+                    (opened)="panelOpenState = true"
+                    (closed)="panelOpenState = false">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                <h3>Requisitos para calificación</h3>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div id="calificacion"></div>
                 </mat-expansion-panel>
             </mat-accordion>
+            <button class="btn-back" routerLink="/dashboard/cursos" *ngIf="dash">{{ '<< Volver a Lista de cursos' }}</button>
         </div>
         <div class="tutores">
             <h2>Tutores</h2>

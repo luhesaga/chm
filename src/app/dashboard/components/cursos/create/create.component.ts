@@ -7,6 +7,8 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router, ActivatedRoute, Params} from '@angular/router';
 import { AngularFirestore } from '@angular/fire/firestore';
 import Swal from 'sweetalert2';
+import { CategoryService } from '../../../../core/services/categories/category.service';
+import { UsersService } from '../../../../core/services/users/users.service';
 @Component({
 	selector: 'app-create',
 	templateUrl: './create.component.html',
@@ -21,29 +23,90 @@ export class CreateComponent implements OnInit {
 	showProgressBar = false;
 	filename: string;
 	images: any = [];
+	categories: any = [];
+	selectedCategory: string;
+	teachers: any = [];
+	selectedTeacher: string;
+
+	//datos para editar curso
+	imageName: string;
+	name: string;
+	imgUrl;
+	confirmDelImg;
 
 constructor(
 	private formBuilder: FormBuilder,
 	private courseService: CourseService,
+	private catService: CategoryService,
+	private userService: UsersService,
     private fs: AngularFireStorage,
 	private activatedRoute: ActivatedRoute,
 	private fireStore: AngularFirestore,
 	private route: Router
 ) {
-	this.id = this.activatedRoute.snapshot.params.idCategory
+	this.id = this.activatedRoute.snapshot.params.id
 	this.buildForm()
 }
 
 ngOnInit(): void {
+	if (this.id) {
+		this.getCourse()
+	}
+	this.listCategories();
+	this.listTeachers();
+	
+}
+
+getCourse() {
+	this.courseService.detailCourse(this.id).valueChanges()
+		.subscribe(curso => {
+			// console.log(curso);
+			this.fsId = this.id;
+			this.confirmDelImg = curso.nombreImg;
+			this.imageField.setValue(curso.imagen);
+			this.imageName = curso.nombreImg;
+			this.name = curso.nombre;
+			this.selectedCategory = curso.categoria;
+			console.log(this.selectedCategory);
+			this.selectedTeacher = curso.profesor;
+			console.log(this.selectedTeacher);
+		});
+}
+
+listCategories() {
+	this.catService.listCategories().valueChanges()
+		.subscribe((cat: any) => {
+			this.categories = [];
+			cat.forEach(element => {
+				const category = {
+					id: element.id,
+					nombre: element.nombre
+				}
+				this.categories.push(category);
+			});
+		});
+}
+
+listTeachers() {
+	this.userService.listTeachers().valueChanges()
+		.subscribe((teachers: any) => {
+			teachers.forEach(element => {
+				this.teachers = [];
+				const teacher = {
+					id: element.id,
+					profesor: element.nombres + ' ' + element.apellidos,
+				}
+				this.teachers.push(teacher);
+			})
+		});
 }
 
 private buildForm(): void {
 	this.form = this.formBuilder.group({
 		name: ['', Validators.required,],
 		image: ['', Validators.required],
-		introduction: [''],
-		objetive: [''],
-		description: ['']
+		categoria: [''],
+		profesor: [''],
 	})
 }
 
@@ -55,16 +118,12 @@ get imageField() {
 	return this.form.get('image');
 }
 
-get introductionField() {
+get categoriaField() {
 	return this.form.get('introduction');
 }
 
-get objetiveField() {
+get profesorField() {
 	return this.form.get('objetive');
-}
-
-get descriptionField() {
-	return this.form.get('description');
 }
 
 saveOrEditCourse(event: Event) {
@@ -80,7 +139,28 @@ saveOrEditCourse(event: Event) {
 	}
 }
 
-editCourse() {}
+editCourse() {
+	const data = this.form.value;
+	const imageName = this.imageName;
+	this.courseService.editCourse(data, this.id, imageName)
+		.then(() => {
+			Swal.fire({
+				icon: 'success',
+				title: 'Exito!',
+				text: 'Curso actualizado exitosamente',
+				confirmButtonText: 'cerrar',
+			});
+			this.route.navigate(['dashboard/cursos']);
+		})
+		.catch((error) => {
+			Swal.fire({
+				icon: 'error',
+				title: 'error',
+				text: 'Ocurrió un error' + error,
+				confirmButtonText: 'cerrar',
+            });
+		});
+}
 
 saveCourse() {
 	const data = this.form.value;
@@ -99,7 +179,7 @@ saveCourse() {
         	Swal.fire({
 				icon: 'error',
 				title: 'error',
-				text: 'Ocurrio un error' + error,
+				text: 'Ocurrió un error' + error,
 				confirmButtonText: 'cerrar',
             });
         });
@@ -123,24 +203,41 @@ uploadImage(event) {
 			urlImage.subscribe(url => {
 				this.imageField.setValue(url);
 				// borrar imagen previamente cargada
-				if (this.images.length > 0) {
-					this.deleteImage();
-					this.images.length = 0;
+				if (this.images.length > 0 || this.imageName) {
+					this.deleteImage(image.name);
+					if (this.id) {
+						this.imageName = '';
+					} else {
+						this.images.length = 0;
+					}
 				}
-				this.images.push(name);
-				this.filename = image.name;
+				if (this.id) {
+					this.imageName = image.name;
+				} else {
+					this.images.push(name);
+					this.filename = image.name;
+				}
 			})
 				this.showProgressBar = false;
 			}))
 			.subscribe(per => {
 				this.percentageProgressBar = per;
-				console.log(per);
+				//console.log(per);
 			})
 }
 
-deleteImage() {
-	const url = this.images[0];
-	this.fs.ref(`cursos/${url}`).delete();
+deleteImage(imgName) {
+	let url;
+	if (this.id) {
+		if (this.confirmDelImg !== imgName) {
+			url = this.confirmDelImg;
+			this.fs.ref(`cursos/${this.fsId}/${url}`).delete();
+		}
+	}else {
+		url = this.images[0];
+		this.fs.ref(`cursos/${this.fsId}/${url}`).delete();
+	}
+	console.log(`me van a borrar: cursos/${this.fsId}/${url}`);
 }
 
 }

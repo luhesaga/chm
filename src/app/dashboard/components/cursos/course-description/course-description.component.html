@@ -1,0 +1,156 @@
+<main>
+    <div class="title dialog-header-close">
+      <mat-icon>grid_on</mat-icon>
+      <h2>Descripción del curso</h2>
+      <mat-icon mat-dialog-close style="color: red;">close</mat-icon>
+    </div>
+    <mat-dialog-content>
+      <div class="container">
+        <h1>{{ course.nombre }}</h1>
+
+        <div class="item-container">
+          <mat-card class="example-card">
+            <mat-card-header>
+              <div mat-card-avatar class="example-header-image"></div>
+              <mat-card-title>Descripción</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div id="descripcion"></div>
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-button (click)="descriptionEdit('descripcion')">Editar</button>
+              <button mat-button>Eliminar</button>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+
+        <div class="item-container">
+          <mat-card class="example-card">
+            <mat-card-header>
+              <div mat-card-avatar class="example-header-image"></div>
+              <mat-card-title>Introducción</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div id="introduccion"></div>
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-button (click)="descriptionEdit('introduccion')">Editar</button>
+              <button mat-button>Eliminar</button>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+
+        <div class="item-container">
+          <mat-card class="example-card">
+            <mat-card-header>
+              <div mat-card-avatar class="example-header-image"></div>
+              <mat-card-title>Objetivo</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div id="objetivo"></div>
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-button (click)="descriptionEdit('objetivo')">Editar</button>
+              <button mat-button>Eliminar</button>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+
+        <div class="item-container">
+          <mat-card class="example-card">
+            <mat-card-header>
+              <div mat-card-avatar class="example-header-image"></div>
+              <mat-card-title>Contenido</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div id="contenido"></div>
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-button (click)="descriptionEdit('contenido')">Editar</button>
+              <button mat-button>Eliminar</button>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+
+        <div class="item-container">
+          <mat-card class="example-card">
+            <mat-card-header>
+              <div mat-card-avatar class="example-header-image"></div>
+              <mat-card-title>Duración</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div id="duracion"></div>
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-button (click)="descriptionEdit('duracion')">Editar</button>
+              <button mat-button>Eliminar</button>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+
+        <div class="item-container">
+          <mat-card class="example-card">
+            <mat-card-header>
+              <div mat-card-avatar class="example-header-image"></div>
+              <mat-card-title>Requisitos previos</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div id="requisitos"></div>
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-button (click)="descriptionEdit('requisitos')">Editar</button>
+              <button mat-button>Eliminar</button>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+
+        <div class="item-container">
+          <mat-card class="example-card">
+            <mat-card-header>
+              <div mat-card-avatar class="example-header-image"></div>
+              <mat-card-title>Dirigido a</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div id="dirigido"></div>
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-button (click)="descriptionEdit('dirigido')">Editar</button>
+              <button mat-button>Eliminar</button>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+
+        <div class="item-container">
+          <mat-card class="example-card">
+            <mat-card-header>
+              <div mat-card-avatar class="example-header-image"></div>
+              <mat-card-title>Evaluación de aprendizaje</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div id="evaluacion"></div>
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-button (click)="descriptionEdit('evaluacion')">Editar</button>
+              <button mat-button>Eliminar</button>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+
+        <div class="item-container">
+          <mat-card class="example-card">
+            <mat-card-header>
+              <div mat-card-avatar class="example-header-image"></div>
+              <mat-card-title>Requisitos para calificación</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div id="calificacion"></div>
+            </mat-card-content>
+            <mat-card-actions>
+              <button mat-button (click)="descriptionEdit('calificacion')">Editar</button>
+              <button mat-button>Eliminar</button>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+      </div>
+    </mat-dialog-content>
+  </main>

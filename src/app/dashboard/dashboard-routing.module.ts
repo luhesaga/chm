@@ -9,7 +9,8 @@ import { CreateComponent } from './components/cursos/create/create.component';
 import { CategoriesComponent } from './components/categories/categories.component';
 import { CategoryCreateComponent } from './components/categories/category-create/category-create.component';
 import { UserEditComponent } from './components/users/user-edit/user-edit.component';
-import { CourseEditComponent } from './components/course-edit/course-edit.component';
+import { CourseEditComponent } from './components/cursos/course-edit/course-edit.component';
+import { CourseDescriptionComponent } from './components/cursos/course-description/course-description.component';
 
 const routes: Routes = [
   {
@@ -37,12 +38,16 @@ const routes: Routes = [
         component: CreateComponent
       },
       {
-        path: 'cursos/detail',
-        component: CourseDetailComponent
-      },
-      {
         path: 'cursos/edit',
         component: CourseEditComponent
+      },
+      {
+        path: 'cursos/course-edit/:id',
+        component: CreateComponent
+      },
+      {
+        path: 'cursos/detail/:id',
+        component: CourseDetailComponent
       },
       {
         path: 'categorias',

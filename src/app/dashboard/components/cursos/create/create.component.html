@@ -36,59 +36,41 @@
       <div class="form-inputs">
         <mat-form-field>
           <mat-label>Nombre del curso</mat-label>
-          <input type="text" matInput formControlName="name" />
+          <input
+            type="text"
+            matInput
+            formControlName="name"
+            [(ngModel)]="name"/>
           <mat-error *ngIf="nameField.touched && nameField.invalid">
             <ng-container *ngIf="nameField.hasError('required')">El nombre es requerido</ng-container>
           </mat-error>
         </mat-form-field>
-        <mat-form-field>
-          <mat-label>Introducción</mat-label>
-          <textarea
-            matInput
-            formControlName="introduction"
-            cdkAutosizeMinRows="1"
-            cdkAutosizeMaxRows="5"
-            cdkTextareaAutosize
-            #autosize="cdkTextareaAutosize"></textarea>
-          <mat-error *ngIf="introductionField.touched && introductionField.invalid">
-            <ng-container *ngIf="introductionField.hasError('required')">El nombre es requerido</ng-container>
-            <ng-container *ngIf="introductionField.hasError('not_available')">Esta categoría ya existe</ng-container>
-          </mat-error>
+        <!-- Seleccionar Categoria -->
+        <mat-form-field appearance="fill">
+          <mat-label>Categoria</mat-label>
+          <select matNativeControl [(ngModel)]="selectedCategory" formControlName="categoria">
+            <option value="" selected></option>
+            <option *ngFor="let cat of categories" [value]="cat.nombre">
+              {{cat.nombre}}
+            </option>
+          </select>
         </mat-form-field>
-        <mat-form-field>
-          <mat-label>Objetivo</mat-label>
-          <textarea
-            matInput
-            formControlName="objetive"
-            cdkAutosizeMinRows="1"
-            cdkAutosizeMaxRows="5"
-            cdkTextareaAutosize
-            #autosize="cdkTextareaAutosize"></textarea>
-          <mat-error *ngIf="objetiveField.touched && objetiveField.invalid">
-            <ng-container *ngIf="objetiveField.hasError('required')">El nombre es requerido</ng-container>
-            <ng-container *ngIf="objetiveField.hasError('not_available')">Esta categoría ya existe</ng-container>
-          </mat-error>
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>Descripción</mat-label>
-          <textarea
-            matInput
-            formControlName="description"
-            cdkAutosizeMinRows="1"
-            cdkAutosizeMaxRows="5"
-            cdkTextareaAutosize
-            #autosize="cdkTextareaAutosize"></textarea>
-          <mat-error *ngIf="descriptionField.touched && descriptionField.invalid">
-            <ng-container *ngIf="descriptionField.hasError('required')">El nombre es requerido</ng-container>
-            <ng-container *ngIf="descriptionField.hasError('not_available')">Esta categoría ya existe</ng-container>
-          </mat-error>
+        <!-- Seleccionar profesor -->
+        <mat-form-field appearance="fill">
+          <mat-label>Profesor</mat-label>
+          <select matNativeControl [(ngModel)]="selectedTeacher" formControlName="profesor">
+            <option value="" selected></option>
+            <option *ngFor="let item of teachers" [value]="item.profesor">
+              {{item.profesor}}
+            </option>
+          </select>
         </mat-form-field>
       </div>
       <div class="buttons">
         <button
           type="submit"
           mat-raised-button
-          [disabled]="form.invalid">Guardar</button>
+          [disabled]="form.invalid">{{ id ? 'Guardar cambios' : 'Guardar'}}</button>
 				<a routerLink="/dashboard/cursos" mat-raised-button>Cancelar</a>
       </div>
     </form>
