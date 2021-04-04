@@ -4,6 +4,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import Swal from 'sweetalert2';
 import { CategoryService } from '../../../core/services/categories/category.service';
+import { CourseService } from '../../../core/services/courses/course.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -13,7 +15,7 @@ import { CategoryService } from '../../../core/services/categories/category.serv
 })
 export class CategoriesComponent implements OnInit {
 
-  displayedColumns: string[] = ['nombre', 'actions'];
+  displayedColumns: string[] = ['nombre', 'codigo', 'cursos', 'actions'];
   dataSource = new MatTableDataSource();
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -21,6 +23,8 @@ export class CategoriesComponent implements OnInit {
 
   constructor(
     private catService: CategoryService,
+    private courseService: CourseService,
+    private router: Router
 
   ) { }
 
@@ -28,7 +32,19 @@ export class CategoriesComponent implements OnInit {
     this.catService
       .listCategories()
       .valueChanges()
-      .subscribe(categories => (this.dataSource.data = categories));
+      .subscribe(categories => {
+        categories.forEach(cat => {
+          // console.log(cat);
+          this.courseService.coursesByCategory(cat.id).valueChanges()
+            .subscribe(cursos => {
+              // console.log(cursos.length);
+              cat.cursos = cursos.length;
+              // console.log(cat);
+            })
+        })
+        this.dataSource.data = categories;
+        // console.log(categories);
+      });
   }
 
   ngAfterViewInit(): void {
@@ -38,6 +54,48 @@ export class CategoriesComponent implements OnInit {
 
   applyFilter(filterValue: string): void {
     this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  goToEdit(data) {
+    this.router.navigate([`/categorias/edit/${data.id}`]);
+  }
+
+  deleteCategory(id) {
+    Swal.fire({
+      title: '¿Esta seguro?',
+      text: 'Esta acción eliminara esta categoria permanentemente, no se puede deshacer!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, estoy seguro!'
+    })
+    .then((result) => {
+      if (result.value) {
+        this.catService.deleteCategory(id)
+          .then(() => {
+            this.courseService.coursesByCategory(id).valueChanges()
+              .subscribe(courses => {
+                courses.forEach(c => {
+                  this.courseService.deleteCategory(c.id);
+                })
+              });
+            Swal.fire(
+              'Eliminado!',
+              'Eliminación exitosa.',
+              'success',
+            );
+        })
+        .catch((error) => {
+          Swal.fire(
+            'Error!',
+            `La operación no se pudó realizar, ${error}.`,
+            'error',
+          );
+        });
+      }
+    })
+    .catch(error => console.log(error));
   }
 
 }

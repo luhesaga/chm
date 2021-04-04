@@ -15,18 +15,26 @@
             Crear nueva categoria
     </button>
 
-    <table mat-table [dataSource]="dataSource" matSort>
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
         <ng-container matColumnDef="nombre">
             <th mat-header-cell *matHeaderCellDef mat-sort-header id="nombre">Nombre</th>
             <td mat-cell *matCellDef="let element">{{ element.nombre }}</td>
         </ng-container>
+        <ng-container matColumnDef="codigo">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header id="codigo">Codigo</th>
+            <td mat-cell *matCellDef="let element">{{ element.codigo }}</td>
+        </ng-container>
+        <ng-container matColumnDef="cursos">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header id="cursos">Cursos</th>
+            <td mat-cell *matCellDef="let element">{{ element.cursos }}</td>
+        </ng-container>
         <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef id="acciones">Acciones</th>
             <td mat-cell *matCellDef="let element">
-            <button mat-stroked-button color="primary" (click)="openDialog(element)">
+            <button matTooltip="editar categoria" mat-stroked-button color="primary" (click)="goToEdit(element)">
                 <mat-icon>edit</mat-icon>
             </button>
-            <button mat-stroked-button color="secondary" (click)="deleteCategory(element)">
+            <button matTooltip="eliminar categoria" mat-stroked-button color="secondary" (click)="deleteCategory(element.id)">
                 <mat-icon>delete</mat-icon>
             </button>
             </td>

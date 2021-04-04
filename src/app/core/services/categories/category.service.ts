@@ -26,7 +26,20 @@ export class CategoryService {
     return this.fireStore.doc(`categorias/${id}`)
       .set({
           id,
+          codigo: data.code,
           nombre: data.name,
         });
+  }
+
+  editCategory(data, id): Promise<void> {
+    return this.fireStore.doc(`categorias/${id}`)
+      .update({
+        nombre: data.name,
+        codigo: data.code,
+      });
+  }
+
+  deleteCategory(id: string): Promise<void> {
+    return this.fireStore.doc(`categorias/${id}`).delete();
   }
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CourseService } from '../../../../core/services/courses/course.service';
+import { CategoryService } from '../../../../core/services/categories/category.service';
 
 @Component({
   selector: 'app-course-detail',
@@ -15,6 +16,7 @@ export class CourseDetailComponent implements OnInit {
 
   // divs para inyectar html
   descDiv;
+  IntrDiv;
   objDiv;
   contDiv;
   durDiv;
@@ -25,8 +27,11 @@ export class CourseDetailComponent implements OnInit {
 
   nombre;
   imagen;
+  profesor;
+  categoria;
 
   descripcion = true;
+  introduccion = true;
   objetivo = true;
   contenido = true;
   calificacion = true;
@@ -40,6 +45,7 @@ export class CourseDetailComponent implements OnInit {
 
   constructor(
     private courseService: CourseService,
+    private catService: CategoryService,
     private activatedRoute: ActivatedRoute,
   ) {
     this.id = this.activatedRoute.snapshot.params.id;
@@ -60,10 +66,21 @@ export class CourseDetailComponent implements OnInit {
       .subscribe(curso => {
         this.nombre = curso.nombre;
         this.imagen = curso.imagen;
+        this.profesor = curso.profesor;
+        // obtener categoria
+        this.getCategory(curso.categoria);
+        // injectar contenido html en los divs
         this.divsFill(curso);
         // console.log(curso);
       });
     }
+  }
+
+  getCategory(id) {
+    this.catService.detailCategory(id).valueChanges()
+          .subscribe(cat => {
+            this.categoria = cat.nombre;
+          })
   }
 
   async divsFill(curso) {
@@ -71,6 +88,11 @@ export class CourseDetailComponent implements OnInit {
       this.descDiv = document.getElementById('descripcion');
       this.descDiv.innerHTML = await curso.descripcion;
     } else {this.descripcion = false;}
+
+    if (curso.introduccion) {
+      this.IntrDiv = document.getElementById('introduccion');
+      this.IntrDiv.innerHTML = await curso.introduccion;
+    } else {this.introduccion = false;}
 
     if (curso.objetivo) {
       this.objDiv = document.getElementById('objetivo');

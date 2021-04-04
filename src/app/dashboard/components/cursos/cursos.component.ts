@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { CourseDescriptionComponent } from './course-description/course-description.component';
 import { Router } from '@angular/router';
 import { CreateComponent } from './create/create.component';
+import { CategoryService } from '../../../core/services/categories/category.service';
 
 
 
@@ -18,7 +19,7 @@ import { CreateComponent } from './create/create.component';
 })
 export class CursosComponent implements OnInit, AfterViewInit {
 
-  displayedColumns: string[] = ['nombre', 'actions'];
+  displayedColumns: string[] = ['nombre', 'categoria', 'actions'];
   dataSource = new MatTableDataSource();
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -26,6 +27,7 @@ export class CursosComponent implements OnInit, AfterViewInit {
 
   constructor(
     private courseService: CourseService,
+    private catService: CategoryService,
     public dialog: MatDialog,
     private router: Router
   ) { }
@@ -34,7 +36,16 @@ export class CursosComponent implements OnInit, AfterViewInit {
     this.courseService
       .listCourses()
       .valueChanges()
-      .subscribe(courses => (this.dataSource.data = courses));
+      .subscribe(courses => {
+        courses.forEach(course => {
+          this.catService.detailCategory(course.categoria).valueChanges()
+            .subscribe(cat => {
+              course.categoria = cat.codigo;
+            });
+        });
+
+        this.dataSource.data = courses
+      });
   }
 
   ngAfterViewInit(): void {

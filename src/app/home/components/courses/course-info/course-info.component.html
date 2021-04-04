@@ -1,75 +1,48 @@
 <div class="dialog-header-close">
-    <h1>Introduccion a los Ensayos No Destructivos</h1>
+    <h1>{{ curso.nombre }}</h1>
     <mat-icon mat-dialog-close>close</mat-icon>
 </div>
 
 <main>
     <mat-dialog-content>
-        <section>
+        <section *ngIf="introduccion">
             <h2>Introducción</h2>
-            <p>Uno de los aspectos básicos de la ingeniería moderna dice relación con el control de calidad de materias primas, piezas y uniones. En este sentido la aplicación de técnicas de ensayos no destructivos, ya sea basados en ultrasonido, en tintas penetrantes, corrientes parásitas, partículas magnéticas o en radiografías industriales cobra particular vigencia. En el ámbito del mantenimiento predictivo, área en que se aplican los principios de la mecánica de la fractura, es donde con mayor énfasis, se requiere de las aplicaciones de los ensayos no destructivos, constituyéndose en el pilar fundamental de los criterios de mantenimiento.</p>
+            <div id="introduccion"></div>
         </section>
 
-        <section>
+        <section *ngIf="objetivo">
             <h2>Objetivos</h2>
-            <p>Dar a conocer o reforzar a los participantes las diferentes técnicas de ensayos no destructivos (END) empleadas actualmente en la inspección, su fundamentación, importancia, aplicaciones, ventajas y desventajas, así como la normatividad aplicable, además de dar a conocer los requisitos para la capacitación, calificación y certificación de personal de END.</p>
+            <div id="objetivo"></div>
         </section>
 
-        <section>
+        <section *ngIf="contenido">
             <h2>Contenido</h2>
-            <h4>INTRODUCCIÓN</h4>
-            <ul>
-                <li>1.1. ¿Qué son?</li>
-                <li>1.2. Definiciones</li>
-                <li>1.3. Pruebas destructivas y no destructivas</li>
-                <li>1.4. Técnicas de inspección (superficial, volumétrica y de hermeticidad)</li>
-                <li>1.5. Ventajas de los ensayos no destructivos</li>
-                <li>1.6. Limitaciones de los ensayos no destructivos</li>
-                <li>1.7. Beneficios del empleo de los ensayos no destructivos</li>
-                <li>1.8. Selección del ensayo no destructivo adecuado</li>
-            </ul>
-            <h4>TÉCNICAS DE INSPECCIÓN SUPERFICIAL</h4>
-            <ul>
-                <li>2.1. Inspección visual</li>
-                <li>2.2. Líquidos penetrantes</li>
-                <li>2.3. Partículas magnéticas</li>
-                <li>2.4. Electromagnetismo (corrientes Eddy)</li>
-            </ul>
-            <h4>TÉCNICAS DE INSPECCIÓN VOLUMÉTRICA</h4>
-            <ul>
-                <li>3.1. Radiografía industrial</li>
-                <li>3.2. Ultrasonido industrial</li>
-                <li>3.3. Emisión acústica</li>
-            </ul>
-            <h4>CAPACITACIÓN, CALIFICACIÓN Y CERTIFICACIÓN</h4>
-            <ul>
-                <li>4.1. Introducción</li>
-                <li>4.2. Entrenamiento</li>
-                <li>4.3. Calificación</li>
-                <li>4.4. Certificación</li>
-                <li>4.5. Exámenes de calificación</li>
-            </ul>
+            <div id="contenido"></div>
         </section>
 
-        <section>
+        <section *ngIf="duracion">
             <h2>Duración</h2>
-            <p>De 1 a 3 semanas de manera virtual (el periodo de tiempo depende de la disponibilidad y dedicación del participante)</p>
-            <p>3 días de manera presencial (los cursos presenciales estan sujetos a un cupo mínimo de 8 participantes)</p>
+            <div id="duracion"></div>
         </section>
 
-        <section>
+        <section *ngIf="requisitos">
             <h2>Requisitos previos</h2>
-            <p>Los participantes deben tener conocimientos básicos sobre ensayos no destructivos. Se recomienda que el participante tenga mínimo 1 año de experiencia en soldaduras, materiales o directamente en la aplicación de algún método de ensayo no destructivo.</p>
+            <div id="requisitos"></div>
         </section>
 
-        <section>
+        <section *ngIf="dirigido">
             <h2>Dirigido a</h2>
-            <p>Este curso está orientado a ingenieros y técnicos relacionados con mantenimiento,  inspección, control de calidad, ingeniería, producción, diseño o afin, tanto de la industria metal mecánica, química, minera, del transporte, de la energía o de ramas cercanas de la ingeniería. Principalmente para inspectores, supervisores, coordinadores, jefes de área, auditores, interventores, capataces, soldadores, entre otros.</p>
+            <div id="dirigido"></div>
         </section>
 
-        <section>
+        <section *ngIf="evaluacion">
             <h2>Evaluación de aprendizaje</h2>
-            <p>Los participantes que realicen este curso, recibirán un certificado de participación que acredite su asistencia a esta actividad. Se realizaran evaluaciones por cada uno de los capítulos tratados en el curso, la nota promedio deberá ser mayor o igual al 80% para obtener la aprobación del mismo.</p>
+            <div id="evaluacion"></div>
+        </section>
+
+        <section *ngIf="calificacion">
+            <h2>Requisitos para Calificación</h2>
+            <div id="calificacion"></div>
         </section>
 
     </mat-dialog-content>

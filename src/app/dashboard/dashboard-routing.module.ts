@@ -56,6 +56,10 @@ const routes: Routes = [
       {
         path: 'categorias/create',
         component: CategoryCreateComponent
+      },
+      {
+        path: 'categorias/edit/:id',
+        component: CategoryCreateComponent
       }
     ]
   }

@@ -24,26 +24,31 @@ table {
     padding-bottom: 16px;
     //color: var(--main-color2) !important;
 }
-  
-  .example-margin span {
-    //color: var(--main-color2);
-    font-size: 12px;
-    position: absolute;
-    left: 8px;
-    bottom: 0;
-  }
-  
-  .mat-header-cell {
-    color: black;
-    text-align: center;
-  }
-  
-  .mat-cell {
-    color:rgba(0,0,0,.54);
-    padding: 0;
-    margin: 0;
-  }
-  
-  td.mat-cell:last-of-type {
-    padding: 0;
-  }
+
+.example-margin span {
+  //color: var(--main-color2);
+  font-size: 12px;
+  position: absolute;
+  left: 8px;
+  bottom: 0;
+}
+
+.mat-header-cell {
+  color: black;
+  text-align: center;
+}
+
+.mat-cell {
+  color:rgba(0,0,0,.54);
+  padding: 0;
+  margin: 0;
+}
+
+td.mat-cell:last-of-type {
+  padding: 0;
+}
+
+.name {
+  cursor: pointer;
+}
+

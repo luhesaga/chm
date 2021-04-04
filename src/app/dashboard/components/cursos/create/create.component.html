@@ -18,7 +18,7 @@
               <mat-icon aria-hidden="false" aria-label="Carga de archivo">cloud_upload</mat-icon>
                 Cargar Imagen
             </button>
-            <input type="file" #fileInput (change)="uploadImage($event)" />
+            <input type="file" accept="image/png, image/jpeg" #fileInput (change)="uploadImage($event)" />
           </label>
           <mat-error *ngIf="imageField.touched && imageField.invalid">
             <ng-container *ngIf="imageField.hasError('required')">La imagen es requerida</ng-container>
@@ -48,22 +48,22 @@
         <!-- Seleccionar Categoria -->
         <mat-form-field appearance="fill">
           <mat-label>Categoria</mat-label>
-          <select matNativeControl [(ngModel)]="selectedCategory" formControlName="categoria">
-            <option value="" selected></option>
-            <option *ngFor="let cat of categories" [value]="cat.nombre">
+          <mat-select matNativeControl [(value)]="selectedCategory" [(ngModel)]="selectedCategory" formControlName="categoria">
+            <mat-option value="" selected></mat-option>
+            <mat-option *ngFor="let cat of categories" [value]="cat.id">
               {{cat.nombre}}
-            </option>
-          </select>
+            </mat-option>
+          </mat-select>
         </mat-form-field>
         <!-- Seleccionar profesor -->
         <mat-form-field appearance="fill">
           <mat-label>Profesor</mat-label>
-          <select matNativeControl [(ngModel)]="selectedTeacher" formControlName="profesor">
-            <option value="" selected></option>
-            <option *ngFor="let item of teachers" [value]="item.profesor">
+          <mat-select matNativeControl [(ngModel)]="selectedTeacher" formControlName="profesor">
+            <mat-option value="" selected></mat-option>
+            <mat-option *ngFor="let item of teachers" [value]="item.profesor">
               {{item.profesor}}
-            </option>
-          </select>
+            </mat-option>
+          </mat-select>
         </mat-form-field>
       </div>
       <div class="buttons">
@@ -71,7 +71,7 @@
           type="submit"
           mat-raised-button
           [disabled]="form.invalid">{{ id ? 'Guardar cambios' : 'Guardar'}}</button>
-				<a routerLink="/dashboard/cursos" mat-raised-button>Cancelar</a>
+				<a (click)="cancel()" mat-raised-button>Cancelar</a>
       </div>
     </form>
   </main>

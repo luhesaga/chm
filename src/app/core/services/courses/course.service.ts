@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import firebase from 'firebase/app';
 import {
   AngularFirestore,
   AngularFirestoreCollection,
@@ -15,6 +16,11 @@ export class CourseService {
   listCourses(): AngularFirestoreCollection {
     return this.fireStore.collection(`cursos`, ref =>
       ref.orderBy('nombre', 'asc'));
+  }
+
+  coursesByCategory(category: string): AngularFirestoreCollection {
+    return this.fireStore.collection(`cursos`, ref =>
+      ref.where('categoria', '==', category));
   }
 
   detailCourse(id): AngularFirestoreDocument<any> {
@@ -34,8 +40,6 @@ export class CourseService {
   }
 
   editCourse(data, id, imgName): Promise<void> {
-    console.log(data);
-    console.log(imgName);
     return this.fireStore.doc(`cursos/${id}`)
       .update({
         nombre: data.name,
@@ -51,5 +55,12 @@ export class CourseService {
       .update({
           [type]: value
       });
+  }
+
+  deleteCategory(id) {
+    return this.fireStore.doc(`cursos/${id}`)
+      .update({
+        categoria: firebase.firestore.FieldValue.delete()
+      })
   }
 }

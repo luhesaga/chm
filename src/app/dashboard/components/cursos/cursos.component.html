@@ -10,11 +10,28 @@
     mat-raised-button
     routerLink="/cursos/create"
     style="background: var(--main-color2); color: white;">Crear nuevo</button>
-  <table mat-table [dataSource]="dataSource" matSort>
+  <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+    <!-- nombre del curso -->
     <ng-container matColumnDef="nombre">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header id="nombre">Nombres</th>
-      <td mat-cell *matCellDef="let element" (click)="goToDetail(element.id)">{{ element.nombre }}</td>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header id="nombre">Nombre</th>
+      <td
+        mat-cell
+        *matCellDef="let element"
+        (click)="goToDetail(element.id)"
+        matTooltip="Ver detalle del curso"
+        class="name">
+          {{ element.nombre }}
+      </td>
     </ng-container>
+
+    <!-- categoria -->
+    <ng-container matColumnDef="categoria">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header id="categoria">Categoria</th>
+      <td mat-cell *matCellDef="let element">{{ element.categoria }}</td>
+    </ng-container>
+
+    <!-- botones de acción -->
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef id="acciones">Acciones</th>
       <td mat-cell *matCellDef="let element">

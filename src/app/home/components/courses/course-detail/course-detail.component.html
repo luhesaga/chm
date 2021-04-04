@@ -2,7 +2,7 @@
     <section class="introduction-container">
         <div class="introduction-title">
             <h1>{{nombre}}</h1>
-            <p>Profesores <span>Alvarez Gomez, Geovanny</span></p>
+            <p>Categoria: <span>{{ categoria }}</span></p>
         </div>
         <div class="img-container">
             <img [src]="imagen" alt="imagen curso">
@@ -15,6 +15,18 @@
         <div class="information">
             <h2>Información del curso</h2>
             <mat-accordion>
+                <mat-expansion-panel
+                    *ngIf="introduccion"
+                    (opened)="panelOpenState = true"
+                    (closed)="panelOpenState = false">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                <h3>Introducción</h3>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div id="introduccion"></div>
+                </mat-expansion-panel>
+
                 <mat-expansion-panel
                     *ngIf="objetivo"
                     (opened)="panelOpenState = true"
@@ -102,10 +114,10 @@
             <button class="btn-back" routerLink="/dashboard/cursos" *ngIf="dash">{{ '<< Volver a Lista de cursos' }}</button>
         </div>
         <div class="tutores">
-            <h2>Tutores</h2>
+            <h2>Tutor</h2>
             <div class="tutor-info">
                 <img src="https://chym-elearning.com/app/upload/users/1/1168/1168_5f7e7d11ecfc6_Solo-Logo-alta.jpg?rand=6037016948a33" alt="">
-                <p>Alvarez Gomez, Geovanny</p>
+                <p>{{ profesor }}</p>
             </div>
         </div>
     </section>

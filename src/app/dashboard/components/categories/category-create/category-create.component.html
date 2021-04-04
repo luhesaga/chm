@@ -7,8 +7,21 @@
 
         <div class="form-inputs">
             <mat-form-field>
+                <mat-label>Codigo de la categoria</mat-label>
+                <input type="text" matInput formControlName="code" [(ngModel)]="codigo" />
+                <mat-error *ngIf="codeField.touched && codeField.invalid">
+                    <ng-container *ngIf="codeField.hasError('required')">
+                        El codigo es requerido
+                    </ng-container>
+                    <ng-container *ngIf="codeField.hasError('minlength')">
+                        Minimo 1 caracter
+                    </ng-container>
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
                 <mat-label>Nombre de la categoria</mat-label>
-                <input type="text" matInput formControlName="name" />
+                <input type="text" matInput formControlName="name" [(ngModel)]="nombre" />
                 <mat-error *ngIf="nameField.touched && nameField.invalid">
                     <ng-container *ngIf="nameField.hasError('required')">
                         El nombre es requerido
@@ -24,7 +37,7 @@
                 [disabled]="form.invalid">
                     Guardar
             </button>
-            <a routerLink="/dashboard/cursos" mat-raised-button>Cancelar</a>
+            <a routerLink="/dashboard/categorias" mat-raised-button>Cancelar</a>
         </div>
     </form>
 </main>
