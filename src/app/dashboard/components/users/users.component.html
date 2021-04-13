@@ -6,7 +6,7 @@
         <mat-icon matSuffix>search</mat-icon>
         <mat-hint>puede buscar por cualquier campo</mat-hint>
       </mat-form-field>
-      <table mat-table [dataSource]="dataSource" matSort>
+      <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
         <ng-container matColumnDef="apellidos">
           <th mat-header-cell *matHeaderCellDef mat-sort-header id="apellidos">Apellidos</th>
           <td mat-cell *matCellDef="let element">{{ element.apellidos }}</td>

@@ -15,6 +15,7 @@ export class CategoryCreateComponent implements OnInit {
 	id: string;
   codigo: string;
   nombre: string;
+  checked = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -38,6 +39,7 @@ export class CategoryCreateComponent implements OnInit {
         // console.log(cat)
         this.codigo = cat.codigo;
         this.nombre = cat.nombre;
+        this.checked = cat.activo;
       })
   }
 
@@ -45,6 +47,7 @@ export class CategoryCreateComponent implements OnInit {
     this.form = this.formBuilder.group({
       code: ['', [Validators.required, Validators.minLength(1)]],
       name: ['', Validators.required,],
+      active: [''],
     })
   }
 
@@ -54,6 +57,10 @@ export class CategoryCreateComponent implements OnInit {
 
   get nameField() {
     return this.form.get('name');
+  }
+
+  get activeField() {
+    return this.form.get('active');
   }
 
   saveOrEditCategory(event: Event) {

@@ -20,15 +20,30 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MainComponent } from './components/main/main.component';
 
 
+
 @NgModule({
-  declarations: [NavComponent, HomeComponent, LoginComponent, RegisterComponent, HeaderComponent, RecoverComponent, HeroComponent, CoursesComponent, FooterComponent, ContactComponent, CourseInfoComponent, CourseDetailComponent, MainComponent],
+  declarations: [
+    NavComponent,
+    HomeComponent,
+    LoginComponent,
+    RegisterComponent,
+    HeaderComponent,
+    RecoverComponent,
+    HeroComponent,
+    CoursesComponent,
+    FooterComponent,
+    ContactComponent,
+    CourseInfoComponent,
+    CourseDetailComponent,
+    MainComponent
+  ],
   imports: [
     CommonModule,
     StarRatingModule.forRoot(),
     HomeRoutingModule,
     MaterialModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
   ]
 })
 export class HomeModule { }

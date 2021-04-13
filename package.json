@@ -26,6 +26,7 @@
     "angular-star-rating": "^4.0.0-beta.3",
     "css-star-rating": "^1.2.4",
     "firebase": "^8.2.9",
+    "ngx-spinner": "^11.0.1",
     "rxjs": "~6.6.0",
     "sweetalert2": "^10.15.5",
     "tslib": "^2.0.0",

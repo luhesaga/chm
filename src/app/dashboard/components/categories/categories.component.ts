@@ -15,7 +15,7 @@ import { Router } from '@angular/router';
 })
 export class CategoriesComponent implements OnInit {
 
-  displayedColumns: string[] = ['nombre', 'codigo', 'cursos', 'actions'];
+  displayedColumns: string[] = ['nombre', 'codigo', 'activo', 'cursos', 'actions'];
   dataSource = new MatTableDataSource();
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -43,7 +43,7 @@ export class CategoriesComponent implements OnInit {
             })
         })
         this.dataSource.data = categories;
-        // console.log(categories);
+        console.log(categories);
       });
   }
 
@@ -96,6 +96,10 @@ export class CategoriesComponent implements OnInit {
       }
     })
     .catch(error => console.log(error));
+  }
+
+  checkActive(event: Event) {
+    event.preventDefault();
   }
 
 }

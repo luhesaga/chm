@@ -79,4 +79,8 @@ export class CursosComponent implements OnInit, AfterViewInit {
     this.router.navigate([`/cursos/course-edit/${data.id}`]);
   }
 
+  goToHome(id) {
+    this.router.navigate([`/cursos/index/${id}`]);
+  }
+
 }

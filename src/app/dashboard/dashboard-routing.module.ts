@@ -11,6 +11,9 @@ import { CategoryCreateComponent } from './components/categories/category-create
 import { UserEditComponent } from './components/users/user-edit/user-edit.component';
 import { CourseEditComponent } from './components/cursos/course-edit/course-edit.component';
 import { CourseDescriptionComponent } from './components/cursos/course-description/course-description.component';
+import { CourseHomeComponent } from './components/cursos/course-home/course-home.component';
+import { LeccionesComponent } from './components/lessons/lecciones/lecciones.component';
+import { LessonCreateComponent } from './components/lessons/lesson-create/lesson-create.component';
 
 const routes: Routes = [
   {
@@ -48,6 +51,18 @@ const routes: Routes = [
       {
         path: 'cursos/detail/:id',
         component: CourseDetailComponent
+      },
+      {
+        path: 'cursos/index/:id',
+        component: CourseHomeComponent
+      },
+      {
+        path: 'cursos/lecciones/create',
+        component: LessonCreateComponent
+      },
+      {
+        path: 'cursos/lecciones/:id',
+        component: LeccionesComponent
       },
       {
         path: 'categorias',

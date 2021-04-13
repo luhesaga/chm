@@ -15,6 +15,9 @@ import { UserEditComponent } from './components/users/user-edit/user-edit.compon
 import { CourseEditComponent } from './components/cursos/course-edit/course-edit.component';
 import { EditorModule } from "@tinymce/tinymce-angular";
 import { CourseDescriptionComponent } from './components/cursos/course-description/course-description.component';
+import { CourseHomeComponent } from './components/cursos/course-home/course-home.component';
+import { LeccionesComponent } from './components/lessons/lecciones/lecciones.component';
+import { LessonCreateComponent } from './components/lessons/lesson-create/lesson-create.component';
 
 
 
@@ -30,6 +33,9 @@ import { CourseDescriptionComponent } from './components/cursos/course-descripti
     UserEditComponent,
     CourseEditComponent,
     CourseDescriptionComponent,
+    CourseHomeComponent,
+    LeccionesComponent,
+    LessonCreateComponent,
     ],
   imports: [
     CommonModule,

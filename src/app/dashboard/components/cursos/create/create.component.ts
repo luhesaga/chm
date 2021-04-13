@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { CourseService } from '../../../../core/services/courses/course.service';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { finalize, map } from 'rxjs/operators';
@@ -13,7 +13,9 @@ import { UsersService } from '../../../../core/services/users/users.service';
 	templateUrl: './create.component.html',
 	styleUrls: ['./create.component.scss']
 })
-export class CreateComponent implements OnInit {
+export class CreateComponent implements OnInit, AfterViewInit {
+
+	@ViewChild("myinput") myInputField: ElementRef;
 	cat;
 	form: FormGroup;
 	fsId;
@@ -55,6 +57,10 @@ ngOnInit(): void {
 	this.listTeachers();
 }
 
+ngAfterViewInit() {
+	this.myInputField.nativeElement.focus();
+}
+
 getCourse() {
 	this.courseService.detailCourse(this.id).valueChanges()
 		.subscribe(curso => {
@@ -80,9 +86,14 @@ listCategories() {
 			cat.forEach(element => {
 				const category = {
 					id: element.id,
-					nombre: element.nombre
+					nombre: element.nombre,
+					activo: element.activo
 				}
-				this.categories.push(category);
+				console.log(category);
+				if (category.activo) {
+					console.log('hpta');
+					this.categories.push(category);
+				}
 			});
 		});
 }

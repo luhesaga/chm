@@ -2,7 +2,7 @@
     <form [formGroup]="form" (ngSubmit)="saveOrEditCourse($event)">
       <div class="title">
         <mat-icon>menu_book</mat-icon>
-        <h2>Crear nuevo curso</h2>
+        <h2>{{ !id ? 'Crear nuevo' : 'Editar'}} curso</h2>
       </div>
       <div class="upload-image-main">
         <div class="image-upload">
@@ -40,7 +40,9 @@
             type="text"
             matInput
             formControlName="name"
-            [(ngModel)]="name"/>
+            [(ngModel)]="name"
+            #myinput
+            tabIndex=1/>
           <mat-error *ngIf="nameField.touched && nameField.invalid">
             <ng-container *ngIf="nameField.hasError('required')">El nombre es requerido</ng-container>
           </mat-error>
@@ -48,7 +50,7 @@
         <!-- Seleccionar Categoria -->
         <mat-form-field appearance="fill">
           <mat-label>Categoria</mat-label>
-          <mat-select matNativeControl [(value)]="selectedCategory" [(ngModel)]="selectedCategory" formControlName="categoria">
+          <mat-select tabIndex=2 matNativeControl [(value)]="selectedCategory" [(ngModel)]="selectedCategory" formControlName="categoria">
             <mat-option value="" selected></mat-option>
             <mat-option *ngFor="let cat of categories" [value]="cat.id">
               {{cat.nombre}}
@@ -58,7 +60,7 @@
         <!-- Seleccionar profesor -->
         <mat-form-field appearance="fill">
           <mat-label>Profesor</mat-label>
-          <mat-select matNativeControl [(ngModel)]="selectedTeacher" formControlName="profesor">
+          <mat-select tabIndex=3 matNativeControl [(ngModel)]="selectedTeacher" formControlName="profesor">
             <mat-option value="" selected></mat-option>
             <mat-option *ngFor="let item of teachers" [value]="item.profesor">
               {{item.profesor}}
@@ -69,9 +71,10 @@
       <div class="buttons">
         <button
           type="submit"
+          tabIndex=4
           mat-raised-button
           [disabled]="form.invalid">{{ id ? 'Guardar cambios' : 'Guardar'}}</button>
-				<a (click)="cancel()" mat-raised-button>Cancelar</a>
+				<a mat-raised-button mat-dialog-close tabIndex=5>Cancelar</a>
       </div>
     </form>
   </main>

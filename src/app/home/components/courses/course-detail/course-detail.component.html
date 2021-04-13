@@ -2,10 +2,7 @@
     <section class="introduction-container">
         <div class="introduction-title">
             <h1>{{nombre}}</h1>
-            <p>Categoria: <span>{{ categoria }}</span></p>
-        </div>
-        <div class="img-container">
-            <img [src]="imagen" alt="imagen curso">
+            <p>Tutor: <span>{{ profesor }}</span></p>
         </div>
         <div class="introduction-text">
             <div id="descripcion"></div>
@@ -113,12 +110,12 @@
             </mat-accordion>
             <button class="btn-back" routerLink="/dashboard/cursos" *ngIf="dash">{{ '<< Volver a Lista de cursos' }}</button>
         </div>
-        <div class="tutores">
+        <!-- <div class="tutores">
             <h2>Tutor</h2>
             <div class="tutor-info">
                 <img src="https://chym-elearning.com/app/upload/users/1/1168/1168_5f7e7d11ecfc6_Solo-Logo-alta.jpg?rand=6037016948a33" alt="">
                 <p>{{ profesor }}</p>
             </div>
-        </div>
+        </div> -->
     </section>
 </main>

@@ -2,7 +2,7 @@
     <form [formGroup]="form" (ngSubmit)="saveOrEditCategory($event)">
         <div class="title">
             <mat-icon>feed</mat-icon>
-            <h2>Crear Categoria</h2>
+            <h2>{{ !id ? 'Crear nueva' : 'Editar'}} Categoria</h2>
         </div>
 
         <div class="form-inputs">
@@ -28,6 +28,15 @@
                     </ng-container>
                 </mat-error>
             </mat-form-field>
+
+            <mat-checkbox
+                class="example-margin"
+                color="primary"
+                [checked]="checked"
+                [(ngModel)]="checked"
+                formControlName="active">
+                    <span>¿Permitir añadir a cursos?</span>
+            </mat-checkbox>
         </div>
 
         <div class="buttons">

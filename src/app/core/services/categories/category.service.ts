@@ -28,6 +28,7 @@ export class CategoryService {
           id,
           codigo: data.code,
           nombre: data.name,
+          activo: data.active
         });
   }
 
@@ -36,6 +37,7 @@ export class CategoryService {
       .update({
         nombre: data.name,
         codigo: data.code,
+        activo: data.active
       });
   }
 

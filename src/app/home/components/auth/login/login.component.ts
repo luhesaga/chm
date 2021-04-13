@@ -62,12 +62,15 @@ export class LoginComponent implements OnInit {
         Swal.fire({
           html: '<h1 style="color: white;">Estamos preparando todo para ti</h1>',
           background: 'rgba(0,0,0,.5)',
+          showConfirmButton: false,
+          backdrop: true,
           timer: 1000,
           timerProgressBar: false,
           onBeforeOpen: () => {
             Swal.showLoading();
-          }});
-        this.route.navigate(['dashboard']);
+          }}).then(() => {
+            this.route.navigate(['dashboard']);
+          });
       })
       .catch((error) => {
         console.log(error);

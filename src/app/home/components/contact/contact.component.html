@@ -1,16 +1,16 @@
 <div class="prueba">
     <div class="main-container">
         <h2>Contáctanos</h2>
-        <div class="contact-form-container">
-            <form action="">
+        <div class="contact-form-container" id="form-container">
+            <form [formGroup]="form" (ngSubmit)="submitMessage($event)">
                 <label for="Nombre">Nombre</label>
-                <input type="text" id="Nombre">
+                <input type="text" id="Nombre" formControlName="nombre">
                 <label for="Email">Email</label>
-                <input type="email" id="Email">
+                <input type="email" id="Email" formControlName="email">
                 <label for="Telefono">Telefono</label>
-                <input type="tel" id="Telefono">
+                <input type="tel" id="Telefono" formControlName="telefono">
                 <label for="Mensaje">Mensaje</label>
-                <textarea id="Mensaje" name="Mensaje" rows="8" cols="50"></textarea>
+                <textarea id="Mensaje" name="Mensaje" rows="8" cols="50" formControlName="mensaje"></textarea>
                 <button type="submit">Enviar</button>
             </form>
         </div>

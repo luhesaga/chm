@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CourseService } from '../../../../core/services/courses/course.service';
 import { CategoryService } from '../../../../core/services/categories/category.service';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-course-detail',
@@ -43,16 +44,59 @@ export class CourseDetailComponent implements OnInit {
   // boton volver a dashboard
   dash = false;
 
+  isMobile = false;
+
+  videoWidth;
+  videoHeight;
+  videoIframe;
+
+  imgWidth;
+  imgHeight;
+  imgFrame;
+
   constructor(
     private courseService: CourseService,
     private catService: CategoryService,
     private activatedRoute: ActivatedRoute,
+    private breakpointObserver: BreakpointObserver,
   ) {
     this.id = this.activatedRoute.snapshot.params.id;
     if (this.id.substring(0,4) === 'view') {
       this.id = this.id.replace('view', '');
       this.dash = true;
     }
+
+    this.breakpointObserver.observe([
+      Breakpoints.Large,
+      Breakpoints.Medium,
+      Breakpoints.Small,
+      Breakpoints.XLarge,
+    ]).subscribe(result => {
+      if (!result.matches) {
+        this.isMobile = true;
+        // tamaño mobile de video o img
+        if (this.videoIframe) {
+          this.videoIframe.style.width = '280px';
+          this.videoIframe.style.height = '140px';
+          // console.log(this.videoIframe.style.height)
+        }
+        if (this.imgFrame) {
+          this.setImgSizeToMobile(this.imgFrame);
+        }
+      } else {
+        // tamaño normal del video o img
+        this.isMobile = false;
+        if (this.videoIframe) {
+          this.videoIframe.style.width = this.videoWidth;
+          this.videoIframe.style.height = this.videoHeight;
+          // console.log(this.videoIframe.style.height)
+        }
+
+        if (this.imgFrame) {
+          this.setImgSizeToNormal(this.imgFrame);
+        }
+      }
+    });
   }
 
   async ngOnInit(): Promise<void> {
@@ -87,6 +131,7 @@ export class CourseDetailComponent implements OnInit {
     if (curso.descripcion) {
       this.descDiv = document.getElementById('descripcion');
       this.descDiv.innerHTML = await curso.descripcion;
+      this.loadDescriptionVideoOrImg();
     } else {this.descripcion = false;}
 
     if (curso.introduccion) {
@@ -130,6 +175,39 @@ export class CourseDetailComponent implements OnInit {
       this.calDiv = document.getElementById('calificacion');
       this.calDiv.innerHTML = await curso.calificacion;
     } else {this.calificacion = false;}
+  }
+
+  loadDescriptionVideoOrImg() {
+    this.videoIframe = document.querySelector('iframe');
+    if (this.videoIframe) {
+      this.videoWidth = this.videoIframe.style.width;
+      this.videoHeight = this.videoIframe.style.height;
+      if (this.isMobile) {
+        this.videoIframe.style.width = '280px';
+        this.videoIframe.style.height = '140px';
+        //console.log(this.videoIframe.style.height)
+      }
+    }
+    this.imgFrame = document.querySelector('p img');
+    if (this.imgFrame) {
+      this.setImgSizeToMobile(this.imgFrame);
+    }
+  }
+
+  setImgSizeToMobile(img) {
+    this.imgWidth = img.getAttribute('width');
+    this.imgHeight = img.getAttribute('height');
+    const w = parseInt(img.getAttribute('width')) / 2;
+    const h = parseInt(img.getAttribute('height')) / 2;
+    if (this.isMobile) {
+      img.setAttribute('width', w);
+      img.setAttribute('height', h);
+    }
+  }
+
+  setImgSizeToNormal(img) {
+    img.setAttribute('width', this.imgWidth);
+    img.setAttribute('height', this.imgHeight);
   }
 
 }

@@ -14,7 +14,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HomeModule } from './home/home.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { EditorModule } from "@tinymce/tinymce-angular";
-
+import { HttpClientModule } from '@angular/common/http';
 @NgModule({
   declarations: [
     AppComponent
@@ -32,6 +32,7 @@ import { EditorModule } from "@tinymce/tinymce-angular";
     HomeModule,
     DashboardModule,
     EditorModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
