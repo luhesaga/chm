@@ -287,10 +287,16 @@ Apache-2.0
 @firebase/logger
 Apache-2.0
 
+@firebase/storage
+Apache-2.0
+
 @firebase/util
 Apache-2.0
 
 @firebase/webchannel-wrapper
+Apache-2.0
+
+@tinymce/tinymce-angular
 Apache-2.0
 
 angular-star-rating
@@ -301,6 +307,8 @@ firebase/app
 firebase/auth
 
 firebase/firestore
+
+firebase/storage
 
 rxjs
 Apache-2.0
