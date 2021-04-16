@@ -1,0 +1,54 @@
+.container {
+    width: 90%;
+    background: white;
+    margin: 36px auto;
+    padding: 24px;
+    box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+    border-radius: 4px;
+}
+
+.search {
+    margin-right: 48px;
+    margin-bottom: 24px;
+}
+
+table {
+    width: 95%;
+    margin: 0 auto;
+    text-align: left;
+}
+
+.example-margin {
+    margin: 0 12px;
+    position: relative;
+    padding-bottom: 16px;
+    //color: var(--main-color2) !important;
+}
+
+.example-margin span {
+    //color: var(--main-color2);
+    font-size: 12px;
+    position: absolute;
+    left: 8px;
+    bottom: 0;
+}
+
+.mat-header-cell {
+    color: black;
+    text-align: center;
+}
+
+.mat-cell {
+    color:rgba(0,0,0,.54);
+    padding: 0;
+    margin: 0;
+}
+
+td.mat-cell:last-of-type {
+    padding: 0;
+}
+
+.name {
+    cursor: pointer;
+}
+

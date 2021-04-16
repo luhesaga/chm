@@ -74,7 +74,7 @@
           tabIndex=4
           mat-raised-button
           [disabled]="form.invalid">{{ id ? 'Guardar cambios' : 'Guardar'}}</button>
-				<a mat-raised-button mat-dialog-close tabIndex=5>Cancelar</a>
+				<a mat-raised-button (click)="cancel()" tabIndex=5>Cancelar</a>
       </div>
     </form>
   </main>

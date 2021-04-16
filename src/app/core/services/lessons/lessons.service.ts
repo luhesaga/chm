@@ -15,7 +15,7 @@ export class LessonsService {
 
   listLessons(id): AngularFirestoreCollection {
     return this.fireStore.collection(`cursos/${id}/lecciones`, ref =>
-      ref.orderBy('nombre', 'asc'));
+      ref.orderBy('posicion', 'asc'));
   }
 
   createLesson(data): Promise<void> {
@@ -24,6 +24,7 @@ export class LessonsService {
       .set({
           id,
           nombre: data.name,
+          posicion: data.position
         });
   }
 }
