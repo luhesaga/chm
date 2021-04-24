@@ -18,10 +18,8 @@ export class LoginGuard implements CanActivate {
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean{
     return this.auth.user$.pipe(
       take(1),
-      map(user => {console.log(user)
-         return user != null}),
+      map(user => user != null),
       tap(canEdit => {
-        console.log(canEdit)
         if(!canEdit)
         {
           this.router.navigateByUrl('login')
