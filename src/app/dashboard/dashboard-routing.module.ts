@@ -16,11 +16,13 @@ import { LeccionesComponent } from './components/lessons/lecciones/lecciones.com
 import { LessonCreateComponent } from './components/lessons/lesson-create/lesson-create.component';
 import { LessonConfigComponent } from './components/lessons/lesson-config/lesson-config.component';
 import { LessonContentListComponent } from './components/lessons/lesson-content-list/lesson-content-list.component';
+import { LoginGuard } from '../home/components/auth/login/guards/login.guard';
 
 const routes: Routes = [
   {
     path: '',
     component: NavigationComponent,
+    canActivate:[LoginGuard],
     children: [
       {
         path: '',
