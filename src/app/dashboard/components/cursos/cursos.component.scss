@@ -52,3 +52,12 @@ td.mat-cell:last-of-type {
   cursor: pointer;
 }
 
+.buttons {
+  text-align: center;
+}
+
+.buttons .mat-stroked-button {
+  margin-left: 5px;
+  min-width: 40px;
+}
+

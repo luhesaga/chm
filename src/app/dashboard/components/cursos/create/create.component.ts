@@ -130,11 +130,11 @@ get imageField() {
 }
 
 get categoriaField() {
-	return this.form.get('introduction');
+	return this.form.get('categoria');
 }
 
 get profesorField() {
-	return this.form.get('objetive');
+	return this.form.get('profesor');
 }
 
 cancel() {

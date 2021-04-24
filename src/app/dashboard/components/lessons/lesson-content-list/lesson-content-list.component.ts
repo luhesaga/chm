@@ -7,47 +7,43 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { LessonsService } from 'src/app/core/services/lessons/lessons.service';
-import { element } from 'protractor';
 
 @Component({
-  selector: 'app-lecciones',
-  templateUrl: './lecciones.component.html',
-  styleUrls: ['./lecciones.component.scss']
+  selector: 'app-lesson-content-list',
+  templateUrl: './lesson-content-list.component.html',
+  styleUrls: ['./lesson-content-list.component.scss']
 })
-export class LeccionesComponent implements OnInit, OnDestroy, AfterViewInit {
+export class LessonContentListComponent implements OnInit {
 
-  displayedColumns: string[] = ['posicion', 'nombre', 'actions'];
+  displayedColumns: string[] = ['posicion', 'titulo', 'actions'];
   dataSource = new MatTableDataSource();
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   CourseId: string;
-  receivedCourse;
+  LessonId: string;
+  receivedContent;
   course;
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private couseService: CourseService,
     private route: Router,
     public dialog: MatDialog,
     private lessonService: LessonsService
   ) {
-    this.CourseId = this.activatedRoute.snapshot.params.id
+    this.CourseId = this.activatedRoute.snapshot.params.cid;
+    this.LessonId = this.activatedRoute.snapshot.params.lid;
     console.log(this.CourseId);
   }
 
   ngOnInit(): void {
-    this.receivedCourse = this.couseService.detailCourse(this.CourseId)
+    this.receivedContent = this.lessonService.listLessonContent(this.CourseId, this.LessonId)
       .valueChanges()
-      .subscribe(curso => {
-        this.course = curso;
-        this.lessonService.listLessons(curso.id).valueChanges()
-          .subscribe(lessons => {
-            // console.log(lessons);
-            this.dataSource.data = lessons;
-          })
-      })
+      .subscribe((contenido: any) => {
+        console.log(contenido);
+        this.dataSource.data = contenido;
+        })
   }
 
   ngAfterViewInit(): void {
@@ -57,7 +53,7 @@ export class LeccionesComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnDestroy(): void {
     // cerrar subscribe
-    this.receivedCourse.unsubscribe();
+    this.receivedContent.unsubscribe();
   }
 
   applyFilter(filterValue: string): void {
@@ -90,18 +86,18 @@ export class LeccionesComponent implements OnInit, OnDestroy, AfterViewInit {
   levelDown(data) {
     // console.log(data);
     if (data.posicion < this.dataSource.data.length) {
-      let actualLesson: any = this.dataSource.data[data.posicion - 1];
-      let nextLesson: any = this.dataSource.data[data.posicion];
+      let actualContent: any = this.dataSource.data[data.posicion - 1];
+      let nextContent: any = this.dataSource.data[data.posicion];
 
       // actualizar posicion elemento actual
       this.positionEdit(
-        actualLesson.id,
-        actualLesson.posicion + 1
+        actualContent.id,
+        actualContent.posicion + 1
       );
       // actualizar posicion elemento siguiente
       this.positionEdit(
-        nextLesson.id,
-        nextLesson.posicion - 1
+        nextContent.id,
+        nextContent.posicion - 1
       );
     }
   }
@@ -109,18 +105,18 @@ export class LeccionesComponent implements OnInit, OnDestroy, AfterViewInit {
   levelUp(data) {
     // console.log(data);
     if (data.posicion > 1) {
-      let actualLesson: any = this.dataSource.data[data.posicion - 1];
-      let previousLesson: any = this.dataSource.data[data.posicion - 2];
+      let actualContent: any = this.dataSource.data[data.posicion - 1];
+      let previousContent: any = this.dataSource.data[data.posicion - 2];
 
       // actualizar posicion elemento actual
       this.positionEdit(
-        actualLesson.id,
-        actualLesson.posicion -1
+        actualContent.id,
+        actualContent.posicion -1
       );
       // actualizar posicion elemento previo
       this.positionEdit(
-        previousLesson.id,
-        previousLesson.posicion + 1
+        previousContent.id,
+        previousContent.posicion + 1
       );
     }
   }
@@ -128,7 +124,8 @@ export class LeccionesComponent implements OnInit, OnDestroy, AfterViewInit {
   positionEdit(id, pos) {
     if (pos > 0) {
       const cId = this.CourseId;
-      this.lessonService.editLessonPosition(cId, id, pos)
+      const lId = this.LessonId;
+      this.lessonService.editLessonContentPosition(cId, lId, id, pos)
         .catch((error) => console.error(error));
     }
   }
@@ -138,7 +135,7 @@ export class LeccionesComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   goToConfig(id) {
-    this.route.navigate([`cursos/${this.CourseId}/lecciones/content-list/${id}`]);
+    this.route.navigate([`cursos/${this.CourseId}/lecciones/config/${id}`]);
   }
 
 }

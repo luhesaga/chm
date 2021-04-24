@@ -14,6 +14,8 @@ import { CourseDescriptionComponent } from './components/cursos/course-descripti
 import { CourseHomeComponent } from './components/cursos/course-home/course-home.component';
 import { LeccionesComponent } from './components/lessons/lecciones/lecciones.component';
 import { LessonCreateComponent } from './components/lessons/lesson-create/lesson-create.component';
+import { LessonConfigComponent } from './components/lessons/lesson-config/lesson-config.component';
+import { LessonContentListComponent } from './components/lessons/lesson-content-list/lesson-content-list.component';
 
 const routes: Routes = [
   {
@@ -59,6 +61,14 @@ const routes: Routes = [
       {
         path: 'cursos/lecciones/create',
         component: LessonCreateComponent
+      },
+      {
+        path: 'cursos/:cid/lecciones/config/:lid',
+        component: LessonConfigComponent
+      },
+      {
+        path: 'cursos/:cid/lecciones/content-list/:lid',
+        component: LessonContentListComponent
       },
       {
         path: 'cursos/lecciones/:id',

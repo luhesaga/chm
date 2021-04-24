@@ -41,7 +41,7 @@
         </ng-container>
         <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef id="acciones">Acciones</th>
-            <td mat-cell *matCellDef="let element">
+            <td mat-cell *matCellDef="let element" class="buttons">
             <button matTooltip="editar categoria" mat-stroked-button color="primary" (click)="goToEdit(element)">
                 <mat-icon>edit</mat-icon>
             </button>

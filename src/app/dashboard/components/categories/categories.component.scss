@@ -47,3 +47,12 @@ table {
   td.mat-cell:last-of-type {
     padding: 0;
   }
+
+  .buttons {
+    text-align: left;
+}
+
+.buttons .mat-stroked-button {
+    margin-left: 5px;
+    min-width: 40px;
+}

@@ -18,6 +18,8 @@ import { CourseDescriptionComponent } from './components/cursos/course-descripti
 import { CourseHomeComponent } from './components/cursos/course-home/course-home.component';
 import { LeccionesComponent } from './components/lessons/lecciones/lecciones.component';
 import { LessonCreateComponent } from './components/lessons/lesson-create/lesson-create.component';
+import { LessonConfigComponent } from './components/lessons/lesson-config/lesson-config.component';
+import { LessonContentListComponent } from './components/lessons/lesson-content-list/lesson-content-list.component';
 
 
 
@@ -36,6 +38,8 @@ import { LessonCreateComponent } from './components/lessons/lesson-create/lesson
     CourseHomeComponent,
     LeccionesComponent,
     LessonCreateComponent,
+    LessonConfigComponent,
+    LessonContentListComponent,
     ],
   imports: [
     CommonModule,

@@ -8,49 +8,68 @@
   </mat-form-field>
   <button
     mat-raised-button
-    (click)="createLesson()"
+    (click)="createOrEditLesson(null)"
     style="background: var(--main-color2); color: white;">
         Crear nuevo
 </button>
   <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
 
-    <!-- nombre del curso -->
+    <!-- posición -->
+    <ng-container matColumnDef="posicion">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header id="nombre">Posición</th>
+      <td
+        mat-cell
+        *matCellDef="let element"
+        class="posicion">
+          {{ element.posicion }}
+      </td>
+    </ng-container>
+    
+    <!-- nombre de la lección -->
     <ng-container matColumnDef="nombre">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header id="nombre">Nombre</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header id="nombre">Nombre de  la lección</th>
       <td
         mat-cell
         *matCellDef="let element"
         (click)="goToHome(element.id)"
         matTooltip="Ver detalle del curso"
         class="name">
-          {{ element.posicion + '. ' + element.nombre }}
+          {{ element.nombre }}
       </td>
     </ng-container>
 
     <!-- botones de acción -->
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef id="acciones">Acciones</th>
-      <td mat-cell *matCellDef="let element">
+      <td mat-cell *matCellDef="let element" class="buttons">
         <button
           mat-stroked-button
           color="primary"
-          matTooltip="Configurar descripción general"
-          (click)="openDialog(element)">
-          <mat-icon style="color: darkgreen;">grid_on</mat-icon>
+          matTooltip="Subir nivel"
+          (click)="levelUp(element)">
+          <mat-icon style="color: indianred;">arrow_upward</mat-icon>
         </button>
         <button
           mat-stroked-button
           color="primary"
-          matTooltip="Editar curso"
-          (click)="goToEdit(element)">
+          matTooltip="Bajar nivel"
+          (click)="levelDown(element)">
+          <mat-icon style="color: indianred;">arrow_downward</mat-icon>
+        </button>
+        <button
+          mat-stroked-button
+          color="primary"
+          matTooltip="Editar lección"
+          (click)="createOrEditLesson(element)">
           <mat-icon style="color: darkgoldenrod;">edit</mat-icon>
         </button>
+
         <button
           mat-stroked-button
           color="primary"
-          matTooltip="Ver curso"
-          (click)="goToDetail(element.id)">
-          <mat-icon style="color: black;">info</mat-icon>
+          matTooltip="configurar"
+          (click)="goToConfig(element.id)">
+          <mat-icon style="color: grey;">build</mat-icon>
         </button>
         <button mat-stroked-button color="secondary" (click)="deleteUser(element)">
           <mat-icon>delete</mat-icon>
@@ -68,8 +87,8 @@
     <button
       mat-stroked-button
       color="primary"
-      routerLink="/dashboard/categorias"
+      (click)="goBack()"
       style="background: var(--main-color2); color: white;">
-      Categorias de Cursos >>
+        << Volver
     </button>
 </div>

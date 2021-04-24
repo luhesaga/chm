@@ -1,48 +1,32 @@
 <main>
     <div class="title dialog-header-close">
         <mat-icon>library_books</mat-icon>
-        <h2>{{ !id ? 'Crear nueva' : 'Editar'}} lección</h2>
+        <h2>{{ !edit ? 'Crear nueva' : 'Editar'}} lección</h2>
         <mat-icon mat-dialog-close style="color: red;">close</mat-icon>
     </div>
     <mat-dialog-content>
         <form [formGroup]="form" (ngSubmit)="saveOrEditLesson($event)">
             <div class="form-inputs">
-            <mat-form-field>
-                <mat-label>Titulo de la lección</mat-label>
-                <input
-                type="text"
-                matInput
-                formControlName="name"
-                [(ngModel)]="name"
-                #myinput/>
-                <mat-error *ngIf="nameField.touched && nameField.invalid">
-                <ng-container *ngIf="nameField.hasError('required')">El nombre es requerido</ng-container>
-                </mat-error>
-            </mat-form-field>
-            <!-- <mat-form-field>
-                <mat-label>Posición</mat-label>
-                <input
-                type="number"
-                step="1"
-                inputmode="numeric" digitOnly
-                matInput
-                formControlName="position"
-                [(ngModel)]="position"/>
-                <mat-error *ngIf="(positionField.touched || positionField.dirty) && 
-                    (positionField.invalid || positionField.hasError('max') ||
-                    positionField.hasError('pattern'))">
-                <ng-container *ngIf="positionField.hasError('required')">La posicion es requerida</ng-container>
-                <ng-container *ngIf="positionField.hasError('max')">Maximo 3 caracteres</ng-container>
-                <ng-container *ngIf="positionField.hasError('pattern')">número invalido.</ng-container>
-                </mat-error>
-            </mat-form-field> -->
+                <mat-form-field>
+                    <mat-label>Titulo de la lección</mat-label>
+                    <input
+                    type="text"
+                    matInput
+                    formControlName="name"
+                    [(ngModel)]="lessonName"
+                    #myinput/>
+                    <mat-error *ngIf="nameField.touched && nameField.invalid">
+                    <ng-container *ngIf="nameField.hasError('required')">El nombre es requerido</ng-container>
+                    </mat-error>
+                </mat-form-field>
             </div>
             <div class="buttons">
                 <button
                     type="submit"
+                    class="guardarBtn"
                     mat-raised-button
                     [disabled]="form.invalid">
-                    {{ id ? 'Guardar cambios' : 'Guardar'}}
+                    {{ edit ? 'Guardar cambios' : 'Guardar'}}
                 </button>
                 <a mat-raised-button mat-dialog-close>Cancelar</a>
             </div>
