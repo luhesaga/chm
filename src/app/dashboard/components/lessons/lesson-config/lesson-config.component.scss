@@ -8,8 +8,6 @@ main {
     border-radius: 4px;
     margin: 36px auto;
     width: 90%;
-    display: flex;
-    flex-direction: column;
     align-items: center;
 }
 
@@ -50,7 +48,108 @@ form h1 {
     flex-direction: column;
     align-self: center;
     width: 60%;
+    margin: 24px 0;
+}
+
+.optionSelect {
+    align-self: center;
+    justify-self: center;
+    border: 1px solid #aaaaaa;
+    padding: 24px;
     margin-bottom: 24px;
+}
+
+.radio-group {
+    display: flex;
+    flex-direction: column;
+    margin: 15px 0;
+}
+
+.radio-button {
+    margin: 5px;
+}
+
+.contentView {
+    align-self: center;
+    margin-top: 24px;
+    width: 80%;
+}
+
+.contentView .foro {
+    display: flex;
+    flex-direction: column;
+}
+
+.contentView h3 {
+    font-weight: 600;
+    color: var(--main-color2);
+}
+
+.upload-file-title {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+.upload-file-title mat-icon {
+    color: var(--main-color2);
+}
+
+.upload-file-title h3 {
+    margin-left: 16px;
+    font-weight: 600;
+}
+
+.upload-image-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 16px;
+}
+
+.upload-image-main picture {
+    display: flex;
+    justify-content: center;
+    margin-top: 16px;
+    width: 50%;
+}
+
+.upload-image-main img {
+    max-width: 100%;
+    box-sizing: content-box;
+    margin: 0 auto;
+}
+
+.up-btn {
+    background: var(--main-color2);
+    //background: #37474f;
+    color: white;
+    //width: 350px;
+    margin-bottom: 8px;
+}
+
+.up-btn mat-icon {
+    margin-right: 8px;
+}
+
+.upload-image-main .btn-upload {
+    & input[type=file] {
+        display: none;
+    }
+}
+
+.fileUploaded {
+    margin: 24px 0;
+    background: #f6f6f6;
+    padding: 24px;
+    border-radius: 5px;
+}
+
+.fileUploaded a {
+    font-size: 1.2rem;
+    color: var(--main-color2);
+
 }
 
 .buttons {

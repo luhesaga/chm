@@ -1,5 +1,5 @@
 <div class="container">
-    <h2>Gestión de Cursos</h2>
+    <h2>Nombre de la lección: <span>{{ courseName }}</span></h2>
     <mat-form-field appearance="legacy" class="search">
         <mat-label>Buscar</mat-label>
         <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Placeholder">
@@ -8,9 +8,9 @@
     </mat-form-field>
     <button
       mat-raised-button
-      (click)="createOrEditLesson(null)"
+      (click)="createOrEditLessonContent()"
       style="background: var(--main-color2); color: white;">
-          Crear nuevo
+          Crear nuevo contenido
   </button>
     <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
   

@@ -7,6 +7,15 @@
     border-radius: 4px;
 }
 
+.container h2 {
+    font-weight: 300;
+}
+
+.container h2 span {
+    font-weight: 700;
+    color: var(--main-color2);
+}
+
 .search {
     margin-right: 48px;
     margin-bottom: 24px;

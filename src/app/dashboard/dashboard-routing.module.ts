@@ -63,7 +63,7 @@ const routes: Routes = [
         component: LessonCreateComponent
       },
       {
-        path: 'cursos/:cid/lecciones/config/:lid',
+        path: 'cursos/:cid/lecciones/config/:lid/:contentId',
         component: LessonConfigComponent
       },
       {

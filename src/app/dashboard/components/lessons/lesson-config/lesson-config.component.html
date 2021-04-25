@@ -2,66 +2,116 @@
     <form [formGroup]="form" (ngSubmit)="onSubmit($event)">
         <div class="title">
             <mat-icon>menu_book</mat-icon>
-            <h2>{{ !id ? 'Crear nuevo' : 'Editar'}} contenido</h2>
+            <h2>{{ !edit ? 'Crear nuevo' : 'Editar'}} contenido</h2>
         </div>
-        <h1>{{ lessonName }}</h1>
         <div class="form-inputs">
             <mat-form-field>
-              <mat-label>Título</mat-label>
-              <input
-                type="text"
-                matInput
-                formControlName="titulo"
-                [(ngModel)]="titulo"
-                #myinput
-                tabIndex=1/>
-              <mat-error *ngIf="tituloField.touched && tituloField.invalid">
-                <ng-container *ngIf="tituloField.hasError('required')">El título es requerido</ng-container>
-              </mat-error>
+                <mat-label>Título</mat-label>
+                    <input
+                        type="text"
+                        matInput
+                        formControlName="titulo"
+                        [(ngModel)]="titulo"
+                        #myinput
+                        tabIndex=1/>
+                <mat-error *ngIf="tituloField.touched && tituloField.invalid">
+                    <ng-container *ngIf="tituloField.hasError('required')">El título es requerido</ng-container>
+                </mat-error>
             </mat-form-field>
         </div>
-        <button (click)="changeContentType()">cambiar</button>
-        <mat-tab-group #tabGroup>
-            <mat-tab label="Agregar contenido">
-              <div class="mat-form-field-wrapper">
-                  <editor
-                      apiKey="fa82nlmdggdzt2rwcpx7k706ohjcnf9wo3ioar2p06d10yyk"
-                      formControlName="contenido"
-                      class="mat-elevation-z1"
-                      [(ngModel)]="description"
-                      (onInit)="handleEditorInit($event)"
-                      [init]="{
-                          icons: 'material',
-                          skin: 'borderless',
-                          plugins: ['wordcount', 'lists', 'image imagetools', 'media'],
-                          menubar: false,
-                          min_height: 350,
-                          width : '750',
-                          toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | image | media',
-                          media_live_embeds: true
-                      }">
-                  </editor>
-              </div>
-            </mat-tab>
-            <mat-tab label="Agregar archivo PDF"> Lección con archivo </mat-tab>
-            <mat-tab label="Agregar Foro">
-                <h3>Agregue el mensaje de bienvenida</h3>
-                <mat-form-field class="example-full-width">
-                    <mat-label>Mensaje</mat-label>
-                    <textarea matInput placeholder="escriba aquí el mensaje"></textarea>
-                </mat-form-field>
-                <mat-checkbox class="example-margin">¿Permitir respuestas?</mat-checkbox>
-            </mat-tab>
-            <mat-tab label="Vista previa"> vista previa </mat-tab>
-        </mat-tab-group>
+        <div class="optionSelect">
+            <label id="radio-group-label">Seleccione el tipo de contenido de la lección</label>
+            <mat-radio-group
+                aria-labelledby="radio-group-label"
+                class="radio-group"
+                formControlName="tipo"
+                [(ngModel)]="contentOption">
+                <mat-radio-button class="radio-button" *ngFor="let option of options" [value]="option">
+                    {{option}}
+                </mat-radio-button>
+            </mat-radio-group>
+        </div>
+        <div class="contentView">
+            <!-- crear contenido -->
+            <div *ngIf="contentOption === 'Agregar contenido'" class="contenido">
+                <h3>Agregar contenido</h3>
+                <editor
+                    apiKey="fa82nlmdggdzt2rwcpx7k706ohjcnf9wo3ioar2p06d10yyk"
+                    formControlName="contenido"
+                    class="mat-elevation-z1"
+                    [(ngModel)]="contenido"
+                    (onInit)="handleEditorInit($event)"
+                    [init]="{
+                        icons: 'material',
+                        skin: 'borderless',
+                        plugins: ['wordcount', 'lists', 'image imagetools', 'media'],
+                        menubar: false,
+                        min_height: 350,
+                        width : '750',
+                        toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | image | media',
+                        media_live_embeds: true
+                    }">
+                </editor>
+            </div>
+            <!-- subir archivo -->
+            <div *ngIf="contentOption === 'Agregar archivo PDF'">
+                <div class="upload-image-main">
+                    <div class="image-upload">
+                        <label class="btn-upload">
+                            <button
+                                color="primary"
+                                class="up-btn"
+                                [disabled]="showProgressBar"
+                                type="button"
+                                mat-raised-button
+                                (click)="fileInput.click()"
+                                matTooltip="Cargar foto del curso">
+                                    <mat-icon aria-hidden="false" aria-label="Carga de archivo">cloud_upload</mat-icon>
+                                    {{ archivoField.value? 'Cambiar archivo PDF' : 'Cargar archivo PDF' }}
+                            </button>
+                            <input type="file" accept="application/pdf" #fileInput (change)="uploadPDF($event)" />
+                        </label>
+                    </div>
+                    <div class="progress">
+                      <mat-hint *ngIf="!archivoField.value">Puede añadir un archivo PDF como contenido de su lección</mat-hint>
+                      <mat-progress-bar *ngIf="showProgressBar" mode="determinate" [value]="percentageProgressBar"></mat-progress-bar>
+                      <p *ngIf="showProgressBar">{{ 'cargando ' + percentageProgressBar + '%' }}</p>
+                    </div>
+                    <div class="fileUploaded">
+                      <a *ngIf="archivoField.value" [href]="archivoField.value" target="_blank">{{archivo}}</a>
+                    </div>
+                </div>
+            </div>
+            <!-- foro -->
+            <div *ngIf="contentOption === 'Agregar foro'" class="foro">
+                <h3>Agregue el mensaje del foro</h3>
+                <editor
+                        apiKey="fa82nlmdggdzt2rwcpx7k706ohjcnf9wo3ioar2p06d10yyk"
+                        formControlName="foro"
+                        class="mat-elevation-z1"
+                        [(ngModel)]="foro"
+                        (onInit)="handleEditorInit($event)"
+                        [init]="{
+                            icons: 'material',
+                            skin: 'borderless',
+                            plugins: ['wordcount', 'lists', 'image imagetools', 'media'],
+                            menubar: false,
+                            min_height: 350,
+                            width : '750',
+                            toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | image | media',
+                            media_live_embeds: true
+                        }">
+                </editor>
+            </div>
+        </div>
 
         <div class="buttons">
             <button
-              type="submit"
-              tabIndex=4
-              mat-raised-button
-              [disabled]="form.invalid">
-                {{ id ? 'Guardar cambios' : 'Guardar'}}
+                type="submit"
+                tabIndex=4
+                mat-raised-button
+                [disabled]="form.invalid">
+                {{ edit ? 'Guardar cambios' : 'Guardar'}}
             </button>
             <a mat-raised-button (click)="cancel()" tabIndex=5>Cancelar</a>
         </div>

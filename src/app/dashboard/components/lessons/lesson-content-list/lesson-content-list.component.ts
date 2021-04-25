@@ -1,8 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CourseService } from '../../../../core/services/courses/course.service';
 import { MatDialog } from '@angular/material/dialog';
-import { LessonCreateComponent } from '../lesson-create/lesson-create.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -13,7 +11,7 @@ import { LessonsService } from 'src/app/core/services/lessons/lessons.service';
   templateUrl: './lesson-content-list.component.html',
   styleUrls: ['./lesson-content-list.component.scss']
 })
-export class LessonContentListComponent implements OnInit {
+export class LessonContentListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   displayedColumns: string[] = ['posicion', 'titulo', 'actions'];
   dataSource = new MatTableDataSource();
@@ -25,6 +23,7 @@ export class LessonContentListComponent implements OnInit {
   LessonId: string;
   receivedContent;
   course;
+  courseName: string;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -34,15 +33,19 @@ export class LessonContentListComponent implements OnInit {
   ) {
     this.CourseId = this.activatedRoute.snapshot.params.cid;
     this.LessonId = this.activatedRoute.snapshot.params.lid;
-    console.log(this.CourseId);
+    //console.log(this.CourseId);
   }
 
   ngOnInit(): void {
     this.receivedContent = this.lessonService.listLessonContent(this.CourseId, this.LessonId)
       .valueChanges()
       .subscribe((contenido: any) => {
-        console.log(contenido);
+        //console.log(contenido);
         this.dataSource.data = contenido;
+        this.lessonService.lessonDetail(this.CourseId, this.LessonId).valueChanges()
+          .subscribe((l: any) => {
+            this.courseName = l.nombre;
+          });
         })
   }
 
@@ -60,27 +63,10 @@ export class LessonContentListComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  createOrEditLesson(lesson) {
-
-    let leccion:any = {
-      courseId: this.CourseId,
-      cantLecciones:  this.dataSource.data.length
-    }
-    if (lesson) {
-      leccion.lessonId = lesson.id;
-      leccion.lessonName = lesson.nombre;
-    }
-    const config = {
-      data: {
-        message: lesson ? 'Editar leccion' : 'Agregar nueva leccion',
-        content: leccion
-      }
-    };
-
-    const dialogRef = this.dialog.open(LessonCreateComponent, config);
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result ${result}`);
-    });
+  createOrEditLessonContent() {
+    const cId = this.CourseId;
+    const lId = this.LessonId;
+    this.route.navigate([`cursos/${cId}/lecciones/config/${lId}/${'new'}`]);
   }
 
   levelDown(data) {
@@ -131,11 +117,14 @@ export class LessonContentListComponent implements OnInit {
   }
 
   goBack() {
-    this.route.navigate([`cursos/index/${this.CourseId}`]);
+    const cId = this.CourseId;
+    this.route.navigate([`cursos/lecciones/${cId}`]);
   }
 
-  goToConfig(id) {
-    this.route.navigate([`cursos/${this.CourseId}/lecciones/config/${id}`]);
+  goToConfig(contentId) {
+    const cId = this.CourseId;
+    const lId = this.LessonId;
+    this.route.navigate([`cursos/${cId}/lecciones/config/${lId}/${contentId}`]);
   }
 
 }

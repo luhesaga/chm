@@ -46,18 +46,43 @@ export class LessonsService {
       });
   }
 
-  addLessonContent(data, courseId, lessonId) {
-    const id = this.fireStore.createId();
+  addLessonContent(data, courseId, lessonId, filename, id) {
+    //const id = this.fireStore.createId();
+    console.log(data);
+    console.log(filename);
     return this.fireStore.doc(`cursos/${courseId}/lecciones/${lessonId}/contenido/${id}`)
       .set({
           id,
           titulo: data.titulo,
-          contenido: data.contenido
+          tipo: data.tipo,
+          contenido: data.contenido,
+          archivo: data.archivo,
+          nombreArchivo: filename,
+          foro: data.foro,
+          posicion: data.posicion
         });
   }
 
+  editLessonContent(data, courseId: string, lessonId: string, contentId: string, filename): Promise<void> {
+    console.log(data);
+    console.log(filename);
+    return this.fireStore.doc(`cursos/${courseId}/lecciones/${lessonId}/contenido/${contentId}`)
+      .update({
+        titulo: data.titulo,
+        tipo: data.tipo,
+        contenido: data.contenido,
+        archivo: data.archivo,
+        nombreArchivo: filename,
+        foro: data.foro,
+      });
+  }
+
+  lessonContentDetail(courseId, lessonId, contentId) {
+    return this.fireStore.doc(`cursos/${courseId}/lecciones/${lessonId}/contenido/${contentId}`);
+  }
+
   listLessonContent(courseId, lessonId): AngularFirestoreCollection {
-    console.log(`curso: ${courseId}, leccion: ${lessonId}`);
+    //console.log(`curso: ${courseId}, leccion: ${lessonId}`);
     return this.fireStore.collection(`cursos/${courseId}/lecciones/${lessonId}/contenido`, ref =>
       ref.orderBy('posicion', 'asc'));
   }
