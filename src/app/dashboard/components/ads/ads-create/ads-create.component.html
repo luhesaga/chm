@@ -1,0 +1,110 @@
+<main>
+    <form [formGroup]="formAds" (ngSubmit)="saveAds(formAds.value)"> <!--(ngSubmit)="saveOrEditCourse($event)"-->
+        <div class="title">
+            <mat-icon>volume_up</mat-icon>
+            <h2>Crear nuevo anuncio</h2>
+        </div>
+        <div class="upload-image-main">
+            <div class="image-upload">
+                <label class="btn-upload">
+                    <button
+                        for= "up-file-image"
+                        color="primary"
+                        class="up-btn"
+                        type="button"
+                        (click)="fileInput.click()"
+                        mat-raised-button
+                        matTooltip="Cargar foto del curso">
+                        <mat-icon
+                            aria-hidden="false"
+                            aria-label="Carga de archivo">
+                            cloud_upload
+                        </mat-icon>
+                        Cargar Imagen
+                    </button> <!--[disabled]="showProgressBar"-->
+                    <input
+                        type="file"
+                        accept="image/png, image/jpeg"
+                        id="up-file-image"
+                        name="up-file-image"
+                        #fileInput
+                        (change)="newImage($event)"
+                    /> <!--(change)="uploadImage($event)"-->
+                </label>
+                <!-- Error en la imagen-->
+                <mat-error *ngIf="imageField.touched && imageField.invalid">
+                    <ng-container *ngIf="imageField.hasError('required')">
+                        La imagen es requerida
+                    </ng-container>
+                </mat-error>
+            </div>
+            <!--Pogreso-->
+            <div class="progress">
+                <mat-hint>
+                    Puede añadir una imagen de portada para el anuncio, debe estar en formato JPG o PNG.
+                </mat-hint>
+                <!--<mat-progress-bar
+                    *ngIf="showProgressBar"
+                    mode="determinate"
+                    [value]="percentageProgressBar">
+                </mat-progress-bar>
+                <p *ngIf="showProgressBar">
+                    {{ 'cargando ' + percentageProgressBar + '%' }}
+                </p>-->
+            </div>
+            <picture>
+                    <img *ngIf="selectedImage" [src]="selectedImage.src" alt="portada del anuncio" >
+            </picture>
+        </div>
+        <!--Formulario de anuncio-->
+        <div class="form-inputs">
+            <mat-form-field>
+                <mat-label>Titulo del anuncio</mat-label>
+                <input
+                    type="text"
+                    matInput
+                    #myinput
+                    tabIndex=1
+                    formControlName="name"
+                /> <!--formControlName="name" |[(ngModel)]="name" -->
+                <mat-error
+                    *ngIf="nameField.touched &&
+                    nameField.invalid">
+                    <ng-container
+                    *ngIf="nameField.hasError('required')">El titulo es requerido
+                    </ng-container>
+                </mat-error>
+            </mat-form-field>
+            <!-- Descripción del anuncio -->
+            <mat-form-field appearance="fill">
+                <mat-label>Descripción</mat-label>
+                <textarea
+                    matInput
+                    cdkTextareaAutosize
+                    cdkAutosizeMinRows="1"
+                    cdkAutosizeMaxRows="7"
+                    #autosize="cdkTextareaAutosize"
+                    class="description"
+                    formControlName="description"
+                ></textarea><!--[(value)]="selectedCategory" |[(ngModel)]="selectedCategory" |           formControlName="categoria"-->
+            </mat-form-field>
+        </div>
+        <div class="buttons">
+            <button
+                type="submit"
+                tabIndex=4
+                mat-raised-button
+                [disabled]="formAds.invalid"
+                >
+                Guardar
+            </button>
+            <a
+                mat-raised-button
+                tabIndex=5
+                (click)="cancelar()"
+            >
+                Cancelar
+            </a> <!--(click)="cancel()"-->
+        </div>
+    </form>
+</main>
