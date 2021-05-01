@@ -1,0 +1,16 @@
+<div class="container">
+    <h2>Gestión de Anuncios</h2>
+    <mat-form-field appearance="legacy" class="search">
+        <mat-label>Buscar</mat-label>
+        <input matInput placeholder="Buscar anuncio"> <!--(keyup)="applyFilter($event.target.value)"-->
+        <mat-icon matSuffix>search</mat-icon>
+        <mat-hint>puede buscar por cualquier campo</mat-hint>
+    </mat-form-field>
+
+    <button
+        mat-raised-button
+        routerLink="../ads-create"
+        class="buttonCreateAds">
+        Crear nuevo
+    </button>
+</div>

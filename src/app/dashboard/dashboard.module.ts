@@ -20,6 +20,8 @@ import { LeccionesComponent } from './components/lessons/lecciones/lecciones.com
 import { LessonCreateComponent } from './components/lessons/lesson-create/lesson-create.component';
 import { LessonConfigComponent } from './components/lessons/lesson-config/lesson-config.component';
 import { LessonContentListComponent } from './components/lessons/lesson-content-list/lesson-content-list.component';
+import { AdsListComponent } from './components/ads/ads-list/ads-list.component';
+import { AdsCreateComponent } from './components/ads/ads-create/ads-create.component';
 
 
 
@@ -40,6 +42,8 @@ import { LessonContentListComponent } from './components/lessons/lesson-content-
     LessonCreateComponent,
     LessonConfigComponent,
     LessonContentListComponent,
+    AdsListComponent,
+    AdsCreateComponent,
     ],
   imports: [
     CommonModule,

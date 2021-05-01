@@ -16,11 +16,15 @@ import { LeccionesComponent } from './components/lessons/lecciones/lecciones.com
 import { LessonCreateComponent } from './components/lessons/lesson-create/lesson-create.component';
 import { LessonConfigComponent } from './components/lessons/lesson-config/lesson-config.component';
 import { LessonContentListComponent } from './components/lessons/lesson-content-list/lesson-content-list.component';
+import { LoginGuard } from '../home/components/auth/login/guards/login.guard';
+import { AdsListComponent } from './components/ads/ads-list/ads-list.component';
+import { AdsCreateComponent } from './components/ads/ads-create/ads-create.component';
 
 const routes: Routes = [
   {
     path: '',
     component: NavigationComponent,
+    canActivate:[LoginGuard],
     children: [
       {
         path: '',
@@ -85,6 +89,14 @@ const routes: Routes = [
       {
         path: 'categorias/edit/:id',
         component: CategoryCreateComponent
+      },
+      {
+        path: 'ads/ads-list',
+        component: AdsListComponent
+      },
+      {
+        path: 'ads/ads-create',
+        component: AdsCreateComponent
       }
     ]
   }
