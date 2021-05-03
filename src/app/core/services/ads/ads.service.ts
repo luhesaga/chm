@@ -13,7 +13,8 @@ export class AdsService {
 
   constructor(public fireStore: AngularFirestore) { }
 
-  createAds(data, id, imgName): Promise<void> {
+  createAds(data, id, imgName): Promise<void>
+  {
     return this.fireStore.doc(`ads/${id}`)
       .set(
         {
@@ -24,5 +25,11 @@ export class AdsService {
           descripcion: data.description,
           fechaYHora: data.fechaYHora
         });
+  }
+
+  listAds(): AngularFirestoreCollection
+  {
+      return this.fireStore.collection(`ads`, ref =>
+        ref.orderBy('fechaYHora', 'desc'));
   }
 }
