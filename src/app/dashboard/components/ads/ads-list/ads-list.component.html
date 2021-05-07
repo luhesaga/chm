@@ -31,7 +31,7 @@
                 class="name">
                 {{ element.nombre }}
             </td>
-        </ng-container> <!-- (click)="goToHome(element.id)"-->
+        </ng-container>
 
         <!-- botones de acción -->
         <ng-container matColumnDef="actions">
@@ -41,6 +41,7 @@
                     mat-stroked-button
                     color="primary"
                     matTooltip="Editar anuncio"
+                    (click)="goToEdit(element)"
                     >
                     <mat-icon style="color: darkgoldenrod;">edit</mat-icon> <!--(click)="goToEdit(element)"-->
                 </button>

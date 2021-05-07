@@ -46,4 +46,9 @@ export class AdsListComponent implements OnInit, AfterViewInit {
   applyFilter(filterValue: string): void {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
+
+  goToEdit(element:any):void
+  {
+    this.router.navigateByUrl('dashboard/ads/ads-edit/'+element.id);
+  }
 }

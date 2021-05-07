@@ -22,6 +22,7 @@ import { LessonConfigComponent } from './components/lessons/lesson-config/lesson
 import { LessonContentListComponent } from './components/lessons/lesson-content-list/lesson-content-list.component';
 import { AdsListComponent } from './components/ads/ads-list/ads-list.component';
 import { AdsCreateComponent } from './components/ads/ads-create/ads-create.component';
+import { AdsEditComponent } from './components/ads/ads-edit/ads-edit.component';
 
 
 
@@ -44,6 +45,7 @@ import { AdsCreateComponent } from './components/ads/ads-create/ads-create.compo
     LessonContentListComponent,
     AdsListComponent,
     AdsCreateComponent,
+    AdsEditComponent,
     ],
   imports: [
     CommonModule,

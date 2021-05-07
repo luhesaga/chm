@@ -29,7 +29,6 @@ export class AdsCreateComponent implements OnInit {
       this.fechaYHora = new Date();
       this.selectedImage = null;
       this.buildForm();
-      this.fechaYHora === this.fechaYHora
     }
 
   ngOnInit(): void {

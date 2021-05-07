@@ -32,4 +32,20 @@ export class AdsService {
       return this.fireStore.collection(`ads`, ref =>
         ref.orderBy('fechaYHora', 'desc'));
   }
+
+
+  obtainAds(id): AngularFirestoreDocument<any> {
+    return this.fireStore.doc(`ads/${id}`);
+  }
+
+  editAds(data, id, fechaYHora): Promise<void> {
+    return this.fireStore.doc(`ads/${id}`)
+      .update({
+        descripcion: data.description,
+        fechaYHora,
+        nombreImg: data.imageName,
+        imagen: data.image,
+        nombre: data.name
+      });
+  }
 }
