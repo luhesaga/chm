@@ -19,6 +19,8 @@ import { LessonContentListComponent } from './components/lessons/lesson-content-
 import { LoginGuard } from '../home/components/auth/login/guards/login.guard';
 import { AdsListComponent } from './components/ads/ads-list/ads-list.component';
 import { AdsCreateComponent } from './components/ads/ads-create/ads-create.component';
+import { ExercisesListComponent } from './components/exercises/exercises-list/exercises-list.component';
+import { ExercisesCreateComponent } from './components/exercises/exercises-create/exercises-create.component';
 
 const routes: Routes = [
   {
@@ -77,6 +79,18 @@ const routes: Routes = [
       {
         path: 'cursos/lecciones/:id',
         component: LeccionesComponent
+      },
+      {
+        path: 'cursos/ejercicios/:courseId',
+        component: ExercisesListComponent
+      },
+      {
+        path: 'cursos/ejercicios/crear/:courseId',
+        component: ExercisesCreateComponent
+      },
+      {
+        path: 'cursos/ejercicios/editar/:courseId/:exerciseId',
+        component: ExercisesCreateComponent
       },
       {
         path: 'categorias',

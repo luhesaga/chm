@@ -1,0 +1,52 @@
+<p>exercises-create works!</p>
+
+<img src="/assets/icons/respuesta_unica.svg" alt="">
+
+<button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+    Tipo de ejercicio <mat-icon>more_vert</mat-icon>
+</button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item>
+        <img src="/assets/icons/respuesta_unica.svg" alt="">
+        <span>Opción unica</span>
+    </button>
+    <button mat-menu-item disabled>
+      <mat-icon>voicemail</mat-icon>
+      <span>Check voice mail</span>
+    </button>
+    <button mat-menu-item>
+      <mat-icon>notifications_off</mat-icon>
+      <span>Disable alerts</span>
+    </button>
+  </mat-menu>
+
+<mat-grid-list cols="3" rowHeight="70px">
+    <mat-grid-tile class="tileImg">
+        <img src="/assets/icons/respuesta_unica.svg" alt="">
+    </mat-grid-tile>
+    <mat-grid-tile colspan="2">
+        <span>Opción unica</span>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+        <img src="/assets/icons/respuesta_unica.svg" alt="">
+    </mat-grid-tile>
+    <mat-grid-tile colspan="2">
+        <span>Opción unica</span>
+    </mat-grid-tile>
+</mat-grid-list>
+
+
+  <mat-grid-list cols="2" rowHeight="100px">
+    <mat-grid-tile>Tile 1 (no header, no footer)</mat-grid-tile>
+    <mat-grid-tile>
+      <mat-grid-tile-header>Tile 2</mat-grid-tile-header>
+    </mat-grid-tile>
+    <mat-grid-tile colspan="2">
+      <mat-grid-tile-header>Tile 3</mat-grid-tile-header>
+      <mat-grid-tile-footer>Tile 3 footer</mat-grid-tile-footer>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <mat-grid-tile-header>Tile 4</mat-grid-tile-header>
+    </mat-grid-tile>
+  </mat-grid-list>

@@ -58,7 +58,9 @@ ngOnInit(): void {
 }
 
 ngAfterViewInit() {
-	this.myInputField.nativeElement.focus();
+	setTimeout(()=>{
+		this.myInputField.nativeElement.focus();
+	},100)
 }
 
 getCourse() {
@@ -71,12 +73,11 @@ getCourse() {
 			this.imageName = curso.nombreImg;
 			this.name = curso.nombre;
 			this.selectedCategory = curso.categoria;
-			console.log(this.selectedCategory);
 			// console.log(this.selectedCategory);
 			this.selectedTeacher = curso.profesor;
 			// console.log(this.selectedTeacher);
 		});
-	console.log(this.selectedCategory);
+	// console.log(this.selectedCategory);
 }
 
 listCategories() {
@@ -89,9 +90,8 @@ listCategories() {
 					nombre: element.nombre,
 					activo: element.activo
 				}
-				console.log(category);
+				// console.log(category);
 				if (category.activo) {
-					console.log('hpta');
 					this.categories.push(category);
 				}
 			});
@@ -141,6 +141,10 @@ cancel() {
 	if (this.changeImg) {
 		// borrar imagen cargada si cancela
 		this.fs.ref(`cursos/${this.fsId}/${this.imageName}`).delete();
+	} else {
+		if (this.images.length > 0) {
+			this.deleteImage(this.imageName);
+		}
 	}
 	this.route.navigate(['dashboard/cursos']);
 }

@@ -90,8 +90,8 @@ export class LessonConfigComponent implements OnInit, OnDestroy {
           this.archivoField.setValue(content.archivo);
           this.foro = content.foro;
           this.fsId = content.id;
-          console.log(this.fsId);
-          console.log(this.contentId);
+          //console.log(this.fsId);
+          //console.log(this.contentId);
           switch (content.tipo) {
             case 'Agregar contenido':
               this.contentOption = 'Agregar contenido';
@@ -161,6 +161,10 @@ export class LessonConfigComponent implements OnInit, OnDestroy {
     if (this.changePDF) {
       // borrar PDF cargado si cancela
       this.fs.ref(`cursos/${this.courseId}/lecciones/${this.lessonId}/contenidos/${this.fsId}/${this.archivo}`).delete();
+    } else {
+      if (this.archives.length > 0) {
+        this.deletePDF(this.archivo);
+      }
     }
     this.route.navigate([`cursos/${this.courseId}/lecciones/content-list/${this.lessonId}`]);
   }

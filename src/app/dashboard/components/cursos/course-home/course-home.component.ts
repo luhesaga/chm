@@ -97,6 +97,10 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
     this.route.navigate([`cursos/lecciones/${this.id}`]);
   }
 
+  goToExercises() {
+    this.route.navigate([`cursos/ejercicios/${this.id}`]);
+  }
+
   goBack() {
     this.route.navigate(['dashboard/cursos']);
   }
