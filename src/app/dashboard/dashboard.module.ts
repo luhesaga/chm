@@ -23,7 +23,8 @@ import { LessonContentListComponent } from './components/lessons/lesson-content-
 import { AdsListComponent } from './components/ads/ads-list/ads-list.component';
 import { AdsCreateComponent } from './components/ads/ads-create/ads-create.component';
 import { AdsEditComponent } from './components/ads/ads-edit/ads-edit.component';
-
+import { MatCarouselModule } from '@ngbmodule/material-carousel';
+import { CarouselComponent } from './components/ads/carousel/carousel.component';
 
 
 @NgModule({
@@ -46,6 +47,7 @@ import { AdsEditComponent } from './components/ads/ads-edit/ads-edit.component';
     AdsListComponent,
     AdsCreateComponent,
     AdsEditComponent,
+    CarouselComponent,
     ],
   imports: [
     CommonModule,
@@ -55,7 +57,7 @@ import { AdsEditComponent } from './components/ads/ads-edit/ads-edit.component';
     LayoutModule,
     ReactiveFormsModule,
     FormsModule,
-    
+    MatCarouselModule.forRoot()
   ]
 })
 export class DashboardModule { }

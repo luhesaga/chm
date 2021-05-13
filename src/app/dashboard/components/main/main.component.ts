@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
 import { UsersService } from '../../../core/services/users/users.service';
+import { MatCarousel, MatCarouselComponent } from '@ngbmodule/material-carousel';
+import { AdsService } from 'src/app/core/services/ads/ads.service';
 
 @Component({
   selector: 'app-main',
@@ -30,10 +32,23 @@ export class MainComponent implements OnInit {
     })
   );
 
+  listAds:any;
+
   constructor(
     private breakpointObserver: BreakpointObserver,
-    private userService: UsersService
+    private userService: UsersService,
+    private adsService: AdsService
     ) { }
 
-  ngOnInit (): void { }
+  ngOnInit (): void
+  {
+    this.listAdsService();
+  }
+
+  listAdsService()
+  {
+    this.adsService.listAds()
+    .valueChanges()
+    .subscribe(listAds => this.listAds = listAds);
+  }
 }

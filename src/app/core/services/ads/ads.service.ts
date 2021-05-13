@@ -48,4 +48,14 @@ export class AdsService {
         nombre: data.name
       });
   }
+
+  editAdsWithOutTime(data, id): Promise<void> {
+    return this.fireStore.doc(`ads/${id}`)
+      .update({
+        descripcion: data.description,
+        nombreImg: data.imageName,
+        imagen: data.image,
+        nombre: data.name
+      });
+  }
 }

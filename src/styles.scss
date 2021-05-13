@@ -26,3 +26,22 @@ body {
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.mat-slide-toggle.mat-checked  {
+    .mat-slide-toggle-bar
+    {
+        background-color:#007279
+    }
+    .mat-slide-toggle-thumb
+    {
+        background-color:#50C0DF
+    }
+}
+
+.mat-button.mat-accent, .mat-icon-button.mat-accent, .mat-stroked-button.mat-accent{
+    color:#007279
+}
+.mat-flat-button.mat-accent, .mat-raised-button.mat-accent, .mat-fab.mat-accent, .mat-mini-fab.mat-accent
+{
+    background-color:#007279
+}

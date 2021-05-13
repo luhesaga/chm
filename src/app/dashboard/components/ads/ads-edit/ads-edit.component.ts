@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle/slide-toggle';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AdsService } from 'src/app/core/services/ads/ads.service';
 import Swal from 'sweetalert2';
@@ -18,6 +19,7 @@ export class AdsEditComponent implements OnInit {
   selectedImage: any;
   fechaYHora: Date;
   id: string;
+  updateTime: boolean;
 
   constructor(
     private fireStorage: AngularFireStorage,
@@ -30,6 +32,7 @@ export class AdsEditComponent implements OnInit {
     this.id = this.activatedRoute.snapshot.params.id
     this.fechaYHora = new Date();
     this.selectedImage = {};
+    this.updateTime = false;
     this.buildForm();
   }
 
@@ -147,7 +150,7 @@ export class AdsEditComponent implements OnInit {
         background: 'rgba(0,0,0,.5)',
         showConfirmButton: false,
         backdrop: true,
-        timer: 1000,
+        timer: 2000,
         timerProgressBar: false,
         onBeforeOpen: () => {
           Swal.showLoading();
@@ -185,6 +188,19 @@ export class AdsEditComponent implements OnInit {
 
     sendUpdatedData(data:any):void
     {
+      if(this.updateTime)
+      {
+        this.upDateWithTime(data);
+      }
+      else
+      {
+        this.upDateWithOutTime(data);
+      }
+
+    }
+
+    upDateWithTime(data:any):void
+    {
       this.adsService.editAds(data,this.id,this.fechaYHora)
       .then(() => {
         Swal.fire({
@@ -202,6 +218,32 @@ export class AdsEditComponent implements OnInit {
           confirmButtonText: 'cerrar',
               });
       });
+    }
+
+    upDateWithOutTime(data:any):void
+    {
+      this.adsService.editAdsWithOutTime(data,this.id)
+      .then(() => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Exito!',
+          text: 'Anuncio actualizado exitosamente',
+          confirmButtonText: 'cerrar',
+        }).then(() => this.route.navigate(['dashboard/ads/ads-list']));
+      })
+      .catch((error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'error',
+          text: 'Ocurrió un error' + error,
+          confirmButtonText: 'cerrar',
+              });
+      });
+    }
+
+    timeUpdate($event: MatSlideToggleChange):void
+    {
+      this.updateTime = $event.checked;
     }
 
 }
