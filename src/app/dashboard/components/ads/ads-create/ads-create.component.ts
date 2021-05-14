@@ -107,7 +107,7 @@ export class AdsCreateComponent implements OnInit {
       background: 'rgba(0,0,0,.5)',
       showConfirmButton: false,
       backdrop: true,
-      timer: 1000,
+      timer: 5000,
       timerProgressBar: false,
       onBeforeOpen: () => {
         Swal.showLoading();

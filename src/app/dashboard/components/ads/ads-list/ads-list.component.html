@@ -43,9 +43,9 @@
                     matTooltip="Editar anuncio"
                     (click)="goToEdit(element)"
                     >
-                    <mat-icon style="color: darkgoldenrod;">edit</mat-icon> <!--(click)="goToEdit(element)"-->
+                    <mat-icon style="color: darkgoldenrod;">edit</mat-icon>
                 </button>
-                <button mat-stroked-button color="secondary"><!--(click)="deleteUser(element)"-->
+                <button (click)="getAdsToDelete(element)" mat-stroked-button color="secondary"><!--(click)="deleteUser(element)"-->
                     <mat-icon>delete</mat-icon>
                 </button>
             </td>

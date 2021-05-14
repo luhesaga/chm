@@ -58,4 +58,9 @@ export class AdsService {
         nombre: data.name
       });
   }
+
+  deleteAds(id:string):Promise<void>
+  {
+    return this.fireStore.collection('ads').doc(id).delete();
+  }
 }
