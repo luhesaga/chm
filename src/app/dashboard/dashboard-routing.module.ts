@@ -19,8 +19,12 @@ import { LessonContentListComponent } from './components/lessons/lesson-content-
 import { LoginGuard } from '../home/components/auth/login/guards/login.guard';
 import { AdsListComponent } from './components/ads/ads-list/ads-list.component';
 import { AdsCreateComponent } from './components/ads/ads-create/ads-create.component';
+<<<<<<< HEAD
 import { ExercisesListComponent } from './components/exercises/exercises-list/exercises-list.component';
 import { ExercisesCreateComponent } from './components/exercises/exercises-create/exercises-create.component';
+=======
+import { AdsEditComponent } from './components/ads/ads-edit/ads-edit.component';
+>>>>>>> ads
 
 const routes: Routes = [
   {
@@ -111,6 +115,10 @@ const routes: Routes = [
       {
         path: 'ads/ads-create',
         component: AdsCreateComponent
+      },
+      {
+        path: 'ads/ads-edit/:id',
+        component: AdsEditComponent
       }
     ]
   }

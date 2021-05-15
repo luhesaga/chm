@@ -25,6 +25,9 @@ import { AdsCreateComponent } from './components/ads/ads-create/ads-create.compo
 import { ExercisesListComponent } from './components/exercises/exercises-list/exercises-list.component';
 import { ExercisesCreateComponent } from './components/exercises/exercises-create/exercises-create.component';
 
+import { AdsEditComponent } from './components/ads/ads-edit/ads-edit.component';
+import { MatCarouselModule } from '@ngbmodule/material-carousel';
+import { CarouselComponent } from './components/ads/carousel/carousel.component';
 
 
 @NgModule({
@@ -48,6 +51,8 @@ import { ExercisesCreateComponent } from './components/exercises/exercises-creat
     AdsCreateComponent,
     ExercisesListComponent,
     ExercisesCreateComponent,
+    AdsEditComponent,
+    CarouselComponent,
     ],
   imports: [
     CommonModule,
@@ -57,7 +62,7 @@ import { ExercisesCreateComponent } from './components/exercises/exercises-creat
     LayoutModule,
     ReactiveFormsModule,
     FormsModule,
-    
+    MatCarouselModule.forRoot()
   ]
 })
 export class DashboardModule { }

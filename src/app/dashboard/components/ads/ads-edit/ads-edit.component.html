@@ -1,8 +1,8 @@
 <main>
-    <form [formGroup]="formAds" (ngSubmit)="saveAds(formAds.value)"> <!--(ngSubmit)="saveOrEditCourse($event)"-->
+    <form [formGroup]="formAds" (ngSubmit)="editAds(formAds.value)"> <!---->
         <div class="title">
             <mat-icon>volume_up</mat-icon>
-            <h2>Crear nuevo anuncio</h2>
+            <h2>Editar anuncio</h2>
         </div>
         <div class="upload-image-main">
             <div class="image-upload">
@@ -14,13 +14,13 @@
                         type="button"
                         (click)="fileInput.click()"
                         mat-raised-button
-                        matTooltip="Cargar foto del anuncio">
+                        matTooltip="Cambiar foto del anuncio">
                         <mat-icon
                             aria-hidden="false"
-                            aria-label="Carga de archivo">
+                            aria-label="Cambiar de archivo">
                             cloud_upload
                         </mat-icon>
-                        Cargar Imagen
+                        Cambiar Imagen
                     </button>
                     <input
                         type="file"
@@ -29,7 +29,7 @@
                         name="up-file-image"
                         #fileInput
                         (change)="newImage($event)"
-                    />
+                    /><!--"-->
                 </label>
                 <!-- Error en la imagen-->
                 <mat-error *ngIf="imageField.touched && imageField.invalid">
@@ -80,6 +80,10 @@
                     formControlName="description"
                 ></textarea>
             </mat-form-field>
+            <mat-slide-toggle
+                (change)="timeUpdate($event)">
+                ¿Desea actualizar fecha y hora?
+            </mat-slide-toggle>
         </div>
         <div class="buttons">
             <button
@@ -88,7 +92,7 @@
                 mat-raised-button
                 [disabled]="formAds.invalid"
                 >
-                Guardar
+                Editar
             </button>
             <a
                 mat-raised-button
@@ -96,7 +100,7 @@
                 (click)="cancelar()"
             >
                 Cancelar
-            </a> <!--(click)="cancel()"-->
+            </a>
         </div>
     </form>
 </main>

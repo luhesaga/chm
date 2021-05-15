@@ -29,7 +29,6 @@ export class AdsCreateComponent implements OnInit {
       this.fechaYHora = new Date();
       this.selectedImage = null;
       this.buildForm();
-      this.fechaYHora === this.fechaYHora
     }
 
   ngOnInit(): void {
@@ -108,7 +107,7 @@ export class AdsCreateComponent implements OnInit {
       background: 'rgba(0,0,0,.5)',
       showConfirmButton: false,
       backdrop: true,
-      timer: 1000,
+      timer: 5000,
       timerProgressBar: false,
       onBeforeOpen: () => {
         Swal.showLoading();
