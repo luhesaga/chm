@@ -26,11 +26,13 @@ export class NavigationComponent {
     private breakpointObserver: BreakpointObserver,
     private auth: AuthService,
     private route: Router
-  ) {}
+  ) {
+    this.logguedUser={}
+  }
 
   ngOnInit(): void {
     this.auth.user$.subscribe((user) => {
-      //console.log(user);
+      console.log(user);
       this.logguedUser = user;
     });
   }
