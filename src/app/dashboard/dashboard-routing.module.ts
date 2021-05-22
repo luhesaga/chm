@@ -22,6 +22,7 @@ import { AdsCreateComponent } from './components/ads/ads-create/ads-create.compo
 import { ExercisesListComponent } from './components/exercises/exercises-list/exercises-list.component';
 import { ExercisesCreateComponent } from './components/exercises/exercises-create/exercises-create.component';
 import { AdsEditComponent } from './components/ads/ads-edit/ads-edit.component';
+import { CourseRegistrationComponent } from './components/course-registration/course-registration.component';
 
 const routes: Routes = [
   {
@@ -116,6 +117,10 @@ const routes: Routes = [
       {
         path: 'ads/ads-edit/:id',
         component: AdsEditComponent
+      },
+      {
+        path: 'course-registration',
+        component: CourseRegistrationComponent
       }
     ]
   }

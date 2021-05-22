@@ -32,7 +32,7 @@ export class NavigationComponent {
 
   ngOnInit(): void {
     this.auth.user$.subscribe((user) => {
-      console.log(user);
+      //console.log(user);
       this.logguedUser = user;
     });
   }

@@ -1,0 +1,20 @@
+<div class="contenedor">
+    <mat-card class="matCardContent">
+        <mat-card *ngFor="let course of listcourse"
+        class="matCardContent-item gridCursos"
+        (click)="goToLecciones(course.id)">
+            <div class="grid-item1">
+                <img class="imagenCurso" [src]="course.imagen" alt="">
+            </div>
+            <div class="grid-item2">
+                <h2 class="nombreCurso">{{course.nombre}}</h2>
+            </div>
+            <div class="grid-item3">
+                <p><mat-icon>person </mat-icon> <span> {{course.profesor}} </span></p>
+            </div>
+            <div class="grid-item4">
+                {{course.categoria}}
+            </div>
+        </mat-card>
+    </mat-card>
+</div>
