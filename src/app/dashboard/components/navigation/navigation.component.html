@@ -16,7 +16,7 @@
     <mat-accordion>
       <mat-expansion-panel (opened)="panelOpenState = true"
                           (closed)="panelOpenState = false">
-        <mat-expansion-panel-header class="admin-header">
+        <mat-expansion-panel-header *ngIf="logguedUser.perfil==='administrador'" class="admin-header">
           <mat-panel-title class="admin">
             <mat-list>
               <mat-list-item> 
@@ -65,7 +65,7 @@
             <button mat-icon-button>
               <mat-icon>info</mat-icon>
             </button>
-            <a mat-list-item routerLink="/dashboard/cursos">Cursos</a>
+            <a mat-list-item routerLink="/dashboard/course-registration">Cursos</a>
           </mat-list-item>
           <mat-list-item> Salt </mat-list-item>
           <mat-list-item> Paprika </mat-list-item>

@@ -24,6 +24,8 @@ import { ExercisesCreateComponent } from './components/exercises/exercises-creat
 import { AdsEditComponent } from './components/ads/ads-edit/ads-edit.component';
 import { QuestionCreateComponent } from './components/exercises/questions/question-create/question-create.component';
 import { QuestionsListComponent } from './components/exercises/questions/questions-list/questions-list.component';
+import { CourseRegistrationComponent } from './components/course-registration/course-registration.component';
+import { LessonsComponent } from './components/course-registration/lessons/lessons.component';
 
 const routes: Routes = [
   {
@@ -126,8 +128,20 @@ const routes: Routes = [
       {
         path: 'ads/ads-edit/:id',
         component: AdsEditComponent
+      },
+      {
+        path: 'course-registration',
+        component: CourseRegistrationComponent
+      },
+      {
+        path: 'course-registration/lessons/:id',
+        component: LessonsComponent,
       }
     ]
+  },
+  {
+    path: 'course-view',
+    loadChildren: () => import('../course-view/course-view.module').then((d) => d.CourseViewModule)
   }
 ];
 

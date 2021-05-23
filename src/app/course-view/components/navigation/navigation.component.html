@@ -1,0 +1,31 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport
+      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+      [mode]="(isHandset$ | async) ? 'over' : 'side'"
+      [opened]="(isHandset$ | async) === false">
+    <mat-toolbar class="headerSideBar">
+      <div><img class="imagenCurso" [src]="curso.imagen" alt=""></div>
+      <h3>{{curso.profesor}}</h3>
+    </mat-toolbar>
+    <mat-nav-list>
+      <h3 class="nombreLeccion">{{lesson.posicion}}. {{lesson.nombre}}</h3>
+      <div *ngFor="let content of lessonsContent">
+        <a mat-list-item href="#"><mat-icon>cancel</mat-icon> {{content.titulo}}</a>
+      </div>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar>
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span>{{curso.nombre}}</span>
+    </mat-toolbar>
+    <!-- Add Content Here -->
+  </mat-sidenav-content>
+</mat-sidenav-container>

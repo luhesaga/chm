@@ -1,0 +1,77 @@
+.sidenav-container {
+  height: 100%;
+}
+
+.imagenCurso
+{
+    width:120px;
+    height:120px;
+    border-radius:150px;
+    border: 5px solid rgba(0, 114, 121, 0.95);
+};
+
+.sidenav {
+  width: 300px;
+}
+
+.sidenav .mat-toolbar {
+  background: inherit;
+}
+
+.mat-toolbar.mat-primary {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.mat-toolbar {
+  background: var(--main-color-rgb2);
+  span, button
+  {
+    color:white;
+  }
+}
+
+.headerSideBar
+{
+  height:auto;
+  display: flex;
+  flex-direction: column;
+  img
+  {
+    margin:auto;
+  }
+}
+
+.sidenav-container {
+  height: 100%;
+}
+
+.sidenav {
+  width: 300px;
+}
+
+.sidenav .mat-toolbar {
+  background: inherit;
+  padding-top: 24px;
+}
+
+.sidenav .mat-toolbar a img {
+  width: 100%;
+}
+
+.nombreLeccion
+{
+  background: var(--main-color2);
+  margin-top: 20px;
+  font-size: 1.3rem;
+  padding: 10px 15px 10px 0px;
+  padding-left: 15px;
+  color:white;
+}
+
+.mat-icon
+{
+  color: var(--main-color2);
+  margin-right: 10px;
+}
