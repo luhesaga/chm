@@ -29,6 +29,7 @@ import { AdsEditComponent } from './components/ads/ads-edit/ads-edit.component';
 import { MatCarouselModule } from '@ngbmodule/material-carousel';
 import { CarouselComponent } from './components/ads/carousel/carousel.component';
 import { CourseRegistrationComponent } from './components/course-registration/course-registration.component';
+import { LessonsComponent } from './components/course-registration/lessons/lessons.component';
 
 
 @NgModule({
@@ -55,6 +56,7 @@ import { CourseRegistrationComponent } from './components/course-registration/co
     AdsEditComponent,
     CarouselComponent,
     CourseRegistrationComponent,
+    LessonsComponent,
     ],
   imports: [
     CommonModule,

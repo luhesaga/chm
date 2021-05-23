@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { CourseService } from 'src/app/core/services/courses/course.service';
 import { CategoryService } from '../../../core/services/categories/category.service';
 
@@ -12,7 +13,8 @@ export class CourseRegistrationComponent implements OnInit {
   listcourse:any[];
   constructor(
     private courseService: CourseService,
-    private catService: CategoryService
+    private catService: CategoryService,
+    private router: Router
   ) {
     this.listcourse = [];
     this.obtenerCourse();
@@ -38,6 +40,6 @@ export class CourseRegistrationComponent implements OnInit {
 
   goToLecciones(course:string)
   {
-    console.log(course);
+    this.router.navigateByUrl('course-registration/lessons/'+course);
   }
 }

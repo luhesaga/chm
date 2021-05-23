@@ -23,6 +23,7 @@ import { ExercisesListComponent } from './components/exercises/exercises-list/ex
 import { ExercisesCreateComponent } from './components/exercises/exercises-create/exercises-create.component';
 import { AdsEditComponent } from './components/ads/ads-edit/ads-edit.component';
 import { CourseRegistrationComponent } from './components/course-registration/course-registration.component';
+import { LessonsComponent } from './components/course-registration/lessons/lessons.component';
 
 const routes: Routes = [
   {
@@ -121,8 +122,16 @@ const routes: Routes = [
       {
         path: 'course-registration',
         component: CourseRegistrationComponent
+      },
+      {
+        path: 'course-registration/lessons/:id',
+        component: LessonsComponent,
       }
     ]
+  },
+  {
+    path: 'course-view',
+    loadChildren: () => import('../course-view/course-view.module').then((d) => d.CourseViewModule)
   }
 ];
 
