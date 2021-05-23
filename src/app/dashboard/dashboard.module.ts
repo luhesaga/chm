@@ -28,6 +28,8 @@ import { ExercisesCreateComponent } from './components/exercises/exercises-creat
 import { AdsEditComponent } from './components/ads/ads-edit/ads-edit.component';
 import { MatCarouselModule } from '@ngbmodule/material-carousel';
 import { CarouselComponent } from './components/ads/carousel/carousel.component';
+import { QuestionCreateComponent } from './components/exercises/questions/question-create/question-create.component';
+import { QuestionsListComponent } from './components/exercises/questions/questions-list/questions-list.component';
 
 
 @NgModule({
@@ -53,6 +55,8 @@ import { CarouselComponent } from './components/ads/carousel/carousel.component'
     ExercisesCreateComponent,
     AdsEditComponent,
     CarouselComponent,
+    QuestionCreateComponent,
+    QuestionsListComponent,
     ],
   imports: [
     CommonModule,

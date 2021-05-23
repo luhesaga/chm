@@ -22,6 +22,8 @@ import { AdsCreateComponent } from './components/ads/ads-create/ads-create.compo
 import { ExercisesListComponent } from './components/exercises/exercises-list/exercises-list.component';
 import { ExercisesCreateComponent } from './components/exercises/exercises-create/exercises-create.component';
 import { AdsEditComponent } from './components/ads/ads-edit/ads-edit.component';
+import { QuestionCreateComponent } from './components/exercises/questions/question-create/question-create.component';
+import { QuestionsListComponent } from './components/exercises/questions/questions-list/questions-list.component';
 
 const routes: Routes = [
   {
@@ -92,6 +94,14 @@ const routes: Routes = [
       {
         path: 'cursos/ejercicios/editar/:courseId/:exerciseId',
         component: ExercisesCreateComponent
+      },
+      {
+        path: 'cursos/ejercicios/:courseId/questions/:exerciseId',
+        component: QuestionsListComponent
+      },
+      {
+        path: 'cursos/ejercicios/:courseId/preguntas/add/:exerciseId',
+        component: QuestionCreateComponent
       },
       {
         path: 'categorias',

@@ -1,0 +1,118 @@
+* {
+    box-sizing: border-box;
+}
+
+main {
+    background: white;
+    box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+    border-radius: 4px;
+    margin: 36px auto;
+    padding: 24px;
+    width: 90%;
+}
+
+.exercise-options {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-rows: auto;
+    gap: 16px;
+}
+
+.exercise-options .option {
+    display: grid;
+    grid-template-columns: 80px 250px 60px;
+    gap: 16px;
+    background-color: white;
+    -webkit-box-shadow: 1px 1px 4px 1px rgba(0,0,0,0.5); 
+    box-shadow: 1px 1px 4px 1px rgba(0,0,0,0.5);
+    border-radius: 5px;
+    align-items: center;
+}
+
+.exercise-options .option img {
+    max-width: 90%;
+    padding: 5px;
+}
+
+.exercise-options .option .execise-name p {
+    color: var(--main-color2);
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 0;
+    margin: 0;
+}
+
+.mat-menu-item img {
+    width: 30px;
+}
+
+.mat-grid-list {
+    width: 60%;
+}
+
+.tileImg {
+    width: 50px;
+}
+
+.mat-grid-tile img {
+    width: 50px;
+}
+
+.question-options {
+    margin-top: 32px;
+}
+
+.unique-selection {
+    display: flex;
+    flex-direction: column;
+}
+
+.unique-selection h3 {
+    font-weight: 600;
+    font-size: 1.2rem;
+    color: var(--main-color2);
+}
+
+.unique-selection .mat-form-field-wrapper {
+    justify-self: center;
+    align-self: center;
+    display: flex;
+    justify-content: center;
+}
+
+.answers-title {
+    display: grid;
+    grid-template-columns: 30px 80px 1fr 1fr;
+    column-gap: 8px;
+    border-bottom: 1px solid gray;
+    padding: 4px;
+    justify-items: stretch;
+    width: 100%;
+}
+
+.answers-title p {
+    font-weight: 600;
+    padding: 0;
+    margin: 0;
+}
+
+.answers-table {
+    display: grid;
+    grid-template-columns: 30px 80px 1fr 1fr;
+    grid-template-rows: 200px auto;
+    gap: 8px 8px;
+    justify-items: stretch;
+    align-items: center;
+    width: 100%;
+    border-bottom: 1px solid gray;
+}
+
+.buttons {
+    margin-top: 24px;
+    display: flex;
+    justify-content: center;
+}
+
+.buttons button {
+    margin-left: 16px;
+}

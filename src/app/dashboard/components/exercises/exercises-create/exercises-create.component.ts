@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { MatRadioChange } from '@angular/material/radio';
-
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ExercisesService } from 'src/app/core/services/exercises/exercises.service';
+import Swal from 'sweetalert2';
+import { ExercisesListComponent } from '../exercises-list/exercises-list.component';
 @Component({
   selector: 'app-exercises-create',
   templateUrl: './exercises-create.component.html',
@@ -8,92 +11,98 @@ import { MatRadioChange } from '@angular/material/radio';
 })
 export class ExercisesCreateComponent implements OnInit {
 
-  selected: number;
-  pivSelected: number;
+  form: FormGroup;
+  edit = false;
+  exerciseName: string;
+  exerciseId: string;
+  courseId: string;
 
-  options = [
-    {
-      name: 'Selección única',
-      img: '/assets/icons/respuesta_unica.svg',
-      value: 1,
-      state: false
-    },
-    {
-      name: 'Selección multiple',
-      img: '/assets/icons/respuesta_multiple.svg',
-      value: 2,
-      state: false
-    },
-    {
-      name: 'Rellenar blancos',
-      img: '/assets/icons/rellenar_blancos.svg',
-      value: 3,
-      state: false
-    },
-    {
-      name: 'Relacionar',
-      img: '/assets/icons/relacionar.svg',
-      value: 4,
-      state: false
-    },
-    {
-      name: 'Respuesta libre',
-      img: '/assets/icons/respuesta_libre.svg',
-      value: 5,
-      state: false
-    }
-  ]
-
-  answers = [
-    {
-      value: 1,
-      true: false,
-      punctuation: 0,
-      answer: '',
-      comment: '',
-    },
-    {
-      value: 2,
-      true: false,
-      punctuation: 0,
-      answer: '',
-      comment: '',
-    },
-    {
-      value: 3,
-      true: false,
-      punctuation: 0,
-      answer: '',
-      comment: '',
-    },
-    {
-      value: 4,
-      true: false,
-      punctuation: 0,
-      answer: '',
-      comment: '',
-    }
-  ]
-
-  constructor() { }
+  constructor(
+    public dialog: MatDialogRef<ExercisesListComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public editDialog: MatDialog,
+    private formBuilder: FormBuilder,
+    private exercise: ExercisesService,
+  ) {
+    this.buildForm();
+  }
 
   ngOnInit(): void {
-  }
-
-  selectionChange(event: MatRadioChange) {
-
-    let pos;
-
-    if (this.pivSelected) {
-      pos = this.pivSelected - 1;
-      this.options[pos].state = false;
+    // console.log(this.data);
+    if (this.data.content.action === 'edit') {
+      this.exerciseId = this.data.content.exerciseId;
+      this.exerciseName = this.data.content.name;
+      this.edit = true;
+      // console.log(this.exerciseId);
     }
-    this.pivSelected = this.selected;
-
-    pos = event.value - 1;
-    console.log(this.options[pos].name);
-    this.options[pos].state = true;
-
+    this.courseId = this.data.content.courseId;
+    // console.log(this.courseId);
   }
 
+  private buildForm(): void {
+    this.form = this.formBuilder.group({
+      name: ['', Validators.required,],
+    })
+  }
+
+  get nameField() {
+    return this.form.get('name');
+  }
+
+  saveOrEditExercise(event: Event) {
+    event.preventDefault();
+    this.form.markAllAsTouched();
+    if (this.form.valid) {
+      this.form.disable();
+      if (!this.edit) {
+        this.saveExercise();
+      } else {
+        this.editExercise();
+      }
+    }
+  }
+  saveExercise() {
+    this.form.value.fecha = new Date(Date.now()).toLocaleDateString();
+    // console.log(this.form.value.fecha);
+    this.exercise.createExercise(this.form.value, this.courseId)
+      .then(() => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Exito!',
+          text: 'Ejercicio creado exitosamente',
+          confirmButtonText: 'cerrar',
+        });
+        this.dialog.close();
+      })
+      .catch((error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'error',
+          text: 'Ocurrió un error' + error,
+          confirmButtonText: 'cerrar',
+        });
+      });
+  }
+
+  editExercise() {
+    this.form.value.fecha = new Date(Date.now()).toLocaleDateString();
+    this.exercise.editExercise(this.form.value, this.courseId, this.exerciseId)
+    .then(() => {
+      Swal.fire({
+        icon: 'success',
+        title: 'Exito!',
+        text: 'Ejercicio actualizado exitosamente',
+        confirmButtonText: 'cerrar',
+      });
+      this.dialog.close();
+    })
+    .catch((error) => {
+      Swal.fire({
+        icon: 'error',
+        title: 'error',
+        text: 'Ocurrió un error' + error,
+        confirmButtonText: 'cerrar',
+      });
+    });
+  }
 }

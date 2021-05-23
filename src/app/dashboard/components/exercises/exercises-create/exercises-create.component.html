@@ -1,23 +1,35 @@
 <main>
-    <mat-radio-group
-      aria-label="seleccione una opción"
-      color="primary"
-      [(ngModel)]="selected"
-      (change)="selectionChange($event)">
-      <section class="exercise-options">
-        <div class="option" *ngFor="let opt of options">
-          <img src="{{ opt.img }}" alt="">
-          <div class="execise-name"><p>{{ opt.name }}</p></div>
-          <div class="select">
-            <mat-radio-button value="{{opt.value}}"></mat-radio-button>
+  <div class="title dialog-header-close">
+      <mat-icon>library_books</mat-icon>
+      <h2>{{ !edit ? 'Crear nuevo' : 'Editar'}} ejercicio</h2>
+      <mat-icon mat-dialog-close style="color: red;">close</mat-icon>
+  </div>
+  <mat-dialog-content>
+      <form [formGroup]="form" (ngSubmit)="saveOrEditExercise($event)">
+          <div class="form-inputs">
+              <mat-form-field>
+                  <mat-label>Titulo del ejercicio</mat-label>
+                  <input
+                  type="text"
+                  matInput
+                  formControlName="name"
+                  [(ngModel)]="exerciseName"
+                  #myinput/>
+                  <mat-error *ngIf="nameField.touched && nameField.invalid">
+                  <ng-container *ngIf="nameField.hasError('required')">El nombre es requerido</ng-container>
+                  </mat-error>
+              </mat-form-field>
           </div>
-        </div>
-      </section>
-    </mat-radio-group>
-
-    <div *ngFor="let item of options">
-      <div *ngIf="item.state">
-        
-      </div>
-    </div>
+          <div class="buttons">
+              <button
+                  type="submit"
+                  class="guardarBtn"
+                  mat-raised-button
+                  [disabled]="form.invalid">
+                  {{ edit ? 'Guardar cambios' : 'Guardar'}}
+              </button>
+              <a mat-raised-button mat-dialog-close>Cancelar</a>
+          </div>
+      </form>
+  </mat-dialog-content>
 </main>

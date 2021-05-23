@@ -1,0 +1,83 @@
+<main>
+    <section>
+        <mat-radio-group
+            aria-label="seleccione una opción"
+            color="primary"
+            [(ngModel)]="selected"
+            (change)="selectionChange($event)">
+                <section class="exercise-options">
+                    <div class="option" *ngFor="let opt of options">
+                        <img src="{{ opt.img }}" alt="">
+                        <div class="execise-name"><p>{{ opt.name }}</p></div>
+                        <div class="select">
+                            <mat-radio-button value="{{opt.value}}"></mat-radio-button>
+                        </div>
+                    </div>
+                </section>
+        </mat-radio-group>
+    </section>
+
+    <section class="question-options">
+        <div *ngFor="let item of options">
+            <div *ngIf="item.state">
+                <!-- selección unica -->
+                <div *ngIf="item.value === 1">
+                    <div class="unique-selection">
+                        <h3>Añadir Pregunta: {{ item.name }}</h3>
+                        <div class="mat-form-field-wrapper">
+                            <editor
+                            apiKey="fa82nlmdggdzt2rwcpx7k706ohjcnf9wo3ioar2p06d10yyk"
+                            class="mat-elevation-z1"
+                            [(ngModel)]="question"
+                            (onInit)="handleEditorInit($event)"
+                            [init]="{
+                                icons: 'material',
+                                skin: 'borderless',
+                                plugins: ['wordcount', 'lists', 'image imagetools', 'media'],
+                                menubar: false,
+                                min_height: 350,
+                                width : '750',
+                                toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | image | media',
+                                media_live_embeds: true
+                            }"
+                            ></editor>
+                        </div>
+                        <h3>Respuestas</h3>
+                        <div class="answers-title">
+                            <p>No</p>
+                            <p>Verdadero</p>
+                            <p>Respuesta</p>
+                            <p>Comentarios</p>
+                        </div>
+                        <mat-radio-group
+                            aria-label="seleccione una opción"
+                            color="primary"
+                            [(ngModel)]="trueAnswer"
+                            (change)="trueSelected($event)">
+                            <div class="answers-table" *ngFor="let item of questions">
+                            <p>{{item.value}}</p>
+                            <mat-radio-button value="{{item.value}}"></mat-radio-button>
+                            <div>
+                                <textarea rows="10" cols="50" [(ngModel)]="item.answer"></textarea>
+                            </div>
+                            <div>
+                                <textarea rows="10" cols="50" [(ngModel)]="item.comment"></textarea>
+                            </div>
+                            </div>
+                        </mat-radio-group>
+                        <div class="buttons">
+                        <button mat-raised-button [disabled]="!question" (click)="saveQuestion()">Guardar pregunta</button>
+                        <button color="primary" [disabled]="questions.length >= 10" mat-raised-button (click)="addAnswer()">Agregar respuesta</button>
+                        <button color="warn" [disabled]="questions.length <= 2" mat-raised-button (click)="deleteAnswer()">Quitar respuesta</button>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- selección multiple -->
+                <div *ngIf="item.value === 2">
+                    dsdsds
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
