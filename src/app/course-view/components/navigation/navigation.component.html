@@ -4,13 +4,14 @@
       [mode]="(isHandset$ | async) ? 'over' : 'side'"
       [opened]="(isHandset$ | async) === false">
     <mat-toolbar class="headerSideBar">
+      <div class="volver" (click)="goToLecciones()"><p><</p></div>
       <div><img class="imagenCurso" [src]="curso.imagen" alt=""></div>
       <h3>{{curso.profesor}}</h3>
     </mat-toolbar>
     <mat-nav-list>
       <h3 class="nombreLeccion">{{lesson.posicion}}. {{lesson.nombre}}</h3>
       <div *ngFor="let content of lessonsContent">
-        <a mat-list-item href="#"><mat-icon>cancel</mat-icon> {{content.titulo}}</a>
+        <a mat-list-item (click)="showContent(content)"><mat-icon>cancel</mat-icon> {{content.titulo}}</a>
       </div>
     </mat-nav-list>
   </mat-sidenav>
@@ -27,5 +28,22 @@
       <span>{{curso.nombre}}</span>
     </mat-toolbar>
     <!-- Add Content Here -->
+    <div *ngIf="content.tipo === 'Agregar archivo PDF'">
+      <ngx-extended-pdf-viewer [src]="content.archivo" useBrowserLocale="true" height="80vh" [showOpenFileButton]="false" [showBookmarkButton]="false"></ngx-extended-pdf-viewer>
+    </div>
+    <div [class]="class">
+      <div *ngIf="content.tipo === 'Agregar foro'">
+        <h3>Foro: {{content.titulo}}</h3>
+      </div>
+      <div id="innerHtml"></div>
+      <div *ngIf="content.tipo === 'Agregar foro'">
+        <button class="corner-button">
+          <span>Responder Foro</span>
+        </button>
+        <button class="corner-button corner-button2">
+          <span>Citar Foro</span>
+        </button>
+      </div>
+    </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

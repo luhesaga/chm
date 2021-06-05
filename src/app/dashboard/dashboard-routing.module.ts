@@ -141,6 +141,7 @@ const routes: Routes = [
   },
   {
     path: 'course-view',
+    canActivate:[LoginGuard],
     loadChildren: () => import('../course-view/course-view.module').then((d) => d.CourseViewModule)
   }
 ];

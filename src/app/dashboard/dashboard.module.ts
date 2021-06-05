@@ -34,6 +34,7 @@ import { CourseRegistrationComponent } from './components/course-registration/co
 import { LessonsComponent } from './components/course-registration/lessons/lessons.component';
 
 
+
 @NgModule({
   declarations: [
     MainComponent,
@@ -70,7 +71,7 @@ import { LessonsComponent } from './components/course-registration/lessons/lesso
     LayoutModule,
     ReactiveFormsModule,
     FormsModule,
-    MatCarouselModule.forRoot()
+    MatCarouselModule.forRoot(),
   ]
 })
 export class DashboardModule { }
