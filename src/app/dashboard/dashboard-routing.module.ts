@@ -106,6 +106,10 @@ const routes: Routes = [
         component: QuestionCreateComponent
       },
       {
+        path: 'cursos/ejercicios/:courseId/preguntas/edit/:exerciseId/:questionPosition/:questionType/:answerTrue',
+        component: QuestionCreateComponent
+      },
+      {
         path: 'categorias',
         component: CategoriesComponent
       },

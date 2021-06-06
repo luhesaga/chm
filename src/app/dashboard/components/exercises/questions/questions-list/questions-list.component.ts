@@ -3,8 +3,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
-import { lutimesSync } from 'fs';
 import { ExercisesService } from '../../../../../core/services/exercises/exercises.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-questions-list',
@@ -34,7 +34,7 @@ export class QuestionsListComponent implements OnInit, OnDestroy, AfterViewInit 
   ) {
     this.courseId = this.activatedRoute.snapshot.params.courseId;
     this.exerciseId = this.activatedRoute.snapshot.params.exerciseId;
-    console.log(`Id curso: ${this.courseId}, Id Ejercicio: ${this.exerciseId}`);
+    // console.log(`Id curso: ${this.courseId}, Id Ejercicio: ${this.exerciseId}`);
    }
 
   ngOnInit(): void {
@@ -44,7 +44,7 @@ export class QuestionsListComponent implements OnInit, OnDestroy, AfterViewInit 
         this.exerciseReceived = ex;
         this.questions = ex.preguntas;
         this.dataSource.data = this.questions;
-        console.log(ex);
+        // console.log(this.questions);
       })
   }
 
@@ -62,14 +62,60 @@ export class QuestionsListComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   createOrEditQuestion(exerc) {
+
     if (!exerc) {
       this.router.navigate([`cursos/ejercicios/${this.courseId}/preguntas/add/${this.exerciseId}`]);
     } else {
-      this.router.navigate([`cursos/ejercicios/${this.courseId}/preguntas/add/${this.exerciseId + 'edit' + exerc.position}`]);
+      const answerTrue =  exerc.answers.filter(x => x.respuesta === true)[0].value;
+      // console.log(`answerTrue: ${answerTrue}`);
+      this.router.navigate([`cursos/ejercicios/${this.courseId}/preguntas/edit/${this.exerciseId}/${exerc.position}/${exerc.type}/${answerTrue}`]);
     }
   }
 
-  openDialog(data) {}
+  deleteQuestion(data) {
+    Swal.fire({
+      title: '¿Esta seguro?',
+      text: 'Esta acción eliminara esta pregunta permanentemente, no se puede deshacer!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, estoy seguro!'
+    })
+    .then((result) => {
+      if (result.value) {
+        // console.log(data);
+        const pos = data.position;
+        let i = 1;
+        // console.log(this.questions);
+        this.exerciseReceived.preguntas.forEach(p => {
+          if (p.position > pos) {
+            p.position -= 1;
+          }
+        });
+        this.questions.splice(pos -1, 1);
+        this.exercService.addQuestion(this.courseId, this.exerciseId, this.questions)
+        .then(() => {
+          Swal.fire({
+            icon: 'success',
+            title: 'Exito!',
+            text: 'pregunta eliminada exitosamente',
+            confirmButtonText: 'cerrar',
+        });
+        this.router.navigate([`cursos/ejercicios/${this.courseId}/questions/${this.exerciseId}`]);
+    })
+    .catch((error) => {
+      Swal.fire({
+        icon: 'error',
+        title: 'error',
+        text: 'Ocurrió un error' + error,
+        confirmButtonText: 'cerrar',
+            });
+        });
+      }
+    })
+    .catch(error => console.log(error));
+  }
 
   createOrEditExercise() {
     this.router.navigate([`cursos/ejercicios/crear/${this.courseId}`]);
@@ -116,7 +162,7 @@ export class QuestionsListComponent implements OnInit, OnDestroy, AfterViewInit 
   parseHTML(html) {
     let t = document.createElement('template');
     t.innerHTML = html;
-    console.log(t.content.firstChild.textContent);
+    // console.log(t.content.firstChild.textContent);
     return t.content.firstChild.textContent;
   }
 

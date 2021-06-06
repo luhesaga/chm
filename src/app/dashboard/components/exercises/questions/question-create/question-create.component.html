@@ -21,9 +21,10 @@
         <div *ngFor="let item of options">
             <div *ngIf="item.state">
                 <!-- selección unica -->
-                <div *ngIf="item.value === 1">
-                    <div class="unique-selection">
-                        <h3>Añadir Pregunta: {{ item.name }}</h3>
+                <div *ngIf="item.value === 1 || item.value === 2">
+                    <!-- Editor de texto para la pregunta -->
+                    <div class="question-editor">
+                        <h3>{{edit ? 'Editar' : 'Añadir'}} Pregunta: {{ item.name }}</h3>
                         <div class="mat-form-field-wrapper">
                             <editor
                             apiKey="fa82nlmdggdzt2rwcpx7k706ohjcnf9wo3ioar2p06d10yyk"
@@ -42,6 +43,9 @@
                             }"
                             ></editor>
                         </div>
+                    </div>
+                    <!-- Seleccion unica -->
+                    <div class="unique-multiple-selection">
                         <h3>Respuestas</h3>
                         <div class="answers-title">
                             <p>No</p>
@@ -49,34 +53,121 @@
                             <p>Respuesta</p>
                             <p>Comentarios</p>
                         </div>
-                        <mat-radio-group
-                            aria-label="seleccione una opción"
-                            color="primary"
-                            [(ngModel)]="trueAnswer"
-                            (change)="trueSelected($event)">
-                            <div class="answers-table" *ngFor="let item of questions">
-                            <p>{{item.value}}</p>
-                            <mat-radio-button value="{{item.value}}"></mat-radio-button>
-                            <div>
-                                <textarea rows="10" cols="50" [(ngModel)]="item.answer"></textarea>
-                            </div>
-                            <div>
-                                <textarea rows="10" cols="50" [(ngModel)]="item.comment"></textarea>
-                            </div>
-                            </div>
-                        </mat-radio-group>
-                        <div class="buttons">
-                        <button mat-raised-button [disabled]="!question" (click)="saveQuestion()">Guardar pregunta</button>
-                        <button color="primary" [disabled]="questions.length >= 10" mat-raised-button (click)="addAnswer()">Agregar respuesta</button>
-                        <button color="warn" [disabled]="questions.length <= 2" mat-raised-button (click)="deleteAnswer()">Quitar respuesta</button>
+                        <div class="unique-selection" *ngIf="item.value === 1">
+                            <mat-radio-group
+                                aria-label="seleccione una opción"
+                                color="primary"
+                                [(ngModel)]="trueAnswer"
+                                (change)="trueSelected($event)">
+                                <div class="answers-table" *ngFor="let item of questions">
+                                    <p>{{item.value}}</p>
+                                    <mat-radio-button value="{{item.value}}" [checked]="item.respuesta"></mat-radio-button>
+                                    <div>
+                                        <textarea [(ngModel)]="item.answer"></textarea>
+                                    </div>
+                                    <div>
+                                        <textarea [(ngModel)]="item.comment"></textarea>
+                                    </div>
+                                </div>
+                            </mat-radio-group>
                         </div>
 
+                        <!-- selección multiple -->
+                        <div class="multiple-selection" *ngIf="item.value === 2">
+                            <div class="answers-table" *ngFor="let item of questions">
+                                <p>{{item.value}}</p>
+                                <mat-checkbox
+                                    [(ngModel)]="item.respuesta"
+                                    color="primary">
+                                </mat-checkbox>
+                                <div>
+                                    <textarea [(ngModel)]="item.answer"></textarea>
+                                </div>
+                                <div>
+                                    <textarea [(ngModel)]="item.comment"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="buttons">
+                            <button mat-raised-button [disabled]="!question" (click)="saveOrEditQuestion()">Guardar pregunta</button>
+                            <button color="primary" [disabled]="questions.length >= 10" mat-raised-button (click)="addAnswer()">Agregar respuesta</button>
+                            <button color="warn" [disabled]="questions.length <= 2" mat-raised-button (click)="deleteAnswer()">Quitar respuesta</button>
+                            <button mat-raised-button (click)="goBack()"><<< Cancelar</button>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- Relacionar -->
+                <div *ngIf="item.value === 4">
+                    <div class="relacionar">
+                        <!-- Editor de texto para la pregunta -->
+                        <div class="question-editor">
+                            <h3>{{edit ? 'Editar' : 'Añadir'}} Pregunta: {{ item.name }}</h3>
+                            <div class="mat-form-field-wrapper">
+                                <editor
+                                apiKey="fa82nlmdggdzt2rwcpx7k706ohjcnf9wo3ioar2p06d10yyk"
+                                class="mat-elevation-z1"
+                                [(ngModel)]="question"
+                                (onInit)="handleEditorInit($event)"
+                                [init]="{
+                                    icons: 'material',
+                                    skin: 'borderless',
+                                    plugins: ['wordcount', 'lists', 'image imagetools', 'media'],
+                                    menubar: false,
+                                    min_height: 350,
+                                    width : '750',
+                                    toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | image | media',
+                                    media_live_embeds: true
+                                }"
+                                ></editor>
+                            </div>
+                        </div>
+                        <h3>Respuestas</h3>
+                        <div class="relacionar-title">
+                            <p>No</p>
+                            <p>Respuesta</p>
+                            <p>Corresponde a</p>
+                        </div>
+
+                        <div class="relacionar-table" *ngFor="let item of questions">
+                            <p>{{item.value}}</p>
+                            <div>
+                                <textarea [(ngModel)]="item.answer"></textarea>
+                            </div>
+                            <div>
+                                <mat-form-field appearance="fill">
+                                    <!-- <mat-label>Respuesta</mat-label> -->
+                                    <mat-select
+                                        (selectionChange)="relationSelect($event, item.value)"
+                                        [(ngModel)]="item.relation">
+                                        <mat-option *ngFor="let r of relations" [value]="r.value">
+                                        {{letters[r.value - 1]}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                
+                            </div>
+                        </div>
+                        <h3>Relacionar con</h3>
+                        <div class="relation-title">
+                            <p>No</p>
+                            <p>Respuesta</p>
+                        </div>
+                        <div class="relation-table" *ngFor="let item of relations">
+                            <p>{{letters[item.value - 1]}}</p>
+                            <div>
+                                <textarea [(ngModel)]="item.answer"></textarea>
+                            </div>
+                        </div>
+                        <div class="buttons">
+                            <button mat-raised-button [disabled]="!question" (click)="saveRelations()">Guardar pregunta</button>
+                            <button color="primary" [disabled]="questions.length >= 10" mat-raised-button (click)="addAnswer()">Agregar respuesta</button>
+                            <button color="warn" [disabled]="questions.length <= 2" mat-raised-button (click)="deleteAnswer()">Quitar respuesta</button>
+                            <button mat-raised-button (click)="goBack()"><<< Cancelar</button>
+                        </div>
                     </div>
                 </div>
-                <!-- selección multiple -->
-                <div *ngIf="item.value === 2">
-                    dsdsds
-                </div>
+
             </div>
         </div>
     </section>
