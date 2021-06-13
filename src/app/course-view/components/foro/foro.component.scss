@@ -4,35 +4,28 @@ $border-width: .2rem;
 $corner-size: 1rem;
 $dur: .5s;
 
-.foro {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-top:1rem;
-}
+.foro{
+    margin-top: 1rem;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) ;
+    width:90%;
+    margin: 1.5rem auto;
+    padding:1.5rem;
+    h3
+    {
+      font-weight:bold;
+      font-size: 1.2rem;
+    }
+  }
 
-.tituloForo
-{
-    padding-left: 1rem;
-}
-
-.botones
-{
-    display: flex;
-    flex-wrap: wrap;
-    margin-top: 1.5rem;
-}
-
-.corner-button {
-    margin-left: 1.5rem;
-    margin-top: 2rem;
+  .corner-button {
+    margin-top: 1rem;
     font-family: 'Lato', sans-serif;
     letter-spacing: .02rem;
     cursor: pointer;
     background: transparent;
     border: $border-width solid currentColor;
-    padding: 1rem 1rem;
-    font-size: 1.5rem;
+    padding: 0.5rem 0.5rem;
+    font-size: 1rem;
     color: $fg;
     position: relative;
     transition: color $dur;
@@ -78,7 +71,8 @@ $dur: .5s;
   
   .corner-button2
   {
-    margin-top: 2rem;
+    margin-left: 1.5rem;
+    margin-top: 1rem;
     &:hover {
       color: #08D5FE;
       &::before { width: 0; }
@@ -86,3 +80,32 @@ $dur: .5s;
     }
   }
 
+  .respuestas
+  {
+    margin-top: 1rem;
+  }
+
+  .comentario
+  {
+    padding-top: 1rem;
+    border-top: 2px solid var(--main-color2);
+    margin-top: 1.5rem;
+    h4
+    {
+      font-weight: bold;
+    }
+  }
+
+  .tituloComentario
+  {
+    margin-top: 1rem;
+  }
+
+  .cita
+  {
+    background-color: var(--main-color2);
+    color:white;
+    padding:0.5rem;
+    border-radius: 1rem;
+    margin-bottom: 1rem;
+  }

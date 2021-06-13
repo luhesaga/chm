@@ -1,0 +1,37 @@
+<div class="foro">
+    <h3>Foro: {{contenido.titulo}}</h3>
+    <div id="innerHtml"></div>
+    <button
+      (click)="goToReplyForo()"
+      class="corner-button">
+      <span>Responder Foro</span>
+    </button>
+    <button
+      (click)="goToCitarForo()"
+      class="corner-button corner-button2">
+      <span>Citar Foro</span>
+    </button>
+</div>
+
+  <div *ngFor="let respuesta of respuestas">
+    <div class="foro | respuestas">
+    <h3>{{respuesta.nombreCompleto}}</h3>
+    <div *ngIf="respuesta.tipo === 'citar'">
+      <div [innerHTML]="contenido.foro" class="cita"></div>
+    </div>
+    <div [innerHTML]="respuesta.contenido"></div>
+      <button
+      (click)="goToReplyUsario(respuesta.id)"
+      class="corner-button">
+        <span>Comentar</span>
+      </button>
+
+      <div *ngIf=" respuesta.comentario">
+        <h3 class="tituloComentario">Comentarios</h3>
+        <div *ngFor="let comentario of respuesta.comentario" class="comentario">
+          <h4>{{comentario.nombreCompleto}}</h4>
+          <div [innerHTML]="comentario.contenido"></div>
+        </div>
+      </div>
+    </div>
+</div>

@@ -71,13 +71,16 @@ export class NavigationComponent {
     showContent(content:any):void
     {
       this.content=content;
-      if (this.content.tipo !=='Agregar archivo PDF')
+      if(this.content.tipo === 'Agregar contenido')
       {
-        this.iHtml();
+        this.goToContenido(this.content.id);
+      } else if (this.content.tipo === 'Agregar foro')
+      {
+        this.goToForo(this.content.id);
       }
       else
       {
-        this.hiddenHtml();
+        this.goToPdf(this.content.id)
       }
     }
 
@@ -118,6 +121,26 @@ export class NavigationComponent {
     goToLecciones()
     {
       this.router.navigateByUrl('course-registration/lessons/'+this.idCurso);
+    }
+
+    goToReplyForo()
+    {
+      this.router.navigateByUrl(`course-view/${this.idCurso}/${this.idLesson}/reply-foro`);
+    }
+
+    goToForo(idContent:string)
+    {
+      this.router.navigateByUrl(`course-view/${this.idCurso}/${this.idLesson}/foro/${this.idCurso}/${this.idLesson}/${idContent}`);
+    }
+
+    goToPdf(idContent:string)
+    {
+      this.router.navigateByUrl(`course-view/${this.idCurso}/${this.idLesson}/pdf/${this.idCurso}/${this.idLesson}/${idContent}`);
+    }
+
+    goToContenido(idContent:string)
+    {
+      this.router.navigate([`course-view/${this.idCurso}/${this.idLesson}/contenido/${this.idCurso}/${this.idLesson}/${idContent}`]);
     }
 
 }

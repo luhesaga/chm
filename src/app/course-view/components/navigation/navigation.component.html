@@ -28,22 +28,6 @@
       <span>{{curso.nombre}}</span>
     </mat-toolbar>
     <!-- Add Content Here -->
-    <div *ngIf="content.tipo === 'Agregar archivo PDF'">
-      <ngx-extended-pdf-viewer [src]="content.archivo" useBrowserLocale="true" height="80vh" [showOpenFileButton]="false" [showBookmarkButton]="false"></ngx-extended-pdf-viewer>
-    </div>
-    <div [class]="class">
-      <div *ngIf="content.tipo === 'Agregar foro'">
-        <h3>Foro: {{content.titulo}}</h3>
-      </div>
-      <div id="innerHtml"></div>
-      <div *ngIf="content.tipo === 'Agregar foro'">
-        <button class="corner-button">
-          <span>Responder Foro</span>
-        </button>
-        <button class="corner-button corner-button2">
-          <span>Citar Foro</span>
-        </button>
-      </div>
-    </div>
+    <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>

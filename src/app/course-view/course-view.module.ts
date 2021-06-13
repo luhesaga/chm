@@ -12,10 +12,14 @@ import { NavigationComponent } from './components/navigation/navigation.componen
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { EditorModule } from "@tinymce/tinymce-angular";
 import { ReplyForoComponent } from './components/reply-foro/reply-foro.component';
+import { ForoComponent } from './components/foro/foro.component';
+import { PdfComponent } from './components/pdf/pdf.component';
+import { ContenidoComponent } from './components/contenido/contenido.component';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
-  declarations: [NavigationComponent, ReplyForoComponent],
+  declarations: [NavigationComponent, ReplyForoComponent, ForoComponent, PdfComponent, ContenidoComponent],
   imports: [
     CommonModule,
     CourseViewRoutingModule,
@@ -26,7 +30,8 @@ import { ReplyForoComponent } from './components/reply-foro/reply-foro.component
     MatIconModule,
     MatListModule,
     NgxExtendedPdfViewerModule,
-    EditorModule
+    EditorModule,
+    FormsModule
   ]
 })
 export class CourseViewModule { }
