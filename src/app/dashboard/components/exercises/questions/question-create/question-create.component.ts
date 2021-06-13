@@ -116,6 +116,10 @@ export class QuestionCreateComponent implements OnInit, OnDestroy {
   letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'O',
               'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'X', 'Y', 'Z']
 
+  whitePiv = false;
+  whiteWord: string = '';
+  whiteWords = [];
+
   questionToSave  = [];
   position: number;
 
@@ -163,8 +167,10 @@ export class QuestionCreateComponent implements OnInit, OnDestroy {
           this.selected = this.qType;
           this.pivSelected = this.qType;
           this.question = this.questionToEdit.question;
-          this.questions.length = 0;
-          this.questions = this.questionToEdit.answers;
+          if (this.qType * 1 !== 5) {
+            this.questions.length = 0;
+            this.questions = this.questionToEdit.answers;
+          }
           // validar si es pregunta de tipo relacionar (tipo 4)
           if (this.qType * 1 === 4) {
             this.relations.length = 0;
@@ -271,6 +277,15 @@ export class QuestionCreateComponent implements OnInit, OnDestroy {
     }
   }
 
+  saveFreeAnswer() {
+    this.questions.length = 0;
+    if (this.edit) {
+      this.editQuestion();
+    } else {
+      this.saveQuestion();
+    }
+  }
+
   saveOrEditQuestion() {
 
     if (this.edit) {
@@ -282,7 +297,7 @@ export class QuestionCreateComponent implements OnInit, OnDestroy {
 
   saveQuestion() {
 
-    if (!this.trueAnswer && this.selected !== 4) {
+    if (!this.trueAnswer && (this.selected * 1 !== 4 && this.selected * 1 !==5)) {
       Swal.fire({
 				icon: 'error',
 				title: 'Error',
@@ -296,7 +311,7 @@ export class QuestionCreateComponent implements OnInit, OnDestroy {
           validQ = false;
         }
       })
-      if (!validQ) {
+      if (!validQ && (this.selected * 1 !== 4 && this.selected * 1 !==5)) {
         Swal.fire({
           icon: 'error',
           title: 'Error',
@@ -337,7 +352,7 @@ export class QuestionCreateComponent implements OnInit, OnDestroy {
 
   editQuestion() {
 
-    if (!this.trueAnswer && this.selected !== 4) {
+    if (!this.trueAnswer && (this.selected * 1 !== 4 && this.selected * 1 !==5)) {
       Swal.fire({
 				icon: 'error',
 				title: 'Error',
@@ -351,7 +366,7 @@ export class QuestionCreateComponent implements OnInit, OnDestroy {
           validQ = false;
         }
       })
-      if (!validQ) {
+      if (!validQ && (this.selected * 1 !== 4 && this.selected * 1 !==5)) {
         Swal.fire({
           icon: 'error',
           title: 'Error',
@@ -420,6 +435,62 @@ export class QuestionCreateComponent implements OnInit, OnDestroy {
       }
     }
 
+  }
+
+  questionChange(event) {
+
+    let t = document.createElement('template');
+    t.innerHTML = event;
+
+    let texto: string = '';
+
+    if (t.innerHTML) {
+      texto = t.content.firstChild.textContent;
+      const word = texto.split(/(?:\[|\])+/);
+      this.whitesGenerator(word);
+    }
+
+  }
+
+  whitesGenerator(array) {
+    this.whiteWords.length = 0;
+    array.forEach(p => {
+      if (p.indexOf('(') !== -1 && p.indexOf(')') !== -1) {
+        this.whiteWords.push(p.substring(1, p.length - 1));
+      }
+    });
+  }
+
+  saveWhite() {
+    const question = this.questionFormatter();
+    console.log(question);
+    this.question = question;
+
+  }
+
+  questionFormatter() {
+
+    let texto = this.question;
+
+    while(texto.indexOf('[') !== -1) {
+      const inicio = texto.indexOf('[');
+      const final = texto.indexOf(']');
+      const spaces = this.spaceGenerator(texto.substring(inicio , final + 1));
+      texto = texto.replace(texto.substring(inicio , final + 1), spaces);
+    }
+
+    return texto;
+  }
+
+  spaceGenerator(word) {
+
+    let spaces = '';
+
+    for (let index = 0; index < word.length; index++) {
+      spaces += '_';
+    }
+
+    return spaces;
   }
 
   goBack() {

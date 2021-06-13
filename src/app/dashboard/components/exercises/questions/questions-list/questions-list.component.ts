@@ -62,12 +62,15 @@ export class QuestionsListComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   createOrEditQuestion(exerc) {
-
     if (!exerc) {
       this.router.navigate([`cursos/ejercicios/${this.courseId}/preguntas/add/${this.exerciseId}`]);
     } else {
-      const answerTrue =  exerc.answers.filter(x => x.respuesta === true)[0].value;
-      // console.log(`answerTrue: ${answerTrue}`);
+      let answerTrue;
+      if (exerc.type !== 4 && exerc.type !== 5) {
+        answerTrue =  exerc.answers.filter(x => x.respuesta === true)[0].value;
+      } else {
+        answerTrue = 0;
+      }
       this.router.navigate([`cursos/ejercicios/${this.courseId}/preguntas/edit/${this.exerciseId}/${exerc.position}/${exerc.type}/${answerTrue}`]);
     }
   }
