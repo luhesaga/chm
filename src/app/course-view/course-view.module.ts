@@ -9,10 +9,17 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { NavigationComponent } from './components/navigation/navigation.component';
+import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
+import { EditorModule } from "@tinymce/tinymce-angular";
+import { ReplyForoComponent } from './components/reply-foro/reply-foro.component';
+import { ForoComponent } from './components/foro/foro.component';
+import { PdfComponent } from './components/pdf/pdf.component';
+import { ContenidoComponent } from './components/contenido/contenido.component';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
-  declarations: [NavigationComponent],
+  declarations: [NavigationComponent, ReplyForoComponent, ForoComponent, PdfComponent, ContenidoComponent],
   imports: [
     CommonModule,
     CourseViewRoutingModule,
@@ -21,7 +28,10 @@ import { NavigationComponent } from './components/navigation/navigation.componen
     MatButtonModule,
     MatSidenavModule,
     MatIconModule,
-    MatListModule
+    MatListModule,
+    NgxExtendedPdfViewerModule,
+    EditorModule,
+    FormsModule
   ]
 })
 export class CourseViewModule { }

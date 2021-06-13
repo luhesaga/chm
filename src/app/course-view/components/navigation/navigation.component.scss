@@ -1,3 +1,4 @@
+
 .sidenav-container {
   height: 100%;
 }
@@ -30,6 +31,11 @@
   {
     color:white;
   }
+  span
+  {
+    width: 100%;
+    padding-left: 15px;
+  }
 }
 
 .headerSideBar
@@ -37,9 +43,27 @@
   height:auto;
   display: flex;
   flex-direction: column;
+  width: 100%;
   img
   {
     margin:auto;
+  }
+  .volver
+  {
+    p
+    {
+      padding:0px;
+      margin: 0px;
+      font-size: 2.5rem;
+      background-color: var(--main-color-rgb2) ;
+      width: 20px;
+      padding: 10px;
+    }
+    cursor: pointer;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 30px;
+    color:white;
   }
 }
 
@@ -53,7 +77,6 @@
 
 .sidenav .mat-toolbar {
   background: inherit;
-  padding-top: 24px;
 }
 
 .sidenav .mat-toolbar a img {
@@ -70,8 +93,21 @@
   color:white;
 }
 
-.mat-icon
+a .mat-icon
 {
   color: var(--main-color2);
   margin-right: 10px;
 }
+
+ngx-extended-pdf-viewer{
+  min-height: 100%;
+}
+
+.mat-toolbar
+{
+  padding:0px;
+  margin-right: 10px;
+}
+
+
+

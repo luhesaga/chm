@@ -1,0 +1,88 @@
+$bg: #2f2f2f;
+$fg: #06c17f;
+$border-width: .2rem;
+$corner-size: 1rem;
+$dur: .5s;
+
+.foro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top:1rem;
+}
+
+.tituloForo
+{
+    padding-left: 1rem;
+}
+
+.botones
+{
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+}
+
+.corner-button {
+    margin-left: 1.5rem;
+    margin-top: 2rem;
+    font-family: 'Lato', sans-serif;
+    letter-spacing: .02rem;
+    cursor: pointer;
+    background: transparent;
+    border: $border-width solid currentColor;
+    padding: 1rem 1rem;
+    font-size: 1.5rem;
+    color: $fg;
+    position: relative;
+    transition: color $dur;
+  
+    &:hover {
+      color: var(--main-color2);
+      &::before { width: 0; }
+      &::after { height: 0; }
+    }
+    &:active {
+      border-width: $border-width / 2;
+    }
+    
+    //bit lame about the extra span. 
+    //it's to get the text to appear on top of the psewudo elements. is there a dom-less way to do it?
+    span {
+      position: relative;
+      z-index: 2;
+    }
+    &::before, &::after {
+      content: '';
+      position: absolute;
+      background: white;
+      z-index: 1;
+      transition: all $dur;
+    }
+    //the 101% is because of a pixel rounding issue in firefox
+    &::before {
+      width: calc(100% - #{$corner-size});
+      height: calc(101% + #{$border-width * 2});
+      top: -$border-width;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    &::after {
+      height: calc(100% - #{$corner-size});
+      width: calc(101% + #{$border-width * 2});
+      left: -$border-width;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+  
+  .corner-button2
+  {
+    margin-top: 2rem;
+    &:hover {
+      color: #08D5FE;
+      &::before { width: 0; }
+      &::after { height: 0; }
+    }
+  }
+

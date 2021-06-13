@@ -48,8 +48,6 @@ export class LessonsService {
 
   addLessonContent(data, courseId, lessonId, filename, id) {
     //const id = this.fireStore.createId();
-    console.log(data);
-    console.log(filename);
     return this.fireStore.doc(`cursos/${courseId}/lecciones/${lessonId}/contenido/${id}`)
       .set({
           id,
@@ -93,4 +91,58 @@ export class LessonsService {
         posicion: pos,
       });
   }
+
+  pushForo(respuesta:any, courseId, lessonId, contentId)
+  {
+    let idRespuesta= this.fireStore.createId();
+    this.fireStore.doc(`cursos/${courseId}/lecciones/${lessonId}/contenido/${contentId}/foro/${idRespuesta}`)
+    .set({
+      tiempo:respuesta.tiempo,
+      tipo: respuesta.tipo,
+      contenido: respuesta.contenido,
+      nombreCompleto: respuesta.nombreCompleto,
+      usuarioId: respuesta.id,
+      id: idRespuesta
+    });
+  }
+
+  listReplyForo(courseId, lessonId, contentId): AngularFirestoreCollection
+  {
+    return this.fireStore.collection(`cursos/${courseId}/lecciones/${lessonId}/contenido/${contentId}/foro`, ref =>
+    ref.orderBy('tiempo', 'desc'));
+  }
+
+  getReplyForo(courseId, lessonId, contentId, replayId)
+  {
+    return this.fireStore.doc(`cursos/${courseId}/lecciones/${lessonId}/contenido/${contentId}/foro/${replayId}`);
+  }
+
+  pushComentario(data,courseId, lessonId, contentId, replayId)
+  {
+    let reply:any;
+    const subReplyForo = this.fireStore.doc(`cursos/${courseId}/lecciones/${lessonId}/contenido/${contentId}/foro/${replayId}`)
+    .valueChanges()
+    .subscribe(
+      replyForo => {
+        reply = replyForo;
+        if(!reply.comentario)
+        {
+          this.fireStore.doc(`cursos/${courseId}/lecciones/${lessonId}/contenido/${contentId}/foro/${replayId}`)
+          .update({comentario:[data]})
+        }
+        else
+        {
+          reply.comentario.push(data);
+          this.fireStore.doc(`cursos/${courseId}/lecciones/${lessonId}/contenido/${contentId}/foro/${replayId}`)
+          .update({comentario:reply.comentario})
+        }
+        subReplyForo.unsubscribe();
+      }
+    );
+  }
+
+
+
+
 }
+
