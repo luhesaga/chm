@@ -152,6 +152,25 @@ form h1 {
 
 }
 
+.ejercicio {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+}
+
+.ejercicio p {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--main-color2);
+    margin-bottom: 32px;
+}
+
+.ejercicio mat-form-field {
+    margin-bottom: 48px;
+}
+
 .buttons {
     align-self: center;
     width: 50%;

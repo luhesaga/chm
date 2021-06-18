@@ -72,6 +72,9 @@ import { LessonsComponent } from './components/course-registration/lessons/lesso
     ReactiveFormsModule,
     FormsModule,
     MatCarouselModule.forRoot(),
+  ],
+  exports: [
+    CarouselComponent,
   ]
 })
 export class DashboardModule { }

@@ -24,6 +24,10 @@ body {
     padding: 0 !important;
 }
 
+.carousel-slide {
+    background-size: contain !important;
+}
+
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 

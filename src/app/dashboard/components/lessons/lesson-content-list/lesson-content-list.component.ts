@@ -5,6 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { LessonsService } from 'src/app/core/services/lessons/lessons.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-lesson-content-list',
@@ -89,7 +90,8 @@ export class LessonContentListComponent implements OnInit, AfterViewInit, OnDest
   }
 
   levelUp(data) {
-    // console.log(data);
+     console.log(data);
+     console.log(this.dataSource.data);
     if (data.posicion > 1) {
       let actualContent: any = this.dataSource.data[data.posicion - 1];
       let previousContent: any = this.dataSource.data[data.posicion - 2];
@@ -125,6 +127,41 @@ export class LessonContentListComponent implements OnInit, AfterViewInit, OnDest
     const cId = this.CourseId;
     const lId = this.LessonId;
     this.route.navigate([`cursos/${cId}/lecciones/config/${lId}/${contentId}`]);
+  }
+
+  deleteContent(data) {
+    const cId = this.CourseId;
+    const lId = this.LessonId;
+    Swal.fire({
+      title: '¿Esta seguro?',
+      text: 'Esta acción eliminara este contenido permanentemente, no se puede deshacer!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, estoy seguro!'
+    })
+    .then((result) => {
+      if (result.value) {
+        //console.log(data);
+        this.lessonService.deleteLessonContent(cId, lId, data.id)
+        .then(() => {
+          Swal.fire(
+            'Eliminado!',
+            'Eliminación exitosa.',
+            'success',
+          );
+        })
+        .catch((error) => {
+          Swal.fire(
+            'Error!',
+            `La operación no se pudó realizar, ${error}.`,
+            'error',
+          );
+        });
+      }
+    })
+    .catch(error => console.log(error));
   }
 
 }

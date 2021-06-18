@@ -1,5 +1,5 @@
 <div class="container">
-  <h2>Gestión de Cursos</h2>
+  <h2>Gestión de Lecciones</h2>
   <mat-form-field appearance="legacy" class="search">
       <mat-label>Buscar</mat-label>
       <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Placeholder">
@@ -10,7 +10,7 @@
     mat-raised-button
     (click)="createOrEditLesson(null)"
     style="background: var(--main-color2); color: white;">
-        Crear nuevo
+        Crear nueva lección
 </button>
   <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
 
@@ -70,7 +70,7 @@
           (click)="goToConfig(element.id)">
           <mat-icon style="color: grey;">build</mat-icon>
         </button>
-        <button mat-stroked-button color="secondary" (click)="deleteUser(element)">
+        <button mat-stroked-button color="secondary" (click)="deleteLesson(element)">
           <mat-icon>delete</mat-icon>
         </button>
       </td>

@@ -7,6 +7,7 @@ import { AngularFireStorage } from '@angular/fire/storage';
 import { AngularFirestore } from '@angular/fire/firestore';
 import Swal from 'sweetalert2';
 import { finalize, map } from 'rxjs/operators';
+import { ExercisesService } from '../../../../core/services/exercises/exercises.service';
 
 @Component({
   selector: 'app-lesson-config',
@@ -36,7 +37,12 @@ export class LessonConfigComponent implements OnInit, OnDestroy {
 
   contentOption: string;
   bkContentOption: string;
-  options: string[] = ['Agregar contenido', 'Agregar archivo PDF', 'Agregar foro'];
+  options: string[] = [
+    'Agregar contenido',
+    'Agregar archivo PDF',
+    'Agregar foro',
+    'Agregar ejercicio'
+  ];
 
   // para cargar el PDF
   percentageProgressBar = 0;
@@ -45,7 +51,17 @@ export class LessonConfigComponent implements OnInit, OnDestroy {
   fsId;
   changePDF;
   confirmDelPDF;
-  public url = new URL('http://pdfviewer.net/assets/pdfs/GraalVM.pdf')
+  public url = new URL('http://pdfviewer.net/assets/pdfs/GraalVM.pdf');
+
+  //ejercicios del curso
+  exercises;
+  exercisesReceived;
+  exerciseSelected;
+
+  public objectComparisonFunction = function( option, value ) : boolean {
+    console.log(option);
+    return option.nombre === value.nombre;
+  }
 
 
   @ViewChild('tabGroup') tabGroup;
@@ -58,6 +74,7 @@ export class LessonConfigComponent implements OnInit, OnDestroy {
     private lessonService: LessonsService,
     private fs: AngularFireStorage,
     private fireStore: AngularFirestore,
+    private exercisesSercice: ExercisesService
   ) {
     this.courseId = this.activatedRoute.snapshot.params.cid;
     this.lessonId = this.activatedRoute.snapshot.params.lid;
@@ -81,7 +98,6 @@ export class LessonConfigComponent implements OnInit, OnDestroy {
         )
         .valueChanges()
         .subscribe((content: any) => {
-          //console.log(content);
           this.content = content;
           this.titulo = content.titulo;
           this.contenido = content.contenido;
@@ -90,8 +106,7 @@ export class LessonConfigComponent implements OnInit, OnDestroy {
           this.archivoField.setValue(content.archivo);
           this.foro = content.foro;
           this.fsId = content.id;
-          //console.log(this.fsId);
-          //console.log(this.contentId);
+          this.exerciseSelected = content.ejercicio;
           switch (content.tipo) {
             case 'Agregar contenido':
               this.contentOption = 'Agregar contenido';
@@ -102,24 +117,39 @@ export class LessonConfigComponent implements OnInit, OnDestroy {
             case 'Agregar foro':
               this.contentOption = 'Agregar foro';
               break;
+            case 'Agregar ejercicio':
+              this.contentOption = 'Agregar ejercicio';
+              break;
           }
-          //console.log(content);
         })
     } else {
       this.contentReceived = this.lessonService.listLessonContent(this.courseId, this.lessonId)
         .valueChanges()
         .subscribe(c => {
           this.noContenidos = c.length;
-          //console.log(this.noContenidos);
-          // console.log(c);
         })
       this.fsId = this.fireStore.createId();
-      //console.log(this.fsId);
     }
+
+    this.getExercises();
   }
 
   ngOnDestroy() {
     this.contentReceived.unsubscribe();
+    this.exercisesReceived.unsubscribe();
+  }
+
+  getExercises() {
+    this.exercisesReceived = this.exercisesSercice.listExercises(this.courseId)
+      .valueChanges()
+      .subscribe(exerc => {
+        this.exercises = exerc;
+      })
+  }
+
+  exerciseSelect(event) {
+    this.titulo = event.value.nombre;
+    this.ejercicioField.setValue(event.value);
   }
 
   handleEditorInit(e) {
@@ -134,6 +164,7 @@ export class LessonConfigComponent implements OnInit, OnDestroy {
       contenido: [''],
       archivo: [''],
       foro: [''],
+      ejercicio: [''],
     })
   }
 
@@ -157,6 +188,10 @@ export class LessonConfigComponent implements OnInit, OnDestroy {
     return this.form.get('foro');
   }
 
+  get ejercicioField() {
+    return this.form.get('ejercicio');
+  }
+
   cancel() {
     if (this.changePDF) {
       // borrar PDF cargado si cancela
@@ -170,7 +205,7 @@ export class LessonConfigComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(event: Event){
-    //console.log(this.form.value);
+    console.log(this.form.value);
     event.preventDefault();
     this.form.markAllAsTouched();
     if (this.form.valid) {
@@ -195,6 +230,7 @@ export class LessonConfigComponent implements OnInit, OnDestroy {
         }
         this.archivo = null;
         this.foroField.setValue(null);
+        this.ejercicioField.setValue(null);
       } else {
         if (this.archivo) {
           this.tipoField.setValue('Agregar archivo PDF');
@@ -202,11 +238,15 @@ export class LessonConfigComponent implements OnInit, OnDestroy {
         if (this.foro) {
           this.tipoField.setValue('Agregar foro');
         }
+        if (this.exerciseSelected) {
+          this.tipoField.setValue('Agregar ejercicio');
+        }
       }
     } else if (this.contentOption === 'Agregar archivo PDF') {
       if (this.archivo) {
         this.contenidoField.setValue(null);
         this.foroField.setValue(null);
+        this.ejercicioField.setValue(null);
       } else {
         if (this.contenido) {
           this.tipoField.setValue('Agregar contenido');
@@ -214,11 +254,15 @@ export class LessonConfigComponent implements OnInit, OnDestroy {
         if (this.foro) {
           this.tipoField.setValue('Agregar foro');
         }
+        if (this.exerciseSelected) {
+          this.tipoField.setValue('Agregar ejercicio');
+        }
       }
-    } else {
+    } else if (this.contentOption === 'Agregar foro') {
       if (this.foro) {
         this.contenidoField.setValue(null);
         this.archivoField.setValue(null);
+        this.ejercicioField.setValue(null);
         if (this.archivo) {
           this.archivo = null;
           this.fs.ref(`cursos/${this.courseId}/lecciones/${this.lessonId}/contenidos/${this.fsId}/${this.archivo}`).delete();
@@ -231,12 +275,37 @@ export class LessonConfigComponent implements OnInit, OnDestroy {
         if (this.contenido) {
           this.tipoField.setValue('Agregar contenido');
         }
+        if (this.exerciseSelected) {
+          this.tipoField.setValue('Agregar ejercicio');
+        }
+      }
+    } else {
+      if (this.exerciseSelected) {
+        this.contenidoField.setValue(null);
+        this.archivoField.setValue(null);
+        this.foroField.setValue(null);
+        if (this.archivo) {
+          this.archivo = null;
+          this.fs.ref(`cursos/${this.courseId}/lecciones/${this.lessonId}/contenidos/${this.fsId}/${this.archivo}`).delete();
+        }
+        this.archivo = null;
+      } else {
+        if (this.archivo) {
+          this.tipoField.setValue('Agregar archivo PDF');
+        }
+        if (this.contenido) {
+          this.tipoField.setValue('Agregar contenido');
+        }
+        if (this.foro) {
+          this.tipoField.setValue('Agregar foro');
+        }
       }
     }
   }
 
   createContent() {
     this.form.value.posicion = this.noContenidos + 1;
+    console.log(this.form.value.posicion);
     this.lessonService.addLessonContent(
       this.form.value,
       this.courseId,
@@ -264,7 +333,6 @@ export class LessonConfigComponent implements OnInit, OnDestroy {
   }
 
   updateContent() {
-    //console.log(this.form.value);
     if (this.contentOption === 'Agregar archivo PDF') {
       this.deletePDF(this.archivo);
     }
@@ -273,7 +341,7 @@ export class LessonConfigComponent implements OnInit, OnDestroy {
       this.courseId,
       this.lessonId,
       this.fsId,
-      this.archivo
+      this.archivo,
     )
     .then(() => {
 			Swal.fire({
@@ -330,8 +398,7 @@ export class LessonConfigComponent implements OnInit, OnDestroy {
         }))
         .subscribe(per => {
           this.percentageProgressBar = per;
-          //console.log(per);
-        })
+        });
   }
 
   editPDF(event) {
@@ -355,13 +422,11 @@ export class LessonConfigComponent implements OnInit, OnDestroy {
         }))
         .subscribe(per => {
           this.percentageProgressBar = per;
-          //console.log(per);
         })
   }
 
   deletePDF(PDFName) {
     let url;
-    //console.log(`pdfname: ${PDFName}, this.confirmdelpdf: ${this.confirmDelPDF}`)
     if (this.edit) {
       if (this.confirmDelPDF !== PDFName && this.confirmDelPDF !== null) {
         url = this.confirmDelPDF;

@@ -18,6 +18,7 @@ import { MaterialModule } from '../material/material.module';
 import { CourseDetailComponent } from './components/courses/course-detail/course-detail.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MainComponent } from './components/main/main.component';
+import { DashboardModule } from '../dashboard/dashboard.module';
 
 
 
@@ -43,6 +44,7 @@ import { MainComponent } from './components/main/main.component';
     HomeRoutingModule,
     MaterialModule,
     ReactiveFormsModule,
+    DashboardModule,
     FormsModule,
   ]
 })

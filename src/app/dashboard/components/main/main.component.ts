@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
 import { UsersService } from '../../../core/services/users/users.service';
-import { MatCarousel, MatCarouselComponent } from '@ngbmodule/material-carousel';
 import { AdsService } from 'src/app/core/services/ads/ads.service';
 
 @Component({
@@ -16,7 +15,7 @@ export class MainComponent implements OnInit {
     map(({ matches }) => {
       if (matches) {
         return [
-          { title: 'Usuarios', cols: 1, rows: 2 },
+          { title: 'Anuncios', cols: 1, rows: 2 },
           { title: 'Card 2', cols: 1, rows: 1 },
           { title: 'Card 3', cols: 1, rows: 1 },
           { title: 'Card 4', cols: 1, rows: 1 }
@@ -24,7 +23,7 @@ export class MainComponent implements OnInit {
       }
 
       return [
-        { title: 'Usuarios', cols: 2, rows: 2 },
+        { title: 'Anuncios', cols: 2, rows: 2 },
         { title: 'Card 2', cols: 1, rows: 1 },
         { title: 'Card 3', cols: 1, rows: 2 },
         { title: 'Card 4', cols: 1, rows: 1 }

@@ -8,6 +8,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { LessonsService } from 'src/app/core/services/lessons/lessons.service';
 import { element } from 'protractor';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-lecciones',
@@ -86,6 +87,42 @@ export class LeccionesComponent implements OnInit, OnDestroy, AfterViewInit {
       console.log(`Dialog result ${result}`);
     });
   }
+
+  deleteLesson(data) {
+    console.log(data);
+    const cId = this.CourseId;
+  
+    Swal.fire({
+      title: '¿Esta seguro?',
+      text: 'Esta acción eliminara esta lección permanentemente, no se puede deshacer!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, estoy seguro!'
+    })
+    .then((result) => {
+      if (result.value) {
+        this.lessonService.deleteLesson(cId, data.id)
+        .then(() => {
+          Swal.fire(
+            'Eliminado!',
+            'Eliminación exitosa.',
+            'success',
+          );
+        })
+        .catch((error) => {
+          Swal.fire(
+            'Error!',
+            `La operación no se pudó realizar, ${error}.`,
+            'error',
+          );
+        });
+      }
+    })
+    .catch(error => console.log(error));
+  }
+
 
   levelDown(data) {
     // console.log(data);

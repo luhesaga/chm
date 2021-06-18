@@ -32,6 +32,10 @@ export class LessonsService {
         });
   }
 
+  deleteLesson(courseId, id) {
+    return this.fireStore.doc(`cursos/${courseId}/lecciones/${id}`).delete();
+  }
+
   editLessonPosition(courseId: string, lessonId: string, pos: number): Promise<void> {
     return this.fireStore.doc(`cursos/${courseId}/lecciones/${lessonId}`)
       .update({
@@ -57,13 +61,14 @@ export class LessonsService {
           archivo: data.archivo,
           nombreArchivo: filename,
           foro: data.foro,
-          posicion: data.posicion
+          posicion: data.posicion,
+          ejercicio: data.ejercicio,
         });
   }
 
   editLessonContent(data, courseId: string, lessonId: string, contentId: string, filename): Promise<void> {
-    console.log(data);
-    console.log(filename);
+    //console.log(data);
+    //console.log(filename);
     return this.fireStore.doc(`cursos/${courseId}/lecciones/${lessonId}/contenido/${contentId}`)
       .update({
         titulo: data.titulo,
@@ -72,7 +77,12 @@ export class LessonsService {
         archivo: data.archivo,
         nombreArchivo: filename,
         foro: data.foro,
+        ejercicio: data.ejercicio,
       });
+  }
+
+  deleteLessonContent(courseId: string, lessonId: string, id: string) {
+    return this.fireStore.doc(`cursos/${courseId}/lecciones/${lessonId}/contenido/${id}`).delete();
   }
 
   lessonContentDetail(courseId, lessonId, contentId) {

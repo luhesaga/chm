@@ -154,8 +154,13 @@ export class QuestionCreateComponent implements OnInit, OnDestroy {
     this.exerciseReceived = this.exercService.exerciseDetail(this.courseId, this.exerciseId)
       .valueChanges()
       .subscribe((ex: any) => {
-        this.questionToSave = ex.preguntas.slice();
-        this.position = ex.preguntas.length + 1;
+        if (ex.preguntas) {
+          this.questionToSave = ex.preguntas.slice();
+          this.position = ex.preguntas.length + 1;
+        } else {
+          this.position = 1;
+        }
+        // console.log(this.position);
 
         if (this.edit) {
           const optPos = this.qType - 1;
@@ -184,6 +189,10 @@ export class QuestionCreateComponent implements OnInit, OnDestroy {
             });
             // ordenar el array
             this.relations.sort((a,b) => (a.value > b.value) ? 1 : ((b.value > a.value) ? -1 : 0));
+          }
+          // actualizar palabras si es rellenar blancos
+          if (this.qType * 1 === 3) {
+            this.questionChange(this.question);
           }
         }
       })
@@ -286,6 +295,19 @@ export class QuestionCreateComponent implements OnInit, OnDestroy {
     }
   }
 
+  saveWhite() {
+    // const question = this.questionFormatter();
+    // console.log(question);
+    // this.question = question;
+    this.questions.length = 0;
+    if (this.edit) {
+      this.editQuestion();
+    } else {
+      this.saveQuestion();
+    }
+
+  }
+
   saveOrEditQuestion() {
 
     if (this.edit) {
@@ -297,110 +319,121 @@ export class QuestionCreateComponent implements OnInit, OnDestroy {
 
   saveQuestion() {
 
-    if (!this.trueAnswer && (this.selected * 1 !== 4 && this.selected * 1 !==5)) {
-      Swal.fire({
-				icon: 'error',
-				title: 'Error',
-				text: 'Debe establecer como verdadera al menos una respuesta.',
-				confirmButtonText: 'cerrar',
-			});
-    } else {
-      let validQ = true;
-      this.questions.forEach(q => {
-        if (!q.answer) {
-          validQ = false;
+    if (this.questionValidator()) {
+      this.questionToSave.push(
+        {
+          question: this.question,
+          type: this.selected *1,
+          answers: this.questions,
+          position: this.position
         }
-      })
-      if (!validQ && (this.selected * 1 !== 4 && this.selected * 1 !==5)) {
+      );
+
+      this.exercService.addQuestion(this.courseId, this.exerciseId, this.questionToSave)
+      .then(() => {
         Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'No deben quedar respuestas en blanco.',
+          icon: 'success',
+          title: 'Exito!',
+          text: 'pregunta agregada exitosamente',
           confirmButtonText: 'cerrar',
         });
-      } else {
-        this.questionToSave.push(
-          {
-            question: this.question,
-            type: this.selected *1,
-            answers: this.questions,
-            position: this.position
-          }
-        );
-
-        this.exercService.addQuestion(this.courseId, this.exerciseId, this.questionToSave)
-        .then(() => {
-          Swal.fire({
-            icon: 'success',
-            title: 'Exito!',
-            text: 'pregunta agregada exitosamente',
-            confirmButtonText: 'cerrar',
+        this.goBack();
+      })
+      .catch((error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'error',
+          text: 'Ocurrió un error' + error,
+          confirmButtonText: 'cerrar',
+              });
           });
-          this.goBack();
-        })
-        .catch((error) => {
-          Swal.fire({
-            icon: 'error',
-            title: 'error',
-            text: 'Ocurrió un error' + error,
-            confirmButtonText: 'cerrar',
-                });
-            });
-      }
     }
+
   }
+
 
   editQuestion() {
 
-    if (!this.trueAnswer && (this.selected * 1 !== 4 && this.selected * 1 !==5)) {
+    if (this.questionValidator()) {
+      this.questionToEdit.question = this.question;
+      this.questionToEdit.answers = this.questions;
+      this.questionToEdit.type = this.selected * 1;
+
+      const pos = this.questionToEdit.position -1;
+      this.questionToSave[pos] = this.questionToEdit;
+
+      this.exercService.addQuestion(this.courseId, this.exerciseId, this.questionToSave)
+      .then(() => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Exito!',
+          text: 'pregunta actualizada exitosamente',
+          confirmButtonText: 'cerrar',
+        });
+        this.router.navigate([`cursos/ejercicios/${this.courseId}/questions/${this.exerciseId}`]);
+      })
+      .catch((error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'error',
+          text: 'Ocurrió un error' + error,
+          confirmButtonText: 'cerrar',
+        });
+      });
+    }
+  }
+
+  questionValidator(): boolean {
+    let validation = true;
+
+    if (!this.trueAnswer && this.selected * 1 === 1) {
       Swal.fire({
 				icon: 'error',
 				title: 'Error',
 				text: 'Debe establecer como verdadera al menos una respuesta.',
 				confirmButtonText: 'cerrar',
 			});
-    } else {
-      let validQ = true;
+      validation = false;
+    }
+
+    if (this.selected * 1 === 2) {
+      let validator = false;
       this.questions.forEach(q => {
+        if (q.respuesta === true) {
+          validator = true;
+        }
+      });
+
+      if (!validator) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Debe establecer como verdadera al menos una respuesta.',
+          confirmButtonText: 'cerrar',
+        });
+        validation = false;
+      }
+    }
+
+    let validQ = true;
+    this.questions.forEach(q => {
         if (!q.answer) {
           validQ = false;
         }
-      })
-      if (!validQ && (this.selected * 1 !== 4 && this.selected * 1 !==5)) {
+    })
+
+    if (!validQ && (this.selected * 1 === 1 || this.selected * 1 ===2)) {
         Swal.fire({
           icon: 'error',
           title: 'Error',
           text: 'No deben quedar respuestas en blanco.',
           confirmButtonText: 'cerrar',
         });
-      } else {
-        this.questionToEdit.question = this.question;
-        this.questionToEdit.answers = this.questions;
-        this.questionToEdit.type = this.selected * 1;
-
-        const pos = this.questionToEdit.position -1;
-        this.questionToSave[pos] = this.questionToEdit;
-
-        this.exercService.addQuestion(this.courseId, this.exerciseId, this.questionToSave)
-        .then(() => {
-          Swal.fire({
-            icon: 'success',
-            title: 'Exito!',
-            text: 'pregunta actualizada exitosamente',
-            confirmButtonText: 'cerrar',
-          });
-          this.router.navigate([`cursos/ejercicios/${this.courseId}/questions/${this.exerciseId}`]);
-        })
-        .catch((error) => {
-          Swal.fire({
-            icon: 'error',
-            title: 'error',
-            text: 'Ocurrió un error' + error,
-            confirmButtonText: 'cerrar',
-                });
-          });
-      }
+        validation = false;
     }
+
+    return validation;
+
   }
 
   addAnswer() {
@@ -455,17 +488,10 @@ export class QuestionCreateComponent implements OnInit, OnDestroy {
   whitesGenerator(array) {
     this.whiteWords.length = 0;
     array.forEach(p => {
-      if (p.indexOf('(') !== -1 && p.indexOf(')') !== -1) {
+      if (p.indexOf('{') !== -1 && p.indexOf('}') !== -1) {
         this.whiteWords.push(p.substring(1, p.length - 1));
       }
     });
-  }
-
-  saveWhite() {
-    const question = this.questionFormatter();
-    console.log(question);
-    this.question = question;
-
   }
 
   questionFormatter() {

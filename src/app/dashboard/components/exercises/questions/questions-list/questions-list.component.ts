@@ -41,9 +41,14 @@ export class QuestionsListComponent implements OnInit, OnDestroy, AfterViewInit 
     this.exercise = this.exercService.exerciseDetail(this.courseId, this.exerciseId)
       .valueChanges()
       .subscribe((ex: any) => {
-        this.exerciseReceived = ex;
-        this.questions = ex.preguntas;
-        this.dataSource.data = this.questions;
+        //console.log(ex);
+        if (ex) {
+          this.exerciseReceived = ex;
+          this.questions = ex.preguntas;
+          this.dataSource.data = this.questions;
+        } else {
+          this.dataSource.data = [];
+        }
         // console.log(this.questions);
       })
   }
@@ -62,11 +67,12 @@ export class QuestionsListComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   createOrEditQuestion(exerc) {
+    console.log(exerc);
     if (!exerc) {
       this.router.navigate([`cursos/ejercicios/${this.courseId}/preguntas/add/${this.exerciseId}`]);
     } else {
       let answerTrue;
-      if (exerc.type !== 4 && exerc.type !== 5) {
+      if (exerc.type === 1 || exerc.type === 2) {
         answerTrue =  exerc.answers.filter(x => x.respuesta === true)[0].value;
       } else {
         answerTrue = 0;

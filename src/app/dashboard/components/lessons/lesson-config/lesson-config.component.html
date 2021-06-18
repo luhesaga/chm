@@ -103,6 +103,22 @@
                         }">
                 </editor>
             </div>
+            <!-- ejercicio -->
+            <div *ngIf="contentOption === 'Agregar ejercicio'" class="ejercicio">
+                <p>Seleccione el ejercicio que desea agregar y de clic en guardar.</p>
+                <mat-form-field appearance="fill">
+                    <mat-label>Seleccione el ejercicio</mat-label>
+                    <mat-select
+                        (selectionChange)="exerciseSelect($event)"
+                        formControlName="ejercicio"
+                        [(ngModel)]="exerciseSelected"
+                        [compareWith]="objectComparisonFunction">
+                            <mat-option *ngFor="let e of exercises" [value]="e">
+                                {{e.nombre}}
+                            </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
         </div>
 
         <div class="buttons">
