@@ -109,3 +109,32 @@ $dur: .5s;
     border-radius: 1rem;
     margin-bottom: 1rem;
   }
+
+  .eliminarForo
+  {
+    margin-left: 1rem;
+    &:hover {
+      color: red;
+      &::before { width: 0; }
+      &::after { height: 0; }
+    }
+  }
+
+  .editarForo
+  {
+    margin-left: 1rem;
+    &:hover {
+      color: #2271B3;
+      &::before { width: 0; }
+      &::after { height: 0; }
+    }
+  }
+
+  .eliminarComentario
+  {
+    &:hover {
+      color: red;
+      &::before { width: 0; }
+      &::after { height: 0; }
+    }
+  }

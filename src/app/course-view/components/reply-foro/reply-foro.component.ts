@@ -35,7 +35,9 @@ export class ReplyForoComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    if(!(this.tipo === 'responder' || this.tipo === 'citar'))
+    if(!(this.tipo === 'responder'
+    || this.tipo === 'citar'
+    || this.tipo === 'editar'))
     {
       this.goToLogin()
     }
@@ -68,11 +70,20 @@ export class ReplyForoComponent implements OnInit {
     .valueChanges()
     .subscribe(foro => {
       this.contenido=foro;
+      this.showReplyForo(foro);
       if(!this.contenido)
       {
         this.goToLogin();
       }
     });
+  }
+
+  showReplyForo(foro:any)
+  {
+    if(this.tipo==='editar')
+    {
+      this.answer = foro.contenido;
+    }
   }
 
   enviarForo():void
@@ -111,6 +122,14 @@ export class ReplyForoComponent implements OnInit {
         subUsuario.unsubscribe();
         this.goToForo();
       })
+  }
+
+  editarForo()
+  {
+    console.log(this.answer);
+    this.lessonService.editarForo(this.answer,this.idCurso,this.idLesson,this.idContent, this.idReplyForo)
+    .catch(()=> console.log('error al editar foro'))
+    .then(()=> this.goToForo());
   }
 
   goToForo()
