@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { AsyncSubject, Subject } from 'rxjs';
 import { ExercisesService } from 'src/app/core/services/exercises/exercises.service';
 import Swal from 'sweetalert2';
 import { ExercisesListComponent } from '../exercises-list/exercises-list.component';
@@ -11,11 +12,23 @@ import { ExercisesListComponent } from '../exercises-list/exercises-list.compone
 })
 export class ExercisesCreateComponent implements OnInit {
 
+  private editorSubject: Subject<any> = new AsyncSubject();
+
   form: FormGroup;
+
   edit = false;
   exerciseName: string;
   exerciseId: string;
   courseId: string;
+
+  feedback = '1';
+  mostrarResultado = '2';
+  seleccion = '1';
+  barajar = '2';
+  intentos = 1;
+  duracion = 30;
+  porcentaje = 60;
+  textEndExercise: string;
 
   constructor(
     public dialog: MatDialogRef<ExercisesListComponent>,
@@ -28,25 +41,75 @@ export class ExercisesCreateComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // console.log(this.data);
     if (this.data.content.action === 'edit') {
-      this.exerciseId = this.data.content.exerciseId;
-      this.exerciseName = this.data.content.name;
+      this.exerciseId = this.data.content.id;
+      this.exerciseName = this.data.content.nombre;
+      this.feedback = this.data.content.retroalimentacion.toString();
+      this.mostrarResultado = this.data.content.mostrarResultados.toString();
+      this.seleccion = this.data.content.seleccion.toString();
+      this.barajar = this.data.content.barajar.toString();
+      this.intentos = this.data.content.intentos;
+      this.duracion = this.data.content.duracion;
+      this.porcentaje = this.data.content.porcentaje;
+      this.textEndExercise = this.data.content.textoFinal;
       this.edit = true;
-      // console.log(this.exerciseId);
     }
     this.courseId = this.data.content.courseId;
-    // console.log(this.courseId);
+  }
+
+  handleEditorInit(e) {
+    this.editorSubject.next(e.editor);
+    this.editorSubject.complete();
   }
 
   private buildForm(): void {
     this.form = this.formBuilder.group({
       name: ['', Validators.required,],
+      feedback: ['', Validators.required],
+      showResults: ['', Validators.required],
+      questionSelect: ['', Validators.required],
+      mixAnswers: ['', Validators.required],
+      maxTries: ['', Validators.required],
+      duration: ['', Validators.required],
+      percentage: ['', Validators.required],
+      textEnd: ['']
     })
   }
 
   get nameField() {
     return this.form.get('name');
+  }
+
+  get feedbackField() {
+    return this.form.get('feedback');
+  }
+
+  get showResults() {
+    return this.form.get('showResults');
+  }
+
+  get questionSelect() {
+    return this.form.get('questionSelect');
+  }
+
+  get mixAnswers() {
+    return this.form.get('mixAnswers');
+  }
+
+  get maxTries() {
+    return this.form.get('maxTries');
+  }
+
+  get duration() {
+    return this.form.get('duration');
+  }
+
+  get percentage() {
+    return this.form.get('percentage');
+  }
+
+  get textEndField() {
+    return this.form.get('textEnd');
   }
 
   saveOrEditExercise(event: Event) {
@@ -63,7 +126,6 @@ export class ExercisesCreateComponent implements OnInit {
   }
   saveExercise() {
     this.form.value.fecha = new Date(Date.now()).toLocaleDateString();
-    // console.log(this.form.value.fecha);
     this.exercise.createExercise(this.form.value, this.courseId)
       .then(() => {
         Swal.fire({

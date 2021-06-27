@@ -142,8 +142,26 @@
 
                         <div class="relacionar-table" *ngFor="let item of questions">
                             <p>{{item.value}}</p>
-                            <div>
+                            <!-- <div>
                                 <textarea [(ngModel)]="item.answer"></textarea>
+                            </div> -->
+                            <div class="mat-form-field-wrapper">
+                                <editor
+                                apiKey="fa82nlmdggdzt2rwcpx7k706ohjcnf9wo3ioar2p06d10yyk"
+                                class="mat-elevation-z1"
+                                [(ngModel)]="item.answer"
+                                (onInit)="handleEditorInit($event)"
+                                [init]="{
+                                    icons: 'material',
+                                    skin: 'borderless',
+                                    plugins: ['wordcount', 'lists', 'image imagetools'],
+                                    menubar: false,
+                                    min_height: 250,
+                                    width : 'auto',
+                                    toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | image',
+                                    media_live_embeds: true
+                                }"
+                                ></editor>
                             </div>
                             <div>
                                 <mat-form-field appearance="fill">
@@ -165,8 +183,26 @@
                         </div>
                         <div class="relation-table" *ngFor="let item of relations">
                             <p>{{letters[item.value - 1]}}</p>
-                            <div>
+                            <!-- <div>
                                 <textarea [(ngModel)]="item.answer"></textarea>
+                            </div> -->
+                            <div class="mat-form-field-wrapper">
+                                <editor
+                                apiKey="fa82nlmdggdzt2rwcpx7k706ohjcnf9wo3ioar2p06d10yyk"
+                                class="mat-elevation-z1"
+                                [(ngModel)]="item.answer"
+                                (onInit)="handleEditorInit($event)"
+                                [init]="{
+                                    icons: 'material',
+                                    skin: 'borderless',
+                                    plugins: ['wordcount', 'lists', 'image imagetools'],
+                                    menubar: false,
+                                    min_height: 250,
+                                    width : 'auto',
+                                    toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | image',
+                                    media_live_embeds: true
+                                }"
+                                ></editor>
                             </div>
                         </div>
                         <div class="buttons">

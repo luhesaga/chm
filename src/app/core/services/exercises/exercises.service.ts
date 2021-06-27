@@ -28,6 +28,14 @@ export class ExercisesService {
           id,
           nombre: data.name,
           fecha: data.fecha,
+          duracion: data.duration,
+          retroalimentacion: data.feedback * 1,
+          intentos: data.maxTries * 1,
+          barajar: data.mixAnswers * 1,
+          porcentaje: data.percentage,
+          seleccion: data.questionSelect * 1,
+          mostrarResultados: data.showResults * 1,
+          textoFinal: data.textEnd ? data.textEnd : '',
         });
   }
 
@@ -36,7 +44,19 @@ export class ExercisesService {
       .update({
         nombre: data.name,
         fecha: data.fecha,
+        duracion: data.duration,
+        retroalimentacion: data.feedback * 1,
+        intentos: data.maxTries * 1,
+        barajar: data.mixAnswers * 1,
+        porcentaje: data.percentage,
+        seleccion: data.questionSelect * 1,
+        mostrarResultados: data.showResults * 1,
+        textoFinal: data.textEnd ? data.textEnd : '',
       });
+  }
+
+  deleteExercise(courseId: string, exercId: string): Promise<void> {
+    return this.fireStore.doc(`ejercicios/${courseId}/ejercicios/${exercId}`).delete();
   }
 
   addQuestion(courseId: string, exercId: string, question): Promise<void> {

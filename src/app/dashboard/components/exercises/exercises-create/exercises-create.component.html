@@ -1,35 +1,185 @@
 <main>
-  <div class="title dialog-header-close">
-      <mat-icon>library_books</mat-icon>
-      <h2>{{ !edit ? 'Crear nuevo' : 'Editar'}} ejercicio</h2>
-      <mat-icon mat-dialog-close style="color: red;">close</mat-icon>
-  </div>
-  <mat-dialog-content>
-      <form [formGroup]="form" (ngSubmit)="saveOrEditExercise($event)">
-          <div class="form-inputs">
-              <mat-form-field>
-                  <mat-label>Titulo del ejercicio</mat-label>
-                  <input
-                  type="text"
-                  matInput
-                  formControlName="name"
-                  [(ngModel)]="exerciseName"
-                  #myinput/>
-                  <mat-error *ngIf="nameField.touched && nameField.invalid">
-                  <ng-container *ngIf="nameField.hasError('required')">El nombre es requerido</ng-container>
-                  </mat-error>
-              </mat-form-field>
-          </div>
-          <div class="buttons">
-              <button
-                  type="submit"
-                  class="guardarBtn"
-                  mat-raised-button
-                  [disabled]="form.invalid">
-                  {{ edit ? 'Guardar cambios' : 'Guardar'}}
-              </button>
-              <a mat-raised-button mat-dialog-close>Cancelar</a>
-          </div>
-      </form>
-  </mat-dialog-content>
+    <div class="title dialog-header-close">
+        <mat-icon>library_books</mat-icon>
+        <h2>{{ !edit ? 'Crear nuevo' : 'Editar'}} ejercicio</h2>
+        <mat-icon mat-dialog-close style="color: red;">close</mat-icon>
+    </div>
+    <form [formGroup]="form" (ngSubmit)="saveOrEditExercise($event)">
+        <mat-dialog-content>
+            <section class="form-inputs">
+                <mat-form-field appearance="fill">
+                    <mat-label>Titulo del ejercicio</mat-label>
+                    <input
+                    type="text"
+                    matInput
+                    formControlName="name"
+                    [(ngModel)]="exerciseName"
+                    #myinput/>
+                    <mat-error *ngIf="nameField.touched && nameField.invalid">
+                    <ng-container *ngIf="nameField.hasError('required')">El nombre es requerido</ng-container>
+                    </mat-error>
+                </mat-form-field>
+            </section>
+            <section class="config">
+                <div class="config-container">
+                    <mat-accordion class="example-headers-align" multi>
+                        <mat-expansion-panel>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    <p>Configuración avanzada</p>
+                                    <mat-icon>settings</mat-icon>
+                                </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <div class="config-options">
+                                <p>Retroalimentación</p>
+                                <div class="options">
+                                    <mat-radio-group
+                                        aria-label="seleccione una opción"
+                                        formControlName="feedback"
+                                        [(ngModel)]="feedback"
+                                        color="primary">
+                                            <mat-radio-button value=1>Al final del ejercicio (retroalimentación)</mat-radio-button>
+                                            <mat-radio-button value=2>Examen (sin retroalimentación)</mat-radio-button>
+                                    </mat-radio-group>
+                                    <mat-divider></mat-divider>
+                                </div>
+
+                                <p>Mostrar los resultados a los estudiantes</p>
+                                <div class="options">
+                                    <mat-radio-group
+                                        aria-label="seleccione una opción"
+                                        formControlName="showResults"
+                                        [(ngModel)]="mostrarResultado"
+                                        color="primary">
+                                            <mat-radio-button value="1">Modo auto-evaluación: mostrar la puntuación y las respuestas esperadas</mat-radio-button>
+                                            <mat-radio-button value="2">Modo examen: No mostrar nada (ni puntuación, ni respuestas)</mat-radio-button>
+                                            <mat-radio-button value="3">Modo ejercicio: Mostrar solo la puntuación</mat-radio-button>
+                                            <mat-radio-button value="4">Mostrar la nota a cada intento, mostrar las respuestas correctas solo en el último intento (solo funciona si hay un límite de intentos)</mat-radio-button>
+                                            <mat-radio-button value="5">No mostrar el puntaje (sólo cuando el usuario finaliza todos los intentos) pero mostrar la retroalimentación por cada intento.</mat-radio-button>
+                                            <mat-radio-button value="6">Modo clasificación: No mostrar los detalles de resultados pregunta por pregunta y mostrar una tabla con la clasificación de todos los demás usuarios.</mat-radio-button>
+                                            <mat-radio-button value="7">Mostrar sólo la nota global (no la nota de cada pregunta) y mostrar sólo la respuesta correcta, no las incorrectas</mat-radio-button>
+                                            <mat-radio-button value="8">Mostrar sólo la nota global (no la nota de cada pregunta) y mostrar la respuesta correcta y la respuesta seleccionada por el alumno + modo clasificación.</mat-radio-button>
+                                            <mat-radio-button value="9">Muestra solo un radar de puntuaciones por categoría, en lugar de una tabla de categorías. No muestra puntuaciones o comentarios individuales.</mat-radio-button>
+                                            <mat-divider></mat-divider>
+                                    </mat-radio-group>
+                                </div>
+
+                                <p>Selección de preguntas</p>
+                                <div class="options">
+                                    <mat-radio-group
+                                        aria-label="seleccione una opción"
+                                        formControlName="questionSelect"
+                                        [(ngModel)]="seleccion"
+                                        color="primary">
+                                            <mat-radio-button value="1">Ordenado según la lista de preguntas</mat-radio-button>
+                                            <mat-radio-button value="2">Aleatorio</mat-radio-button>
+                                            <mat-divider></mat-divider>
+                                    </mat-radio-group>
+                                </div>
+
+                                <p>Barajar respuestas</p>
+                                <div class="options">
+                                    <mat-radio-group
+                                        aria-label="seleccione una opción"
+                                        formControlName="mixAnswers"
+                                        [(ngModel)]="barajar"
+                                        color="primary">
+                                            <mat-radio-button value="1">Si</mat-radio-button>
+                                            <mat-radio-button value="2">No</mat-radio-button>
+                                            <mat-divider></mat-divider>
+                                    </mat-radio-group>
+                                </div>
+
+                                <p>Número máximo de intentos</p>
+                                <div class="options">
+                                    <mat-form-field appearance="fill">
+                                        <mat-label>Intentos</mat-label>
+                                        <select
+                                            formControlName="maxTries"
+                                            [(ngModel)]="intentos"
+                                            matNativeControl
+                                            required>
+                                                <option value=1>1</option>
+                                                <option value=2>2</option>
+                                                <option value=3>3</option>
+                                                <option value=4>4</option>
+                                                <option value=5>5</option>
+                                        </select>
+                                    </mat-form-field>
+                                </div>
+
+                                <p>Duración del ejercicio (en minutos)</p>
+                                <div class="options">
+                                    <mat-form-field appearance="fill">
+                                        <mat-label>Duración</mat-label>
+                                        <input
+                                            formControlName="duration"
+                                            [(ngModel)]="duracion"
+                                            matInput
+                                            placeholder="30"
+                                            type="number">
+                                        <mat-error *ngIf="duration.touched && duration.invalid">
+                                            <ng-container *ngIf="duration.hasError('required')">debe definir la duración.</ng-container>
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+
+                                <p>Porcentaje de éxito</p>
+                                <div class="options">
+                                    <mat-form-field appearance="fill">
+                                        <mat-label>Porcentaje de éxito</mat-label>
+                                        <input
+                                            formControlName="percentage"
+                                            [(ngModel)]="porcentaje"
+                                            matInput
+                                            placeholder="60"
+                                            type="number">
+                                        <mat-error *ngIf="percentage.touched && percentage.invalid">
+                                            <ng-container *ngIf="percentage.hasError('required')">debe definir el porcentaje.</ng-container>
+                                        </mat-error>
+                                    </mat-form-field>
+                                    <span style="margin-left: 8px; font-weight: 600;"> %</span>
+                                </div>
+
+                                <p>Texto al finalizar el ejercicio</p>
+                                <div class="mat-form-field-wrapper">
+                                    <editor
+                                    apiKey="fa82nlmdggdzt2rwcpx7k706ohjcnf9wo3ioar2p06d10yyk"
+                                    class="mat-elevation-z1"
+                                    formControlName="textEnd"
+                                    [(ngModel)]="textEndExercise"
+                                    (onInit)="handleEditorInit($event)"
+                                    [init]="{
+                                        icons: 'material',
+                                        skin: 'borderless',
+                                        plugins: ['wordcount', 'lists', 'image imagetools'],
+                                        menubar: false,
+                                        min_height: 250,
+                                        width : 400,
+                                        toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | image',
+                                        media_live_embeds: true
+                                    }"
+                                    ></editor>
+                                </div>
+                            </div>
+
+                        </mat-expansion-panel>
+                    </mat-accordion>
+                </div>
+            </section>
+        
+        </mat-dialog-content>
+
+        <div class="buttons">
+            <button
+                type="submit"
+                class="guardarBtn"
+                color="primary"
+                mat-raised-button
+                [disabled]="form.invalid">
+                {{ edit ? 'Guardar cambios' : 'Guardar'}}
+            </button>
+            <a mat-raised-button mat-dialog-close>Cancelar</a>
+        </div>
+    </form>
 </main>

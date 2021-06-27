@@ -125,7 +125,7 @@ main {
 // Relacionar
 .relacionar-title {
     display: grid;
-    grid-template-columns: 30px 1fr 1fr;
+    grid-template-columns: 30px 1.5fr 0.5fr;
     column-gap: 8px;
     border-bottom: 1px solid gray;
     padding: 4px;
@@ -135,9 +135,9 @@ main {
 
 .relacionar-table {
     display: grid;
-    grid-template-columns: 30px 1fr 1fr;
-    grid-template-rows: 200px auto;
-    gap: 8px 8px;
+    grid-template-columns: 30px 1.4fr 0.6fr;
+    grid-template-rows: 320px auto;
+    gap: 8px 16px;
     justify-items: stretch;
     align-items: center;
     width: 100%;
@@ -147,6 +147,10 @@ main {
 .relacionar-table textarea, .relation-table textarea {
     height: 10rem;
     width: 30rem;
+}
+
+.realtion-editor editor {
+    box-shadow: none !important;
 }
 
 .relation-title {
@@ -162,7 +166,7 @@ main {
 .relation-table {
     display: grid;
     grid-template-columns: 30px 1fr;
-    grid-template-rows: 200px auto;
+    grid-template-rows: 320px auto;
     gap: 8px 8px;
     justify-items: stretch;
     align-items: center;

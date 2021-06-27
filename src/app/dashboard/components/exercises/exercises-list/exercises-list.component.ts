@@ -34,19 +34,16 @@ export class ExercisesListComponent implements OnInit, OnDestroy, AfterViewInit 
     public dialog: MatDialog,
   ) {
     this.courseId = this.activatedRoute.snapshot.params.courseId;
-    // console.log(this.courseId);
   }
 
   ngOnInit(): void {
     this.courseReceived = this.cursosService.detailCourse(this.courseId).valueChanges()
       .subscribe(curso => {
         this.course = curso;
-        // console.log(this.course);
         this.exercise
           .listExercises(curso.id)
           .valueChanges()
           .subscribe(ex => {
-              // console.log(ex);
               this.dataSource.data = ex;
             });
           });
@@ -57,7 +54,6 @@ export class ExercisesListComponent implements OnInit, OnDestroy, AfterViewInit 
     this.dataSource.sort = this.sort;
   }
 
-
   ngOnDestroy(): void {
     this.courseReceived.unsubscribe();
   }
@@ -67,35 +63,65 @@ export class ExercisesListComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   openDialog(exercise){
-    let data;
     if (!exercise) {
-      data = {
+      exercise = {
         courseId: this.course.id,
         action: 'new'
       }
     } else {
-      data = {
-        courseId: this.course.id,
-        exerciseId: exercise.id,
-        action: 'edit',
-        name: exercise.nombre
-      }
+      exercise.courseId = this.course.id;
+      exercise.action = 'edit';
     }
+
     const config = {
       data: {
-        message: data.action === 'edit' ? 'Editar ejercicio' : 'Agregar nuevo ejercicio',
-        content: data
+        message: exercise.action === 'edit' ? 'Editar ejercicio' : 'Agregar nuevo ejercicio',
+        content: exercise
       }
     };
 
     const dialogRef = this.dialog.open(ExercisesCreateComponent, config);
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result ${result}`);
+      // console.log(`Dialog result ${result}`);
     });
   }
 
   createOrEditExercise() {
     this.router.navigate([`cursos/ejercicios/crear/${this.courseId}`]);
+  }
+
+  deleteExercise(data) {
+    Swal.fire({
+      title: '¿Esta seguro?',
+      text: 'Esta acción eliminara este ejercicio permanentemente, no se puede deshacer!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, estoy seguro!'
+    })
+    .then((result) => {
+      if (result.value) {
+        this.exercise.deleteExercise(this.courseId, data.id)
+        .then(() => {
+          Swal.fire({
+            icon: 'success',
+            title: 'Exito!',
+            text: 'Ejercicio eliminado exitosamente',
+            confirmButtonText: 'cerrar',
+        });
+    })
+    .catch((error) => {
+      Swal.fire({
+        icon: 'error',
+        title: 'error',
+        text: 'Ocurrió un error' + error,
+        confirmButtonText: 'cerrar',
+            });
+        });
+      }
+    })
+    .catch(error => console.log(error));
   }
 
   goBack() {

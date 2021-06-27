@@ -8,14 +8,13 @@ main {
     border-radius: 4px;
     margin: 0 auto;
     padding-bottom: 16px;
-    width: 400px;
+    width: 800px;
+    height: auto;
 }
 
 .title {
     display: flex;
     justify-content: space-between;
-    //background: #37474f;
-    //background: #3f51b5;
     background: var(--main-color2);
     color: white;
     padding: 8px 16px;
@@ -31,40 +30,85 @@ main {
     margin: 0 16px;
 }
 
-mat-dialog-content {
+form mat-dialog-content {
     width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     margin: 24px 0;
 }
 
-mat-dialog-content form {
+form mat-dialog-content {
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: stretch;
 }
 
-mat-dialog-content form .form-inputs {
-    align-self: center;
-    width: 300px;
+form mat-dialog-content .form-inputs {
+    display: flex;
+    justify-content: center;
+    width: 100%;
 }
 
 mat-form-field {
-    width: 300px;
+    width: 50%;
 }
 
 .buttons {
-    margin-top: 16px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    column-gap: 16px;
+    margin-top: 32px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
 }
 
 .buttons .guardarBtn {
-    background: var(--main-color2);
-    color: white;
+    // background: var(--main-color2);
+    // color: white;
+    margin-right: 16px;
 }
 
+
+.config {
+    margin-top: 32px;
+    display: flex;
+    justify-content: center;
+}
+
+.config .config-container {
+    width: 100%;
+}
+
+.config .config-container mat-panel-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.config .config-container p {
+    margin: 0;
+    color: var(--main-color2);
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.config .config-container mat-panel-title mat-icon {
+    margin-left: 16px;
+}
+
+.config .config-container .config-options {
+    margin-top: 24px;
+    display: grid;
+    grid-template-columns: 0.4fr 1fr;
+    grid-template-rows: auto;
+    gap: 16px 16px;
+    align-items: start;
+}
+
+.config .config-container .config-options p {
+    color: rgba(0, 0, 0, .87);
+    margin-left: 16px;
+}
+
+.config .config-container .config-options .options mat-radio-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.config .config-container .config-options .options mat-radio-group mat-radio-button {
+    margin-bottom: 16px;
+}
