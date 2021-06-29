@@ -63,4 +63,12 @@ export class CourseService {
         categoria: firebase.firestore.FieldValue.delete()
       })
   }
+
+  addEnrolledStudents(students:any[], idCurso):void
+  {
+    this.fireStore.doc(`cursos/${idCurso}`)
+    .update({
+      estudiantesMatriculados: students
+    })
+  }
 }

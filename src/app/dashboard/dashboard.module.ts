@@ -32,6 +32,7 @@ import { QuestionCreateComponent } from './components/exercises/questions/questi
 import { QuestionsListComponent } from './components/exercises/questions/questions-list/questions-list.component';
 import { CourseRegistrationComponent } from './components/course-registration/course-registration.component';
 import { LessonsComponent } from './components/course-registration/lessons/lessons.component';
+import { AddStudentComponent } from './components/cursos/add-student/add-student.component';
 
 
 
@@ -62,6 +63,7 @@ import { LessonsComponent } from './components/course-registration/lessons/lesso
     QuestionsListComponent,
     CourseRegistrationComponent,
     LessonsComponent,
+    AddStudentComponent,
     ],
   imports: [
     CommonModule,
