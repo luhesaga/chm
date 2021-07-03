@@ -1,0 +1,61 @@
+<main>
+    <div class="title dialog-header-close">
+        <mat-icon>library_books</mat-icon>
+        <h2>{{ !edit ? 'Crear nuevo' : 'Editar'}} término</h2>
+        <mat-icon mat-dialog-close style="color: red;">close</mat-icon>
+    </div>
+    <form [formGroup]="form" (ngSubmit)="saveOrEditTerm($event)">
+        <mat-dialog-content>
+            <section class="form-inputs">
+                <mat-form-field appearance="fill">
+                    <mat-label>Término</mat-label>
+                    <input
+                    type="text"
+                    matInput
+                    formControlName="term"
+                    [(ngModel)]="terminus"
+                    #myinput/>
+                    <mat-error *ngIf="termField.touched && termField.invalid">
+                    <ng-container *ngIf="termField.hasError('required')">El término es requerido</ng-container>
+                    </mat-error>
+                </mat-form-field>
+            </section>
+            <section class="description-form">
+                <div class="mat-form-field-wrapper">
+                    <editor
+                    apiKey="fa82nlmdggdzt2rwcpx7k706ohjcnf9wo3ioar2p06d10yyk"
+                    class="mat-elevation-z1"
+                    formControlName="definition"
+                    [(ngModel)]="def"
+                    (onInit)="handleEditorInit($event)"
+                    [init]="{
+                        icons: 'material',
+                        skin: 'borderless',
+                        plugins: ['wordcount', 'lists'],
+                        menubar: false,
+                        min_height: 300,
+                        width : 600,
+                        toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist',
+                        media_live_embeds: true
+                    }"
+                    ></editor>
+                    <mat-error *ngIf="definitionField.touched && definitionField.invalid">
+                        <ng-container *ngIf="definitionField.hasError('required')">Debe ingresar la definición del término.</ng-container>
+                    </mat-error>
+                </div>
+            </section>
+        </mat-dialog-content>
+
+        <div class="buttons">
+            <button
+                type="submit"
+                class="guardarBtn"
+                color="primary"
+                mat-raised-button
+                [disabled]="form.invalid">
+                {{ edit ? 'Guardar cambios' : 'Guardar'}}
+            </button>
+            <a mat-raised-button mat-dialog-close>Cancelar</a>
+        </div>
+    </form>
+</main>

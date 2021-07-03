@@ -1,0 +1,74 @@
+* {
+    box-sizing: border-box;
+}
+
+main {
+    background: white;
+    box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+    border-radius: 4px;
+    margin: 0 auto;
+    padding-bottom: 16px;
+    width: 800px;
+    height: auto;
+}
+
+.title {
+    display: flex;
+    justify-content: space-between;
+    background: var(--main-color2);
+    color: white;
+    padding: 8px 16px;
+    align-items: center;
+}
+
+.title mat-icon {
+    color: white;
+}
+
+.title h2 {
+    font-weight: 500;
+    margin: 0 16px;
+}
+
+form mat-dialog-content {
+    width: 100%;
+    margin: 24px 0;
+}
+
+form mat-dialog-content {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    gap: 24px;
+    justify-items: center;
+}
+
+form mat-dialog-content .form-inputs {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+mat-form-field {
+    width: 70%;
+}
+
+form mat-dialog-content description-form {
+
+}
+
+.buttons {
+    margin-top: 32px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.buttons .guardarBtn {
+    // background: var(--main-color2);
+    // color: white;
+    margin-right: 16px;
+}
+
+

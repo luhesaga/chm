@@ -1,0 +1,160 @@
+.container {
+    width: 90%;
+    background: white;
+    margin: 36px auto;
+    padding: 24px;
+    box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%),
+    0px 1px 1px 0px rgb(0 0 0 / 14%),
+    0px 1px 3px 0px rgb(0 0 0 / 12%);
+    border-radius: 4px;
+}
+
+.search {
+    margin-right: 48px;
+    margin-bottom: 24px;
+}
+
+table {
+    width: 95%;
+    margin: 0 auto;
+    text-align: left;
+}
+
+.mat-header-cell {
+    font-size: 1rem;
+}
+
+.mat-column-termino {
+    word-wrap: break-word !important;
+    white-space: unset !important;
+    flex: 0 0 28% !important;
+    width: 30% !important;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+}
+
+.mat-column-termino p {
+    color: var(--main-color2);
+    font-size: 1rem;
+    font-weight: 500;
+    padding-right: 16px;
+}
+
+.mat-column-definicion {
+    word-wrap: break-word !important;
+    white-space: unset !important;
+    flex: 0 0 28% !important;
+    width: 50% !important;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+}
+
+.mat-column-definicion p {
+    margin-top: 16px;
+    text-align: justify;
+    color: black;
+    font-size: 1rem;
+    padding-right: 24px;
+}
+
+.example-margin {
+    margin: 0 12px;
+    position: relative;
+    padding-bottom: 16px;
+    //color: var(--main-color2) !important;
+}
+
+.example-margin span {
+    //color: var(--main-color2);
+    font-size: 12px;
+    position: absolute;
+    left: 8px;
+    bottom: 0;
+}
+
+.mat-header-cell {
+    color: black;
+    text-align: center;
+}
+
+.mat-cell {
+    color: rgba(0, 0, 0, .54);
+    padding: 0;
+    margin: 0;
+}
+
+td.mat-cell:last-of-type {
+    padding: 0;
+}
+
+.name {
+    cursor: pointer;
+}
+
+.buttons {
+    text-align: center;
+}
+
+.buttons .mat-stroked-button {
+    margin-left: 5px;
+    min-width: 40px;
+}
+
+.student-view {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    align-items: center;
+    justify-items: center;
+}
+
+.student-view .term {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 90%;
+    height: 50px;
+    border: 1px solid gainsboro;
+    background: #F9F9F9;
+}
+
+.student-view .term p {
+    margin: 0 16px;
+    padding: 0;
+    color: var(--main-color2);
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.student-view .term .std-buttons {
+    margin-right: 16px;
+}
+
+.student-view .term .std-buttons button {
+    margin-left: 8px;
+}
+
+.student-view .definition {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+    width: 90%;
+    height: auto;
+    border: 1px solid gainsboro;
+}
+
+.student-view .definition p {
+    padding: 16px;
+    color: black;
+    font-size: 1rem;
+}

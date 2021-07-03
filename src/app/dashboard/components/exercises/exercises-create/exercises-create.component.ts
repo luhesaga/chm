@@ -44,14 +44,30 @@ export class ExercisesCreateComponent implements OnInit {
     if (this.data.content.action === 'edit') {
       this.exerciseId = this.data.content.id;
       this.exerciseName = this.data.content.nombre;
-      this.feedback = this.data.content.retroalimentacion.toString();
-      this.mostrarResultado = this.data.content.mostrarResultados.toString();
-      this.seleccion = this.data.content.seleccion.toString();
-      this.barajar = this.data.content.barajar.toString();
-      this.intentos = this.data.content.intentos;
-      this.duracion = this.data.content.duracion;
-      this.porcentaje = this.data.content.porcentaje;
-      this.textEndExercise = this.data.content.textoFinal;
+      this.feedback = this.data.content.retroalimentacion ?
+                      this.data.content.retroalimentacion.toString() :
+                      this.feedback;
+      this.mostrarResultado = this.data.content.mostrarResultados ?
+                              this.data.content.mostrarResultados.toString() :
+                              this.mostrarResultado;
+      this.seleccion = this.data.content.seleccion ?
+                        this.data.content.seleccion.toString() :
+                        this.seleccion;
+      this.barajar = this.data.content.barajar ?
+                      this.data.content.barajar.toString() :
+                      this.barajar;
+      this.intentos = this.data.content.intentos ?
+                      this.data.content.intentos :
+                      this.intentos;
+      this.duracion = this.data.content.duracion ?
+                      this.data.content.duracion :
+                      this.duracion;
+      this.porcentaje = this.data.content.porcentaje ?
+                        this.data.content.porcentaje :
+                        this.porcentaje;
+      this.textEndExercise = this.data.content.textoFinal ?
+                              this.data.content.textoFinal :
+                              this.textEndExercise;
       this.edit = true;
     }
     this.courseId = this.data.content.courseId;
@@ -114,6 +130,7 @@ export class ExercisesCreateComponent implements OnInit {
 
   saveOrEditExercise(event: Event) {
     event.preventDefault();
+    console.log(this.form.value);
     this.form.markAllAsTouched();
     if (this.form.valid) {
       this.form.disable();

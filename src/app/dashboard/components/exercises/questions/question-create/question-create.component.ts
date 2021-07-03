@@ -56,6 +56,12 @@ export class QuestionCreateComponent implements OnInit, OnDestroy {
       img: '/assets/icons/respuesta_libre.svg',
       value: 5,
       state: false
+    },
+    {
+      name: 'Tarea',
+      img: '/assets/icons/tarea.png',
+      value: 6,
+      state: false
     }
   ]
 
@@ -130,6 +136,16 @@ export class QuestionCreateComponent implements OnInit, OnDestroy {
   questionToEdit;
   AnswerTruePos: number;
 
+  // tarea
+  tarea;
+  jobExpDateCheck
+  jobExpDate;
+  jobExpTime;
+  jobFinalDateCheck;
+  jobFinalDate;
+  jobFinalTime;
+  documentType;
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private exercService: ExercisesService,
@@ -148,7 +164,7 @@ export class QuestionCreateComponent implements OnInit, OnDestroy {
     // console.log(`Id curso: ${this.courseId}, Id Ejercicio: ${this.exerciseId}`);
     // console.log(`Question type: ${this.qType}, Question position: ${this.qPos}`);
 
-   }
+  }
 
   ngOnInit(): void {
     this.exerciseReceived = this.exercService.exerciseDetail(this.courseId, this.exerciseId)
@@ -160,7 +176,6 @@ export class QuestionCreateComponent implements OnInit, OnDestroy {
         } else {
           this.position = 1;
         }
-        // console.log(this.position);
 
         if (this.edit) {
           const optPos = this.qType - 1;
@@ -193,6 +208,17 @@ export class QuestionCreateComponent implements OnInit, OnDestroy {
           // actualizar palabras si es rellenar blancos
           if (this.qType * 1 === 3) {
             this.questionChange(this.question);
+          }
+          // tareas
+          if (this.qType * 1 === 6) {
+            console.log(ex.preguntas[0].tarea);
+            this.jobExpDateCheck = ex.preguntas[0].tarea.vencimiento;
+            this.jobExpDate = ex.preguntas[0].tarea.fechaVencimiento;
+            this.jobExpTime = ex.preguntas[0].tarea.horaVencimiento;
+            this.jobFinalDateCheck = ex.preguntas[0].tarea.final;
+            this.jobFinalDate = ex.preguntas[0].tarea.fechaFinal;
+            this.jobFinalTime = ex.preguntas[0].tarea.horaFinal;
+            this.documentType = ex.preguntas[0].tarea.tipoDocumento.toString();
           }
         }
       })
@@ -251,7 +277,6 @@ export class QuestionCreateComponent implements OnInit, OnDestroy {
         validR = true;
       }
     })
-
     if (validR) {
       Swal.fire({
 				icon: 'error',
@@ -268,7 +293,6 @@ export class QuestionCreateComponent implements OnInit, OnDestroy {
           q.comment = this.relations[q.relation - 1].answer;
         }
       });
-
       if (validR2) {
         Swal.fire({
           icon: 'error',
@@ -296,9 +320,6 @@ export class QuestionCreateComponent implements OnInit, OnDestroy {
   }
 
   saveWhite() {
-    // const question = this.questionFormatter();
-    // console.log(question);
-    // this.question = question;
     this.questions.length = 0;
     if (this.edit) {
       this.editQuestion();
@@ -306,6 +327,62 @@ export class QuestionCreateComponent implements OnInit, OnDestroy {
       this.saveQuestion();
     }
 
+  }
+
+  saveJob() {
+    let val = true;
+    this.tarea = {
+      vencimiento: this.jobExpDateCheck === true ? true : false,
+      fechaVencimiento: this.jobExpDateCheck === true ? this.jobExpDate : '',
+      horaVencimiento: this.jobExpDateCheck === true ? this.jobExpTime: '',
+      final: this.jobFinalDateCheck === true ? true : false,
+      fechaFinal: this.jobFinalDateCheck === true ? this.jobFinalDate : '',
+      horaFinal: this.jobFinalDateCheck === true ? this.jobFinalTime: '',
+      tipoDocumento: this.documentType * 1
+    }
+
+    if (this.tarea.vencimiento) {
+      if (!this.tarea.fechaVencimiento || !this.tarea.horaVencimiento) {
+        Swal.fire({
+          icon: 'error',
+          title: 'error',
+          text: 'Debe establecer la fecha y hora de vencimiento.',
+          confirmButtonText: 'cerrar',
+          });
+        val = false;
+      }
+    }
+
+    if (this.tarea.final) {
+      if (!this.tarea.fechaFinal || !this.tarea.horaFinal) {
+        Swal.fire({
+          icon: 'error',
+          title: 'error',
+          text: 'Debe establecer la fecha y hora de finalización.',
+          confirmButtonText: 'cerrar',
+          });
+        val = false;
+      }
+    }
+
+    if (!this.tarea.tipoDocumento) {
+      Swal.fire({
+        icon: 'error',
+        title: 'error',
+        text: 'Debe establecer el tipo de documento.',
+        confirmButtonText: 'cerrar',
+        });
+      val = false;
+    }
+
+    if (val) {
+      this.questions.length = 0;
+      if (this.edit) {
+        this.editQuestion();
+      } else {
+        this.saveQuestion();
+      }
+    }
   }
 
   saveOrEditQuestion() {
@@ -325,7 +402,8 @@ export class QuestionCreateComponent implements OnInit, OnDestroy {
           question: this.question,
           type: this.selected *1,
           answers: this.questions,
-          position: this.position
+          position: this.position,
+          tarea: this.tarea,
         }
       );
 
@@ -351,13 +429,13 @@ export class QuestionCreateComponent implements OnInit, OnDestroy {
 
   }
 
-
   editQuestion() {
 
     if (this.questionValidator()) {
       this.questionToEdit.question = this.question;
       this.questionToEdit.answers = this.questions;
       this.questionToEdit.type = this.selected * 1;
+      this.questionToEdit.tarea = this.tarea;
 
       const pos = this.questionToEdit.position -1;
       this.questionToSave[pos] = this.questionToEdit;

@@ -160,6 +160,9 @@ export class QuestionsListComponent implements OnInit, OnDestroy, AfterViewInit 
       case 5:
         questionType = 'Respuesta libre';
         break;
+      case 6:
+        questionType = 'Tarea';
+        break;
       default:
         questionType = 'No definido';
         break;

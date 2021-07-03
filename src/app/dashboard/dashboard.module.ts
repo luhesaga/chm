@@ -32,6 +32,8 @@ import { QuestionCreateComponent } from './components/exercises/questions/questi
 import { QuestionsListComponent } from './components/exercises/questions/questions-list/questions-list.component';
 import { CourseRegistrationComponent } from './components/course-registration/course-registration.component';
 import { LessonsComponent } from './components/course-registration/lessons/lessons.component';
+import { GlossaryListComponent } from './components/glossary/glossary-list/glossary-list.component';
+import { GlossaryCreateComponent } from './components/glossary/glossary-create/glossary-create.component';
 
 
 
@@ -62,6 +64,8 @@ import { LessonsComponent } from './components/course-registration/lessons/lesso
     QuestionsListComponent,
     CourseRegistrationComponent,
     LessonsComponent,
+    GlossaryListComponent,
+    GlossaryCreateComponent,
     ],
   imports: [
     CommonModule,

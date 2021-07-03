@@ -1,0 +1,109 @@
+<div class="container">
+    <h2>Glosario para curso: {{course?.nombre}}</h2>
+    <mat-form-field appearance="legacy" class="search">
+        <mat-label>Buscar</mat-label>
+        <input matInput (keyup)="obtenerEventoSearch($event)" placeholder="Buscar">
+        <mat-icon matSuffix>search</mat-icon>
+        <mat-hint>puede buscar por cualquier campo</mat-hint>
+    </mat-form-field>
+    <button
+        *ngIf="admin"
+        mat-raised-button
+        (click)="openDialog(null)"
+        style="background: var(--main-color2); color: white;">
+            Crear nuevo término
+    </button>
+    <button
+        mat-raised-button
+        matTooltip="{{ listView ? 'Ver como tabla' : 'Ver como lista' }}"
+        style="margin-left: 16px;"
+        (click)="changeView()">
+            {{ listView ? 'Ver como tabla' : 'Ver como lista' }}
+    </button>
+
+    <section *ngIf="listView">
+        <div class="student-view" *ngFor="let item of dataSource.data">
+            <div class="term">
+                <p>{{ item.termino }}</p>
+                <div class="std-buttons" *ngIf="admin">
+                    <button
+                        mat-stroked-button
+                        color="primary"
+                        matTooltip="Editar curso"
+                        (click)="openDialog(item)">
+                            <mat-icon style="color: darkgoldenrod;">edit</mat-icon>
+                    </button>
+                    <button
+                        mat-stroked-button
+                        color="secondary"
+                        (click)="deleteTerm(item)">
+                            <mat-icon>delete</mat-icon>
+                    </button>
+                </div>
+
+            </div>
+            <div class="definition">
+                <p id="{{item.id + 'st'}}">{{ parseStudentView(item) }}</p>
+            </div>
+        </div>
+    </section>
+
+    <section *ngIf="!listView">
+        <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+            <!-- termino -->
+            <ng-container matColumnDef="termino">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header id="termino">Término</th>
+                <td
+                mat-cell
+                *matCellDef="let element"
+                class="name">
+                    <p>{{ element.termino }}</p>
+                </td>
+            </ng-container>
+
+            <!-- definicion -->
+            <ng-container matColumnDef="definicion">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header id="definicion">Definición</th>
+                <td mat-cell *matCellDef="let element">
+                    <p
+                        id="{{element.id}}">
+                        {{ parseHTML(element) }}
+                    </p>
+                </td>
+            </ng-container>
+
+            <!-- botones de acción -->
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef id="acciones">Acciones</th>
+                <td mat-cell *matCellDef="let element" class="buttons">
+                <button
+                    mat-stroked-button
+                    color="primary"
+                    matTooltip="Editar curso"
+                    (click)="openDialog(element)">
+                    <mat-icon style="color: darkgoldenrod;">edit</mat-icon>
+                </button>
+                <button mat-stroked-button color="secondary" (click)="deleteTerm(element)">
+                    <mat-icon>delete</mat-icon>
+                </button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+
+        <mat-paginator
+            [pageSizeOptions]="[10, 15, 20]"
+            showFirstLastButtons
+        ></mat-paginator>
+    </section>
+    <button
+        mat-stroked-button
+        color="primary"
+        (click)="goBack()"
+        style="background: var(--main-color2); color: white;">
+            << Regresar
+    </button>
+</div>

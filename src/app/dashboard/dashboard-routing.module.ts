@@ -26,6 +26,8 @@ import { QuestionCreateComponent } from './components/exercises/questions/questi
 import { QuestionsListComponent } from './components/exercises/questions/questions-list/questions-list.component';
 import { CourseRegistrationComponent } from './components/course-registration/course-registration.component';
 import { LessonsComponent } from './components/course-registration/lessons/lessons.component';
+import { GlossaryListComponent } from './components/glossary/glossary-list/glossary-list.component';
+import { GlossaryCreateComponent } from './components/glossary/glossary-create/glossary-create.component';
 
 const routes: Routes = [
   {
@@ -108,6 +110,14 @@ const routes: Routes = [
       {
         path: 'cursos/ejercicios/:courseId/preguntas/edit/:exerciseId/:questionPosition/:questionType/:answerTrue',
         component: QuestionCreateComponent
+      },
+      {
+        path: 'cursos/glosario/:courseId',
+        component: GlossaryListComponent
+      },
+      {
+        path: 'cursos/glosario/:courseId/create',
+        component: GlossaryCreateComponent
       },
       {
         path: 'categorias',
