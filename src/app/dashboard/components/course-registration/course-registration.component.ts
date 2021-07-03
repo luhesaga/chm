@@ -38,11 +38,6 @@ export class CourseRegistrationComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  goToLecciones(idCourse:string)
-  {
-    this.router.navigateByUrl('course-registration/lessons/'+idCourse);
-  }
-
   goToCourseHome(idCourse:string)
   {
     this.router.navigateByUrl('cursos/registration/'+idCourse);
