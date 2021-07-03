@@ -1,0 +1,76 @@
+<main>
+    <section class="description">
+        <div class="course-title">
+            <h1>{{ nombreCurso }}</h1>
+            <h4>Categoria: <span>{{ categoria }}</span></h4>
+        </div>
+        <div class="course-description">
+            <div id="descripcion"></div>
+        </div>
+    </section>
+    <section class="course-content">
+        <div class="card">
+            <div class="img"><img src="/assets/icons/mortarboard.svg" alt=""></div>
+
+            <div class="options">
+                <a (click)="openDialog()">Descripción</a>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="img"><img src="/assets/icons/online-learning.svg" alt=""></div>
+
+            <div class="options">
+                <a>Documentos</a>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="img"><img src="/assets/icons/online-lesson.svg" alt=""></div>
+
+            <div class="options">
+                <a (click)="goToLessons()">Lecciones</a>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="img"><img src="/assets/icons/check-list.svg" alt=""></div>
+
+            <div class="options">
+                <a (click)="goToExercises()">Ejercicios</a>
+                <!-- <div class="icons">
+                    <mat-icon>visibility</mat-icon>
+                    <mat-icon>edit</mat-icon>
+                </div> -->
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="img"><img src="/assets/icons/charla.svg" alt=""></div>
+
+            <div class="options">
+                <a>Foros</a>
+                <!-- <div class="icons">
+                    <mat-icon>visibility</mat-icon>
+                    <mat-icon>edit</mat-icon>
+                </div> -->
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="img"><img src="/assets/icons/anuncio.svg" alt=""></div>
+
+            <div class="options">
+                <a>Anuncios</a>
+                <!-- <div class="icons">
+                    <mat-icon>visibility</mat-icon>
+                    <mat-icon>edit</mat-icon>
+                </div> -->
+            </div>
+        </div>
+    </section>
+    <section class="buttons">
+        <button mat-button (click)="goBack()" ><< Volver a lista de cursos</button>
+    </section>
+
+</main>

@@ -28,6 +28,8 @@ import { CourseRegistrationComponent } from './components/course-registration/co
 import { LessonsComponent } from './components/course-registration/lessons/lessons.component';
 import { GlossaryListComponent } from './components/glossary/glossary-list/glossary-list.component';
 import { GlossaryCreateComponent } from './components/glossary/glossary-create/glossary-create.component';
+import { AddStudentComponent } from './components/cursos/add-student/add-student.component';
+import { CourseHomeComponentRegistration } from './components/course-registration/course-home/course-home.component';
 
 const routes: Routes = [
   {
@@ -150,6 +152,14 @@ const routes: Routes = [
       {
         path: 'course-registration/lessons/:id',
         component: LessonsComponent,
+      },
+      {
+        path: 'add-student/:idCurso',
+        component: AddStudentComponent,
+      },
+      {
+        path: 'cursos/registration/:idCurso',
+        component: CourseHomeComponentRegistration
       }
     ]
   },

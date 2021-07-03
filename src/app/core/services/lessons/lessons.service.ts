@@ -127,6 +127,12 @@ export class LessonsService {
     return this.fireStore.doc(`cursos/${courseId}/lecciones/${lessonId}/contenido/${contentId}/foro/${replayId}`);
   }
 
+  deleteReplyForo(courseId, lessonId, contentId, replayId)
+  {
+    return this.fireStore.doc(`cursos/${courseId}/lecciones/${lessonId}/contenido/${contentId}/foro/${replayId}`)
+    .delete();
+  }
+
   pushComentario(data,courseId, lessonId, contentId, replayId)
   {
     let reply:any;
@@ -151,7 +157,27 @@ export class LessonsService {
     );
   }
 
+  editarForo(answer:string, courseId, lessonId, contentId, replayId)
+  {
+    return this.fireStore.doc(`cursos/${courseId}/lecciones/${lessonId}/contenido/${contentId}/foro/${replayId}`)
+    .update({contenido: answer});
+  }
 
+  deleteComentario(index: number,courseId, lessonId, contentId, replayId)
+  {
+    let reply:any;
+    let comentarios: any[];
+    const subDeleteComentario = this.fireStore.doc(`cursos/${courseId}/lecciones/${lessonId}/contenido/${contentId}/foro/${replayId}`)
+    .valueChanges()
+    .subscribe(replyForo => {
+      reply = replyForo;
+      comentarios = reply.comentario;
+      comentarios.splice(index,1);
+      this.fireStore.doc(`cursos/${courseId}/lecciones/${lessonId}/contenido/${contentId}/foro/${replayId}`)
+      .update({comentario: comentarios});
+      subDeleteComentario.unsubscribe();
+    });
+  }
 
 
 }

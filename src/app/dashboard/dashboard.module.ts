@@ -34,6 +34,8 @@ import { CourseRegistrationComponent } from './components/course-registration/co
 import { LessonsComponent } from './components/course-registration/lessons/lessons.component';
 import { GlossaryListComponent } from './components/glossary/glossary-list/glossary-list.component';
 import { GlossaryCreateComponent } from './components/glossary/glossary-create/glossary-create.component';
+import { AddStudentComponent } from './components/cursos/add-student/add-student.component';
+import { MatricularComponent } from './components/cursos/add-student/matricular/matricular.component';
 
 
 
@@ -66,6 +68,8 @@ import { GlossaryCreateComponent } from './components/glossary/glossary-create/g
     LessonsComponent,
     GlossaryListComponent,
     GlossaryCreateComponent,
+    AddStudentComponent,
+    MatricularComponent,
     ],
   imports: [
     CommonModule,

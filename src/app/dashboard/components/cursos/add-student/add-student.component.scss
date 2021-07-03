@@ -1,0 +1,120 @@
+.matCardContent
+{
+    width:90%;
+    margin: 1.5rem auto;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) ;
+    min-height: 76%;
+    h1
+    {
+        text-align: center;
+    }
+}
+
+table {
+    width: 80%;
+    margin: 0 auto;
+    text-align: left;
+}
+
+.contenedorStudent
+{
+    margin-top: 1rem;
+}
+
+.contenedorStudent-item
+{
+    padding-left: 1rem;
+    margin-top: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 3px solid rgba(0, 114, 121, 0.95);
+}
+
+.mat-checkbox .mat-accent{
+color:#50C0DF;
+}
+
+
+.search {
+    margin-right: 48px;
+    margin-bottom: 24px;
+}
+
+.buttons, .estado
+{
+    text-align: center;
+}
+
+.buttons .mat-stroked-button
+{
+    margin-left: 5px;
+    min-width: 40px;
+}
+
+.mat-header-cell
+{
+    color: black;
+    text-align: center;
+}
+
+.mat-cell
+{
+    color:rgba(0,0,0,.54);
+    padding: 0;
+    margin: 0;
+}
+
+td.mat-cell:last-of-type
+{
+    padding: 0;
+}
+
+.contenedorEstado
+{
+    display: flex;
+    justify-content: center
+}
+
+.matricular
+{
+    color:white;
+    background:#287233;
+}
+
+.desmatricular
+{
+    color: white;
+    background:red;
+}
+
+.menuVariado
+{
+    display:flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+    justify-content: space-between;
+    .botonMatricular
+    {
+        text-align: right;
+        button
+        {
+            background:#287233;
+            height: 2.5rem;
+            color: white;
+            border-radius: 1rem;
+            border:none;
+        }
+    }
+}
+
+.botonMatricular-item
+{
+    display: grid;
+    grid-auto-flow: column;
+    align-items: center;
+}
+
+.botonMatricular-texto
+{
+    margin-left: 0.5rem;
+}

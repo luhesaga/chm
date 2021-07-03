@@ -10,7 +10,7 @@
     <editor
     apiKey="fa82nlmdggdzt2rwcpx7k706ohjcnf9wo3ioar2p06d10yyk"
     class="mat-elevation-z1"
-    [(ngModel)]="answer"
+    [(ngModel)]="this.answer"
     [init]="{
         icons: 'material',
         skin: 'borderless',
@@ -27,11 +27,14 @@
     <div *ngIf="!idReplyForo">
         <button class="corner-button" (click)="enviarForo()"> <span>Enviar</span> </button>
     </div>
-    <div *ngIf="idReplyForo">
+    <div *ngIf="this.tipo === 'responder'">
         <button class="corner-button"  (click)="enviarComentario()"> <span>Comentar</span> </button>
     </div>
     <div>
         <button class="corner-button | corner-button2"  (click)="goToForo()"> <span>Cancelar</span> </button>
+    </div>
+    <div *ngIf="this.tipo === 'editar'">
+        <button class="corner-button" (click)="editarForo()"> <span>Editar</span> </button>
     </div>
 </div>
 
