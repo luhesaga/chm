@@ -33,11 +33,6 @@ table {
 color:#50C0DF;
 }
 
-::ng-deep .mat-checkbox-checked.mat-accent
-.mat-checkbox-background,
-.mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
-    background-color: #005691;
-}
 
 .search {
     margin-right: 48px;
@@ -89,4 +84,37 @@ td.mat-cell:last-of-type
 {
     color: white;
     background:red;
+}
+
+.menuVariado
+{
+    display:flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+    justify-content: space-between;
+    .botonMatricular
+    {
+        text-align: right;
+        button
+        {
+            background:#287233;
+            height: 2.5rem;
+            color: white;
+            border-radius: 1rem;
+            border:none;
+        }
+    }
+}
+
+.botonMatricular-item
+{
+    display: grid;
+    grid-auto-flow: column;
+    align-items: center;
+}
+
+.botonMatricular-texto
+{
+    margin-left: 0.5rem;
 }

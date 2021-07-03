@@ -2,10 +2,12 @@ import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { ActivatedRoute } from '@angular/router';
-import { CourseService } from 'src/app/core/services/courses/course.service';
+import {MatDialog} from '@angular/material/dialog';
 import { UsersService } from 'src/app/core/services/users/users.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { LessonsService } from 'src/app/core/services/lessons/lessons.service';
+import { MatricularComponent } from './matricular/matricular.component';
+import { CourseService } from 'src/app/core/services/courses/course.service';
 
 @Component({
   selector: 'app-add-student',
@@ -28,21 +30,32 @@ export class AddStudentComponent implements OnInit, AfterViewInit  {
   content:any[];
 
   constructor(
+    private courseService: CourseService,
     private lessonService: LessonsService,
     private userService: UsersService,
     private activatedRoute: ActivatedRoute,
+    public dialog: MatDialog
   )
   {
     this.content = [];
     this.enrolledStudents = [];
     this.idCurso = this.activatedRoute.snapshot.params.idCurso;
     this.getLessons();
-    this.obtenerListaEstudiante();
+    this.obtenerListaEstudianteMatriculados();
   }
 
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+  }
+
+  openDialog()
+  {
+    const dialogRef = this.dialog.open(MatricularComponent,{
+      height: '90%',
+      width: '80%',
+      data:this.idCurso
+    });
   }
 
   getLessons()
@@ -79,31 +92,11 @@ export class AddStudentComponent implements OnInit, AfterViewInit  {
       });
   }
 
-  obtenerListaEstudiante():void
+  obtenerListaEstudianteMatriculados():void
   {
-    this.userService.listUsers()
+    this.courseService.obtenerEstudiantesMatriculados(this.idCurso)
     .valueChanges()
-    .subscribe(users =>
-    {
-      this.students=users;
-      this.students.forEach( user =>
-      {
-        this.userService.obtenerElEstadoMatriculaEstudiante(user.id, this.idCurso)
-        .valueChanges()
-        .subscribe((matricula:any) =>
-        {
-          if(matricula)
-          {
-            user.matriculado = matricula.matriculado;
-          }
-          else
-          {
-            user.matriculado  = false;
-          }
-        });
-      })
-      this.dataSource.data = this.students;
-    });
+    .subscribe(estudiantesMatriculados => this.dataSource.data = estudiantesMatriculados);
   }
 
   ngOnInit(): void {
@@ -115,11 +108,9 @@ export class AddStudentComponent implements OnInit, AfterViewInit  {
 
   matricularEstudiante(estudiante:any)
   {
-    const contenidoCurso = {
-      lessons: this.lessons,
-      content: this.content
-    }
+    const contenidoCurso = {}
     this.userService.verificarMatriculaDelEstudiante(estudiante.id, this.idCurso, contenidoCurso);
+    this.courseService.deleteEnrolledStudent(this.idCurso, estudiante.id);
   }
 
 }

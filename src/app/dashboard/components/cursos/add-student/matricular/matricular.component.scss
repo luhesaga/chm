@@ -1,0 +1,57 @@
+.contenedor
+{
+    padding: 30px;
+}
+
+table {
+    width: 80%;
+    margin: 0 auto;
+    text-align: left;
+}
+
+.search {
+    margin-right: 48px;
+    margin-bottom: 24px;
+}
+
+.buttons, .estado
+{
+    text-align: center;
+}
+
+.mat-header-cell
+{
+    color: black;
+    text-align: center;
+}
+
+.mat-cell
+{
+    color:rgba(0,0,0,.54);
+    padding: 0;
+    margin: 0;
+}
+
+td.mat-cell:last-of-type
+{
+    padding: 0;
+}
+
+.matricular
+{
+    color:white;
+    background:#287233;
+}
+
+.desmatricular
+{
+    color: white;
+    background:red;
+}
+
+.botonCerrar
+{
+    width: 100%;
+    background: crimson;
+    color: white;
+}

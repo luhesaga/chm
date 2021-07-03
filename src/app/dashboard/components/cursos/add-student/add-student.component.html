@@ -2,15 +2,25 @@
     <div class="contenedor">
         <h1>AGREGAR ESTUDIANTE AL CURSO</h1>
 
-        <div>
-            <mat-form-field appearance="legacy" class="search">
-                <mat-label>Buscar</mat-label>
-                <input
-                (input)="applyFilter($event.target.value)"
-                matInput placeholder="Buscar Alumno"> <!---->
-                <mat-icon matSuffix>search</mat-icon>
-                <mat-hint>Puede buscar en todos los campos</mat-hint>
-            </mat-form-field>
+        <div class="menuVariado">
+            <div class="busquedaEstudiante">
+                <mat-form-field appearance="legacy" class="search">
+                    <mat-label>Buscar</mat-label>
+                    <input
+                    (input)="applyFilter($event.target.value)"
+                    matInput placeholder="Buscar Alumno"> <!---->
+                    <mat-icon matSuffix>search</mat-icon>
+                    <mat-hint>Puede buscar en todos los campos</mat-hint>
+                </mat-form-field>
+            </div>
+            <div class="botonMatricular">
+                <button (click)="openDialog()">
+                    <div class="botonMatricular-item">
+                        <mat-icon>group_add</mat-icon>
+                        <div class="botonMatricular-texto">MATRICULAR ESTUDIANTE</div>
+                    </div>
+                </button>
+            </div>
         </div>
 
         <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
@@ -28,7 +38,7 @@
                     *matCellDef="let element"
                     matTooltip="Anuncio"
                     class="name">
-                    {{ element.nombres }} {{ element.apellidos }}
+                    {{ element.nombre }}
                 </td>
             </ng-container>
 
@@ -39,12 +49,7 @@
                     *matCellDef="let element"
                     matTooltip="Estado de la matricula"
                     class="estado">
-                    <div class="contenedorEstado" *ngIf="!element.matriculado">
-                        <div>
-                            Desmatriculado
-                        </div>
-                    </div>
-                    <div class="contenedorEstado" *ngIf="element.matriculado">
+                    <div class="contenedorEstado">
                         <div>
                             Matriculado
                         </div>
@@ -57,15 +62,6 @@
                 <th mat-header-cell *matHeaderCellDef id="acciones">Acciones</th>
                 <td mat-cell *matCellDef="let element" class="buttons">
                     <button
-                        *ngIf="!element.matriculado"
-                        mat-stroked-button
-                        class="matricular"
-                        (click)="matricularEstudiante(element)"
-                        >
-                        Matricular
-                    </button>
-                    <button
-                    *ngIf="element.matriculado"
                     mat-stroked-button
                     class="desmatricular"
                     (click)="matricularEstudiante(element)"

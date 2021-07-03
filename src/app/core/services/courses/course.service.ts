@@ -64,11 +64,22 @@ export class CourseService {
       })
   }
 
-  addEnrolledStudents(students:any[], idCurso):void
+  addEnrolledStudents(students:any, idCurso:string, idEstudiante: string):void
   {
-    this.fireStore.doc(`cursos/${idCurso}`)
-    .update({
-      estudiantesMatriculados: students
+    this.fireStore.doc(`cursos/${idCurso}/matriculados/${idEstudiante}`)
+    .set({
+      id:idEstudiante,
+      nombre: students
     })
+  }
+
+  deleteEnrolledStudent(idCurso:string, idEstudiante: string)
+  {
+    this.fireStore.doc(`cursos/${idCurso}/matriculados/${idEstudiante}`).delete();
+  }
+
+  obtenerEstudiantesMatriculados(idCurso:string): AngularFirestoreCollection
+  {
+    return this.fireStore.collection(`cursos/${idCurso}/matriculados`);
   }
 }
