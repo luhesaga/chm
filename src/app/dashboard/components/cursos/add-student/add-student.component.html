@@ -1,0 +1,84 @@
+<mat-card class="matCardContent">
+    <div class="contenedor">
+        <h1>AGREGAR ESTUDIANTE AL CURSO</h1>
+
+        <div class="menuVariado">
+            <div class="busquedaEstudiante">
+                <mat-form-field appearance="legacy" class="search">
+                    <mat-label>Buscar</mat-label>
+                    <input
+                    (input)="applyFilter($event.target.value)"
+                    matInput placeholder="Buscar Usuario"> <!---->
+                    <mat-icon matSuffix>search</mat-icon>
+                    <mat-hint>Puede buscar en todos los campos</mat-hint>
+                </mat-form-field>
+            </div>
+            <div class="botonMatricular">
+                <button (click)="openDialog()">
+                    <div class="botonMatricular-item">
+                        <mat-icon>group_add</mat-icon>
+                        <div class="botonMatricular-texto">MATRICULAR ESTUDIANTE</div>
+                    </div>
+                </button>
+            </div>
+        </div>
+
+        <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+            <!-- nombre del usuario -->
+            <ng-container matColumnDef="nombre">
+                <th
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+                id="nombre">
+                    Nombre
+                </th>
+                <td
+                    mat-cell
+                    *matCellDef="let element"
+                    matTooltip="Usuario"
+                    class="name">
+                    {{ element.nombre }}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="estado">
+                <th mat-header-cell *matHeaderCellDef id="estado">Estado</th>
+                <td
+                    mat-cell
+                    *matCellDef="let element"
+                    matTooltip="Estado de la matricula"
+                    class="estado">
+                    <div class="contenedorEstado">
+                        <div>
+                            Matriculado
+                        </div>
+                    </div>
+                </td>
+            </ng-container>
+
+            <!-- botones de acción -->
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef id="acciones">Acciones</th>
+                <td mat-cell *matCellDef="let element" class="buttons">
+                    <button
+                    mat-stroked-button
+                    class="desmatricular"
+                    (click)="matricularEstudiante(element)"
+                    >
+                    Desmatricular
+                </button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+        <mat-paginator
+            [pageSizeOptions]="[10, 15, 20]"
+            showFirstLastButtons>
+        </mat-paginator>
+
+
+    </div>
+</mat-card>

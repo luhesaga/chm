@@ -2,7 +2,7 @@
     <mat-card class="matCardContent">
         <mat-card *ngFor="let course of listcourse"
         class="matCardContent-item gridCursos"
-        (click)="goToLecciones(course.id)">
+        (click)="goToCourseHome(course.id)">
             <div class="grid-item1">
                 <img class="imagenCurso" [src]="course.imagen" alt="">
             </div>

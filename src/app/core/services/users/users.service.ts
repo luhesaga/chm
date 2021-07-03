@@ -20,6 +20,11 @@ export class UsersService {
       ref.where('perfil', '==', 'profesor'));
   }
 
+  listStudents(): AngularFirestoreCollection {
+    return this.fireStore.collection('usuarios', ref =>
+      ref.where('perfil', '==', 'estudiante'));
+  }
+
   createUser(data, id): Promise<void> {
     data.password = btoa(data.password);
     return this.fireStore.doc(`usuarios/${id}`)
@@ -55,4 +60,48 @@ export class UsersService {
           admin
       });
   }
+
+  obtenerElEstadoMatriculaEstudiante(idUsuario:string, idCurso:string)
+  {
+    return this.fireStore.doc(`usuarios/${idUsuario}/miscursos/${idCurso}`);
+  }
+
+  verificarMatriculaDelEstudiante(idUsuario:string, idCurso:string, contenidoCurso: any):void
+  {
+    let subscribe = this.fireStore.doc(`usuarios/${idUsuario}/miscursos/${idCurso}`)
+    .valueChanges()
+    .subscribe((cursos:any) =>
+      {
+        if(cursos)
+        {
+          this.cambiarEstadoDeLaMatricula(idUsuario, idCurso, !cursos.matriculado)
+        }
+        else
+        {
+          this.matricularEstudiante(idUsuario, idCurso, contenidoCurso);
+        }
+        subscribe.unsubscribe();
+      });
+  }
+
+  matricularEstudiante(idUsuario:string, idCurso:string, contenidoCurso: any)
+  {
+    this.fireStore.doc(`usuarios/${idUsuario}/miscursos/${idCurso}`)
+    .set({
+      idUsuario,
+      idCurso,
+      lecciones: contenidoCurso.lessons,
+      contenidoLecciones: contenidoCurso.content,
+      matriculado: true
+    });
+  }
+
+  cambiarEstadoDeLaMatricula(idUsuario:string, idCurso:string, estadoMatricula: boolean)
+  {
+    this.fireStore.doc(`usuarios/${idUsuario}/miscursos/${idCurso}`)
+    .update({
+      matriculado: estadoMatricula
+    });
+  }
+
 }

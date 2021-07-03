@@ -26,11 +26,33 @@
         <span>Comentar</span>
       </button>
 
+      <button
+      *ngIf="usuario.id === respuesta.usuarioId"
+      class="corner-button | editarForo"
+      (click)="goToEditarReply(respuesta.id)">
+        <span>Editar</span>
+      </button>
+
+      <button
+      *ngIf="usuario.id === respuesta.usuarioId ||
+      usuario.perfil === 'administrador'"
+      (click)="getAdsToDelete(respuesta.id)"
+      class="corner-button | eliminarForo">
+        <span>Eliminar</span>
+      </button>
+
       <div *ngIf=" respuesta.comentario">
         <h3 class="tituloComentario">Comentarios</h3>
-        <div *ngFor="let comentario of respuesta.comentario" class="comentario">
+        <div *ngFor="let comentario of respuesta.comentario; let i = index" class="comentario">
           <h4>{{comentario.nombreCompleto}}</h4>
           <div [innerHTML]="comentario.contenido"></div>
+          <button
+          *ngIf="usuario.id === comentario.idUsuario ||
+          usuario.perfil === 'administrador'"
+          (click)="messageDeleteComentario(i, respuesta.id)"
+          class="corner-button | eliminarComentario">
+            <span>Eliminar</span>
+          </button>
         </div>
       </div>
     </div>

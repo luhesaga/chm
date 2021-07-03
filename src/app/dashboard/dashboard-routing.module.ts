@@ -26,6 +26,8 @@ import { QuestionCreateComponent } from './components/exercises/questions/questi
 import { QuestionsListComponent } from './components/exercises/questions/questions-list/questions-list.component';
 import { CourseRegistrationComponent } from './components/course-registration/course-registration.component';
 import { LessonsComponent } from './components/course-registration/lessons/lessons.component';
+import { AddStudentComponent } from './components/cursos/add-student/add-student.component';
+import { CourseHomeComponentRegistration } from './components/course-registration/course-home/course-home.component';
 
 const routes: Routes = [
   {
@@ -140,6 +142,14 @@ const routes: Routes = [
       {
         path: 'course-registration/lessons/:id',
         component: LessonsComponent,
+      },
+      {
+        path: 'add-student/:idCurso',
+        component: AddStudentComponent,
+      },
+      {
+        path: 'cursos/registration/:idCurso',
+        component: CourseHomeComponentRegistration
       }
     ]
   },
