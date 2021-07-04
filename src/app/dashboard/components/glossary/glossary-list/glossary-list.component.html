@@ -20,8 +20,15 @@
         (click)="changeView()">
             {{ listView ? 'Ver como tabla' : 'Ver como lista' }}
     </button>
+    <button
+        mat-raised-button
+        style="margin-left: 16px;"
+        color="primary"
+        (click)="downloadPDF()">
+            Descargar PDF
+    </button>
 
-    <section *ngIf="listView">
+    <section *ngIf="listView" id="listData">
         <div class="student-view" *ngFor="let item of dataSource.data">
             <div class="term">
                 <p>{{ item.termino }}</p>

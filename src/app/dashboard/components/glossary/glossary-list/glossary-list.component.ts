@@ -9,7 +9,7 @@ import { GlossaryService } from '../../../../core/services/glossary/glossary.ser
 import { GlossaryCreateComponent } from '../glossary-create/glossary-create.component';
 import Swal from 'sweetalert2';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
-
+import jsPDF from 'jspdf';
 @Component({
   selector: 'app-glossary-list',
   templateUrl: './glossary-list.component.html',
@@ -82,12 +82,10 @@ export class GlossaryListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   getLogguedUser() {
     this.auth.user$.subscribe((user) => {
-      console.log(user);
       this.logguedUser = user;
       if (this.logguedUser.perfil !== 'administrador') {
         this.displayedColumns = ['termino', 'definicion'];
         this.admin = false;
-        console.log(this.displayedColumns);
       }
     });
   }
@@ -197,6 +195,58 @@ export class GlossaryListComponent implements OnInit, AfterViewInit, OnDestroy {
   listaCompleta()
   {
     this.dataSource.data = this.filterData;
+  }
+
+  downloadPDF() {
+
+    let d = [];
+    this.filterData.forEach((t: any) => {
+      let p;
+      if (this.listView) {
+        p = document.getElementById(t.id + 'st');
+      } else {
+        p = document.getElementById(t.id);
+      }
+      // console.log(p.textContent);
+      d.push({
+        termino: t.termino,
+        definicion: p.textContent
+      })
+    })
+
+    let columns = []
+
+    columns.push(
+      {
+        align: 'left',
+        id: 'termino',
+        name: 'termino',
+        padding: 0,
+        prompt: 'Término',
+        width: 65,
+      },
+      {
+        align: 'left',
+        id: 'definicion',
+        name: 'definicion',
+        padding: 0,
+        prompt: 'Definición',
+        width: 170
+      }
+    )
+
+    let doc = new jsPDF(
+      {
+        orientation: 'p',
+        format: 'letter',
+      }
+    );
+
+    doc.addImage('../../../assets/img/header-logo-custom1.png','PNG', 5, 10, 60, 20);
+    doc.text(`Glosario del curso: ${this.course.nombre}`, 5, 40)
+    doc.table(10, 50, d, columns,{ autoSize: false });
+    doc.save(`glosario-${this.course.nombre}.pdf`);
+
   }
 
 }
