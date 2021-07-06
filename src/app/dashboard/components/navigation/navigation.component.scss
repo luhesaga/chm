@@ -50,3 +50,86 @@ a {
   color: #455a64;
 }
 
+.secondary-list :hover {
+  background: rgba(80, 192, 223, 0.1);
+}
+
+.mat-list-item button mat-icon {
+  color: var(--main-color2);
+}
+
+.mat-list-item a {
+  color: var(--main-color2) !important;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin-left: 8px;
+  cursor: pointer;
+}
+
+.main-option {
+  color: #455a64;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.other-options {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  margin: 16px auto;
+  padding: 0;
+}
+
+.other-options .ot-title {
+  width: 100%;
+  border: 1px solid grey;
+  background: #eceff1;
+  display: flex;
+  align-items: center;
+}
+
+.other-options .ot-title h4 {
+  margin: 0 24px;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 4px 0;
+}
+
+.other-options .ot-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border: 1px solid grey;
+  padding-top: 8px;
+}
+
+.other-options .ot-content h5 {
+  font-size: 1rem;
+  font-weight: 400;
+  margin: 16px;
+}
+
+.other-options .ot-content p {
+  padding: 0 8px;
+}
+
+.other-options .ot-content .ot-mail {
+  padding: 8px;
+  text-decoration: none;
+  color: var(--main-color2);
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.other-options .ot-content .ot-link {
+  color: var(--main-color2) !important;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  margin: 16px;
+}
+
+
+

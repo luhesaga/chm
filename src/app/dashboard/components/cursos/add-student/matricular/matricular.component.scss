@@ -1,6 +1,23 @@
-.contenedor
-{
-    padding: 30px;
+.contenedor {
+    padding-bottom: 30px;
+}
+
+.title {
+    display: flex;
+    justify-content: space-between;
+    background: var(--main-color2);
+    color: white;
+    padding: 8px 16px;
+    align-items: center;
+}
+
+.title mat-icon {
+    color: white;
+}
+
+.title h2 {
+    font-weight: 500;
+    margin: 0 16px;
 }
 
 table {
@@ -10,48 +27,42 @@ table {
 }
 
 .search {
-    margin-right: 48px;
-    margin-bottom: 24px;
+    margin: 24px 48px;
 }
 
-.buttons, .estado
-{
+.buttons,
+.estado {
     text-align: center;
 }
 
-.mat-header-cell
-{
+.mat-header-cell {
     color: black;
     text-align: center;
 }
 
-.mat-cell
-{
-    color:rgba(0,0,0,.54);
+.mat-cell {
+    color: rgba(0, 0, 0, .54);
     padding: 0;
     margin: 0;
 }
 
-td.mat-cell:last-of-type
-{
+td.mat-cell:last-of-type {
     padding: 0;
 }
 
-.matricular
-{
-    color:white;
-    background:#287233;
+.matricular {
+    color: white;
+    background: var(--main-color2);
 }
 
-.desmatricular
-{
+.desmatricular {
     color: white;
-    background:red;
+    background: red;
 }
 
-.botonCerrar
-{
-    width: 100%;
-    background: crimson;
+.botonCerrar {
+    width: 80%;
+    background: var(--main-color2);
     color: white;
+    margin: 0 auto;
 }

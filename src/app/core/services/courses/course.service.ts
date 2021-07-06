@@ -75,7 +75,7 @@ export class CourseService {
 
   deleteEnrolledStudent(idCurso:string, idEstudiante: string)
   {
-    this.fireStore.doc(`cursos/${idCurso}/matriculados/${idEstudiante}`).delete();
+    return this.fireStore.doc(`cursos/${idCurso}/matriculados/${idEstudiante}`).delete();
   }
 
   obtenerEstudiantesMatriculados(idCurso:string): AngularFirestoreCollection

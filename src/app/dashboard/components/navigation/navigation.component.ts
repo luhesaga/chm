@@ -25,7 +25,7 @@ export class NavigationComponent {
   constructor(
     private breakpointObserver: BreakpointObserver,
     private auth: AuthService,
-    private route: Router
+    private route: Router,
   ) {
     this.logguedUser={}
   }
@@ -35,6 +35,14 @@ export class NavigationComponent {
       //console.log(user);
       this.logguedUser = user;
     });
+  }
+
+  goToProfile() {
+    this.route.navigate([`/usuarios/perfil/${this.logguedUser.id}`]);
+  }
+
+  goToCoursesList() {
+    this.route.navigate([`/dashboard/cursos/list/${this.logguedUser.id}`])
   }
 
   logout():void {

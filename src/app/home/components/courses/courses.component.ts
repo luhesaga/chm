@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { CourseInfoComponent } from './course-info/course-info.component';
 import { CourseService } from '../../../core/services/courses/course.service';
 import { CategoryService } from '../../../core/services/categories/category.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-courses',
@@ -12,12 +13,21 @@ import { CategoryService } from '../../../core/services/categories/category.serv
 export class CoursesComponent implements OnInit {
 
   cursos;
+  userId;
+  dashboard = false;
 
   constructor(
     public dialog: MatDialog,
     public courseService: CourseService,
-    private catService: CategoryService
-  ) { }
+    private catService: CategoryService,
+    private activatedRoute: ActivatedRoute,
+    private route: Router
+  ) {
+    this.userId = this.activatedRoute.snapshot.params.userId;
+    if (this.userId) {
+      this.dashboard = true;
+    }
+  }
 
   ngOnInit(): void {
     this.courseService.listCourses().valueChanges()
@@ -44,6 +54,14 @@ export class CoursesComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       // console.log(`Dialog result ${result}`);
     });
+  }
+
+  goToCourseDetail(courseId) {
+    if (this.dashboard) {
+      this.route.navigate([`/dashboard/cursos/detalle/${courseId}/${this.userId}`]);
+    } else {
+      this.route.navigate([`/home/detalle-curso/${courseId}`]);
+    }
   }
 
 }

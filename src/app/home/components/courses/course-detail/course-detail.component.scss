@@ -5,7 +5,7 @@
 main {
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr;
+    grid-template-rows: auto;
     row-gap: 36px;
     justify-items: center;
     width: 100%;
@@ -72,7 +72,7 @@ main {
 }
 
 .information-container {
-    margin-bottom: 36px;
+    // margin-bottom: 36px;
     padding: 16px 0 32px 0;
     display: grid;
     grid-template-columns: 1fr;
@@ -163,6 +163,12 @@ mat-expansion-panel p {
 .tutores .tutor-info p {
     font-size: 1rem;
     padding-top: 16px;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 32px;
 }
 
 @media (max-width: 1178px) {

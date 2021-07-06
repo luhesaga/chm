@@ -15,6 +15,28 @@ export class UsersService {
     return this.fireStore.collection(`usuarios`);
   }
 
+  detailUser(userId: string) {
+    return this.fireStore.doc(`usuarios/${userId}`);
+  }
+
+  updateUserInfo(data, userId) {
+    return this.fireStore.doc(`usuarios/${userId}`)
+      .update(
+        {
+          nombres: data.nombres ? data.nombres : '',
+          apellidos: data.apellidos ? data.apellidos : '',
+          correo: data.correo ? data.correo : '',
+          tipoId: data.tipoId ? data.tipoId : '',
+          identificacion: data.identificacion ? data.identificacion : '',
+          departamento: data.departamento ? data.departamento : '',
+          ciudad: data.ciudad ? data.ciudad : '',
+          direccion: data.direccion ? data.direccion : '',
+          codigoPais: data.codigoPais ? data.codigoPais : '',
+          telefono: data.telefono ? data.telefono : '',
+        }
+      )
+  }
+
   listTeachers(): AngularFirestoreCollection {
     return this.fireStore.collection('usuarios', ref =>
       ref.where('perfil', '==', 'profesor'));

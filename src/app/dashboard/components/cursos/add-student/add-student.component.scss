@@ -1,13 +1,21 @@
-.matCardContent
-{
-    width:90%;
+.matCardContent {
+    width: 90%;
     margin: 1.5rem auto;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) ;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1);
     min-height: 76%;
-    h1
-    {
+
+    h1 {
         text-align: center;
     }
+}
+
+.contenedor h1 {
+    font-size: 1.3rem;
+}
+
+.contenedor h1 span {
+    color: var(--main-color2);
+    font-weight: 500;
 }
 
 table {
@@ -16,21 +24,19 @@ table {
     text-align: left;
 }
 
-.contenedorStudent
-{
+.contenedorStudent {
     margin-top: 1rem;
 }
 
-.contenedorStudent-item
-{
+.contenedorStudent-item {
     padding-left: 1rem;
     margin-top: 1rem;
     padding-bottom: 1rem;
     border-bottom: 3px solid rgba(0, 114, 121, 0.95);
 }
 
-.mat-checkbox .mat-accent{
-color:#50C0DF;
+.mat-checkbox .mat-accent {
+    color: #50C0DF;
 }
 
 
@@ -39,82 +45,77 @@ color:#50C0DF;
     margin-bottom: 24px;
 }
 
-.buttons, .estado
-{
+.buttons,
+.estado {
     text-align: center;
 }
 
-.buttons .mat-stroked-button
-{
+.buttons .mat-stroked-button {
     margin-left: 5px;
     min-width: 40px;
 }
 
-.mat-header-cell
-{
+.mat-header-cell {
     color: black;
     text-align: center;
 }
 
-.mat-cell
-{
-    color:rgba(0,0,0,.54);
+.mat-cell {
+    color: rgba(0, 0, 0, .54);
     padding: 0;
     margin: 0;
 }
 
-td.mat-cell:last-of-type
-{
+td.mat-cell:last-of-type {
     padding: 0;
 }
 
-.contenedorEstado
-{
+.contenedorEstado {
     display: flex;
     justify-content: center
 }
 
-.matricular
-{
-    color:white;
-    background:#287233;
-}
-
-.desmatricular
-{
+.matricular {
     color: white;
-    background:red;
+    background: #287233;
 }
 
-.menuVariado
-{
-    display:flex;
+.desmatricular {
+    width: 40px;
+    height: 40px;
+    margin: 8px;
+}
+
+.menuVariado {
+    display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     margin-bottom: 1rem;
     justify-content: space-between;
-    .botonMatricular
-    {
+    align-items: center;
+
+    .botonMatricular {
         text-align: right;
-        button
-        {
-            background:#287233;
+
+        button {
+            background: var(--main-color2);
             height: 2.5rem;
             color: white;
-            border-radius: 1rem;
-            border:none;
+            //border-radius: 1rem;
+            border: none;
+            padding: 0 16px;
+            margin-right: 24px;
+            cursor: pointer;
         }
     }
 }
 
-.botonMatricular-item
-{
+.botonMatricular-item {
     display: grid;
     grid-auto-flow: column;
     align-items: center;
 }
 
-.botonMatricular-texto
-{
+.botonMatricular-texto {
     margin-left: 0.5rem;
 }

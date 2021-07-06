@@ -109,7 +109,21 @@
                 </mat-expansion-panel>
             </mat-accordion>
             <button class="btn-back" routerLink="/dashboard/cursos" *ngIf="dash">{{ '<< Volver a Lista de cursos' }}</button>
+            <div class="buttons" *ngIf="!dash">
+                <button
+                    mat-raised-button
+                    style="background: var(--main-color2); color: white; margin-right: 24px;"
+                    (click)="goToBuy()">
+                        {{ dashboard ? 'Incribirse' : 'Comprar'}}
+                </button>
+                <button
+                    mat-raised-button
+                    (click)="goBack()">
+                        Regresar
+                </button>
+            </div>
         </div>
+
         <!-- <div class="tutores">
             <h2>Tutor</h2>
             <div class="tutor-info">

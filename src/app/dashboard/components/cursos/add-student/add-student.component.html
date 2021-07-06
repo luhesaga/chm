@@ -1,6 +1,6 @@
 <mat-card class="matCardContent">
     <div class="contenedor">
-        <h1>AGREGAR ESTUDIANTE AL CURSO</h1>
+        <h1>Gestión de Estudiantes - <span>{{ course.nombre }}</span></h1>
 
         <div class="menuVariado">
             <div class="busquedaEstudiante">
@@ -17,7 +17,7 @@
                 <button (click)="openDialog()">
                     <div class="botonMatricular-item">
                         <mat-icon>group_add</mat-icon>
-                        <div class="botonMatricular-texto">MATRICULAR ESTUDIANTE</div>
+                        <div class="botonMatricular-texto">Agregar estudiante</div>
                     </div>
                 </button>
             </div>
@@ -62,11 +62,15 @@
                 <th mat-header-cell *matHeaderCellDef id="acciones">Acciones</th>
                 <td mat-cell *matCellDef="let element" class="buttons">
                     <button
-                    mat-stroked-button
+                    mat-mini-fab
                     class="desmatricular"
+                    matTooltip="Desmatricular estudiante."
+                    color="warn"
                     (click)="matricularEstudiante(element)"
                     >
-                    Desmatricular
+                    <mat-icon>
+                        <span class="material-icons">person_off</span>
+                    </mat-icon>
                 </button>
                 </td>
             </ng-container>
@@ -78,7 +82,13 @@
             [pageSizeOptions]="[10, 15, 20]"
             showFirstLastButtons>
         </mat-paginator>
-
+        <button
+            mat-stroked-button
+            color="primary"
+            (click)="goBack()"
+            style="background: var(--main-color2); color: white; margin-left: 32px;">
+            << Regresar
+        </button>
 
     </div>
 </mat-card>

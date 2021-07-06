@@ -30,6 +30,8 @@ import { GlossaryListComponent } from './components/glossary/glossary-list/gloss
 import { GlossaryCreateComponent } from './components/glossary/glossary-create/glossary-create.component';
 import { AddStudentComponent } from './components/cursos/add-student/add-student.component';
 import { CourseHomeComponentRegistration } from './components/course-registration/course-home/course-home.component';
+import { UserProfileComponent } from './components/users/user-profile/user-profile.component';
+import { CoursesComponent } from '../home/components/courses/courses.component';
 
 const routes: Routes = [
   {
@@ -48,6 +50,10 @@ const routes: Routes = [
       {
         path: 'usuarios/edit',
         component: UserEditComponent
+      },
+      {
+        path: 'usuarios/perfil/:idUser',
+        component: UserProfileComponent
       },
       {
         path: 'cursos',
@@ -70,8 +76,16 @@ const routes: Routes = [
         component: CourseDetailComponent
       },
       {
+        path: 'cursos/detalle/:id/:userId',
+        component: CourseDetailComponent
+      },
+      {
         path: 'cursos/index/:id',
         component: CourseHomeComponent
+      },
+      {
+        path: 'cursos/list/:userId',
+        component: CoursesComponent
       },
       {
         path: 'cursos/lecciones/create',

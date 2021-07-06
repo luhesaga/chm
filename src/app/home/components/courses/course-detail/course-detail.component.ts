@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CourseService } from '../../../../core/services/courses/course.service';
 import { CategoryService } from '../../../../core/services/categories/category.service';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-course-detail',
@@ -14,6 +15,9 @@ export class CourseDetailComponent implements OnInit {
   panelOpenState = false;
   cursos = [];
   id;
+
+  userId;
+  dashboard = false;
 
   // divs para inyectar html
   descDiv;
@@ -59,11 +63,17 @@ export class CourseDetailComponent implements OnInit {
     private catService: CategoryService,
     private activatedRoute: ActivatedRoute,
     private breakpointObserver: BreakpointObserver,
+    private route: Router,
   ) {
     this.id = this.activatedRoute.snapshot.params.id;
     if (this.id.substring(0,4) === 'view') {
       this.id = this.id.replace('view', '');
       this.dash = true;
+    }
+
+    this.userId = this.activatedRoute.snapshot.params.userId;
+    if (this.userId) {
+      this.dashboard = true;
     }
 
     this.breakpointObserver.observe([
@@ -208,6 +218,41 @@ export class CourseDetailComponent implements OnInit {
   setImgSizeToNormal(img) {
     img.setAttribute('width', this.imgWidth);
     img.setAttribute('height', this.imgHeight);
+  }
+
+  goToBuy() {
+    if (!this.dashboard) {
+      Swal.fire({
+        title: 'Comprar curso',
+        text: 'Para adquirir nuestros cursos debes estar registrado, ¿deseas registrarte?',
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, deseo registrarme!'
+      })
+      .then((result) => {
+        if (result.value) {
+          this.route.navigate(['home/register']);
+        }
+      })
+      .catch(error => console.log(error));
+    } else {
+      Swal.fire({
+        icon: 'success',
+        title: 'Proximamente!',
+        text: 'Opción en construcción',
+        confirmButtonText: 'cerrar',
+    });
+    }
+  }
+
+  goBack() {
+    if (this.dashboard) {
+      this.route.navigate([`/dashboard/cursos/list/${this.id}`]);
+    } else {
+      this.route.navigate(['/home/cursos']);
+    }
   }
 
 }

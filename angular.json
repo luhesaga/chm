@@ -21,6 +21,10 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "dist/chm",
+            "allowedCommonJsDependencies": [
+              "raf",
+              "@babel/runtime-corejs3"
+            ],
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -40,7 +44,7 @@
               "src/styles.scss"
             ],
             "scripts": [
-              "./node_modules/jspdf/dist/jspdf.min.js",
+              "./node_modules/jspdf/dist/jspdf.es.min.js",
               "./node_modules/jspdf-autotable/dist/jspdf.plugin.autotable.js"
             ]
           },

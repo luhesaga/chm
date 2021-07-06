@@ -1,3 +1,10 @@
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 .anuncios {
     width: 90%;
     margin: 32px auto;

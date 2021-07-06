@@ -1,0 +1,156 @@
+<main>
+    <form [formGroup]="form" (ngSubmit)="updateUserProfile($event)">
+        <div class="title">
+            <mat-icon>person</mat-icon>
+            <h2>Perfil de usuario: {{ user?.nombres + user?.apellidos }}</h2>
+        </div>
+
+        <h3>Tus Datos</h3>
+        <h4>Identificación</h4>
+        <div class="id-fields">
+            <!-- nombres -->
+            <mat-form-field class="example-full-width" appearance="fill">
+                <mat-label>Nombres</mat-label>
+                <input
+                    type="text"
+                    matInput
+                    formControlName="nombres"
+                    [(ngModel)]="name"
+                    #myinput
+                    tabIndex=1 />
+                <mat-error *ngIf="nombresField.touched && nombresField.invalid">
+                    <ng-container *ngIf="nombresField.hasError('required')">El nombre es requerido</ng-container>
+                </mat-error>
+            </mat-form-field>
+            <!-- apellidos -->
+            <mat-form-field class="example-full-width" appearance="fill">
+                <mat-label>Apellidos</mat-label>
+                <input
+                    type="text"
+                    matInput
+                    formControlName="apellidos"
+                    [(ngModel)]="lastName"
+                    tabIndex=2 />
+                <mat-error *ngIf="apellidosField.touched && apellidosField.invalid">
+                    <ng-container *ngIf="apellidosField.hasError('required')">El apellidos es requerido</ng-container>
+                </mat-error>
+            </mat-form-field>
+            <!-- tipo id -->
+            <mat-form-field appearance="fill">
+                <mat-label>Tipo de documento</mat-label>
+                <select
+                    matNativeControl
+                    formControlName="tipoId"
+                    [(ngModel)]="idType">
+                    <option value="cedula">Cédula de ciudadanía</option>
+                    <option value="extranjeria">Cédula de Extranjería</option>
+                    <option value="tarjeta">Tarjeta de identidad</option>
+                </select>
+            </mat-form-field>
+            <!-- numero id -->
+            <mat-form-field class="example-full-width" appearance="fill">
+                <mat-label>Número de documento</mat-label>
+                <input
+                    type="text"
+                    matInput
+                    formControlName="identificacion"
+                    [(ngModel)]="idNumber"
+                    tabIndex=4 />
+                <mat-error *ngIf="identificacionField.touched && identificacionField.invalid">
+                    <ng-container *ngIf="identificacionField.hasError('required')">El número de documento es requerido</ng-container>
+                </mat-error>
+            </mat-form-field>
+            <!-- correo -->
+            <mat-form-field class="example-full-width email" appearance="fill">
+                <mat-label>Correo electrónico</mat-label>
+                <input
+                    type="text"
+                    readonly
+                    matInput
+                    formControlName="correo"
+                    [(ngModel)]="mail"/>
+                <mat-error *ngIf="correoField.touched && correoField.invalid">
+                    <ng-container *ngIf="correoField.hasError('required')">El correo es requerido</ng-container>
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <h4>Ubicación</h4>
+        <div class="ubication-fields">
+            <!-- departamento -->
+            <mat-form-field class="example-full-width" appearance="fill">
+                <mat-label>Estado / Departamento</mat-label>
+                <input
+                    type="text"
+                    matInput
+                    formControlName="departamento"
+                    [(ngModel)]="state"
+                    tabIndex=5 />
+                <mat-error *ngIf="departamentoField.touched && departamentoField.invalid">
+                    <ng-container *ngIf="departamentoField.hasError('required')">Campo requerido</ng-container>
+                </mat-error>
+            </mat-form-field>
+            <!-- ciudad -->
+            <mat-form-field class="example-full-width" appearance="fill">
+                <mat-label>Ciudad</mat-label>
+                <input
+                    type="text"
+                    matInput
+                    formControlName="ciudad"
+                    [(ngModel)]="city"
+                    tabIndex=5 />
+                <mat-error *ngIf="ciudadField.touched && ciudadField.invalid">
+                    <ng-container *ngIf="ciudadField.hasError('required')">Campo requerido</ng-container>
+                </mat-error>
+            </mat-form-field>
+            <!-- direccion -->
+            <mat-form-field class="example-full-width email" appearance="fill">
+                <mat-label>Dirección</mat-label>
+                <input
+                    type="text"
+                    matInput
+                    formControlName="direccion"
+                    [(ngModel)]="address"
+                    tabIndex=5 />
+                <mat-error *ngIf="direccionField.touched && direccionField.invalid">
+                    <ng-container *ngIf="direccionField.hasError('required')">Campo requerido</ng-container>
+                </mat-error>
+            </mat-form-field>
+            <!-- codigo de pais  -->
+            <mat-form-field appearance="fill">
+                <mat-label>Código de país</mat-label>
+                <mat-select
+                    formControlName="codigoPais"
+                    [(ngModel)]="countryId">
+                    <mat-option
+                        *ngFor="let country of countriesList"
+                        [value]="country.name_es + '-' + country.dial_code">
+                            {{country.name_es + '-' + country.dial_code}}
+                    </mat-option>
+                </mat-select>
+
+            </mat-form-field>
+            <!-- telefono -->
+            <mat-form-field class="example-full-width" appearance="fill">
+                <mat-label>Número de teléfono</mat-label>
+                <input
+                    type="tel"
+                    matInput
+                    formControlName="telefono"
+                    [(ngModel)]="phoneNumber"
+                    tabIndex=5 />
+                <mat-error *ngIf="telefonoField.touched && telefonoField.invalid">
+                    <ng-container *ngIf="telefonoField.hasError('required')">Campo requerido</ng-container>
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="buttons">
+            <button
+                type="submit"
+                mat-raised-button
+                style="margin: 24px; color: var(--main-color2);">
+                    Guardar cambios
+            </button>
+            <a mat-raised-button color="warn" (click)="goToHome()">Cancelar</a>
+        </div>
+    </form>
+</main>

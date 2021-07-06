@@ -1,29 +1,28 @@
 <mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #drawer class="sidenav" fixedInViewport
-      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-      [mode]="(isHandset$ | async) ? 'over' : 'side'"
-      [opened]="(isHandset$ | async) === false">
-    <mat-toolbar>
-      <a routerLink="/dashboard">
-        <img src="../assets/img/header-logo-custom1.png" alt="logo de la plataforma">
-      </a>
-    </mat-toolbar>
-    <!-- <mat-nav-list style="margin-top: 48px;">
-      <a mat-list-item routerLink="/dashboard/usuarios">Usuarios</a>
-      <a mat-list-item routerLink="/dashboard/cursos">cursos</a>
-      <a mat-list-item href="#">Link 3</a>
-    </mat-nav-list> -->
+  <mat-sidenav
+    #drawer
+    class="sidenav"
+    fixedInViewport
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="(isHandset$ | async) === false">
+      <mat-toolbar>
+        <a routerLink="/dashboard">
+          <img src="../assets/img/header-logo-custom1.png" alt="logo de la plataforma">
+        </a>
+      </mat-toolbar>
+
     <mat-accordion>
-      <mat-expansion-panel (opened)="panelOpenState = true"
-                          (closed)="panelOpenState = false">
+      <!-- // opciones admin -->
+      <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
         <mat-expansion-panel-header *ngIf="logguedUser.perfil==='administrador'" class="admin-header">
           <mat-panel-title class="admin">
             <mat-list>
-              <mat-list-item> 
+              <mat-list-item>
                 <button mat-icon-button>
                   <mat-icon>cases</mat-icon>
                 </button>
-                Administración 
+                <span class="main-option">Administración</span>
               </mat-list-item>
             </mat-list>
           </mat-panel-title>
@@ -31,67 +30,192 @@
           </mat-panel-description>
         </mat-expansion-panel-header>
         <mat-list>
-          <mat-list-item>
-            <button mat-icon-button>
-              <mat-icon>group</mat-icon>
-            </button>
+          <mat-list-item class="secondary-list">
             <a mat-list-item routerLink="/dashboard/usuarios">Usuarios</a>
+            <mat-divider></mat-divider>
           </mat-list-item>
-          <mat-list-item>
-            <button mat-icon-button>
-              <mat-icon>menu_book</mat-icon>
-            </button>
+          <mat-list-item class="secondary-list">
             <a mat-list-item routerLink="/dashboard/cursos">Cursos</a>
+            <mat-divider></mat-divider>
           </mat-list-item>
-          <mat-list-item>
-            <button mat-icon-button>
-              <mat-icon>volume_up</mat-icon>
-            </button>
+          <mat-list-item class="secondary-list">
             <a mat-list-item routerLink="ads/ads-list">Anuncios</a>
+            <mat-divider></mat-divider>
           </mat-list-item>
         </mat-list>
       </mat-expansion-panel>
-      <mat-expansion-panel (opened)="panelOpenState = true"
-                            (closed)="panelOpenState = false">
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            Mis cursos
+      <!-- // cursos ofrecidos -->
+      <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+        <mat-expansion-panel-header *ngIf="logguedUser.perfil==='administrador'" class="admin-header">
+          <mat-panel-title class="admin">
+            <mat-list>
+              <mat-list-item>
+                <button mat-icon-button>
+                  <mat-icon>auto_stories</mat-icon>
+                </button>
+                <span class="main-option">Cursos</span>
+              </mat-list-item>
+            </mat-list>
           </mat-panel-title>
           <mat-panel-description>
           </mat-panel-description>
         </mat-expansion-panel-header>
         <mat-list>
-          <mat-list-item>
-            <button mat-icon-button>
-              <mat-icon>info</mat-icon>
-            </button>
-            <a mat-list-item routerLink="/dashboard/course-registration">Cursos</a>
+          <mat-list-item class="secondary-list">
+            <a mat-list-item (click)="goToCoursesList()">Catálogo de cursos</a>
+            <mat-divider></mat-divider>
           </mat-list-item>
-          <mat-list-item> Salt </mat-list-item>
-          <mat-list-item> Paprika </mat-list-item>
-         </mat-list>
+          <mat-list-item class="secondary-list">
+            <a mat-list-item routerLink="#">Carreras</a>
+            <mat-divider></mat-divider>
+          </mat-list-item>
+        </mat-list>
+      </mat-expansion-panel>
+       <!-- // Perfil -->
+       <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+        <mat-expansion-panel-header class="admin-header">
+          <mat-panel-title class="admin">
+            <mat-list>
+              <mat-list-item>
+                <button mat-icon-button>
+                  <mat-icon>person</mat-icon>
+                </button>
+                <span class="main-option">Perfil</span>
+              </mat-list-item>
+            </mat-list>
+          </mat-panel-title>
+          <mat-panel-description>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <mat-list>
+          <mat-list-item class="secondary-list">
+            <a mat-list-item (click)="goToProfile()">Editar perfil</a>
+            <mat-divider></mat-divider>
+          </mat-list-item>
+        </mat-list>
+      </mat-expansion-panel>
+      <!-- // opciones estudiante -->
+      <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+        <mat-expansion-panel-header class="admin-header">
+          <mat-panel-title class="admin">
+            <mat-list>
+              <mat-list-item>
+                <button mat-icon-button>
+                  <mat-icon>local_library</mat-icon>
+                </button>
+                <span class="main-option">Mi formación</span>
+              </mat-list-item>
+            </mat-list>
+          </mat-panel-title>
+          <mat-panel-description>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <mat-list>
+          <mat-list-item class="secondary-list">
+            <a mat-list-item routerLink="/dashboard/course-registration">Mis cursos</a>
+            <mat-divider></mat-divider>
+          </mat-list-item>
+          <mat-list-item class="secondary-list">
+            <a mat-list-item routerLink="#">Mis carreras</a>
+            <mat-divider></mat-divider>
+          </mat-list-item>
+          <mat-list-item class="secondary-list">
+            <a mat-list-item routerLink="#">Mis Certificados</a>
+            <mat-divider></mat-divider>
+          </mat-list-item>
+        </mat-list>
+      </mat-expansion-panel>
+      <!-- // opciones generales -->
+      <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+        <mat-expansion-panel-header class="admin-header">
+          <mat-panel-title class="admin">
+            <mat-list>
+              <mat-list-item>
+                <button mat-icon-button>
+                  <mat-icon>list</mat-icon>
+                </button>
+                <span class="main-option">General</span>
+              </mat-list-item>
+            </mat-list>
+          </mat-panel-title>
+          <mat-panel-description>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <mat-list>
+          <mat-list-item class="secondary-list">
+            <a
+              mat-list-item
+              href="https://chym-ndt.com/"
+              target="_blank">Conoce a CH&M NDT</a>
+            <mat-divider></mat-divider>
+          </mat-list-item>
+          <mat-list-item class="secondary-list">
+            <a
+              mat-list-item
+              href="https://chym-ndt.com/#contactos"
+              target="_blank">Contáctanos</a>
+            <mat-divider></mat-divider>
+          </mat-list-item>
+          <mat-list-item class="secondary-list">
+            <a
+              mat-list-item
+              href="https://chym-ndt.com/certificados/consultar.php"
+              target="_blank">Consulta de certificados</a>
+            <mat-divider></mat-divider>
+          </mat-list-item>
+          <mat-list-item class="secondary-list">
+            <a
+              mat-list-item
+              href="https://www.youtube.com/channel/UCwpH8p7mcXeKgbYtFf8HQsQ"
+              target="_blank">Youtube</a>
+            <mat-divider></mat-divider>
+          </mat-list-item>
+          <mat-list-item class="secondary-list">
+            <a
+              mat-list-item
+              href="http://biblioteca-chym.esy.es/index.php"
+              target="_blank">Biblioteca virtual</a>
+            <mat-divider></mat-divider>
+          </mat-list-item>
+        </mat-list>
       </mat-expansion-panel>
     </mat-accordion>
+    <!-- <div class="other-options">
+      <div class="ot-title">
+        <h4>Nuestros cursos</h4>
+      </div>
+      <div class="ot-content">
+        <a class="ot-link" routerLink="/dashboard">Catálogo de cursos</a>
+      </div>
+      <div class="ot-content">
+        <a class="ot-link" routerLink="/dashboard">Carreras</a>
+      </div>
+    </div> -->
+    <div class="other-options">
+      <div class="ot-title">
+        <h4>Compra de cursos</h4>
+      </div>
+      <div class="ot-content">
+        <p>Puede comprar su curso o paquete de cursos con su tarjeta de Crédito, Débito, cuenta Paypal, Western union, Money Gram, Transferencia bancaria, PSE y otros medios de pago.</p>
+        <p>Solicita información escribiendo al correo:</p>
+        <a class="ot-mail" target="_blank" href="mailto:comercial@chym-ndt.com">comercial@chym-ndt.com</a>
+      </div>
+    </div>
   </mat-sidenav>
   <mat-sidenav-content>
     <mat-toolbar>
-      <button
-        type="button"
-        aria-label="Toggle sidenav"
-        mat-icon-button
-        (click)="drawer.toggle()"
+      <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()"
         *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
       <span></span>
       <span class="example-spacer"></span>
       <button mat-button [matMenuTriggerFor]="menu">
-        <!-- <mat-icon>person</mat-icon> -->
         {{ logguedUser? logguedUser.nombres + ' ' + logguedUser.apellidos : 'Invitado' }}
         <mat-icon>arrow_drop_down</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
-        <button mat-menu-item>Item 1</button>
+        <button mat-menu-item (click)="goToProfile()">ver mi perfil</button>
         <button mat-menu-item (click)="logout()">cerrar sesión</button>
       </mat-menu>
     </mat-toolbar>

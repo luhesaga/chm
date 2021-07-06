@@ -36,6 +36,7 @@ import { GlossaryListComponent } from './components/glossary/glossary-list/gloss
 import { GlossaryCreateComponent } from './components/glossary/glossary-create/glossary-create.component';
 import { AddStudentComponent } from './components/cursos/add-student/add-student.component';
 import { MatricularComponent } from './components/cursos/add-student/matricular/matricular.component';
+import { UserProfileComponent } from './components/users/user-profile/user-profile.component';
 
 
 
@@ -70,6 +71,7 @@ import { MatricularComponent } from './components/cursos/add-student/matricular/
     GlossaryCreateComponent,
     AddStudentComponent,
     MatricularComponent,
+    UserProfileComponent,
     ],
   imports: [
     CommonModule,
