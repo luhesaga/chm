@@ -403,7 +403,7 @@ export class QuestionCreateComponent implements OnInit, OnDestroy {
           type: this.selected *1,
           answers: this.questions,
           position: this.position,
-          tarea: this.tarea,
+          tarea: this.tarea ? this.tarea : '',
         }
       );
 
@@ -435,7 +435,7 @@ export class QuestionCreateComponent implements OnInit, OnDestroy {
       this.questionToEdit.question = this.question;
       this.questionToEdit.answers = this.questions;
       this.questionToEdit.type = this.selected * 1;
-      this.questionToEdit.tarea = this.tarea;
+      this.questionToEdit.tarea = this.tarea ? this.tarea : '';
 
       const pos = this.questionToEdit.position -1;
       this.questionToSave[pos] = this.questionToEdit;

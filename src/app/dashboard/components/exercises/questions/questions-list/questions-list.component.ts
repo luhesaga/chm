@@ -67,7 +67,7 @@ export class QuestionsListComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   createOrEditQuestion(exerc) {
-    console.log(exerc);
+    // console.log(exerc);
     if (!exerc) {
       this.router.navigate([`cursos/ejercicios/${this.courseId}/preguntas/add/${this.exerciseId}`]);
     } else {
