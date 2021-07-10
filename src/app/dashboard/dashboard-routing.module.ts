@@ -32,6 +32,7 @@ import { AddStudentComponent } from './components/cursos/add-student/add-student
 import { CourseHomeComponentRegistration } from './components/course-registration/course-home/course-home.component';
 import { UserProfileComponent } from './components/users/user-profile/user-profile.component';
 import { CoursesComponent } from '../home/components/courses/courses.component';
+import { VideoConferenceListComponent } from './components/video-conference/video-conference-list/video-conference-list.component';
 
 const routes: Routes = [
   {
@@ -134,6 +135,10 @@ const routes: Routes = [
       {
         path: 'cursos/glosario/:courseId/create',
         component: GlossaryCreateComponent
+      },
+      {
+        path: 'cursos/video-meet/:courseId',
+        component: VideoConferenceListComponent
       },
       {
         path: 'categorias',

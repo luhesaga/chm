@@ -37,6 +37,8 @@ import { GlossaryCreateComponent } from './components/glossary/glossary-create/g
 import { AddStudentComponent } from './components/cursos/add-student/add-student.component';
 import { MatricularComponent } from './components/cursos/add-student/matricular/matricular.component';
 import { UserProfileComponent } from './components/users/user-profile/user-profile.component';
+import { VideoConferenceListComponent } from './components/video-conference/video-conference-list/video-conference-list.component';
+import { VideoConferenceCreateComponent } from './components/video-conference/video-conference-create/video-conference-create.component';
 
 
 
@@ -72,6 +74,8 @@ import { UserProfileComponent } from './components/users/user-profile/user-profi
     AddStudentComponent,
     MatricularComponent,
     UserProfileComponent,
+    VideoConferenceListComponent,
+    VideoConferenceCreateComponent,
     ],
   imports: [
     CommonModule,

@@ -1,0 +1,74 @@
+<main>
+    <div class="title dialog-header-close">
+        <mat-icon>videocam</mat-icon>
+        <h2>{{ !edit ? 'Crear nueva' : 'Editar'}} reunión Google Meet</h2>
+        <mat-icon mat-dialog-close style="color: red;">close</mat-icon>
+    </div>
+    <form [formGroup]="form" (ngSubmit)="saveOrEditMeet($event)">
+        <mat-dialog-content>
+            <section class="form-inputs">
+                <mat-form-field appearance="fill">
+                    <mat-label>Nombre de la reunión</mat-label>
+                    <input
+                    type="text"
+                    matInput
+                    formControlName="name"
+                    [(ngModel)]="videoTitle"
+                    #myinput/>
+                    <mat-error *ngIf="nameField.touched && nameField.invalid">
+                    <ng-container *ngIf="nameField.hasError('required')">El nombre es requerido</ng-container>
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill">
+                    <mat-label>URL del Meet</mat-label>
+                    <input
+                    type="url"
+                    matInput
+                    formControlName="url"
+                    [(ngModel)]="videoUrl"
+                    #myinput/>
+                    <mat-error *ngIf="urlField.touched && urlField.invalid">
+                    <ng-container *ngIf="urlField.hasError('required')">El link es requerido</ng-container>
+                    </mat-error>
+                </mat-form-field>
+
+                <div class="mat-form-field-wrapper">
+                    <editor
+                    apiKey="fa82nlmdggdzt2rwcpx7k706ohjcnf9wo3ioar2p06d10yyk"
+                    class="mat-elevation-z1"
+                    formControlName="description"
+                    [(ngModel)]="videoDescription"
+                    (onInit)="handleEditorInit($event)"
+                    [init]="{
+                        icons: 'material',
+                        skin: 'borderless',
+                        plugins: ['wordcount', 'lists'],
+                        menubar: false,
+                        min_height: 200,
+                        width : 500,
+                        toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist',
+                        media_live_embeds: true
+                    }"
+                    ></editor>
+                    <mat-error *ngIf="descriptionField.touched && descriptionField.invalid">
+                        <ng-container *ngIf="descriptionField.hasError('required')">Debe ingresar la definición del término.</ng-container>
+                    </mat-error>
+                </div>
+            </section>
+
+        </mat-dialog-content>
+
+        <div class="buttons">
+            <button
+                type="submit"
+                class="guardarBtn"
+                color="primary"
+                mat-raised-button
+                [disabled]="form.invalid">
+                {{ edit ? 'Guardar cambios' : 'Crear Reunión'}}
+            </button>
+            <a mat-raised-button mat-dialog-close>Cancelar</a>
+        </div>
+    </form>
+</main>

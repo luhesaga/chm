@@ -1,0 +1,103 @@
+* {
+    box-sizing: border-box;
+}
+
+main {
+    background: white;
+    box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+    border-radius: 4px;
+    margin: 36px auto;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.meet-img {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.meet-img img {
+    width: 30%;
+}
+
+.create-btn {
+    margin-top: 16px;
+    margin-bottom: 24px;
+}
+
+.create-btn button {
+    background: var(--main-color2);
+    color: white;
+    padding: 2px 24px;
+}
+
+.meets-list {
+    background: #fafafa;
+    box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+    padding: 24px;
+    margin-top: 16px;
+    margin-bottom: 16px;
+    width: 95%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto;
+    gap: 24px;
+    justify-items: center;
+}
+
+.mat-card-header {
+    width: 100%;
+    display: flex;
+    //justify-content: space-between;
+
+    .mat-card-title {
+        margin: 0 0 0 8px;
+        font-size: 1.2rem;
+    }
+}
+
+.mat-card-actions {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    button {
+        width: 90%;
+    }
+}
+
+.card-btn-actions {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    top: -50px;
+    left: 100%;
+    height: 0;
+
+    button {
+        margin-bottom: 8px;
+        background: white;
+        color: grey;
+        width: 30px;
+        height: 30px;
+
+        mat-icon {
+            font-size: 1rem;
+        }
+    }
+}
+
+.back-btn {
+    margin: 16px 0;
+
+    button {
+        background: var(--main-color2);
+        color: white;
+        padding: 0 64px;
+    }
+}
