@@ -3,6 +3,8 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { CourseEditComponent } from '../course-edit/course-edit.component';
+import { CourseService } from '../../../../core/services/courses/course.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-course-description',
@@ -26,11 +28,12 @@ export class CourseDescriptionComponent implements OnInit {
     public dialog: MatDialogRef<CourseDescriptionComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public editDialog: MatDialog,
-    public router: Router
+    public router: Router,
+    private courseService: CourseService
   ) { }
 
   ngOnInit(): void {
-    console.log(this.data);
+    // console.log(this.data);
     this.course = {
       id: this.data.content.id,
       nombre: this.data.content.nombre,
@@ -44,7 +47,7 @@ export class CourseDescriptionComponent implements OnInit {
       evaluacion: this.data.content.evaluacion,
       calificacion: this.data.content.calificacion
     }
-    console.log(this.course);
+    // console.log(this.course);
     this.DescDiv = document.getElementById('descripcion');
     if (this.course.descripcion) {
       this.DescDiv.innerHTML = this.data.content.descripcion;
@@ -93,7 +96,6 @@ export class CourseDescriptionComponent implements OnInit {
 
   descriptionEdit(type: string) {
     this.course.type = type;
-    //this.dialog.close();
     const config = {
       data: {
         message: this.course ? 'Editar curso' : 'Agregar nuevo cursos',
@@ -103,46 +105,99 @@ export class CourseDescriptionComponent implements OnInit {
 
     const dialogRef = this.editDialog.open(CourseEditComponent, config);
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result ${result}`);
+      // console.log(`Dialog result ${result}`);
       if (result) {
-        if (this.course.type === 'descripcion') {
-          this.DescDiv.innerHTML = result;
-          this.course.descripcion = result;
-        }
-        if (this.course.type === 'introduccion') {
-          this.IntroDiv.innerHTML = result;
-          this.course.introduccion = result;
-        }
-        if (this.course.type === 'objetivo') {
-          this.ObjDiv.innerHTML = result;
-          this.course.objetivo = result;
-        }
-        if (this.course.type === 'contenido') {
-          this.ContDiv.innerHTML = result;
-          this.course.contenido = result;
-        }
-        if (this.course.type === 'duracion') {
-          this.DurDiv.innerHTML = result;
-          this.course.duracion = result;
-        }
-        if (this.course.type === 'requisitos') {
-          this.ReqDiv.innerHTML = result;
-          this.course.requisitos = result;
-        }
-        if (this.course.type === 'dirigido') {
-          this.DirDiv.innerHTML = result;
-          this.course.dirigido = result;
-        }
-        if (this.course.type === 'evaluacion') {
-          this.EvalDiv.innerHTML = result;
-          this.course.evaluacion = result;
-        }
-        if (this.course.type === 'calificacion') {
-          this.CalDiv.innerHTML = result;
-          this.course.calificacion = result;
-        }
+        this.updateContent(result);
       }
     });
+  }
+
+  updateContent(result) {
+    if (this.course.type === 'descripcion') {
+      this.DescDiv.innerHTML = result;
+      this.course.descripcion = result;
+    }
+    if (this.course.type === 'introduccion') {
+      this.IntroDiv.innerHTML = result;
+      this.course.introduccion = result;
+    }
+    if (this.course.type === 'objetivo') {
+      this.ObjDiv.innerHTML = result;
+      this.course.objetivo = result;
+    }
+    if (this.course.type === 'contenido') {
+      this.ContDiv.innerHTML = result;
+      this.course.contenido = result;
+    }
+    if (this.course.type === 'duracion') {
+      this.DurDiv.innerHTML = result;
+      this.course.duracion = result;
+    }
+    if (this.course.type === 'requisitos') {
+      this.ReqDiv.innerHTML = result;
+      this.course.requisitos = result;
+    }
+    if (this.course.type === 'dirigido') {
+      this.DirDiv.innerHTML = result;
+      this.course.dirigido = result;
+    }
+    if (this.course.type === 'evaluacion') {
+      this.EvalDiv.innerHTML = result;
+      this.course.evaluacion = result;
+    }
+    if (this.course.type === 'calificacion') {
+      this.CalDiv.innerHTML = result;
+      this.course.calificacion = result;
+    }
+  }
+
+  descriptionDelete(type) {
+    this.course.type = type;
+    if (!this.course[type] || this.course[type] === 'No establecido') {
+      Swal.fire({
+        icon: 'error',
+        title: 'error',
+        text: 'no hay nada que eliminar.',
+        confirmButtonText: 'cerrar',
+      });
+    } else {
+      Swal.fire({
+        title: '¿Esta seguro?',
+        text: 'Esta acción eliminara esta sección permanentemente, no se puede deshacer!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, estoy seguro!'
+      })
+      .then((result) => {
+        if (result.value) {
+          this.courseService.deleteCourseDescriptionField(
+            this.course.id,
+            type
+          )
+          .then(() => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Exito!',
+              text: 'Sección eliminada exitosamente',
+              confirmButtonText: 'cerrar',
+            });
+            this.updateContent('No establecido');
+      })
+      .catch((error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'error',
+          text: 'Ocurrió un error' + error,
+          confirmButtonText: 'cerrar',
+              });
+          });
+        }
+      })
+      .catch(error => console.log(error));
+    }
+
   }
 
 }

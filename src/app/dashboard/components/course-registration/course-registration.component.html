@@ -1,20 +1,28 @@
-<div class="contenedor">
-    <mat-card class="matCardContent">
-        <mat-card *ngFor="let course of listcourse"
-        class="matCardContent-item gridCursos"
-        (click)="goToCourseHome(course.id)">
-            <div class="grid-item1">
-                <img class="imagenCurso" [src]="course.imagen" alt="">
+<main>
+    <section>
+        <div class="course-container" *ngFor="let course of listcourse">
+            <div class="course-img">
+                <img
+                    class="imagenCurso"
+                    [src]="course.imagen"
+                    alt="imagen del curso"
+                    (click)="goToCourseHome(course.id)"
+                    matTooltip="{{ 'ir al curso: ' + course.nombre }}">
             </div>
-            <div class="grid-item2">
-                <h2 class="nombreCurso">{{course.nombre}}</h2>
+            <div class="course-data">
+                <h2
+                    class="nombreCurso"
+                    (click)="goToCourseHome(course.id)"
+                    matTooltip="{{ 'ir al curso: ' + course.nombre }}">
+                        {{course.nombre}}
+                </h2>
+                <p>
+                    <!-- <mat-icon>engineering</mat-icon> -->
+                    Profesor:
+                    <span> {{course.profesor}} </span>
+                </p>
+                <p>Categoria: <span>{{course.categoria}}</span></p>
             </div>
-            <div class="grid-item3">
-                <p><mat-icon>person </mat-icon> <span> {{course.profesor}} </span></p>
-            </div>
-            <div class="grid-item4">
-                {{course.categoria}}
-            </div>
-        </mat-card>
-    </mat-card>
-</div>
+        </div>
+    </section>
+</main>

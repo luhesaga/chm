@@ -44,6 +44,82 @@ main {
     margin: 16px 32px 0 32px;
 }
 
+.config {
+    margin: 32px 0;
+    display: flex;
+    justify-content: center;
+    width: 90%;
+
+    .config-container {
+        width: 100%;
+
+        mat-expansion-panel {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            .config-options {
+                margin-top: 24px;
+                display: grid;
+                grid-template-columns: 0.7fr 1fr;
+                grid-template-rows: auto;
+                gap: 16px 32px;
+                align-items: start;
+
+                .options {
+                    display: flex;
+                    flex-direction: column;
+                    text-align: left;
+                    color: #455a64;
+                }
+
+                .options a {
+                    text-decoration: none;
+                    cursor: pointer;
+                    font-size: 1.1rem;
+                    font-weight: 600;
+                    color: #455a64;
+                }
+            }
+
+            .config-options p {
+                color: rgba(0, 0, 0, .87);
+                margin-left: 16px;
+            }
+
+            .buttons-opt {
+                margin-top: 24px;
+                display: flex;
+                justify-content: center;
+                width: 100%;
+
+                button {
+                    width: 80%;
+                    background: var(--main-color-rgb2);
+                    color: white;
+                }
+            }
+        }
+    }
+
+    .config-container mat-panel-title {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .config-container p {
+        margin: 0;
+        color: var(--main-color2);
+        font-size: 1rem;
+        font-weight: 600;
+    }
+
+    .config-container mat-panel-title mat-icon {
+        margin-left: 16px;
+    }
+}
+
 .course-content {
     display: grid;
     grid-template-columns: 250px 250px 250px;
@@ -77,9 +153,8 @@ main {
 .options {
     display: flex;
     flex-direction: column;
-    text-align: center;
+    text-align: left;
     color: #455a64;
-    width: 200px;
 }
 
 .options a {

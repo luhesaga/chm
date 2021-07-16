@@ -85,6 +85,10 @@ const routes: Routes = [
         component: CourseHomeComponent
       },
       {
+        path: 'cursos/index/:id/:stdId',
+        component: CourseHomeComponent
+      },
+      {
         path: 'cursos/list/:userId',
         component: CoursesComponent
       },
@@ -165,7 +169,7 @@ const routes: Routes = [
         component: AdsEditComponent
       },
       {
-        path: 'course-registration',
+        path: 'mis-cursos/:stdId',
         component: CourseRegistrationComponent
       },
       {

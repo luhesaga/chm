@@ -1,76 +1,79 @@
-.contenedor
-{
-    width:90%;
-    margin: 1.5rem auto;
-    .matCardContent
-    {
-        padding-top: 1px;
-        .matCardContent-item
-        {
-            margin-top: 1rem;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) ;
-            h2
-            {
-                font-size: 1rem;
-            }
-            p
-            {
-                display:flex;
-                span
-                {
-                    margin-left: 10px;
-                }
-            }
-            .nombreCurso
-            {
-                padding:0px;
-                margin:0px;
+* {
+    box-sizing: border-box;
+}
+
+main {
+    background: white;
+    box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+    border-radius: 4px;
+    margin: 36px auto;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+section {
+    width: 100%;
+    display: grid;
+    grid-auto-columns: 1fr;
+    grid-template-rows: auto;
+    //gap: 24px;
+
+    .course-container {
+        //width: 100%;
+        margin: 16px;
+        box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+        border-radius: 4px;
+        display: grid;
+        grid-template-columns: 0.5fr 1fr;
+        grid-template-rows: auto;
+        gap: 16px;
+
+        .course-img {
+            width: 95%;
+            height: fit-content;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+
+            img {
+                width: 80%;
+                padding: 8px;
             }
         }
-        .matCardContent-item:hover
-        {
-            background: #50C0DF;
-            cursor: pointer ;
+
+        .course-data {
+            display: flex;
+            flex-direction: column;
+
+            h2 {
+                margin-top: 8px;
+                cursor: pointer;
+                color: var(--main-color2);
+                font-weight: 500;
+            }
+
+            p {
+                display: flex;
+                align-items: center;
+                color: var(--main-color2);
+                font-weight: 500;
+                font-size: 0.8rem;
+                margin: 0;
+
+                mat-icon {
+                    margin: 0 8px;
+                }
+
+                span {
+                    color: black;
+                    margin: 0 8px;
+                    font-size: 1rem;
+                }
+            }
         }
     }
 }
 
-.gridCursos
-{
-    display:grid;
-    grid-template-columns: 1fr 4fr;
-    column-gap: 10px;
-    grid-auto-rows: minmax(1fr, auto);
-}
-
-.grid-item1
-{
-    grid-column: 0;
-    grid-row: 1/4;
-    margin: auto;
-    .imagenCurso
-    {
-        width:120px;
-        height:120px;
-        border-radius:150px;
-        border: 5px solid rgba(0, 114, 121, 0.95);
-    };
-}
-
-.grid-itemn2
-{
-    grid-column: 2;
-    grid-row: 2;
-}
-
-.grid-itemn3
-{
-    grid-column: 2;
-    grid-row: 3;
-}
-
-.grid-itemn4
-{
-    grid-column: 2;
-    grid-row: 4;
-}

@@ -45,6 +45,10 @@ export class NavigationComponent {
     this.route.navigate([`/dashboard/cursos/list/${this.logguedUser.id}`])
   }
 
+  goToMyCourses() {
+    this.route.navigate([`/dashboard/mis-cursos/${this.logguedUser.id}`])
+  }
+
   logout():void {
     this.auth.logout();
     this.route.navigate(['/home']);

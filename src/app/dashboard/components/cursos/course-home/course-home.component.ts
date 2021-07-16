@@ -5,6 +5,7 @@ import { CategoryService } from '../../../../core/services/categories/category.s
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { MatDialog } from '@angular/material/dialog';
 import { CourseInfoComponent } from 'src/app/home/components/courses/course-info/course-info.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-course-home',
@@ -16,10 +17,24 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
   id: string;
   ReceivedCourse;
 
+  stdId;
+  admin = true;
+
   nombreCurso;
   categoria;
   descrDiv;
   descripcion;
+
+  // opciones
+  descriptionOpt = true;
+  documentsOpt = true;
+  lessonsOpt = true;
+  exercisesOpt = true;
+  evaluationsOpt = true;
+  adsOpt = true;
+  libraryOpt = true;
+  glossaryOpt = true;
+  meetOpt = true;
 
   isMobile = false;
 
@@ -41,7 +56,12 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     private route: Router
   ) {
-    this.id = this.activatedRoute.snapshot.params.id
+    this.id = this.activatedRoute.snapshot.params.id;
+    this.stdId = this.activatedRoute.snapshot.params.stdId;
+
+    if (this.stdId) {
+      this.admin = false;
+    }
 
     this.breakpointObserver.observe([
       Breakpoints.Large,
@@ -49,13 +69,14 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
       Breakpoints.Small,
       Breakpoints.XLarge,
     ]).subscribe(result => {
+      //console.log(result);
       if (!result.matches) {
         this.isMobile = true;
         // tamaño mobile de video o img
         if (this.videoIframe) {
           this.videoIframe.style.width = '280px';
           this.videoIframe.style.height = '140px';
-          // console.log(this.videoIframe.style.height)
+          console.log(this.videoIframe.style.height)
         }
         if (this.imgFrame) {
           this.setImgSizeToMobile(this.imgFrame);
@@ -84,6 +105,7 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
           .subscribe(cat => {
             this.loadData(curso, cat);
             this.curso = curso;
+            this.getCourseOptions(curso);
           });
       })
   }
@@ -91,6 +113,24 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     // cerrar subscribe
     this.ReceivedCourse.unsubscribe();
+  }
+
+  getCourseOptions(course) {
+    let opt;
+    if (course.opciones) {
+      opt = course.opciones;
+
+      this.descriptionOpt = opt.descripcion ? opt.descripcion : false;
+      this.documentsOpt = opt.documentos ? opt.documentos : false;
+      this.lessonsOpt = opt.lecciones ? opt.lecciones : false;
+      this.exercisesOpt = opt.ejercicios ? opt.ejercicios : false;
+      this.evaluationsOpt = opt.evaluaciones ? opt.evaluaciones : false;
+      this.adsOpt = opt.anuncios ? opt.anuncios : false;
+      this.libraryOpt = opt.biblioteca ? opt.biblioteca : false;
+      this.glossaryOpt = opt.glosario ? opt.glosario : false;
+      this.meetOpt = opt.videoconferencia ? opt.videoconferencia: opt.meet;
+    }
+
   }
 
   goToLessons() {
@@ -110,7 +150,12 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
   }
 
   goBack() {
-    this.route.navigate(['dashboard/cursos']);
+
+    if (this.admin) {
+      this.route.navigate(['dashboard/cursos']);
+    } else {
+      this.route.navigate([`dashboard/mis-cursos/${this.stdId}`]);
+    }
   }
 
   openDialog(): void {
@@ -150,37 +195,79 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
       }
     }
     this.imgFrame = document.querySelector('p img');
+    if (!this.imgFrame) {
+      this.imgFrame = document.querySelector('p span img');
+    }
     if (this.imgFrame) {
       this.setImgSizeToMobile(this.imgFrame);
     }
+
   }
 
   setImgSizeToMobile(img) {
-    this.imgWidth = img.getAttribute('width');
-    this.imgHeight = img.getAttribute('height');
-    const w = parseInt(img.getAttribute('width')) / 2;
-    const h = parseInt(img.getAttribute('height')) / 2;
+    // console.log(img);
+    // this.imgWidth = img.getAttribute('width');
+    // this.imgHeight = img.getAttribute('height');
+    // const w = parseInt(img.getAttribute('width')) / 2;
+    // const h = parseInt(img.getAttribute('height')) / 2;
     if (this.isMobile) {
-      img.setAttribute('width', w);
-      img.setAttribute('height', h);
-    } else {
-      this.setFontSize();
-    }
+      img.setAttribute('width', '70%');
+      img.setAttribute('height', '70%');
+    } // else {
+    //   this.setFontSize();
+    // }
   }
 
   setImgSizeToNormal(img) {
-    img.setAttribute('width', this.imgWidth);
-    img.setAttribute('height', this.imgHeight);
+    //img.setAttribute('width', this.imgWidth);
+    img.setAttribute('width', '80%');
+    //img.setAttribute('height', this.imgHeight);
+    img.setAttribute('height', '80%');
   }
 
   setFontSize() {
     const parrafo = document.querySelector('p span');
+    console.log(parrafo);
     if (parrafo) {
       console.log(parrafo);
-      parrafo.setAttribute('style','font-size: 1.2rem; text-align: left; color: #333333');
+      parrafo.setAttribute('style','font-size: 1.2rem; text-align: justify; color: #333333');
       parrafo.parentElement.setAttribute('style','text-align: left');
     }
   }
 
+  saveOpt() {
+    const opt = {
+      descripcion: this.descriptionOpt,
+      documentos: this.documentsOpt,
+      lecciones: this.lessonsOpt,
+      ejercicios: this.exercisesOpt,
+      evaluaciones: this.evaluationsOpt,
+      anuncios: this.adsOpt,
+      biblioteca: this.libraryOpt,
+      glosario: this.glossaryOpt,
+      videoconferencia: this.meetOpt,
+    }
+
+    console.log(opt);
+
+    this.courseService.editCourseOptions(this.id, opt)
+      .then(() => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Exito!',
+          text: 'Guardado exitosamente',
+          confirmButtonText: 'cerrar',
+        });
+        
+      })
+      .catch((error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'error',
+          text: 'Ocurrió un error' + error,
+          confirmButtonText: 'cerrar',
+        });
+      });
+  }
 
 }

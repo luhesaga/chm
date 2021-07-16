@@ -18,6 +18,10 @@ export class CourseService {
       ref.orderBy('nombre', 'asc'));
   }
 
+  listCoursesByUser(courseId, userId): AngularFirestoreDocument {
+    return this.fireStore.doc(`cursos/${courseId}/matriculados/${userId}`);
+  }
+
   coursesByCategory(category: string): AngularFirestoreCollection {
     return this.fireStore.collection(`cursos`, ref =>
       ref.where('categoria', '==', category));
@@ -54,6 +58,21 @@ export class CourseService {
     return this.fireStore.doc(`cursos/${id}`)
       .update({
           [type]: value
+      });
+  }
+
+  editCourseOptions(id, options): Promise<void> {
+    return this.fireStore.doc(`cursos/${id}`)
+      .update({
+          opciones: options
+      });
+  }
+
+  deleteCourseDescriptionField(id, type): Promise<void> {
+    const FieldValue = firebase.firestore.FieldValue;
+    return this.fireStore.doc(`cursos/${id}`)
+      .update({
+          [type]: FieldValue.delete()
       });
   }
 

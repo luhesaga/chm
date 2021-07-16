@@ -195,29 +195,35 @@ export class CourseDetailComponent implements OnInit {
       if (this.isMobile) {
         this.videoIframe.style.width = '280px';
         this.videoIframe.style.height = '140px';
-        //console.log(this.videoIframe.style.height)
+        console.log(this.videoIframe.style.height)
       }
     }
     this.imgFrame = document.querySelector('p img');
+    if (!this.imgFrame) {
+      this.imgFrame = document.querySelector('p span img');
+    }
     if (this.imgFrame) {
       this.setImgSizeToMobile(this.imgFrame);
     }
   }
 
   setImgSizeToMobile(img) {
-    this.imgWidth = img.getAttribute('width');
-    this.imgHeight = img.getAttribute('height');
-    const w = parseInt(img.getAttribute('width')) / 2;
-    const h = parseInt(img.getAttribute('height')) / 2;
+    // console.log(img);
+    // this.imgWidth = img.getAttribute('width');
+    // this.imgHeight = img.getAttribute('height');
+    // const w = parseInt(img.getAttribute('width')) / 2;
+    // const h = parseInt(img.getAttribute('height')) / 2;
     if (this.isMobile) {
-      img.setAttribute('width', w);
-      img.setAttribute('height', h);
+      img.setAttribute('width', '70%');
+      img.setAttribute('height', '70%');
     }
   }
 
   setImgSizeToNormal(img) {
-    img.setAttribute('width', this.imgWidth);
-    img.setAttribute('height', this.imgHeight);
+    //img.setAttribute('width', this.imgWidth);
+    img.setAttribute('width', '80%');
+    //img.setAttribute('height', this.imgHeight);
+    img.setAttribute('height', '80%');
   }
 
   goToBuy() {

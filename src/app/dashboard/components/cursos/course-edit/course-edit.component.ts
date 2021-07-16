@@ -27,10 +27,8 @@ export class CourseEditComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log(this.data);
     this.description = this.data.content[this.data.content.type];
     this.id = this.data.content.id;
-    console.log(this.description);
   }
 
   handleEditorInit(e) {
@@ -39,7 +37,6 @@ export class CourseEditComponent implements OnInit {
   }
 
   onSubmit(){
-    console.log(this.form.value);
     this.courseService.editCourseDescription(
       this.id,
       this.description,

@@ -8,7 +8,46 @@
             <div id="descripcion"></div>
         </div>
     </section>
-    <section class="course-content">
+
+    <section class="config" *ngIf="admin">
+        <div class="config-container">
+            <mat-accordion class="example-headers-align" multi>
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <p>Configuración avanzada</p>
+                            <mat-icon>settings</mat-icon>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div class="config-options">
+                        <p>Opciones a mostrar a estudiantes</p>
+                        <div class="options">
+                            <mat-checkbox class="example-margin" [(ngModel)]="descriptionOpt" color="primary">Descripción</mat-checkbox>
+                            <mat-checkbox class="example-margin" [(ngModel)]="documentsOpt" color="primary">Documentos</mat-checkbox>
+                            <mat-checkbox class="example-margin" [(ngModel)]="lessonsOpt" color="primary">Lecciones</mat-checkbox>
+                            <mat-checkbox class="example-margin" [(ngModel)]="exercisesOpt" color="primary">Ejercicios</mat-checkbox>
+                            <mat-checkbox class="example-margin" [(ngModel)]="evaluationsOpt" color="primary">Evaluaciones</mat-checkbox>
+                            <mat-checkbox class="example-margin" [(ngModel)]="adsOpt" color="primary">Anuncios</mat-checkbox>
+                            <mat-checkbox class="example-margin" [(ngModel)]="libraryOpt" color="primary">Biblioteca Virtual</mat-checkbox>
+                            <mat-checkbox class="example-margin" [(ngModel)]="glossaryOpt" color="primary">Glosario</mat-checkbox>
+                            <mat-checkbox class="example-margin" [(ngModel)]="meetOpt" color="primary">Videoconferencia</mat-checkbox>
+                        </div>
+                    </div>
+                    <mat-divider style="margin-top: 16px;"></mat-divider>
+                    <div class="buttons-opt">
+                        <button
+                            mat-raised-button
+                            color="primary"
+                            (click)="saveOpt()">
+                                Guardar cambios
+                        </button>
+                    </div>
+                </mat-expansion-panel>
+            </mat-accordion>
+        </div>
+    </section>
+
+    <section class="course-content" *ngIf="(admin) || (!admin && descriptionOpt)">
         <div class="card">
             <div class="img"><img src="/assets/icons/mortarboard.svg" alt=""></div>
 
@@ -17,7 +56,7 @@
             </div>
         </div>
 
-        <div class="card">
+        <div class="card" *ngIf="(admin) || (!admin && documentsOpt)">
             <div class="img"><img src="/assets/icons/online-learning.svg" alt=""></div>
 
             <div class="options">
@@ -25,7 +64,7 @@
             </div>
         </div>
 
-        <div class="card">
+        <div class="card" *ngIf="(admin) || (!admin && lessonsOpt)">
             <div class="img"><img src="/assets/icons/online-lesson.svg" alt=""></div>
 
             <div class="options">
@@ -33,7 +72,7 @@
             </div>
         </div>
 
-        <div class="card">
+        <div class="card" *ngIf="(admin) || (!admin && exercisesOpt)">
             <div class="img"><img src="/assets/icons/check-list.svg" alt=""></div>
 
             <div class="options">
@@ -41,15 +80,15 @@
             </div>
         </div>
 
-        <div class="card">
-            <div class="img"><img src="/assets/icons/charla.svg" alt=""></div>
+        <div class="card" *ngIf="(admin) || (!admin && evaluationsOpt)">
+            <div class="img"><img src="/assets/icons/evaluaciones.svg" alt=""></div>
 
             <div class="options">
-                <a>Foros</a>
+                <a>Evaluaciones</a>
             </div>
         </div>
 
-        <div class="card">
+        <div class="card" *ngIf="(admin) || (!admin && adsOpt)">
             <div class="img"><img src="/assets/icons/anuncio.svg" alt=""></div>
 
             <div class="options">
@@ -57,24 +96,24 @@
             </div>
         </div>
 
-        <div class="card">
-            <div class="img"><img src="/assets/icons/biblioteca.png" alt=""></div>
+        <div class="card" *ngIf="(admin) || (!admin && libraryOpt)">
+            <div class="img"><img src="/assets/icons/biblioteca.svg" alt=""></div>
 
             <div class="options">
                 <a href="https://biblioteca.chym-ndt.com/" target="_blank">Biblioteca Virtual</a>
             </div>
         </div>
 
-        <div class="card">
-            <div class="img"><img src="/assets/icons/glosario.png" alt=""></div>
+        <div class="card" *ngIf="(admin) || (!admin && glossaryOpt)">
+            <div class="img"><img src="/assets/icons/glosario.svg" alt=""></div>
 
             <div class="options">
                 <a (click)="goToGlossary()">Glosario</a>
             </div>
         </div>
 
-        <div class="card">
-            <div class="img"><img src="/assets/icons/video-conf.png" alt=""></div>
+        <div class="card" *ngIf="(admin) || (!admin && meetOpt)">
+            <div class="img"><img src="/assets/icons/video-conf.svg" alt=""></div>
 
             <div class="options">
                 <a (click)="goToVideo()">Videoconferencia</a>
