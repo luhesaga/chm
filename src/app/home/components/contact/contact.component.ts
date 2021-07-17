@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ContactService } from '../../../core/services/contact/contact.service';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { MailService } from 'src/app/core/services/mail/mail.service';
 
 @Component({
   selector: 'app-contact',
@@ -16,7 +17,8 @@ export class ContactComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private contact: ContactService,
-    private route: Router
+    private route: Router,
+    private mailService:MailService
   ) {
     this.buildForm();
    }
@@ -74,6 +76,59 @@ export class ContactComponent implements OnInit {
           console.log({error});
         });
 	  }
+  }
+
+ async mailContacto()
+  {
+    if(this.form.valid)
+    {
+      const data = this.form.value;
+      await this.mailService.sendEmailContacto(data)
+      .toPromise()
+      .then(()=>this.mailEnviadoExitosamente(),
+      ()=>this.mensajeErrorAlEnviarEmail());
+    }
+    else
+    {
+      this.mensajeFormularioContactoIncompleto();
+    }
+  }
+
+  mensajeErrorAlEnviarEmail()
+  {
+    Swal.fire({
+      icon: 'error',
+      title: 'No enviado',
+      html: 'El formulario no pudo ser enviado por problemas de conexión, por favor disculpe las molestias'
+    })
+  }
+
+  mailEnviadoExitosamente()
+  {
+    this.mensajeMailContactoEnviado();
+    this.resetFormulario();
+  }
+
+  mensajeMailContactoEnviado()
+  {
+    Swal.fire({
+      icon:'success',
+      title:'Enviado',
+      html: 'El formulario ha sido enviado exitosamente'
+    })
+  }
+
+  resetFormulario()
+  {
+    this.form.reset();
+  }
+
+  mensajeFormularioContactoIncompleto()
+  {
+    Swal.fire({
+      title: 'Formulario incompleto',
+      html: 'Los campos Nombre, Email y Mensaje no pueden estar vacios'
+    })
   }
 
 }
