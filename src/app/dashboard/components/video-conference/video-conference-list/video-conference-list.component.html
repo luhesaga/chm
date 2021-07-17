@@ -2,13 +2,14 @@
     <section class="meet-img">
         <img src="../../../../../assets/img/video-conf.png" alt="imagen videoconferencia">
     </section>
-    <section class="create-btn">
+    <section class="create-btn" *ngIf="admin">
         <button mat-raised-button (click)="createVideoMeet(null)">
             <mat-icon>videocam</mat-icon>
             Agregar una reunión Google Meet
         </button>
     </section>
     <section class="meets-list">
+        <p *ngIf="meets.length === 0">No hay reuniones programadas.</p>
         <mat-card class="example-card" *ngFor="let m of meets">
             <mat-card-header>
                 <div mat-card-avatar class="example-header-image">

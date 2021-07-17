@@ -7,10 +7,12 @@ main {
     box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
     border-radius: 4px;
     margin: 36px auto;
-    width: 90%;
+    width: 95%;
+    height: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding-bottom: 24px;
 }
 
 section {
@@ -20,18 +22,26 @@ section {
     grid-template-rows: auto;
     //gap: 24px;
 
+    h2 {
+        margin: 16px 24px 8px 32px;
+        color: var(--main-color2);
+        font-weight: 500;
+        font-size: 1.5rem;
+    }
+
     .course-container {
         //width: 100%;
-        margin: 16px;
+        margin: 8px 24px;
         box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
         border-radius: 4px;
+        background: rgba(131, 139, 139, 0.1);
         display: grid;
         grid-template-columns: 0.5fr 1fr;
         grid-template-rows: auto;
         gap: 16px;
 
         .course-img {
-            width: 95%;
+            width: 90%;
             height: fit-content;
             display: flex;
             justify-content: center;

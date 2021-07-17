@@ -34,6 +34,40 @@
                 {{ element.nombres }} {{ element.apellidos }}
             </td>
         </ng-container>
+        <!-- correo -->
+        <ng-container matColumnDef="correo">
+            <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            id="correo">
+                Correo electrónico
+            </th>
+            <td
+                mat-cell
+                *matCellDef="let element"
+                matTooltip="Correo electrónico"
+                class="correo">
+                {{ element.correo }}
+            </td>
+        </ng-container>
+        <!-- perfil -->
+        <ng-container matColumnDef="perfil">
+            <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            id="perfil">
+                Perfil
+            </th>
+            <td
+                mat-cell
+                *matCellDef="let element"
+                matTooltip="perfil del usuario"
+                class="perfil">
+                {{ element.perfil }}
+            </td>
+        </ng-container>
 
         <ng-container matColumnDef="estado">
             <th mat-header-cell *matHeaderCellDef id="estado">Estado</th>
@@ -42,16 +76,7 @@
                 *matCellDef="let element"
                 matTooltip="Estado de la matricula"
                 class="estado">
-                <div class="contenedorEstado" *ngIf="!element.matriculado">
-                    <div>
-                        Desmatriculado
-                    </div>
-                </div>
-                <div class="contenedorEstado" *ngIf="element.matriculado">
-                    <div>
-                        Matriculado
-                    </div>
-                </div>
+                {{ element.estado }}
             </td>
         </ng-container>
 
@@ -63,7 +88,7 @@
                     *ngIf="!element.matriculado"
                     mat-stroked-button
                     class="matricular"
-                    (click)="matricularEstudiante(element, 'matricular')"
+                    (click)="registerUser(element, 'matricular')"
                     >
                     Matricular
                 </button>
@@ -71,7 +96,7 @@
                 *ngIf="element.matriculado"
                 mat-raised-button
                 color="warn"
-                (click)="matricularEstudiante(element, 'desmatricular')"
+                (click)="registerUSer(element, 'desmatricular')"
                 >
                 Desmatricular
             </button>

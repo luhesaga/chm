@@ -4,8 +4,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { CourseService } from 'src/app/core/services/courses/course.service';
-import { LessonsService } from 'src/app/core/services/lessons/lessons.service';
 import { UsersService } from 'src/app/core/services/users/users.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-matricular',
@@ -17,27 +17,27 @@ export class MatricularComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  displayedColumns: string[] = ['nombre', 'estado', 'actions'];
+  displayedColumns: string[] = ['nombre', 'correo', 'perfil', 'estado', 'actions'];
   dataSource = new MatTableDataSource();
 
   students:any[];
-  studentsDesmatriculado:any[];
-  lessons:any[];
-  content:any[];
 
+  courseId;
+
+  course;
+  courseUsers;
 
   constructor(
     private courseService: CourseService,
-    private lessonService: LessonsService,
     private userService: UsersService,
     public dialogRef: MatDialogRef<MatricularComponent>,
-    @Inject(MAT_DIALOG_DATA) public idCurso:any
+    @Inject(MAT_DIALOG_DATA) public dataReceived:any
   )
   {
-    this.content = [];
-    this.studentsDesmatriculado=[];
-    this.getLessons();
-    this.obtenerListaEstudiante();
+    this.getUserList();
+    this.courseId = this.dataReceived[0].id;
+    this.course = this.dataReceived[0];
+    this.courseUsers = this.dataReceived[1];
   }
 
   ngOnInit(): void {
@@ -48,30 +48,32 @@ export class MatricularComponent implements OnInit, AfterViewInit {
     this.dataSource.sort = this.sort;
   }
 
-  obtenerListaEstudiante():void
+  getUserList():void
   {
     this.userService.listUsers()
     .valueChanges()
     .subscribe(users =>
     {
-      this.students=users;
-      this.students.forEach( user =>
-      {
-        this.userService.obtenerElEstadoMatriculaEstudiante(user.id, this.idCurso)
-        .valueChanges()
-        .subscribe((matricula:any) =>
-        {
-          if(matricula)
-          {
-            user.matriculado = matricula.matriculado;
-          }
-          else
-          {
-            user.matriculado  = false;
+      this.students = users;
+      this.students.forEach(user => {
+        user.estado = 'no matriculado';
+        this.courseUsers.forEach(std => {
+          if (user.id === std.id) {
+            user.estado = 'matriculado';
           }
         });
       })
-      this.dataSource.data = this.students;
+      this.dataSource.data = this.students.filter( (e: any) => e.estado !== 'matriculado' )
+        .sort(function (a, b) {
+          if (a.nombres > b.nombres) {
+            return 1;
+          }
+          if (a.nombres < b.nombres) {
+            return -1;
+          }
+          // a must be equal to b
+          return 0;
+        });
     });
   }
 
@@ -79,61 +81,39 @@ export class MatricularComponent implements OnInit, AfterViewInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  getLessons()
+  registerUser(estudiante:any, estadoMatricula:string)
   {
-    let unsubscribe = this.lessonService.listLessons(this.idCurso)
-    .valueChanges()
-    .subscribe(lessons=> {
-      this.lessons = lessons;
-      this.getContent();
-      unsubscribe.unsubscribe();
-    });
-  }
-
-  getContent()
-  {
-    this.lessons.forEach(lesson =>
-      {
-        lesson.realzada = false;
-        let unsubscribe = this.lessonService.listLessonContent(this.idCurso, lesson.id)
-        .valueChanges()
-        .subscribe(content => {
-          let contenido: any;
-          content.forEach( c => {
-            contenido = {
-              realizado : false,
-              idContent : c.id,
-              titulo: c.titulo,
-              idLesson : lesson.id
-            };
-            this.content.push(contenido);
-          });
-          unsubscribe.unsubscribe();
+    Swal.fire({
+      title: 'Matricular estudiante',
+      text: `Va a registrar al usuario ${estudiante.nombres} ${estudiante.apellidos} en el curso, ¿esta seguro?`,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, estoy seguro!'
+    })
+    .then((result) => {
+      if (result.value) {
+        let stdName = `${estudiante.nombres} ${estudiante.apellidos}`;
+        this.courseService.registerUserToCourse(stdName, this.courseId, estudiante.id)
+        .then(() => {
+          Swal.fire(
+            'Registrado!',
+            'Registro exitoso.',
+            'success',
+          );
+          this.dialogRef.close();
+        })
+        .catch((error) => {
+          Swal.fire(
+            'Error!',
+            `La operación no se pudó realizar, ${error}.`,
+            'error',
+          );
         });
-      });
-  }
-
-  matricularEstudiante(estudiante:any, estadoMatricula:string)
-  {
-    const contenidoCurso = {
-      lessons: this.lessons,
-      content: this.content
-    }
-    this.userService.verificarMatriculaDelEstudiante(estudiante.id, this.idCurso, contenidoCurso);
-    this.estudiantesMatriculadosCurso(estudiante, estadoMatricula);
-  }
-
-  estudiantesMatriculadosCurso(estudiante:any, estadoMatricula:string)
-  {
-    if(estadoMatricula=== 'matricular')
-    {
-      let nombreEstudiante = estudiante.nombres+' '+estudiante.apellidos;
-      this.courseService.addEnrolledStudents(nombreEstudiante,this.idCurso, estudiante.id);
-    }
-    else
-    {
-      this.courseService.deleteEnrolledStudent(this.idCurso, estudiante.id);
-    }
+      }
+    })
+    .catch(error => console.log(error));
   }
 
 }

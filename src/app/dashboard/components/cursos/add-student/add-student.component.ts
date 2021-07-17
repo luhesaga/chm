@@ -20,7 +20,7 @@ export class AddStudentComponent implements OnInit, AfterViewInit  {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  displayedColumns: string[] = ['nombre', 'estado', 'actions'];
+  displayedColumns: string[] = ['nombre', 'correo', 'perfil', 'actions'];
   dataSource = new MatTableDataSource();
 
 
@@ -43,12 +43,12 @@ export class AddStudentComponent implements OnInit, AfterViewInit  {
     this.content = [];
     this.enrolledStudents = [];
     this.idCurso = this.activatedRoute.snapshot.params.idCurso;
-    this.getLessons();
-    this.obtenerListaEstudianteMatriculados();
   }
 
   ngOnInit(): void {
     this.getCourse();
+    this.getLessons();
+    this.getRegisteredUSers();
   }
 
   ngAfterViewInit(): void {
@@ -60,8 +60,8 @@ export class AddStudentComponent implements OnInit, AfterViewInit  {
   {
     const dialogRef = this.dialog.open(MatricularComponent,{
       height: '90%',
-      width: '80%',
-      data:this.idCurso
+      width: '90%',
+      data: [this.course, this.dataSource.data]
     });
   }
 
@@ -70,7 +70,6 @@ export class AddStudentComponent implements OnInit, AfterViewInit  {
       .valueChanges()
       .subscribe(c => {
         this.course = c;
-        console.log(this.course);
         courseReceived.unsubscribe();
       });
   }
@@ -90,7 +89,7 @@ export class AddStudentComponent implements OnInit, AfterViewInit  {
   {
     this.lessons.forEach(lesson =>
       {
-        lesson.realzada = false;
+        lesson.realizada = false;
         let unsubscribe = this.lessonService.listLessonContent(this.idCurso, lesson.id)
         .valueChanges()
         .subscribe(content => {
@@ -109,18 +108,38 @@ export class AddStudentComponent implements OnInit, AfterViewInit  {
       });
   }
 
-  obtenerListaEstudianteMatriculados():void
+  getRegisteredUSers():void
   {
-    this.courseService.obtenerEstudiantesMatriculados(this.idCurso)
+    this.courseService.getRegisteredUSers(this.idCurso)
     .valueChanges()
-    .subscribe(estudiantesMatriculados => this.dataSource.data = estudiantesMatriculados);
+    .subscribe(students => {
+      students.forEach(std => {
+        this.userService.detailUser(std.id)
+          .valueChanges()
+          .subscribe((user: any) => {
+            std.perfil = user.perfil;
+            std.correo = user.correo;
+          })
+      })
+      this.dataSource.data = students
+          .sort(function (a, b) {
+            if (a.nombre > b.nombre) {
+              return 1;
+            }
+            if (a.nombre < b.nombre) {
+              return -1;
+            }
+            // a must be equal to b
+            return 0;
+          });
+    });
   }
 
   applyFilter(filterValue: string): void {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  matricularEstudiante(estudiante:any)
+  deleteStudent(estudiante:any)
   {
     Swal.fire({
       title: '¿Esta seguro?',
@@ -133,9 +152,7 @@ export class AddStudentComponent implements OnInit, AfterViewInit  {
     })
     .then((result) => {
       if (result.value) {
-        const contenidoCurso = {}
-        this.userService.verificarMatriculaDelEstudiante(estudiante.id, this.idCurso, contenidoCurso);
-        this.courseService.deleteEnrolledStudent(this.idCurso, estudiante.id)
+        this.courseService.deleteUserFromCourse(this.idCurso, estudiante.id)
         .then(() => {
           Swal.fire({
             icon: 'success',

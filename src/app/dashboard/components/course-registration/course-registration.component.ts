@@ -15,20 +15,20 @@ export class CourseRegistrationComponent implements OnInit, OnDestroy {
   coursesReceived;
   categoryreceived;
 
-  listcourse: any[] = [];
+  listcourse = [];
+  unfilteredCourses = [];
+
   constructor(
     private courseService: CourseService,
     private catService: CategoryService,
     private router: Router,
     private activatedRoute: ActivatedRoute
   ) {
-    this.listcourse.length = 0;
     this.userId = this.activatedRoute.snapshot.params.stdId;
-    // console.log(this.userId);
   }
 
   ngOnInit(): void {
-    this.obtenerCourse();
+    this.getCourses();
   }
 
   ngOnDestroy(): void {
@@ -37,33 +37,46 @@ export class CourseRegistrationComponent implements OnInit, OnDestroy {
     this.coursesByUserReceived.unsubscribe();
   }
 
-  obtenerCourse(): void {
+  getCourses(): void {
     this.listcourse.length = 0;
     this.coursesReceived = this.courseService.listCourses()
       .valueChanges()
       .subscribe(courses => {
-        courses.forEach(course => {
-          // console.log(course.nombre);
-          this.categoryreceived = this.catService.detailCategory(course.categoria).valueChanges()
-            .subscribe(cat => {
-              course.categoria = cat.nombre;
-            });
-          this.coursesByUserReceived = this.courseService.listCoursesByUser(course.id, this.userId)
-            .valueChanges()
-            .subscribe(u => {
-              if (u) {
-                // console.log(`curso: ${course.nombre} --- user: ${u.nombre}`);
-                this.listcourse.push(course);
-              }
-            })
+        courses.forEach((course) => {
+          this.getCategory(course);
+          this.getUserCourses(course);
         });
-        this.listcourse = [... new Set(this.listcourse)];
-        // console.log(this.listcourse);
+        // console.log(this.listcourse)
+      });
+  }
+
+  getCategory(course) {
+    this.categoryreceived = this.catService.detailCategory(course.categoria).valueChanges()
+      .subscribe(cat => {
+        course.categoria = cat.nombre;
+      });
+  }
+
+  getUserCourses(course) {
+    this.coursesByUserReceived = this.courseService.listCoursesByUser(course.id, this.userId)
+      .valueChanges()
+      .subscribe(u => {
+        // futuro desarrollador:
+        // no se porque carajo se repetían algunas veces los cursos
+        // pequeña empanada pa solucionarlo :(
+        let cont = 0
+        this.listcourse.forEach(c => {
+          if (c.id === course.id) {
+            cont += 1
+          }
+        })
+        if (u && cont === 0) {
+          this.listcourse.push(course);
+        }
       });
   }
 
   goToCourseHome(idCourse: string) {
-    // this.router.navigateByUrl('cursos/registration/'+idCourse);
     this.router.navigateByUrl(`cursos/index/${idCourse}/${this.userId}`);
   }
 }

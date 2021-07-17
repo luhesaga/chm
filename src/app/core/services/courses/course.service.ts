@@ -34,13 +34,13 @@ export class CourseService {
   createCourse(data, id, imgName): Promise<void> {
     return this.fireStore.doc(`cursos/${id}`)
       .set({
-          id,
-          nombre: data.name,
-          imagen: data.image,
-          nombreImg: imgName,
-          categoria: data.categoria,
-          profesor: data.profesor
-        });
+        id,
+        nombre: data.name,
+        imagen: data.image,
+        nombreImg: imgName,
+        categoria: data.categoria,
+        profesor: data.profesor
+      });
   }
 
   editCourse(data, id, imgName): Promise<void> {
@@ -57,14 +57,14 @@ export class CourseService {
   editCourseDescription(id, value, type): Promise<void> {
     return this.fireStore.doc(`cursos/${id}`)
       .update({
-          [type]: value
+        [type]: value
       });
   }
 
   editCourseOptions(id, options): Promise<void> {
     return this.fireStore.doc(`cursos/${id}`)
       .update({
-          opciones: options
+        opciones: options
       });
   }
 
@@ -72,7 +72,7 @@ export class CourseService {
     const FieldValue = firebase.firestore.FieldValue;
     return this.fireStore.doc(`cursos/${id}`)
       .update({
-          [type]: FieldValue.delete()
+        [type]: FieldValue.delete()
       });
   }
 
@@ -83,22 +83,19 @@ export class CourseService {
       })
   }
 
-  addEnrolledStudents(students:any, idCurso:string, idEstudiante: string):void
-  {
-    this.fireStore.doc(`cursos/${idCurso}/matriculados/${idEstudiante}`)
-    .set({
-      id:idEstudiante,
-      nombre: students
-    })
+  registerUserToCourse(stdName: any, courseId: string, stdId: string): Promise<void> {
+    return this.fireStore.doc(`cursos/${courseId}/matriculados/${stdId}`)
+      .set({
+        id: stdId,
+        nombre: stdName,
+      })
   }
 
-  deleteEnrolledStudent(idCurso:string, idEstudiante: string)
-  {
+  deleteUserFromCourse(idCurso: string, idEstudiante: string) {
     return this.fireStore.doc(`cursos/${idCurso}/matriculados/${idEstudiante}`).delete();
   }
 
-  obtenerEstudiantesMatriculados(idCurso:string): AngularFirestoreCollection
-  {
+  getRegisteredUSers(idCurso: string): AngularFirestoreCollection {
     return this.fireStore.collection(`cursos/${idCurso}/matriculados`);
   }
 }

@@ -18,15 +18,21 @@ export class LessonsComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = ['nombre','progreso' ,'actions'];
   dataSource = new MatTableDataSource();
 
-  idCurso: String;
+  courseId: String;
+  stdId;
+
+  lessonsReceived;
+  userLessons;
 
   constructor(
     private lessonService: LessonsService,
     private activatedRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
   )
   {
-    this.idCurso = this.activatedRoute.snapshot.params.id;
+    this.courseId = this.activatedRoute.snapshot.params.courseId;
+    this.stdId = this.activatedRoute.snapshot.params.stdId;
+
   }
 
   ngAfterViewInit(): void {
@@ -40,9 +46,16 @@ export class LessonsComponent implements OnInit, AfterViewInit {
 
   listLesson():void
   {
-    this.lessonService.listLessons(this.idCurso)
+    this.lessonService.listLessons(this.courseId)
     .valueChanges()
-    .subscribe(lessons => this.dataSource.data = lessons)
+    .subscribe(lessons => {
+      console.log(lessons);
+      this.dataSource.data = lessons;
+    })
+  }
+
+  getUserProgress() {
+
   }
 
   applyFilter(filterValue: string): void {
@@ -51,7 +64,7 @@ export class LessonsComponent implements OnInit, AfterViewInit {
 
   goToCourseView(element:any):void
   {
-    this.router.navigateByUrl(`dashboard/course-view/${this.idCurso}/${element.id}`);
+    this.router.navigateByUrl(`dashboard/course-view/${this.courseId}/${element.id}/${this.stdId}`);
   }
 
 }

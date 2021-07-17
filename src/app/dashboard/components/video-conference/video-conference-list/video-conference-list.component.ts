@@ -15,6 +15,8 @@ export class VideoConferenceListComponent implements OnInit, OnDestroy {
   courseId;
   meetsReceived;
   meets;
+  stdId;
+  admin = true;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -23,6 +25,10 @@ export class VideoConferenceListComponent implements OnInit, OnDestroy {
     private meetService: MeetsService
   ) {
     this.courseId = this.activatedRoute.snapshot.params.courseId;
+    this.stdId = this.activatedRoute.snapshot.params.stdId;
+    if (this.stdId) {
+      this.admin = false;
+    }
   }
 
   ngOnInit(): void {
@@ -100,7 +106,11 @@ export class VideoConferenceListComponent implements OnInit, OnDestroy {
   }
 
   goBack() {
-    this.route.navigate([`cursos/index/${this.courseId}`]);
+    if (this.admin) {
+      this.route.navigate([`cursos/index/${this.courseId}`]);
+    } else {
+      this.route.navigate([`cursos/index/${this.courseId}/${this.stdId}`]);
+    }
   }
 
   parseHTML(data) {

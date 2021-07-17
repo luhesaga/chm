@@ -126,4 +126,8 @@ export class UsersService {
     });
   }
 
+  getUserCourseLessons(userId, courseId): AngularFirestoreDocument {
+    return this.fireStore.doc(`usuarios/${userId}/miscursos/${courseId}`);
+  }
+
 }

@@ -9,7 +9,7 @@ import { ReplyForoComponent } from './components/reply-foro/reply-foro.component
 
 
 const routes: Routes = [{
-  path: ':idCurso/:idLesson',
+  path: ':idCurso/:idLesson/:stdId',
   component:NavigationComponent,
   children:
   [

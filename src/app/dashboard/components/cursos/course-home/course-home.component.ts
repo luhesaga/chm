@@ -134,7 +134,11 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
   }
 
   goToLessons() {
-    this.route.navigate([`cursos/lecciones/${this.id}`]);
+    if (this.admin) {
+      this.route.navigate([`cursos/lecciones/${this.id}`]);
+    } else {
+      this.route.navigate([`mis-cursos/lecciones/${this.id}/${this.stdId}`]);
+    }
   }
 
   goToExercises() {
@@ -142,11 +146,19 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
   }
 
   goToGlossary() {
-    this.route.navigate([`cursos/glosario/${this.id}`]);
+    if (this.admin) {
+      this.route.navigate([`cursos/glosario/${this.id}`]);
+    } else {
+      this.route.navigate([`cursos/glosario/${this.id}/${this.stdId}`]);
+    }
   }
 
   goToVideo() {
-    this.route.navigate([`cursos/video-meet/${this.id}`]);
+    if (this.admin) {
+      this.route.navigate([`cursos/video-meet/${this.id}`]);
+    } else {
+      this.route.navigate([`cursos/video-meet/${this.id}/${this.stdId}`]);
+    }
   }
 
   goBack() {

@@ -137,11 +137,19 @@ const routes: Routes = [
         component: GlossaryListComponent
       },
       {
+        path: 'cursos/glosario/:courseId/:stdId',
+        component: GlossaryListComponent
+      },
+      {
         path: 'cursos/glosario/:courseId/create',
         component: GlossaryCreateComponent
       },
       {
         path: 'cursos/video-meet/:courseId',
+        component: VideoConferenceListComponent
+      },
+      {
+        path: 'cursos/video-meet/:courseId/:stdId',
         component: VideoConferenceListComponent
       },
       {
@@ -173,7 +181,7 @@ const routes: Routes = [
         component: CourseRegistrationComponent
       },
       {
-        path: 'course-registration/lessons/:id',
+        path: 'mis-cursos/lecciones/:courseId/:stdId',
         component: LessonsComponent,
       },
       {

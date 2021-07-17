@@ -27,6 +27,7 @@ export class GlossaryListComponent implements OnInit, AfterViewInit, OnDestroy {
   courseId;
   courseReceived;
   course;
+  stdId;
   glossaryReceived;
   glossary;
 
@@ -43,6 +44,11 @@ export class GlossaryListComponent implements OnInit, AfterViewInit, OnDestroy {
     private auth: AuthService,
   ) {
     this.courseId = this.activatedRoute.snapshot.params.courseId;
+    this.stdId = this.activatedRoute.snapshot.params.stdId;
+    if (this.stdId) {
+      this.displayedColumns = ['termino', 'definicion'];
+      this.admin = false;
+    }
   }
 
   ngOnInit(): void {
@@ -53,7 +59,6 @@ export class GlossaryListComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-    this.getLogguedUser();
   }
 
   ngOnDestroy(): void {
@@ -80,22 +85,16 @@ export class GlossaryListComponent implements OnInit, AfterViewInit, OnDestroy {
       });
   }
 
-  getLogguedUser() {
-    this.auth.user$.subscribe((user) => {
-      this.logguedUser = user;
-      if (this.logguedUser.perfil !== 'administrador') {
-        this.displayedColumns = ['termino', 'definicion'];
-        this.admin = false;
-      }
-    });
-  }
-
   applyFilter(filterValue: string): void {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
   goBack() {
-    this.router.navigate([`cursos/index/${this.courseId}`]);
+    if (this.admin) {
+      this.router.navigate([`cursos/index/${this.courseId}`]);
+    } else {
+      this.router.navigate([`cursos/index/${this.courseId}/${this.stdId}`]);
+    }
   }
 
   openDialog(exercise) {
