@@ -2,7 +2,7 @@
     <div class="main-container">
         <h2>Contáctanos</h2>
         <div class="contact-form-container" id="form-container">
-            <form [formGroup]="form" (ngSubmit)="submitMessage($event)">
+            <form [formGroup]="form" (ngSubmit)="mailContacto()">
                 <label for="Nombre">Nombre</label>
                 <input type="text" id="Nombre" formControlName="nombre">
                 <label for="Email">Email</label>

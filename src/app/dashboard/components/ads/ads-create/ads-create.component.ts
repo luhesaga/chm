@@ -5,6 +5,8 @@ import Swal from 'sweetalert2';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { AdsService } from '../../../../core/services/ads/ads.service';
 import { Router } from '@angular/router';
+import { UsersService } from 'src/app/core/services/users/users.service';
+import { MailService } from 'src/app/core/services/mail/mail.service';
 
 @Component({
   selector: 'app-ads-create',
@@ -17,18 +19,22 @@ export class AdsCreateComponent implements OnInit {
   formAds: FormGroup;
   selectedImage: any;
   fechaYHora: Date;
+  correosUsuarios:any[];
 
   constructor(
+    private userService: UsersService,
     private fireStorage: AngularFireStorage,
     private formAdsBuilder: FormBuilder,
     private fireStore: AngularFirestore,
     private adsService: AdsService,
-    private route: Router
+    private route: Router,
+    private mailService: MailService,
     )
     {
       this.fechaYHora = new Date();
       this.selectedImage = null;
       this.buildForm();
+      this.obtenerUsuarios();
     }
 
   ngOnInit(): void {
@@ -41,6 +47,30 @@ export class AdsCreateComponent implements OnInit {
       image: ['', Validators.required],
       description: [''],
       fechaYHora: ['']
+    })
+  }
+
+  obtenerUsuarios()
+  {
+    this.userService.listUsers()
+    .valueChanges()
+    .subscribe(users => this.obtenerCorreoUsuario(users),
+    ()=> this.mensajeErrorObtenerUsuario());
+  }
+
+  obtenerCorreoUsuario(users:any[])
+  {
+    const correos =[];
+    users.forEach(user => correos.push(user.correo));
+    this.correosUsuarios = correos;
+  }
+
+  mensajeErrorObtenerUsuario()
+  {
+    Swal.fire({
+      icon: 'error',
+      title: 'Conexión',
+      html: 'Hay problemas de conexión por favor recargue la pagina'
     })
   }
 
@@ -107,13 +137,11 @@ export class AdsCreateComponent implements OnInit {
       background: 'rgba(0,0,0,.5)',
       showConfirmButton: false,
       backdrop: true,
-      timer: 5000,
       timerProgressBar: false,
       onBeforeOpen: () => {
         Swal.showLoading();
-      }}).then(() => {
         this.uploadNewImage(datos);
-      });
+      }})
   }
 
   uploadNewImage(datos:any):void
@@ -137,13 +165,7 @@ export class AdsCreateComponent implements OnInit {
     datos.fechaYHora = this.fechaYHora;
     this.adsService.createAds(datos, this.fsId, this.selectedImage.name)
     .then(() => {
-      Swal.fire({
-				icon: 'success',
-				title: 'Exito!',
-				text: 'Anuncio agregado exitosamente',
-				confirmButtonText: 'cerrar',
-			});
-			this.route.navigate(['dashboard/ads/ads-list']);
+      this.sendEmailAnuncio(datos.image);
     })
     .catch((error) => {
 			Swal.fire({
@@ -153,6 +175,31 @@ export class AdsCreateComponent implements OnInit {
 				confirmButtonText: 'cerrar',
             });
         });
+  }
+
+  async sendEmailAnuncio(img:string)
+  {
+    const data = {img}
+    /*convertir el array en objeto, poner los datos en la constante data
+    y todo hacerlo un objeto tipo JSON*/
+    JSON.stringify(Object.assign(data, this.correosUsuarios));
+    await this.mailService.sendEmailAnuncios(data).toPromise()
+    .then(()=> {
+      Swal.fire({
+				icon: 'success',
+				title: 'Exito!',
+				text: 'Anuncio agregado exitosamente',
+				confirmButtonText: 'cerrar',
+			}).then(()=>this.route.navigate(['dashboard/ads/ads-list']));
+    }, (e)=> {
+      console.log(e);
+      Swal.fire({
+				icon: 'error',
+				title: 'Correos',
+				text: 'Los correos no pudieron ser enviados.',
+				confirmButtonText: 'cerrar',
+			}).then(()=>this.route.navigate(['dashboard/ads/ads-list']));
+    });
   }
 
 }
