@@ -83,11 +83,14 @@ export class CourseService {
       })
   }
 
-  registerUserToCourse(stdName: any, courseId: string, stdId: string): Promise<void> {
+  registerUserToCourse(data: any, courseId: string, stdId: string): Promise<void> {
     return this.fireStore.doc(`cursos/${courseId}/matriculados/${stdId}`)
       .set({
         id: stdId,
-        nombre: stdName,
+        nombre: data.stdName,
+        fechaMatricula: data.fechaMatricula,
+        tipoMatricula: data.tipoMatricula,
+        fechaFinalizacionMatricula: data.fechaFinalizacionMatricula
       })
   }
 

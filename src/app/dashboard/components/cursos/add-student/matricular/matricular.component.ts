@@ -81,7 +81,7 @@ export class MatricularComponent implements OnInit, AfterViewInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  registerUser(estudiante:any, estadoMatricula:string)
+  registerUser(estudiante:any, estadoMatricula:string, fechaFinalizacionMatricula:Date | string)
   {
     Swal.fire({
       title: 'Matricular estudiante',
@@ -94,8 +94,8 @@ export class MatricularComponent implements OnInit, AfterViewInit {
     })
     .then((result) => {
       if (result.value) {
-        let stdName = `${estudiante.nombres} ${estudiante.apellidos}`;
-        this.courseService.registerUserToCourse(stdName, this.courseId, estudiante.id)
+        const dataMatricula = this.datosMatricula(estudiante, estadoMatricula, fechaFinalizacionMatricula);
+        this.courseService.registerUserToCourse(dataMatricula, this.courseId, estudiante.id)
         .then(() => {
           Swal.fire(
             'Registrado!',
@@ -114,6 +114,55 @@ export class MatricularComponent implements OnInit, AfterViewInit {
       }
     })
     .catch(error => console.log(error));
+  }
+
+  datosMatricula(estudiante:any, matricula:string, fechaFinalizacionMatricula:Date | string)
+  {
+    const data = {
+      stdName:`${estudiante.nombres} ${estudiante.apellidos}`,
+      fechaMatricula: new Date(),
+      tipoMatricula:matricula,
+      fechaFinalizacionMatricula
+    };
+    return data;
+  }
+
+  inputMesesMatricula(estudiante:any, estadoMatricula:string)
+  {
+    Swal.fire({
+      title: 'Meses',
+      input: 'number',
+      inputLabel: 'Ingrese los meses de matricula. Solo puede matricular maximo 12 meses',
+      confirmButtonText:'MATRICULAR',
+      inputValidator:(value) =>{
+        return new Promise((resolve)=>{
+          const valueNumber = Number(value);
+          if(valueNumber<=0)
+          {
+            resolve('Los meses de matricula deben ser mayor a cero');
+          }else if(valueNumber>12)
+          {
+            resolve('Los meses de matricula deben ser menor a doce');
+          }
+          else{
+            resolve('');
+          }
+        })
+      }
+    }).then((confirm)=>{
+      if(confirm.isConfirmed)
+      {
+        const mesesMatricula = Number(confirm.value);
+        const fechaFinalizacion = this.fechaFinalizacionMatricula(mesesMatricula);
+        this.registerUser(estudiante, estadoMatricula, fechaFinalizacion);
+      }
+    });
+  }
+
+  fechaFinalizacionMatricula(valueNumber:number):Date {
+    const fechaFinalizacion = new Date();
+    fechaFinalizacion.setMonth(fechaFinalizacion.getMonth()+valueNumber);
+    return fechaFinalizacion;
   }
 
 }
