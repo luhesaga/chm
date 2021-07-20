@@ -5,8 +5,8 @@
     </div>
     <div [class]="material">
         <ul>
-            <li routerLink="/home/inicio" (click)="classToogle()"><a>Inicio</a></li>
-            <li routerLink="/home/cursos" (click)="classToogle()"><a>Cursos</a></li>
+            <li (click)="fb()"><a>Inicio</a></li>
+            <li (click)="logOut()"><a>Cursos</a></li>
             <li (click)="classToogle()"><a target="_blank" href="https://chym-ndt.com/">Conoce a CH&M NDT</a></li>
             <li routerLink="/home/contactanos" (click)="classToogle()"><a>Contáctanos</a></li>
         </ul>

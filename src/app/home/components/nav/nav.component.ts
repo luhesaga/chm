@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
+import { AuthService } from 'src/app/core/services/auth/auth.service';
 
 @Component({
   selector: 'app-nav',
@@ -16,6 +17,7 @@ export class NavComponent implements OnInit {
 
   constructor(
     private breakpointObserver: BreakpointObserver,
+    private auth: AuthService
     ) { }
 
   ngOnInit(): void {
@@ -52,6 +54,16 @@ export class NavComponent implements OnInit {
         this.menuText = 'Menú';
       }
     }
+  }
+
+  fb()
+  {
+    this.auth.googleLogin();
+  }
+
+  logOut()
+  {
+    this.auth.logout();
   }
 
 }

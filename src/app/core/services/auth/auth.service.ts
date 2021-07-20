@@ -38,4 +38,14 @@ export class AuthService {
   logout(): void {
     this.af.signOut();
   }
+
+  facebookLogin()
+  {
+    return this.af.signInWithPopup(new firebase.auth.FacebookAuthProvider());
+  }
+
+  googleLogin()
+  {
+    return this.af.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then(r => console.log(r));
+  }
 }

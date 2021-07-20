@@ -10,6 +10,42 @@
     --main-color-rgb2: rgba(0, 114, 121, 0.95);
 }
 
+.media-btn{
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    margin-top: 0.5rem;
+    display: flex;
+    flex-direction: row;
+    background:white;
+    border-radius:3px;
+    cursor: pointer;
+    font-weight: bold;
+    letter-spacing: 0.2px;
+    font-family: "Roboto";
+    .media-btn-text
+    {
+        width:10rem;
+        align-self: center;
+        div{
+            text-align: center;
+        }
+    }
+    .media-btn-icon
+    {
+        height:2.9rem;
+        img{
+            vertical-align: middle;
+        }
+    }
+}
+
+.faceboo-btn
+{
+    color:white;
+    background:rgba(63,81,181);
+}
+
+@import url(https://fonts.googleapis.com/css?family=Roboto:500);
+
 html {
     scroll-behavior: smooth;
 }
