@@ -8,33 +8,35 @@ import { ReplyForoComponent } from './components/reply-foro/reply-foro.component
 
 
 
-const routes: Routes = [{
-  path: ':idCurso/:idLesson/:stdId',
-  component:NavigationComponent,
-  children:
-  [
-    {
-      path: 'reply-foro/:idCurso/:idLesson/:idContent/:tipo/:idReplayForo',
-      component: ReplyForoComponent
-    },
-    {
-      path: 'reply-foro/:idCurso/:idLesson/:idContent/:tipo',
-      component: ReplyForoComponent
-    },
-    {
-      path:'pdf/:idCurso/:idLesson/:idContent',
-      component: PdfComponent
-    },
-    {
-      path: 'contenido/:idCurso/:idLesson/:idContent',
-      component:ContenidoComponent
-    },
-    {
-      path: 'foro/:idCurso/:idLesson/:idContent',
-      component:ForoComponent
-    }
-  ]
-}];
+const routes: Routes = [
+  {
+    path: ':CId/:LId/:SId',
+    component: NavigationComponent,
+    children:
+      [
+        {
+          path: 'reply-foro/:idCurso/:idLesson/:idContent/:tipo/:idReplayForo',
+          component: ReplyForoComponent
+        },
+        {
+          path: 'reply-foro/:idCurso/:idLesson/:idContent/:tipo',
+          component: ReplyForoComponent
+        },
+        {
+          path: 'pdf/:idCurso/:idLesson/:idContent/:stdId',
+          component: PdfComponent
+        },
+        {
+          path: 'contenido/:idCurso/:idLesson/:idContent/:stdId',
+          component: ContenidoComponent
+        },
+        {
+          path: 'foro/:idCurso/:idLesson/:idContent/:stdId',
+          component: ForoComponent
+        }
+      ]
+  },
+];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

@@ -44,7 +44,7 @@
                 *matCellDef="let element"
                 matTooltip="Lección"
                 class="name">
-                0%
+                {{ !element.porcentaje ?  '0%' : element.porcentaje+'%' }}
             </td>
         </ng-container>
         <ng-container matColumnDef="actions">

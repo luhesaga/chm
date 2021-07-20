@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { catchError, map, shareReplay } from 'rxjs/operators';
@@ -11,7 +11,7 @@ import { LessonsService } from 'src/app/core/services/lessons/lessons.service';
   templateUrl: './navigation.component.html',
   styleUrls: ['./navigation.component.scss']
 })
-export class NavigationComponent {
+export class NavigationComponent implements OnInit, OnDestroy {
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -19,128 +19,152 @@ export class NavigationComponent {
       shareReplay()
     );
 
-    idCurso:string;
-    idLesson:string;
+  idCurso: string;
+  idLesson: string;
+  stdId;
 
-    curso:any;
-    lessonsContent: any[];
-    lesson:any;
-    content:any;
+  course;
+  courseReceived;
+  lessonsContent: any = [];
+  lesson;
+  lessonReceived;
+  content: any = {};
 
-    class:string;
+  class: string;
 
   constructor(
     private lessonService: LessonsService,
     private courseService: CourseService,
     private breakpointObserver: BreakpointObserver,
     private activatedRoute: ActivatedRoute,
-    private router: Router)
-    {
-      this.idCurso = this.activatedRoute.snapshot.params.idCurso;
-      this.idLesson = this.activatedRoute.snapshot.params.idLesson;
-      this.curso={};
-      this.lesson = {};
-      this.content = {};
-      this.class = 'prueba';
-      this.obtenerCurso();
-      this.obtenerContenidoLeccione();
-      this.obtenerLeccion();
-    }
+    private router: Router) {
+    this.idCurso = this.activatedRoute.snapshot.params.CId;
+    this.idLesson = this.activatedRoute.snapshot.params.LId;
+    this.stdId = this.activatedRoute.snapshot.params.SId;
+    console.log(`curso: ${this.idCurso} leccion: ${this.idLesson} user: ${this.stdId}`);
+    this.class = 'prueba';
+  }
 
-    obtenerCurso():void
-    {
-      this.courseService.detailCourse(this.idCurso)
+  ngOnInit(): void {
+    this.getCourse();
+  }
+
+  ngOnDestroy(): void {
+    this.courseReceived.unsubscribe();
+    this.lessonReceived.unsubscribe();
+  }
+
+  getCourse(): void {
+    this.courseReceived = this.courseService.detailCourse(this.idCurso)
       .valueChanges()
-      .subscribe(curso => this.curso=curso);
-    }
+      .subscribe(curso => {
+        this.course = curso;
+        this.getLesson(curso.id);
+      });
+  }
 
-    obtenerLeccion():void
-    {
-      this.lessonService.lessonDetail(this.idCurso, this.idLesson)
+  getLesson(cid): void {
+    this.lessonReceived = this.lessonService.lessonDetail(cid, this.idLesson)
       .valueChanges()
-      .subscribe(lesson => this.lesson = lesson);
-    }
+      .subscribe((lesson: any) => {
+        this.lesson = lesson;
+        this.getLessonContent(lesson);
+      });
+  }
 
-    obtenerContenidoLeccione():void
-    {
-      this.lessonService.listLessonContent(this.idCurso, this.idLesson)
+  getLessonContent(lesson): void {
+    this.lessonService.listLessonContent(this.idCurso, lesson.id)
       .valueChanges()
-      .subscribe(lessons => this.lessonsContent=lessons);
-    }
+      .forEach((l) => {
+        this.lessonsContent.length = 0;
+        for (const i of l) {
+          // console.log(i)
+          this.lessonService.ContentProgress(
+            this.idCurso,
+            lesson.id,
+            i.id,
+            this.stdId
+          ).valueChanges()
+          .forEach(element => {
+            // console.log(element)
+            if (element) {
+              i.visto = true;
+            } else {
+              i.visto = false;
+            }
+            this.lessonsContent.push(i)
+          });
+        }
+    })
+  }
 
-    showContent(content:any):void
-    {
-      this.content=content;
-      if(this.content.tipo === 'Agregar contenido')
-      {
-        this.goToContenido(this.content.id);
-      } else if (this.content.tipo === 'Agregar foro')
-      {
-        this.goToForo(this.content.id);
-      }
-      else
-      {
-        this.goToPdf(this.content.id)
-      }
+  showContent(content: any): void {
+    this.content = content;
+    if (this.content.tipo === 'Agregar contenido') {
+      this.goToContenido(this.content.id);
+    } else if (this.content.tipo === 'Agregar foro') {
+      this.goToForo(this.content.id);
+    } else if (this.content.tipo === 'Agregar archivo PDF'){
+      this.goToPdf(this.content.id)
+    } else {
+      this.goToContenido(this.content.id);
     }
+  }
 
-    iHtml():void
-    {
-      try
-      {
-        this.chooseTypeOfActivity();
-      } catch(e)
-      {
-        console.log(e);
-      }
+  iHtml(): void {
+    try {
+      this.chooseTypeOfActivity();
+    } catch (e) {
+      console.log(e);
     }
+  }
 
-    chooseTypeOfActivity():void
-    {
-      if(this.content.contenido)
-      {
-        this.class= ""
-        document.getElementById('innerHtml')
-        .innerHTML = this.content.contenido;
-      }
-      else
-      {
-        document.getElementById('innerHtml')
-        .innerHTML = this.content.foro;
-        this.class='foro';
-      }
-    }
-
-    hiddenHtml():void
-    {
-      this.class ="";
+  chooseTypeOfActivity(): void {
+    if (this.content.contenido) {
+      this.class = ""
       document.getElementById('innerHtml')
+        .innerHTML = this.content.contenido;
+    }
+    else {
+      document.getElementById('innerHtml')
+        .innerHTML = this.content.foro;
+      this.class = 'foro';
+    }
+  }
+
+  hiddenHtml(): void {
+    this.class = "";
+    document.getElementById('innerHtml')
       .innerHTML = '';
-    }
+  }
 
-    goToLecciones()
-    {
-      this.router.navigateByUrl('course-registration/lessons/'+this.idCurso);
-    }
+  goToLecciones() {
+    this.router.navigateByUrl('dashboard/mis-cursos/lecciones/' + this.idCurso + '/' + this.stdId);
+  }
 
-    goToReplyForo()
-    {
-      this.router.navigateByUrl(`course-view/${this.idCurso}/${this.idLesson}/reply-foro`);
-    }
+  goToReplyForo() {
+    this.router.navigateByUrl(`course-view/${this.idCurso}/${this.idLesson}/reply-foro`);
+  }
 
-    goToForo(idContent:string)
-    {
-      this.router.navigateByUrl(`course-view/${this.idCurso}/${this.idLesson}/foro/${this.idCurso}/${this.idLesson}/${idContent}`);
-    }
+  goToForo(cntid: string) {
+    const cid = this.idCurso;
+    const lid = this.idLesson;
+    const sid = this.stdId;
+    this.router.navigateByUrl(`/course-view/${cid}/${lid}/${sid}/foro/${cid}/${lid}/${cntid}/${sid}`);
+  }
 
-    goToPdf(idContent:string)
-    {
-      this.router.navigateByUrl(`course-view/${this.idCurso}/${this.idLesson}/pdf/${this.idCurso}/${this.idLesson}/${idContent}`);
-    }
+  goToPdf(cntid: string) {
+    const cid = this.idCurso;
+    const lid = this.idLesson;
+    const sid = this.stdId;
+    this.router.navigateByUrl(`course-view/${cid}/${lid}/${sid}/pdf/${cid}/${lid}/${cntid}/${sid}`);
+  }
 
-    goToContenido(idContent:string)
-    {
-      this.router.navigate([`course-view/${this.idCurso}/${this.idLesson}/contenido/${this.idCurso}/${this.idLesson}/${idContent}`]);
-    }
+  goToContenido(cntid: string) {
+    const cid = this.idCurso;
+    const lid = this.idLesson;
+    const sid = this.stdId;
+    this.router.navigate([`course-view/${cid}/${lid}/${sid}/contenido/${cid}/${lid}/${cntid}/${sid}`]);
+  }
 
 }

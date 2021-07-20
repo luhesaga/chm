@@ -23,7 +23,7 @@ $dur: .5s;
     letter-spacing: .02rem;
     cursor: pointer;
     background: transparent;
-    border: $border-width solid currentColor;
+    border: $border-width solid var(--main-color2);
     padding: 0.5rem 0.5rem;
     font-size: 1rem;
     color: $fg;
@@ -103,9 +103,9 @@ $dur: .5s;
 
   .cita
   {
-    background-color: var(--main-color2);
-    color:white;
-    padding:0.5rem;
+    background-color: #eeeeee;
+    color:black;
+    padding:1rem 0.5rem 0.5rem 0.5rem;
     border-radius: 1rem;
     margin-bottom: 1rem;
   }

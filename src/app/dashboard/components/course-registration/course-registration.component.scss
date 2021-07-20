@@ -22,7 +22,7 @@ section {
     grid-template-rows: auto;
     //gap: 24px;
 
-    h2 {
+    .section-title {
         margin: 16px 24px 8px 32px;
         color: var(--main-color2);
         font-weight: 500;
@@ -30,7 +30,7 @@ section {
     }
 
     .course-container {
-        //width: 100%;
+        width: 80%;
         margin: 8px 24px;
         box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
         border-radius: 4px;
@@ -58,8 +58,8 @@ section {
             display: flex;
             flex-direction: column;
 
-            h2 {
-                margin-top: 8px;
+            .nombreCurso {
+                margin: 8px 0;
                 cursor: pointer;
                 color: var(--main-color2);
                 font-weight: 500;

@@ -4,16 +4,23 @@
       [mode]="(isHandset$ | async) ? 'over' : 'side'"
       [opened]="(isHandset$ | async) === false">
     <mat-toolbar class="headerSideBar">
-      <div class="volver" (click)="goToLecciones()"><p><</p></div>
-      <div><img class="imagenCurso" [src]="curso.imagen" alt=""></div>
-      <h3>{{curso.profesor}}</h3>
+      <div class="volver" (click)="goToLecciones()"><p><mat-icon>home</mat-icon></p></div>
+      <div><img class="imagenCurso" [src]="course?.imagen" alt=""></div>
+      <h3><span>profesor:</span>{{course?.profesor}}</h3>
     </mat-toolbar>
     <mat-nav-list>
-      <h3 class="nombreLeccion">{{lesson.posicion}}. {{lesson.nombre}}</h3>
-      <div *ngFor="let content of lessonsContent">
-        <a mat-list-item (click)="showContent(content)"><mat-icon>cancel</mat-icon> {{content.titulo}}</a>
+      <h3 class="nombreLeccion">{{lesson?.posicion}}. {{lesson?.nombre}}</h3>
+      <div class="content-list-item" *ngFor="let content of lessonsContent">
+        <a
+          mat-list-item
+          (click)="showContent(content)">
+            {{content.titulo}}
+        </a>
+        <mat-icon *ngIf="content.visto">done_outline</mat-icon>
+        <mat-icon *ngIf="!content.visto">radio_button_unchecked</mat-icon>
       </div>
     </mat-nav-list>
+    
   </mat-sidenav>
   <mat-sidenav-content>
     <mat-toolbar>
@@ -25,9 +32,11 @@
         *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span>{{curso.nombre}}</span>
+      <span>{{course?.nombre}}</span>
     </mat-toolbar>
     <!-- Add Content Here -->
+    hola como estas
+    
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>

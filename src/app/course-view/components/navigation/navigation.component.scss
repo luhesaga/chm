@@ -1,15 +1,13 @@
-
 .sidenav-container {
   height: 100%;
 }
 
-.imagenCurso
-{
-    width:120px;
-    height:120px;
-    border-radius:150px;
-    border: 5px solid rgba(0, 114, 121, 0.95);
-};
+.imagenCurso {
+  width: 200px;
+  height: auto;
+  //border-radius: 150px;
+  border: 2px solid rgba(0, 114, 121, 0.95);
+}
 
 .sidenav {
   width: 300px;
@@ -27,38 +25,44 @@
 
 .mat-toolbar {
   background: var(--main-color-rgb2);
-  span, button
-  {
-    color:white;
+
+  span,
+  button {
+    color: white;
   }
-  span
-  {
+
+  span {
     width: 100%;
     padding-left: 15px;
   }
 }
 
-.headerSideBar
-{
-  height:auto;
+.headerSideBar {
+  height: auto;
   display: flex;
   flex-direction: column;
   width: 100%;
-  img
-  {
-    margin:auto;
+
+  img {
+    margin: auto;
   }
-  .volver
-  {
-    p
-    {
-      padding:0px;
+
+  span {
+    color: var(--main-color2);
+    font-size: 0.9rem;
+    margin-right: 8px;
+  }
+
+  .volver {
+    p {
+      padding: 0px;
       margin: 0px;
       font-size: 2.5rem;
-      background-color: var(--main-color-rgb2) ;
+      background-color: var(--main-color-rgb2);
       width: 20px;
       padding: 10px;
     }
+
     cursor: pointer;
     width: 100%;
     text-align: center;
@@ -83,31 +87,47 @@
   width: 100%;
 }
 
-.nombreLeccion
-{
-  background: var(--main-color2);
-  margin-top: 20px;
-  font-size: 1.3rem;
-  padding: 10px 15px 10px 0px;
-  padding-left: 15px;
-  color:white;
+
+
+.mat-nav-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .nombreLeccion {
+    width: 100%;
+    text-align: center;
+    background: var(--main-color2);
+    margin-top: 20px;
+    font-size: 1.2rem;
+    padding: 10px 15px 10px 0px;
+    padding-left: 15px;
+    color: white;
+  }
 }
 
-a .mat-icon
-{
-  color: var(--main-color2);
-  margin-right: 10px;
+.content-list-item {
+  width: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px;
+  border-bottom: 1px solid grey;
+
+  .mat-icon {
+    color: var(--main-color2);
+    margin: 0;
+    padding: 0;
+    // margin-right: 10px;
+  }
 }
 
-ngx-extended-pdf-viewer{
+ngx-extended-pdf-viewer {
   min-height: 100%;
 }
 
-.mat-toolbar
-{
-  padding:0px;
+.mat-toolbar {
+  padding: 0px;
   margin-right: 10px;
 }
-
-
-
