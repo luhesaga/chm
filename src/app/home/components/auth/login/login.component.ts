@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { AuthService } from 'src/app/core/services/auth/auth.service';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { type } from 'os';
 
 @Component({
   selector: 'app-login',
@@ -89,6 +90,16 @@ export class LoginComponent implements OnInit {
     } else {
         return ('Ocurrió un error inesperado. \n Codigo de error: ' + code);
     }
+  }
+
+  loginGoogle()
+  {
+    this.auth.googleLogin();
+  }
+
+  loginFacebook()
+  {
+    this.auth.facebookLogin();
   }
 
 }
