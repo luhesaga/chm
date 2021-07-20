@@ -88,10 +88,24 @@
                     *ngIf="!element.matriculado"
                     mat-stroked-button
                     class="matricular"
-                    (click)="registerUser(element, 'matricular')"
+                    mat-stroked-button
+                    [matMenuTriggerFor]="matricula"
                     >
                     Matricular
-                </button>
+                </button><!--(click)="registerUser(element, 'matricular')"-->
+                <mat-menu #matricula="matMenu">
+                    <button
+                    (click)="registerUser(element, 'indefinida', 'nunca')"
+                    mat-menu-item>
+                        <mat-icon>all_inclusive</mat-icon>
+                        <span>Indefinido</span>
+                    </button>
+                    <button mat-menu-item
+                    (click)="inputMesesMatricula(element, 'mes')">
+                        <mat-icon>date_range</mat-icon>
+                        <span>Mes</span>
+                    </button>
+                </mat-menu>
                 <button
                 *ngIf="element.matriculado"
                 mat-raised-button
