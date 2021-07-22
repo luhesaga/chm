@@ -41,7 +41,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
     this.idCurso = this.activatedRoute.snapshot.params.CId;
     this.idLesson = this.activatedRoute.snapshot.params.LId;
     this.stdId = this.activatedRoute.snapshot.params.SId;
-    console.log(`curso: ${this.idCurso} leccion: ${this.idLesson} user: ${this.stdId}`);
+    //console.log(`curso: ${this.idCurso} leccion: ${this.idLesson} user: ${this.stdId}`);
     this.class = 'prueba';
   }
 
@@ -75,10 +75,11 @@ export class NavigationComponent implements OnInit, OnDestroy {
   getLessonContent(lesson): void {
     this.lessonService.listLessonContent(this.idCurso, lesson.id)
       .valueChanges()
-      .forEach((l) => {
-        this.lessonsContent.length = 0;
-        for (const i of l) {
-          // console.log(i)
+      .subscribe((l) => {
+        this.lessonsContent = l;
+        this.pogresoContenido(lesson);
+        /*for (const i of l) {
+          //console.log(i)
           this.lessonService.ContentProgress(
             this.idCurso,
             lesson.id,
@@ -86,7 +87,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
             this.stdId
           ).valueChanges()
           .forEach(element => {
-            // console.log(element)
+            console.log(element)
             if (element) {
               i.visto = true;
             } else {
@@ -94,7 +95,36 @@ export class NavigationComponent implements OnInit, OnDestroy {
             }
             this.lessonsContent.push(i)
           });
+        }*/
+    })
+  }
+
+  pogresoContenido(lesson)
+  {
+    this.lessonsContent.forEach(i =>{
+      this.lessonService.ContentProgress(
+        this.idCurso,
+        lesson.id,
+        i.id,
+        this.stdId
+      ).valueChanges()
+      .subscribe((element:any) => {
+        if(element)
+        {
+          if(element.visto)
+          {
+            i.visto= true;
+          }
+          else
+          {
+            i.visto= false;
+          }
         }
+        else
+        {
+          i.visto= false;
+        }
+      })
     })
   }
 
