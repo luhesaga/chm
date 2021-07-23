@@ -33,6 +33,7 @@ import { CourseHomeComponentRegistration } from './components/course-registratio
 import { UserProfileComponent } from './components/users/user-profile/user-profile.component';
 import { CoursesComponent } from '../home/components/courses/courses.component';
 import { VideoConferenceListComponent } from './components/video-conference/video-conference-list/video-conference-list.component';
+import { DocumentsComponent } from './components/documents/documents.component';
 
 const routes: Routes = [
   {
@@ -191,6 +192,10 @@ const routes: Routes = [
       {
         path: 'cursos/registration/:idCurso',
         component: CourseHomeComponentRegistration
+      },
+      {
+        path:'documents/:idCurso',
+        component:DocumentsComponent
       }
     ]
   },

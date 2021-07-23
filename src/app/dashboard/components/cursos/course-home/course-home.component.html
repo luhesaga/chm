@@ -56,7 +56,8 @@
             </div>
         </div>
 
-        <div class="card" *ngIf="(admin) || (!admin && documentsOpt)">
+        <div class="card" *ngIf="(admin) || (!admin && documentsOpt)"
+        [routerLink]="['/documents/'+curso?.id]">
             <div class="img"><img src="/assets/icons/online-learning.svg" alt=""></div>
 
             <div class="options">
