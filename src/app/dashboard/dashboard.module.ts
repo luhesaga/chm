@@ -39,6 +39,7 @@ import { MatricularComponent } from './components/cursos/add-student/matricular/
 import { UserProfileComponent } from './components/users/user-profile/user-profile.component';
 import { VideoConferenceListComponent } from './components/video-conference/video-conference-list/video-conference-list.component';
 import { VideoConferenceCreateComponent } from './components/video-conference/video-conference-create/video-conference-create.component';
+import { DocumentsComponent } from './components/documents/documents.component';
 
 
 
@@ -76,6 +77,7 @@ import { VideoConferenceCreateComponent } from './components/video-conference/vi
     UserProfileComponent,
     VideoConferenceListComponent,
     VideoConferenceCreateComponent,
+    DocumentsComponent,
     ],
   imports: [
     CommonModule,

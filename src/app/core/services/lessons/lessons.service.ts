@@ -95,6 +95,12 @@ export class LessonsService {
       ref.orderBy('posicion', 'asc'));
   }
 
+  listLessonContentPDF(courseId, lessonId): AngularFirestoreCollection {
+    //console.log(`curso: ${courseId}, leccion: ${lessonId}`);
+    return this.fireStore.collection(`cursos/${courseId}/lecciones/${lessonId}/contenido`, ref =>
+      ref.where('tipo','==','Agregar archivo PDF').orderBy('posicion', 'asc'));
+  }
+
   editLessonContentPosition(courseId: string, lessonId: string, contentId: string, pos: number): Promise<void> {
     return this.fireStore.doc(`cursos/${courseId}/lecciones/${lessonId}/contenido/${contentId}`)
       .update({
