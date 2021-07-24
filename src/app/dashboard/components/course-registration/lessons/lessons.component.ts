@@ -10,7 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './lessons.component.html',
   styleUrls: ['./lessons.component.scss']
 })
-export class LessonsComponent implements OnInit, AfterViewInit {
+export class LessonsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -20,6 +20,11 @@ export class LessonsComponent implements OnInit, AfterViewInit {
 
   courseId: String;
   stdId;
+
+  lessonsReceived;
+  contentReceived;
+  contents;
+  userProgress;
 
   userLessons;
 
@@ -42,40 +47,55 @@ export class LessonsComponent implements OnInit, AfterViewInit {
     this.listLesson();
   }
 
-  listLesson(): void {
-    this.lessonService.listLessons(this.courseId)
-      .valueChanges()
-      .forEach(lessons => {
-        lessons.forEach(lesson => {
-          this.getUserProgress(lesson)
-        })
-        this.dataSource.data = lessons;
-      })
+  ngOnDestroy(): void {
+    this.lessonsReceived.unsubscribe();
+    this.contentReceived.unsubscribe();
+    this.userProgress.unsubscribe();
   }
 
-  getUserProgress(lessonReceived) {
-    let cont = 0;
-    this.lessonService.listLessonContent(this.courseId, lessonReceived.id)
+  listLesson(): void {
+    this.lessonsReceived = this.lessonService.listLessons(this.courseId)
       .valueChanges()
-      .forEach((lessonContents: any) => {
-        lessonContents.forEach(content => {
-          let progress = this.lessonService.ContentProgress(
-            this.courseId,
-            lessonReceived.id,
-            content.id,
-            this.stdId
-          )
-            .valueChanges()
-            .subscribe(visto => {
-              if (visto) {
-                cont += 1;
-                lessonReceived.porcentaje = Math.ceil(((lessonContents.length - (lessonContents.length - cont)) / lessonContents.length) * 100);
-                // console.log(`content ${lessonContents.length} - cont ${cont} / content ${lessonContents.length}`)
-              }
-              progress.unsubscribe();
-            })
-        })
+      .subscribe(lessons => {
+        this.getLessonsContent(lessons)
+        this.dataSource.data = lessons;
       })
+
+  }
+
+  getLessonsContent(lessons) {
+    lessons.forEach(lesson => {
+      this.contentReceived = this.lessonService.listLessonContent(this.courseId, lesson.id)
+      .valueChanges()
+      .subscribe(lessonContents => {
+        this.getUserProgress(lessonContents, lesson);
+      })
+    });
+  }
+
+  getUserProgress(lessonContents, lesson) {
+    lesson.porcentaje = 0;
+    const arr = []
+
+    lessonContents.forEach(content => {
+      this.userProgress = this.lessonService.ContentProgress(this.courseId, lesson.id, content.id, this.stdId)
+      .valueChanges()
+      .subscribe(visto => {
+        let cont = 0;
+        if (visto) {
+          arr.forEach(item => {
+            if (content.id === item.id) {
+              cont += 1;
+            }
+          })
+          if (cont === 0) {
+            arr.push(content);
+          }
+          //console.log(arr);
+        }
+        lesson.porcentaje = Math.ceil(((lessonContents.length - (lessonContents.length - arr.length)) / lessonContents.length) * 100);
+      });
+    });
   }
 
   applyFilter(filterValue: string): void {

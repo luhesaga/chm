@@ -35,7 +35,7 @@ export class LeccionesComponent implements OnInit, OnDestroy, AfterViewInit {
     private lessonService: LessonsService
   ) {
     this.CourseId = this.activatedRoute.snapshot.params.id
-    console.log(this.CourseId);
+    // console.log(this.CourseId);
   }
 
   ngOnInit(): void {
@@ -89,9 +89,9 @@ export class LeccionesComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   deleteLesson(data) {
-    console.log(data);
+    // console.log(data);
     const cId = this.CourseId;
-  
+
     Swal.fire({
       title: '¿Esta seguro?',
       text: 'Esta acción eliminara esta lección permanentemente, no se puede deshacer!',

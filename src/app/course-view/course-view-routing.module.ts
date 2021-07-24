@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ContenidoComponent } from './components/contenido/contenido.component';
+import { EvaluationHomeComponent } from './components/evaluation/evaluation-home/evaluation-home.component';
 import { ForoComponent } from './components/foro/foro.component';
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { PdfComponent } from './components/pdf/pdf.component';
@@ -33,6 +34,10 @@ const routes: Routes = [
         {
           path: 'foro/:idCurso/:idLesson/:idContent/:stdId',
           component: ForoComponent
+        },
+        {
+          path: 'evaluacion/:idCurso/:idLesson/:idContent/:stdId',
+          component: EvaluationHomeComponent
         }
       ]
   },

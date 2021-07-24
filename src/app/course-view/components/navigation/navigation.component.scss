@@ -1,3 +1,12 @@
+.mat-list-item-disabled {
+  background: #cfd8dc;
+  color: #78909c;
+  padding: 2px 8px;
+  border: 1px solid #546e7a;
+  border-radius: 5px;
+  margin-right: 4px;
+}
+
 .sidenav-container {
   height: 100%;
 }
@@ -26,15 +35,13 @@
 .mat-toolbar {
   background: var(--main-color-rgb2);
 
-  span,
   button {
     color: white;
   }
+}
 
-  span {
-    width: 100%;
-    padding-left: 15px;
-  }
+.example-spacer {
+  flex: 1 1 auto;
 }
 
 .headerSideBar {
@@ -54,13 +61,19 @@
   }
 
   .volver {
+    margin-top: 8px;
+    margin-left: 8px;
+    display: flex;
     p {
       padding: 0px;
-      margin: 0px;
+      margin: 0px 4px;
       font-size: 2.5rem;
       background-color: var(--main-color-rgb2);
       width: 20px;
+      height: 20px;
       padding: 10px;
+      display: flex;
+      align-items: center;
     }
 
     cursor: pointer;
@@ -115,6 +128,10 @@
   padding: 8px;
   border-bottom: 1px solid grey;
 
+  .mat-list-item {
+    cursor: pointer;
+  }
+
   .mat-icon {
     color: var(--main-color2);
     margin: 0;
@@ -130,4 +147,61 @@ ngx-extended-pdf-viewer {
 .mat-toolbar {
   padding: 0px;
   margin-right: 10px;
+}
+
+main {
+  box-sizing: border-box;
+  background: white;
+  box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+  border-radius: 4px;
+  margin: 24px auto;
+  padding-bottom: 16px;
+  width: 90%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  width: 100%;
+  margin: 16px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+
+  section {
+    margin: 0 24px;
+
+    h2 {
+      margin: 0;
+      color: var(--main-color2);
+      font-weight: 500;
+    }
+  }
+
+  .content-list-main {
+    width: 60%;
+    margin-top: 16px;
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    h4 {
+      font-size: 1.2rem;
+      font-weight: 500;
+      align-self: flex-start;
+      margin-left: 5%;
+      text-decoration: underline;
+    }
+
+    button {
+      background: var(--main-color2);
+      color: white;
+      margin-top: 48px;
+
+    }
+  }
 }

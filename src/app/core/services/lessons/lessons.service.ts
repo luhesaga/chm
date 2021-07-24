@@ -180,6 +180,7 @@ export class LessonsService {
   }
 
   CreateContentProgress(cid, lid, ctnid, stdid) {
+    // console.log(cid, lid, ctnid, stdid)
     return this.fireStore.doc(`cursos/${cid}/lecciones/${lid}/contenido/${ctnid}/progreso/${stdid}`)
       .set({
           stdid,
@@ -188,6 +189,7 @@ export class LessonsService {
   }
 
   ContentProgress(cid, lid, ctnid, stdid) {
+    // console.log(cid, lid, ctnid, stdid)
     return this.fireStore.doc(`cursos/${cid}/lecciones/${lid}/contenido/${ctnid}/progreso/${stdid}`);
   }
 

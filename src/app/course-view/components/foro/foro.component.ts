@@ -47,9 +47,11 @@ export class ForoComponent implements OnInit, DoCheck {
   }
 
   ngDoCheck(): void {
+    // Validar mismo componente diferente contenido
     const idContent = this.activatedRoute.snapshot.params.idContent;
     if (idContent !== this.idContent) {
       this.idContent = idContent;
+      this.markAsViewed();
       this.getContent();
     }
   }

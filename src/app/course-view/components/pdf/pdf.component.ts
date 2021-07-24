@@ -9,30 +9,30 @@ import { LessonsService } from 'src/app/core/services/lessons/lessons.service';
 })
 export class PdfComponent implements OnInit, DoCheck {
 
-  idCurso:string;
-  idLesson:string;
-  idContent:string;
+  idCurso: string;
+  idLesson: string;
+  idContent: string;
   stdId;
 
-  contenido:any;
+  contenido: any;
 
   constructor(
     private lessonService: LessonsService,
     private activatedRoute: ActivatedRoute,
   ) {
-    this.contenido={}
+    this.contenido = {}
     this.idCurso = this.activatedRoute.snapshot.params.idCurso;
     this.idLesson = this.activatedRoute.snapshot.params.idLesson;
-    this.idContent= this.activatedRoute.snapshot.params.idContent;
-    this.stdId= this.activatedRoute.snapshot.params.stdId;
+    this.idContent = this.activatedRoute.snapshot.params.idContent;
+    this.stdId = this.activatedRoute.snapshot.params.stdId;
   }
 
-  ngDoCheck():void
-  {
-    const idContent= this.activatedRoute.snapshot.params.idContent;
-    if(idContent !== this.idContent)
-    {
-      this.idContent= idContent;
+  ngDoCheck(): void {
+    // Validar mismo componente diferente contenido
+    const idContent = this.activatedRoute.snapshot.params.idContent;
+    if (idContent !== this.idContent) {
+      this.idContent = idContent;
+      this.markAsViewed();
       this.obtenerContenido();
     }
   }
@@ -63,13 +63,12 @@ export class PdfComponent implements OnInit, DoCheck {
       });
   }
 
-  obtenerContenido():void
-  {
-    this.lessonService.lessonContentDetail(this.idCurso,this.idLesson,this.idContent)
-    .valueChanges()
-    .subscribe(contenido => {
-      this.contenido = contenido;
-    })
+  obtenerContenido(): void {
+    this.lessonService.lessonContentDetail(this.idCurso, this.idLesson, this.idContent)
+      .valueChanges()
+      .subscribe(contenido => {
+        this.contenido = contenido;
+      })
   }
 
 }

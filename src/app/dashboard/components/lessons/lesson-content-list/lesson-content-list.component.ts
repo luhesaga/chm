@@ -90,8 +90,8 @@ export class LessonContentListComponent implements OnInit, AfterViewInit, OnDest
   }
 
   levelUp(data) {
-     console.log(data);
-     console.log(this.dataSource.data);
+    //  console.log(data);
+    //  console.log(this.dataSource.data);
     if (data.posicion > 1) {
       let actualContent: any = this.dataSource.data[data.posicion - 1];
       let previousContent: any = this.dataSource.data[data.posicion - 2];

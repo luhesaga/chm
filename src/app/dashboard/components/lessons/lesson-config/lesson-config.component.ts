@@ -59,7 +59,7 @@ export class LessonConfigComponent implements OnInit, OnDestroy {
   exerciseSelected;
 
   public objectComparisonFunction = function( option, value ) : boolean {
-    console.log(option);
+    // console.log(option);
     return option.nombre === value.nombre;
   }
 
@@ -127,6 +127,7 @@ export class LessonConfigComponent implements OnInit, OnDestroy {
         .valueChanges()
         .subscribe(c => {
           this.noContenidos = c.length;
+          // console.log(this.noContenidos)
         })
       this.fsId = this.fireStore.createId();
     }
@@ -205,7 +206,7 @@ export class LessonConfigComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(event: Event){
-    console.log(this.form.value);
+    // console.log(this.form.value);
     event.preventDefault();
     this.form.markAllAsTouched();
     if (this.form.valid) {
@@ -305,7 +306,7 @@ export class LessonConfigComponent implements OnInit, OnDestroy {
 
   createContent() {
     this.form.value.posicion = this.noContenidos + 1;
-    console.log(this.form.value.posicion);
+    // console.log(this.form.value.posicion);
     this.lessonService.addLessonContent(
       this.form.value,
       this.courseId,

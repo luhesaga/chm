@@ -1,88 +1,56 @@
 <div class="container">
-    <h2>Nombre de la lección: <span>{{ courseName }}</span></h2>
-    <mat-form-field appearance="legacy" class="search">
-        <mat-label>Buscar</mat-label>
-        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Placeholder">
-        <mat-icon matSuffix>search</mat-icon>
-        <mat-hint>puede buscar por cualquier campo</mat-hint>
-    </mat-form-field>
-    <button
-      mat-raised-button
-      (click)="createOrEditLessonContent()"
-      style="background: var(--main-color2); color: white;">
-          Crear nuevo contenido
+  <h2>Nombre de la lección: <span>{{ courseName }}</span></h2>
+  <mat-form-field appearance="legacy" class="search">
+    <mat-label>Buscar</mat-label>
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Placeholder">
+    <mat-icon matSuffix>search</mat-icon>
+    <mat-hint>puede buscar por cualquier campo</mat-hint>
+  </mat-form-field>
+  <button mat-raised-button (click)="createOrEditLessonContent()" style="background: var(--main-color2); color: white;">
+    Crear nuevo contenido
   </button>
-    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
-  
-      <!-- posición -->
-      <ng-container matColumnDef="posicion">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header id="nombre">Posición</th>
-        <td
-          mat-cell
-          *matCellDef="let element"
-          class="posicion">
-            {{ element.posicion }}
-        </td>
-      </ng-container>
-      
-      <!-- nombre de la lección -->
-      <ng-container matColumnDef="titulo">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header id="nombre">Título</th>
-        <td
-          mat-cell
-          *matCellDef="let element"
-          (click)="goToHome(element.id)"
-          matTooltip="Ver detalle del curso"
-          class="name">
-            {{ element.titulo }}
-        </td>
-      </ng-container>
-  
-      <!-- botones de acción -->
-      <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef id="acciones">Acciones</th>
-        <td mat-cell *matCellDef="let element" class="buttons">
-          <button
-            mat-stroked-button
-            color="primary"
-            matTooltip="Subir nivel"
-            (click)="levelUp(element)">
-            <mat-icon style="color: indianred;">arrow_upward</mat-icon>
-          </button>
-          <button
-            mat-stroked-button
-            color="primary"
-            matTooltip="Bajar nivel"
-            (click)="levelDown(element)">
-            <mat-icon style="color: indianred;">arrow_downward</mat-icon>
-          </button>
+  <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
 
-          <button
-            mat-stroked-button
-            color="primary"
-            matTooltip="configurar"
-            (click)="goToConfig(element.id)">
-            <mat-icon style="color: grey;">build</mat-icon>
-          </button>
-          <button mat-stroked-button color="secondary" (click)="deleteContent(element)">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </td>
-      </ng-container>
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-    </table>
-  
-      <mat-paginator
-        [pageSizeOptions]="[10, 15, 20]"
-        showFirstLastButtons
-      ></mat-paginator>
-      <button
-        mat-stroked-button
-        color="primary"
-        (click)="goBack()"
-        style="background: var(--main-color2); color: white;">
-          << Volver
-      </button>
-  </div>
-  
+    <!-- posición -->
+    <ng-container matColumnDef="posicion">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header id="nombre">Posición</th>
+      <td mat-cell *matCellDef="let element" class="posicion">
+        {{ element.posicion }}
+      </td>
+    </ng-container>
+
+    <!-- nombre de la lección -->
+    <ng-container matColumnDef="titulo">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header id="nombre">Título</th>
+      <td mat-cell *matCellDef="let element" (click)="goToHome(element.id)" matTooltip="Ver detalle del curso"
+        class="name">
+        {{ element.titulo }}
+      </td>
+    </ng-container>
+
+    <!-- botones de acción -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef id="acciones">Acciones</th>
+      <td mat-cell *matCellDef="let element" class="buttons">
+        <button mat-stroked-button color="primary" matTooltip="Subir nivel" (click)="levelUp(element)">
+          <mat-icon style="color: indianred;">arrow_upward</mat-icon>
+        </button>
+        <button mat-stroked-button color="primary" matTooltip="Bajar nivel" (click)="levelDown(element)">
+          <mat-icon style="color: indianred;">arrow_downward</mat-icon>
+        </button>
+
+        <button mat-stroked-button color="primary" matTooltip="configurar" (click)="goToConfig(element.id)">
+          <mat-icon style="color: grey;">build</mat-icon>
+        </button>
+        <button mat-stroked-button color="secondary" (click)="deleteContent(element)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[10, 15, 20]" showFirstLastButtons></mat-paginator>
+  <button mat-stroked-button color="primary" (click)="goBack()" style="background: var(--main-color2); color: white;">
+    << Volver </button> </div>

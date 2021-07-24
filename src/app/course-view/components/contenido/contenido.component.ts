@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, DoCheck, OnDestroy } from '@angular/core';
+import { Component, OnInit, DoCheck } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { LessonsService } from 'src/app/core/services/lessons/lessons.service';
 
@@ -9,34 +9,35 @@ import { LessonsService } from 'src/app/core/services/lessons/lessons.service';
 })
 export class ContenidoComponent implements OnInit, DoCheck {
 
-  idCurso:string;
-  idLesson:string;
-  idContent:string;
+  idCurso: string;
+  idLesson: string;
+  idContent: string;
   stdId;
 
-  contenido:any;
+  contenido: any;
 
   constructor(
     private lessonService: LessonsService,
     private activatedRoute: ActivatedRoute,
   ) {
-    this.contenido={}
+    this.contenido = {}
     this.idCurso = this.activatedRoute.snapshot.params.idCurso;
     this.idLesson = this.activatedRoute.snapshot.params.idLesson;
-    this.idContent= this.activatedRoute.snapshot.params.idContent;
-    this.stdId= this.activatedRoute.snapshot.params.stdId;
-    console.log(`curso: ${this.idCurso} leccion: ${this.idLesson}`)
-    console.log(`contenido: ${this.idContent} user: ${this.stdId}`)
+    this.idContent = this.activatedRoute.snapshot.params.idContent;
+    this.stdId = this.activatedRoute.snapshot.params.stdId;
+    // console.log(`curso: ${this.idCurso} leccion: ${this.idLesson}`)
+    // console.log(`contenido: ${this.idContent} user: ${this.stdId}`)
   }
 
-  ngDoCheck():void
-  {
-    const idContent= this.activatedRoute.snapshot.params.idContent;
-    if(idContent !== this.idContent)
-    {
-      this.idContent= idContent;
+  ngDoCheck(): void {
+    // Validar mismo componente diferente contenido
+    const idContent = this.activatedRoute.snapshot.params.idContent;
+    if (idContent !== this.idContent) {
+      this.idContent = idContent;
+      this.markAsViewed();
       this.obtenerContenido();
     }
+
   }
 
   ngOnInit(): void {
@@ -52,7 +53,8 @@ export class ContenidoComponent implements OnInit, DoCheck {
       this.stdId
     ).valueChanges()
       .subscribe(p => {
-        console.log(p);
+        // console.log(p);
+        // console.log(this.idLesson)
         if (!p) {
           this.lessonService.CreateContentProgress(
             this.idCurso,
@@ -66,21 +68,19 @@ export class ContenidoComponent implements OnInit, DoCheck {
       });
   }
 
-  innerHtml():void
-  {
+  innerHtml(): void {
     document.getElementById('innerHtml')
-    .innerHTML = this.contenido.contenido;
+      .innerHTML = this.contenido.contenido;
   }
 
-  obtenerContenido():void
-  {
-    this.lessonService.lessonContentDetail(this.idCurso,this.idLesson,this.idContent)
-    .valueChanges()
-    .subscribe(contenido => {
-      this.contenido = contenido;
-      // console.log(this.contenido)
-      this.innerHtml();
-    })
+  obtenerContenido(): void {
+    this.lessonService.lessonContentDetail(this.idCurso, this.idLesson, this.idContent)
+      .valueChanges()
+      .subscribe(contenido => {
+        this.contenido = contenido;
+        // console.log(this.contenido)
+        this.innerHtml();
+      })
   }
 
 }

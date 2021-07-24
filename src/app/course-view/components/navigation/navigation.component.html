@@ -4,20 +4,25 @@
       [mode]="(isHandset$ | async) ? 'over' : 'side'"
       [opened]="(isHandset$ | async) === false">
     <mat-toolbar class="headerSideBar">
-      <div class="volver" (click)="goToLecciones()"><p><mat-icon>home</mat-icon></p></div>
+      <div class="volver">
+        <p><mat-icon (click)="goToLecciones()">arrow_back</mat-icon></p>
+        <p><mat-icon (click)="goHome()">home</mat-icon></p>
+      </div>
       <div><img class="imagenCurso" [src]="course?.imagen" alt=""></div>
       <h3><span>profesor:</span>{{course?.profesor}}</h3>
     </mat-toolbar>
-    <mat-nav-list>
+    <mat-nav-list *ngIf="!home">
       <h3 class="nombreLeccion">{{lesson?.posicion}}. {{lesson?.nombre}}</h3>
       <div class="content-list-item" *ngFor="let content of lessonsContent">
         <a
+          [disabled]="isDisabled(content)"
           mat-list-item
           (click)="showContent(content)">
             {{content.titulo}}
         </a>
-        <mat-icon *ngIf="content.visto">done_outline</mat-icon>
-        <mat-icon *ngIf="!content.visto">radio_button_unchecked</mat-icon>
+        <mat-icon *ngIf="content.visto" matTooltip="Ya has visto este contenido">check_circle</mat-icon>
+        <mat-icon *ngIf="!content.visto && !isDisabled(content)" matTooltip="Ver contenido">radio_button_unchecked</mat-icon>
+        <mat-icon *ngIf="!content.visto && isDisabled(content)" style="color: #546e7a;" matTooltip="Debes ver el contenido anterior.">error</mat-icon>
       </div>
     </mat-nav-list>
     
@@ -32,11 +37,42 @@
         *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span>{{course?.nombre}}</span>
+      <span></span>
+      <span class="example-spacer"></span>
+      <button mat-button [matMenuTriggerFor]="menu">
+        {{ user? user.nombres + ' ' + user.apellidos : 'Invitado' }}
+        <mat-icon>arrow_drop_down</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="goToMyCourses()">Volver a lecciones</button>
+        <button mat-menu-item (click)="logout()">cerrar sesión</button>
+      </mat-menu>
     </mat-toolbar>
     <!-- Add Content Here -->
-    hola como estas
-    
+    <main *ngIf="home">
+      <div class="container">
+        <section>
+          <h2>Curso {{ course?.nombre }} </h2>
+          <h3 class="nombreLeccion">Lección: {{lesson?.posicion}}. {{lesson?.nombre}}</h3>
+        </section>
+        <section class="content-list-main">
+          <h4>Contenido:</h4>
+          <div class="content-list-item" *ngFor="let content of lessonsContent">
+            <a
+              [disabled]="isDisabled(content)"
+              mat-list-item
+              matTooltip="{{ isDisabled(content) ? 'Debe Completar el contenido anterior.' : 'Ver contenido'}}"
+              (click)="showContent(content)">
+                {{content.titulo}}
+            </a>
+            <mat-icon *ngIf="content.visto" matTooltip="Ya has visto este contenido">check_circle</mat-icon>
+            <mat-icon *ngIf="!content.visto && !isDisabled(content)" matTooltip="Ver contenido">radio_button_unchecked</mat-icon>
+            <mat-icon *ngIf="!content.visto && isDisabled(content)" style="color: #546e7a;" matTooltip="Debes ver el contenido anterior.">error</mat-icon>
+          </div>
+          <button mat-raised-button (click)="goToLecciones()">Volver a lista de lecciones</button>
+        </section>
+      </div>
+    </main>
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>
