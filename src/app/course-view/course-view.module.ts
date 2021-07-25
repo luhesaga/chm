@@ -13,10 +13,11 @@ import { ContenidoComponent } from './components/contenido/contenido.component';
 import { FormsModule } from '@angular/forms';
 import { MaterialModule } from '../material/material.module';
 import { EvaluationHomeComponent } from './components/evaluation/evaluation-home/evaluation-home.component';
+import { EvaluationViewComponent } from './components/evaluation/evaluation-view/evaluation-view.component';
 
 
 @NgModule({
-  declarations: [NavigationComponent, ReplyForoComponent, ForoComponent, PdfComponent, ContenidoComponent, EvaluationHomeComponent],
+  declarations: [NavigationComponent, ReplyForoComponent, ForoComponent, PdfComponent, ContenidoComponent, EvaluationHomeComponent, EvaluationViewComponent],
   imports: [
     CommonModule,
     CourseViewRoutingModule,

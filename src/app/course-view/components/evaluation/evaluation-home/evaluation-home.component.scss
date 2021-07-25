@@ -1,0 +1,106 @@
+* {
+    box-sizing: border-box;
+}
+
+main {
+    background: white;
+    box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+    border-radius: 4px;
+    margin: 36px auto;
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+section {
+    display: grid;
+    grid-template-columns: 0.6fr 1fr;
+    grid-template-rows: auto;
+    column-gap: 8px;
+    justify-items: center;
+    align-items: center;
+
+    .exercise-img {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        //margin: 16px;
+
+        img {
+            max-width: 70%;
+        }
+    }
+
+    .exercise-info {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        row-gap: 8px;
+        margin: 24px 0;
+        justify-items: center;
+
+        .info-header {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            border-bottom: 1px solid grey;
+
+            h1, h2 {
+                margin: 0;
+            }
+
+            h1 {
+                font-weight: 500;
+                font-size: 1.5rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            h2:nth-child(3) {
+                color: var(--main-color2);
+            }
+        }
+
+        .options {
+            width: 100%;
+            margin-top: 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 1px solid grey;
+
+            h3 {
+                color: black;
+                font-weight: 500;
+            }
+
+            ul {
+                list-style: none; /* Remove default bullets */
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+
+            ul li {
+                font-size: 1rem;
+                padding-bottom: 16px;
+            }
+
+            ul li::before {
+                content: "\2022";  /* Add content: \2022 is the CSS Code/unicode for a bullet */
+                color: var(--main-color2);
+                font-weight: bold;
+                display: inline-block;
+                width: 1em;
+                margin-left: -1em;
+                font-size: 1.5rem;
+            }
+        }
+    }
+}

@@ -227,13 +227,15 @@ export class NavigationComponent implements OnInit, OnDestroy {
     const antPos = actPos - 1;
     let disabled = false;
     // console.log(`pos: ${content.posicion} actPos: ${actPos} antPos: ${antPos}`)
-    if (actPos !== 0) {
-      const visto = this.lessonsContent[antPos].visto
-      if (!visto) {
-        disabled = true;
+    if (this.lessonsContent) {
+      if (actPos !== 0) {
+        const visto = this.lessonsContent[antPos]?.visto
+        if (!visto) {
+          disabled = true;
+        }
       }
     }
-    // console.log(disabled);
+
     return disabled;
   }
 

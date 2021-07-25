@@ -6,6 +6,7 @@ import { ForoComponent } from './components/foro/foro.component';
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { PdfComponent } from './components/pdf/pdf.component';
 import { ReplyForoComponent } from './components/reply-foro/reply-foro.component';
+import { EvaluationViewComponent } from './components/evaluation/evaluation-view/evaluation-view.component';
 
 
 
@@ -38,6 +39,10 @@ const routes: Routes = [
         {
           path: 'evaluacion/:idCurso/:idLesson/:idContent/:stdId',
           component: EvaluationHomeComponent
+        },
+        {
+          path: 'ver-evaluacion/:idCurso/:idLesson/:idContent/:exercId/:stdId',
+          component: EvaluationViewComponent
         }
       ]
   },

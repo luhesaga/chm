@@ -1,0 +1,28 @@
+<main>
+    <section class="question-container">
+        <div id="question"></div>
+    </section>
+    <section class="options-container">
+        <!-- Selección unica -->
+        <div class="unique-selection" *ngIf="qType === 1">
+            <mat-radio-group
+                aria-label="seleccione una opción"
+                color="primary"
+                [(ngModel)]="uniqueSelAnswer"
+                (change)="uniqueSelected($event)">
+                    <div class="answers-table" *ngFor="let item of questions[qNumber]?.answers">
+                        <p>{{item.value}}</p>
+                        <mat-radio-button value="{{item.value}}">{{item.answer}}</mat-radio-button>
+                    </div>
+            </mat-radio-group>
+        </div>
+        <!-- selección multiple -->
+    </section>
+    <section class="buttons-container">
+        <div class="buttons">
+            <button mat-raised-button (click)="previousQuestion()">Pregunta anterior</button>
+            <button mat-raised-button (click)="nextQuestion()">Pregunta siguiente</button>
+            <button mat-raised-button (click)="finishTest()">Finalizar Prueba</button>
+        </div>
+    </section>
+</main>
