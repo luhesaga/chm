@@ -34,6 +34,7 @@ import { UserProfileComponent } from './components/users/user-profile/user-profi
 import { CoursesComponent } from '../home/components/courses/courses.component';
 import { VideoConferenceListComponent } from './components/video-conference/video-conference-list/video-conference-list.component';
 import { DocumentsComponent } from './components/documents/documents.component';
+import { AdsCursoComponent } from './components/cursos/ads-curso/ads-curso.component';
 
 const routes: Routes = [
   {
@@ -92,6 +93,10 @@ const routes: Routes = [
       {
         path: 'cursos/list/:userId',
         component: CoursesComponent
+      },
+      {
+        path: 'cursos/anuncios/:idCurso',
+        component: AdsCursoComponent
       },
       {
         path: 'cursos/lecciones/create',
@@ -195,6 +200,10 @@ const routes: Routes = [
       },
       {
         path:'documents/:idCurso',
+        component:DocumentsComponent
+      },
+      {
+        path:'documents/:idCurso/:idEstudiante',
         component:DocumentsComponent
       }
     ]

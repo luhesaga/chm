@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LessonsService } from 'src/app/core/services/lessons/lessons.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -13,9 +13,11 @@ import { MatTableDataSource } from '@angular/material/table';
 })
 export class DocumentsComponent implements OnInit, AfterViewInit {
 
+  admin = true;
   cursoId:string;
   lessonsId: any[];
   cotentPDF:any[];
+  stdId:any;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -25,9 +27,15 @@ export class DocumentsComponent implements OnInit, AfterViewInit {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private lessonService: LessonsService
+    private lessonService: LessonsService,
+    private route: Router
   ) {
     this.cursoId = this.activatedRoute.snapshot.params.idCurso;
+    this.stdId = this.activatedRoute.snapshot.params.idEstudiante;
+
+    if (this.stdId) {
+      this.admin = false;
+    }
     this.obtenerIdLessons();
     this.cotentPDF = [];
    }
@@ -81,6 +89,15 @@ export class DocumentsComponent implements OnInit, AfterViewInit {
       return true;
     }
     return false;
+  }
+
+  goBack() {
+
+    if (this.admin) {
+      this.route.navigate([`cursos/index/${this.cursoId}`]);
+    } else {
+      this.route.navigate([`cursos/index/${this.cursoId}/${this.stdId}`]);
+    }
   }
 
 }
