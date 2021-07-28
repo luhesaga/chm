@@ -130,4 +130,31 @@ export class UsersService {
     return this.fireStore.doc(`usuarios/${userId}/miscursos/${courseId}`);
   }
 
+  agregarAnuncios(data, idEstudiante:string, idAnuncios): Promise<void> {
+    return this.fireStore.doc(`usuarios/${idEstudiante}/anuncios/${idAnuncios}`)
+      .set({
+        titulo:data.titulo,
+        id:data.idAnuncios,
+        visto:false
+      });
+  }
+
+  eliminarAnuncioEstudiante(idUsuario:string, idAnuncio:string)
+  {
+    return this.fireStore.doc(`usuarios/${idUsuario}/anuncios/${idAnuncio}`).delete();
+  }
+
+  editarAnuncios(data, idEstudiante:string, idAnuncios): Promise<void> {
+    return this.fireStore.doc(`usuarios/${idEstudiante}/anuncios/${idAnuncios}`)
+      .update({
+        titulo:data.titulo,
+        visto:false
+      });
+  }
+
+  obtenerAnuncioEstudiante(idUsuario:string, idAnuncio:string)
+  {
+    return this.fireStore.doc(`usuarios/${idUsuario}/anuncios/${idAnuncio}`);
+  }
+
 }

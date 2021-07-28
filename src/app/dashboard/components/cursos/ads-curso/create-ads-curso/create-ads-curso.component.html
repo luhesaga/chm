@@ -1,0 +1,55 @@
+<main>
+    <div class="title">
+        <mat-icon>volume_up</mat-icon>
+        <h2>Crear anuncio del curso</h2>
+    </div>
+
+    <div class="anuncio">
+        <div class="contentView">
+            <h3>Titulo del anuncio</h3>
+            <mat-form-field class="example-form-field" appearance="fill">
+                <input [(ngModel)]="contenido.titulo" autocomplete="off" matInput>
+            </mat-form-field>
+
+            <div class="contenido">
+                <h3>Descripción</h3>
+                <editor
+                    apiKey="fa82nlmdggdzt2rwcpx7k706ohjcnf9wo3ioar2p06d10yyk"
+                    class="mat-elevation-z1"
+                    [(ngModel)]="contenido.descripcion"
+                    [init]="{
+                        icons: 'material',
+                        skin: 'borderless',
+                        plugins: ['wordcount', 'lists', 'image imagetools', 'media'],
+                        menubar: false,
+                        min_height: 350,
+                        width : '750',
+                        toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | image | media',
+                        media_live_embeds: true
+                    }">
+                </editor>
+            </div>
+            <section class="opciones">
+                <mat-checkbox [(ngModel)]="this.opciones.miCopia">Enviarme una copia por e-mail</mat-checkbox>
+                <mat-checkbox [(ngModel)]="this.opciones.todoCurso">Enviar a todos los usuarios de este curso</mat-checkbox>
+                <mat-checkbox [(ngModel)]="this.opciones.estudiantesSeleccionados">Enviar solamente a los usuarios seleccionados</mat-checkbox>
+                <div class="contenedorMatriculados" *ngIf="this.opciones.estudiantesSeleccionados">
+                    <section class="matriculados">
+                        <mat-checkbox *ngFor="let matriculado of matriculados"
+                        (change)="seleccionarEstudiantes(matriculado,$event.checked)">{{matriculado.nombre}}</mat-checkbox>
+                    </section>
+                </div>
+            </section>
+
+            <div class="buttons">
+                <button
+                    (click)="validarContenidoAnuncio()"
+                    mat-raised-button>
+                    Crear Anuncio
+                </button>
+                <a mat-raised-button
+                (click)="volverAListaAnuncio()">Cancelar</a>
+            </div>
+        </div>
+    </div>
+</main>

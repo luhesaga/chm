@@ -101,4 +101,33 @@ export class CourseService {
   getRegisteredUSers(idCurso: string): AngularFirestoreCollection {
     return this.fireStore.collection(`cursos/${idCurso}/matriculados`);
   }
+
+  createAnuncio(data: any, courseId: string, idAnuncio: string): Promise<void> {
+    return this.fireStore.doc(`cursos/${courseId}/anuncios/${idAnuncio}`)
+      .set({
+        id: idAnuncio,
+        titulo: data.titulo,
+        descripcion: data.descripcion
+      })
+  }
+
+  obtenerAnuncios(idCurso: string): AngularFirestoreCollection {
+    return this.fireStore.collection(`cursos/${idCurso}/anuncios`);
+  }
+
+  deleteAnuncio(courseId: string, idAnuncio: string): Promise<any> {
+    return this.fireStore.doc(`cursos/${courseId}/anuncios/${idAnuncio}`).delete();
+  }
+
+  obtenerAnuncio(idCurso: string, idAnuncio: string): AngularFirestoreDocument {
+    return this.fireStore.doc(`cursos/${idCurso}/anuncios/${idAnuncio}`);
+  }
+
+  editarAnuncio(data: any, courseId: string, idAnuncio: string): Promise<void> {
+    return this.fireStore.doc(`cursos/${courseId}/anuncios/${idAnuncio}`)
+      .update({
+        titulo: data.titulo,
+        descripcion: data.descripcion
+      })
+  }
 }

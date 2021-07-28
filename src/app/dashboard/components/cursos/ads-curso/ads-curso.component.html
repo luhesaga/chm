@@ -1,1 +1,62 @@
-<p>ads-curso works!</p>
+<div class="container">
+    <h2>Gestión de Anuncios del Curso</h2>
+    <mat-form-field appearance="legacy" class="search">
+        <mat-label>Buscar</mat-label>
+        <input matInput (input)="applyFilter($event.target.value)" placeholder="Buscar anuncio"> <!--(input)="applyFilter($event.target.value)"-->
+        <mat-icon matSuffix>search</mat-icon>
+        <mat-hint>puede buscar por cualquier campo</mat-hint>
+    </mat-form-field>
+
+    <button
+    mat-raised-button
+    [routerLink]="['/cursos/anuncios/crear/'+this.idCurso]"
+    class="buttonCreateAds">
+    Crear nuevo
+    </button>
+
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+        <!-- nombre del anuncio -->
+        <ng-container matColumnDef="nombre">
+            <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            id="nombre">
+                Nombre
+            </th>
+            <td
+                mat-cell
+                *matCellDef="let element"
+                matTooltip="Anuncio"
+                class="name">
+                {{ element.titulo }}
+            </td>
+        </ng-container>
+
+        <!-- botones de acción -->
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef id="acciones">Acciones</th>
+            <td mat-cell *matCellDef="let element" class="buttons">
+                <button
+                    (click)="goToEditAnuncio(element.id)"
+                    mat-stroked-button
+                    color="primary"
+                    matTooltip="Editar anuncio"
+                    >
+                    <mat-icon style="color: darkgoldenrod;">edit</mat-icon>
+                </button>
+                <button
+                (click)="obtenerIdAnuncioEliminar(element.id)"
+                matTooltip="Borrar anuncio" mat-stroked-button color="secondary"><!--(click)="deleteUser(element)"-->
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+    <mat-paginator
+        [pageSizeOptions]="[10, 15, 20]"
+        showFirstLastButtons>
+    </mat-paginator>
+</div>

@@ -41,6 +41,8 @@ import { VideoConferenceListComponent } from './components/video-conference/vide
 import { VideoConferenceCreateComponent } from './components/video-conference/video-conference-create/video-conference-create.component';
 import { DocumentsComponent } from './components/documents/documents.component';
 import { AdsCursoComponent } from './components/cursos/ads-curso/ads-curso.component';
+import { CreateAdsCursoComponent } from './components/cursos/ads-curso/create-ads-curso/create-ads-curso.component';
+import { EditAdsCursoComponent } from './components/cursos/ads-curso/edit-ads-curso/edit-ads-curso.component';
 
 
 
@@ -80,6 +82,8 @@ import { AdsCursoComponent } from './components/cursos/ads-curso/ads-curso.compo
     VideoConferenceCreateComponent,
     DocumentsComponent,
     AdsCursoComponent,
+    CreateAdsCursoComponent,
+    EditAdsCursoComponent,
     ],
   imports: [
     CommonModule,
