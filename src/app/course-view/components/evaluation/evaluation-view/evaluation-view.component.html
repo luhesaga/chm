@@ -1,4 +1,11 @@
 <main>
+    <section class="timer-container">
+        <div class="timer">
+            <p>tiempo restante: </p>
+            <p><span>{{ minutes }}</span> minutos</p>
+            <p><span>{{ seconds }}</span> segundos</p>
+        </div>
+    </section>
     <section class="question-container">
         <div id="question"></div>
     </section>
@@ -17,6 +24,60 @@
             </mat-radio-group>
         </div>
         <!-- selección multiple -->
+        <div class="multiple-selection" *ngIf="qType === 2">
+            seleccion multiple
+        </div>
+        <!-- Rellenar blancos -->
+        <div class="multiple-selection" *ngIf="qType === 3">
+            Rellenar blancos
+        </div>
+        <!-- Relacionar -->
+        <div class="relation" *ngIf="qType === 4">
+            <div class="relation-options" *ngFor="let item of questions[qNumber].answers">
+                <div class="rel-question">
+                    <p>{{item.value + '. ' + parseAnswer(item)}}</p>
+                </div>
+                <div class="relation-sel-opt">
+                    <mat-form-field appearance="fill">
+                        <mat-label></mat-label>
+                        <mat-select (selectionChange)="relationSelected($event, item.value - 1)">
+                            <mat-option *ngFor="let q of questions[qNumber].answers" [value]="q">
+                                {{letters[q.value - 1]}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="relation-opt">
+                    <p>{{letters[item.value - 1] + '. ' + parseOption(randomAnswers[item.value - 1])}}</p>
+                </div>
+                
+            </div>
+        </div>
+        <!--  Respuesta Libre -->
+        <div class="free-answer" *ngIf="qType === 5">
+            <div class="mat-form-field-wrapper">
+                <editor
+                apiKey="fa82nlmdggdzt2rwcpx7k706ohjcnf9wo3ioar2p06d10yyk"
+                class="mat-elevation-z1"
+                [(ngModel)]="freeAnswer"
+                (onInit)="handleEditorInit($event)"
+                [init]="{
+                    icons: 'material',
+                    skin: 'borderless',
+                    plugins: ['wordcount', 'lists'],
+                    menubar: false,
+                    min_height: 200,
+                    width : '650',
+                    toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist',
+                    media_live_embeds: true
+                }"
+                ></editor>
+            </div>
+        </div>
+        <!--  Tarea -->
+        <div class="multiple-selection" *ngIf="qType === 6">
+            Tarea
+        </div>
     </section>
     <section class="buttons-container">
         <div class="buttons">

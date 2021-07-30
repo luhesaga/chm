@@ -14,10 +14,11 @@ import { FormsModule } from '@angular/forms';
 import { MaterialModule } from '../material/material.module';
 import { EvaluationHomeComponent } from './components/evaluation/evaluation-home/evaluation-home.component';
 import { EvaluationViewComponent } from './components/evaluation/evaluation-view/evaluation-view.component';
+import { EvaluationFinishComponent } from './components/evaluation/evaluation-finish/evaluation-finish.component';
 
 
 @NgModule({
-  declarations: [NavigationComponent, ReplyForoComponent, ForoComponent, PdfComponent, ContenidoComponent, EvaluationHomeComponent, EvaluationViewComponent],
+  declarations: [NavigationComponent, ReplyForoComponent, ForoComponent, PdfComponent, ContenidoComponent, EvaluationHomeComponent, EvaluationViewComponent, EvaluationFinishComponent],
   imports: [
     CommonModule,
     CourseViewRoutingModule,

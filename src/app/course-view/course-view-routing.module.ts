@@ -7,12 +7,15 @@ import { NavigationComponent } from './components/navigation/navigation.componen
 import { PdfComponent } from './components/pdf/pdf.component';
 import { ReplyForoComponent } from './components/reply-foro/reply-foro.component';
 import { EvaluationViewComponent } from './components/evaluation/evaluation-view/evaluation-view.component';
+import { EvaluationFinishComponent } from './components/evaluation/evaluation-finish/evaluation-finish.component';
+import { LoginGuard } from '../home/components/auth/login/guards/login.guard';
 
 
 
 const routes: Routes = [
   {
     path: ':CId/:LId/:SId',
+    canActivate:[LoginGuard],
     component: NavigationComponent,
     children:
       [
@@ -40,12 +43,18 @@ const routes: Routes = [
           path: 'evaluacion/:idCurso/:idLesson/:idContent/:stdId',
           component: EvaluationHomeComponent
         },
-        {
-          path: 'ver-evaluacion/:idCurso/:idLesson/:idContent/:exercId/:stdId',
-          component: EvaluationViewComponent
-        }
+
       ]
   },
+  {
+    path: 'ver-evaluacion/:idCurso/:idLesson/:idContent/:exercId/:stdId',
+    component: EvaluationViewComponent
+  },
+  {
+    path: 'final-evaluacion/:idCurso/:idLesson/:idContent/:exercId/:stdId',
+    component: EvaluationFinishComponent
+  }
+
 ];
 
 @NgModule({

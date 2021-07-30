@@ -4,25 +4,55 @@
 
 main {
     background: white;
-    box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
-    border-radius: 4px;
-    margin: 36px auto;
-    width: 90%;
+    --box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+    --border-radius: 4px;
+    margin: 0;
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-.question-container {
+.timer-container {
     width: 100%;
-    min-height: 120px;
-    padding: 32px;
+    max-height: 70px;
+    padding: 16px;
+    display: flex;
+    justify-content: center;
+
+    .timer {
+        display: flex;
+        align-items: center;
+        border: 1px solid grey;
+        border-radius: 15px;
+        padding: 16px;
+        background: #e0f2f1;
+
+        p {
+            color: black;
+            font-size: 1rem;
+            margin: 0 16px;
+        }
+
+        p span {
+            font-size: 1.2rem;
+            color: var(--main-color2);
+            font-weight: 500;
+            margin-right: 8px;
+        }
+    }
+}
+
+.question-container {
+    width: 85%;
+    min-height: 80px;
+    padding: 16px 48px;
 }
 
 .options-container {
     width: 95%;
-    min-height: 200px;
+    min-height: 250px;
     background: #eceff1;
     display: flex;
     justify-content: flex-start;
@@ -30,12 +60,14 @@ main {
     border-radius: 15px;
 
     .unique-selection {
+        width: 100%;
         display: flex;
         align-items: center;
-        justify-content: center;
+        justify-content: flex-start;
 
         .answers-table {
             display: flex;
+            align-items: center;
             margin: 16px;
 
             p {
@@ -44,6 +76,33 @@ main {
                 margin: 0 16px;
             }
         }
+    }
+
+
+
+    .relation {
+        width: 100%;
+        padding: 16px;
+
+        .relation-options {
+            display: grid;
+            grid-template-columns: 1fr 0.8fr 0.8fr;
+            align-items: center;
+            column-gap: 16px;
+
+            p {
+                padding: 8px 16px;
+            }
+
+            
+        }
+    }
+
+
+
+
+    .free-answer {
+        margin-left: 32px;
     }
 }
 

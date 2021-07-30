@@ -107,7 +107,8 @@ export class EvaluationHomeComponent implements OnInit, OnDestroy {
     const exid = this.exercises.id;
     const stdid = this.stdId;
 
-    this.router.navigate([`course-view/${cid}/${lid}/${stdid}/ver-evaluacion/${cid}/${lid}/${cntid}/${exid}/${stdid}`]);
+    this.router.navigate([`course-view/ver-evaluacion/${cid}/${lid}/${cntid}/${exid}/${stdid}`]);
+    //this.router.navigate([`course-view/ver-evaluacion/${cid}/${lid}/${cntid}/${exid}/${stdid}`]);
   }
 
 }
