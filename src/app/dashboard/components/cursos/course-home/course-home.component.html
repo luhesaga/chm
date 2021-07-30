@@ -56,12 +56,11 @@
             </div>
         </div>
 
-        <div class="card" *ngIf="(admin) || (!admin && documentsOpt)"
-        [routerLink]="['/documents/'+curso?.id]">
+        <div class="card" *ngIf="(admin) || (!admin && documentsOpt)">
             <div class="img"><img src="/assets/icons/online-learning.svg" alt=""></div>
 
             <div class="options">
-                <a>Documentos</a>
+                <a (click)="goToDocuments()">Documentos</a>
             </div>
         </div>
 
@@ -93,7 +92,7 @@
             <div class="img"><img src="/assets/icons/anuncio.svg" alt=""></div>
 
             <div class="options">
-                <a>Anuncios</a>
+                <a (click)="goToAdsCurso()">Anuncios</a>
             </div>
         </div>
 

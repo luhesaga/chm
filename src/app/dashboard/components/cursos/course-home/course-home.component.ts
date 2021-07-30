@@ -161,6 +161,14 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
     }
   }
 
+  goToDocuments() {
+    if (this.admin) {
+      this.route.navigate([`documents/${this.id}`]);
+    } else {
+      this.route.navigate([`documents/${this.id}/${this.stdId}`]);
+    }
+  }
+
   goBack() {
 
     if (this.admin) {
@@ -280,6 +288,10 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
           confirmButtonText: 'cerrar',
         });
       });
+  }
+
+  goToAdsCurso() {
+    this.route.navigate([`cursos/anuncios/${this.id}`]);
   }
 
 }
