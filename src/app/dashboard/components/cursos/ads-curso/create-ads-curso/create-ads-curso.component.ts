@@ -86,9 +86,11 @@ export class CreateAdsCursoComponent implements OnInit {
     if(this.opciones.todoCurso)
     {
       await this.obtenerUsuariosMatriculados(idAnuncio);
+      this.enviarEmailEstudiantes(this.matriculados);
     }else if(this.opciones.estudiantesSeleccionados)
     {
       await this.obtenerUsuarioSeleccionados(idAnuncio);
+      this.enviarEmailEstudiantes(this.estudiantesSeleccionados);
     }
     if(this.opciones.miCopia)
     {
@@ -141,6 +143,26 @@ export class CreateAdsCursoComponent implements OnInit {
         .then(()=> '');
       }
     }
+  }
+
+  enviarEmailEstudiantes(estudiantes:any[])
+  {
+    estudiantes.forEach(estudiante => 
+    {
+      this.userService.detailUser(estudiante.id).valueChanges()
+      .subscribe((estudianteMail:any)=> {
+        const data = {
+          to:estudianteMail.correo,
+          titulo: this.contenido.titulo,
+          contenido: this.contenido.descripcion
+        }
+        const unsubscribe =this.mailService.sendEmailAnuncioCurso(data)
+        .subscribe(() => unsubscribe.unsubscribe(),
+        e =>{
+          console.log(e);
+        });
+      });
+    });
   }
 
   mensajeAnuncioCreado()

@@ -8,6 +8,7 @@
     </mat-form-field>
 
     <button
+    *ngIf="admin"
     mat-raised-button
     [routerLink]="['/cursos/anuncios/crear/'+this.idCurso]"
     class="buttonCreateAds">
@@ -35,22 +36,25 @@
 
         <!-- botones de acción -->
         <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef id="acciones">Acciones</th>
-            <td mat-cell *matCellDef="let element" class="buttons">
-                <button
-                    (click)="goToEditAnuncio(element.id)"
-                    mat-stroked-button
-                    color="primary"
-                    matTooltip="Editar anuncio"
-                    >
-                    <mat-icon style="color: darkgoldenrod;">edit</mat-icon>
-                </button>
-                <button
-                (click)="obtenerIdAnuncioEliminar(element.id)"
-                matTooltip="Borrar anuncio" mat-stroked-button color="secondary"><!--(click)="deleteUser(element)"-->
-                    <mat-icon>delete</mat-icon>
-                </button>
-            </td>
+
+                <th  mat-header-cell *matHeaderCellDef id="acciones">Acciones</th>
+                <td mat-cell *matCellDef="let element" class="buttons">
+                    <div *ngIf="admin" >
+                        <button
+                            (click)="goToEditAnuncio(element.id)"
+                            mat-stroked-button
+                            color="primary"
+                            matTooltip="Editar anuncio"
+                            >
+                            <mat-icon style="color: darkgoldenrod;">edit</mat-icon>
+                        </button>
+                        <button
+                        (click)="obtenerIdAnuncioEliminar(element.id)"
+                        matTooltip="Borrar anuncio" mat-stroked-button color="secondary"><!--(click)="deleteUser(element)"-->
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </div>
+                </td>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
@@ -59,4 +63,8 @@
         [pageSizeOptions]="[10, 15, 20]"
         showFirstLastButtons>
     </mat-paginator>
+
+    <section class="buttonVolver">
+        <button mat-button (click)="goBack()" ><< Volver al curso</button>
+    </section>
 </div>
