@@ -38,7 +38,7 @@ export class MailService {
 
   sendEmailAnuncioCurso(data:any)
   {
-    const url = `http://localhost/chmMailer/correroAnuncioCurso.php`;
+    const url = `http://chym.esy.es/phpMailer/correroAnuncioCurso.php`;
     return this.http.post(url,JSON.stringify(data), {headers:this.headers});
   }
 

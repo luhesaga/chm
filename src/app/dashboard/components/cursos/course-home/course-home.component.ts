@@ -291,7 +291,11 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
   }
 
   goToAdsCurso() {
-    this.route.navigate([`cursos/anuncios/${this.id}`]);
+    if (this.admin) {
+      this.route.navigate([`cursos/anuncios/${this.id}`]);
+    } else {
+      this.route.navigate([`cursos/anuncios/estudiante/${this.id}/${this.stdId}`]);
+    }
   }
 
 }

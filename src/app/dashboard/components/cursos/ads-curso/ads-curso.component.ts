@@ -20,8 +20,10 @@ export class AdsCursoComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = ['nombre', 'actions'];
   dataSource = new MatTableDataSource();
 
+  admin = true;
   idCurso: string;
   matriculados:any[];
+  stdId:any;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -31,6 +33,11 @@ export class AdsCursoComponent implements OnInit, AfterViewInit {
   ) {
     this.matriculados =[];
     this.idCurso = this.activatedRoute.snapshot.params.idCurso;
+    this.stdId = this.activatedRoute.snapshot.params.stdId;
+
+    if (this.stdId) {
+      this.admin = false;
+    }
     this.obtenerIdMatriculados();
     this.listaAnunciosCurso();
   }
@@ -132,6 +139,15 @@ export class AdsCursoComponent implements OnInit, AfterViewInit {
   goToEditAnuncio(idAnuncio:string)
   {
     this.router.navigate([`/cursos/anuncios/editar/${this.idCurso}/${idAnuncio}`]);
+  }
+
+  goBack() {
+
+    if (this.admin) {
+      this.router.navigate([`cursos/index/${this.idCurso}`]);
+    } else {
+      this.router.navigate([`cursos/index/${this.idCurso}/${this.stdId}`]);
+    }
   }
 
 
