@@ -17,6 +17,8 @@ export class DocumentsComponent implements OnInit, AfterViewInit {
   cursoId:string;
   lessonsId: any[];
   cotentPDF:any[];
+  cotentVideo:any[];
+  cotentList:any[];
   stdId:any;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -38,6 +40,8 @@ export class DocumentsComponent implements OnInit, AfterViewInit {
     }
     this.obtenerIdLessons();
     this.cotentPDF = [];
+    this.cotentVideo =[];
+    this.cotentList =[];
    }
 
   ngOnInit(): void {
@@ -72,8 +76,26 @@ export class DocumentsComponent implements OnInit, AfterViewInit {
           this.cotentPDF.push(content);
         }
         });
-        this.dataSource.data = this.cotentPDF;
+        this.obtenerVideosYoutube(idLesson);
       });
+    });
+  }
+
+  obtenerVideosYoutube(idLesson:string)
+  {
+    this.lessonService.listLessonAgregarContenido(this.cursoId,idLesson)
+    .valueChanges()
+    .subscribe((videos:any[])=>{
+      videos.forEach(video => {
+        if(!this.encontrarContentVideo(video.id))
+        {
+          video.contenido = this.filtrarUrlVideo(video.contenido);
+          this.cotentVideo.push(video);
+        }
+      })
+      this.cotentList = this.cotentPDF.concat(this.cotentVideo);
+      console.log(this.cotentList);
+      this.dataSource.data = this.cotentList;
     });
   }
 
@@ -81,9 +103,24 @@ export class DocumentsComponent implements OnInit, AfterViewInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
+  filtrarUrlVideo(cadenaConUrl:string)
+  {
+    return cadenaConUrl.match(/https:\/\/+[\Wa-z0-9]+\?/i);
+  }
+
   encontrarContentPDF(idContent:string):boolean
   {
     let encontrado = this.cotentPDF.findIndex(content => content.id === idContent);
+    if(encontrado !== -1)
+    {
+      return true;
+    }
+    return false;
+  }
+
+  encontrarContentVideo(idVideo:string):boolean
+  {
+    let encontrado = this.cotentVideo.findIndex(video => video.id === idVideo);
     if(encontrado !== -1)
     {
       return true;

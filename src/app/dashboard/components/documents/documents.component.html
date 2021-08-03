@@ -22,7 +22,7 @@
                 *matCellDef="let element"
                 matTooltip="Documento"
                 class="name">
-                {{ element.nombreArchivo }}
+                {{ element.nombreArchivo ? element.nombreArchivo: element.titulo }}
             </td>
         </ng-container>
 
@@ -30,13 +30,18 @@
         <ng-container matColumnDef="enlace">
             <th mat-header-cell *matHeaderCellDef id="acciones">Descargar</th>
             <td mat-cell *matCellDef="let element" class="buttons">
-                <a href="{{element.archivo}}" target="_blank">
+                <a href="{{element.archivo ? element.archivo : element.contenido}}" target="_blank">
                     <button
                         mat-stroked-button
                         color="primary"
                         matTooltip="Descargar documento"
                         >
-                        <mat-icon style="color: rgba(0, 114, 121, 0.95);">file_download</mat-icon>
+                        <mat-icon
+                        *ngIf="element.archivo"
+                        style="color: rgba(0, 114, 121, 0.95);">file_download</mat-icon>
+                        <mat-icon
+                        *ngIf="element.contenido"
+                        style="color: rgba(0, 114, 121, 0.95);">visibility</mat-icon>
                     </button>
                 </a>
             </td>
