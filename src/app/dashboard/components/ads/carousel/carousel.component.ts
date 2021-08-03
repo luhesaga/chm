@@ -22,7 +22,19 @@ export class CarouselComponent implements OnInit {
   {
     this.adsService.listAds()
     .valueChanges()
-    .subscribe(listAds => this.listAds = listAds);
+    .subscribe(listAds => {
+      this.filtrarAnuncios(listAds);
+    });
+  }
+
+  filtrarAnuncios(listAds:any[])
+  {
+    const fechaActual = new Date();
+    fechaActual.setHours(0,0,0);
+    this.listAds = listAds.filter(ads =>{
+      const fechaCaducidad =ads.fechaCaducidad.toDate();
+      return fechaCaducidad > fechaActual;
+    });
   }
 
 }

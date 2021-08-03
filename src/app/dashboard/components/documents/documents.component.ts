@@ -91,6 +91,11 @@ export class DocumentsComponent implements OnInit, AfterViewInit {
     return false;
   }
 
+  obtenerAgregarContenido()
+  {
+    
+  }
+
   goBack() {
 
     if (this.admin) {

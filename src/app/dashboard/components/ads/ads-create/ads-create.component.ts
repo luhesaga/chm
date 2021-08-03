@@ -20,6 +20,7 @@ export class AdsCreateComponent implements OnInit {
   selectedImage: any;
   fechaYHora: Date;
   correosUsuarios:any[];
+  fechaCaducidadAEnviar: Date;
 
   constructor(
     private userService: UsersService,
@@ -46,7 +47,8 @@ export class AdsCreateComponent implements OnInit {
       name: ['', Validators.required,],
       image: ['', Validators.required],
       description: [''],
-      fechaYHora: ['']
+      fechaYHora: [''],
+      fechaCaducidad: ['', Validators.required]
     })
   }
 
@@ -89,12 +91,66 @@ export class AdsCreateComponent implements OnInit {
     return this.formAds.get('name');
   }
 
+  get fechaCaducidad() {
+    return this.formAds.get('fechaCaducidad');
+  }
+
   get decriptionField() {
     return this.formAds.get('description');
   }
 
   get fechaYHoraFild() {
     return this.formAds.get('fechaYHora');
+  }
+
+  cambiarFormatoFechaCaducidad()
+  {
+    let fechaCaducidadCadena:string=this.fechaCaducidad.value;
+    let fechaCaducidad = new Date();
+    fechaCaducidad.setMonth((Number(fechaCaducidadCadena.substring(5,7))-1));
+    fechaCaducidad.setDate(Number(fechaCaducidadCadena.substring(8,10)));
+    fechaCaducidad.setFullYear(Number(fechaCaducidadCadena.substring(0,4)));
+    fechaCaducidad.setHours(0,0,0);
+    const fechaActual = new Date();
+    if(fechaCaducidad.getFullYear()>=fechaActual.getFullYear())
+    {
+      if(fechaCaducidad.getMonth()>=fechaActual.getMonth())
+      {
+        if(fechaCaducidad.getDate()>fechaActual.getDate())
+        {
+          this.fechaCaducidadAEnviar = fechaCaducidad;
+          console.log(this.fechaCaducidadAEnviar);
+        }
+        else
+        {
+          this.mensajeValidacionFechaCaducidad();
+        }
+      }
+      else
+      {
+        this.mensajeValidacionFechaCaducidad();
+      }
+    }
+    else
+    {
+      this.mensajeValidacionFechaCaducidad();
+    }
+
+  }
+
+  mensajeValidacionFechaCaducidad()
+  {
+    Swal.fire({
+      icon: 'info',
+      title:'Fecha de caducidad',
+      text:'Debe ser mayor a la fecha de HOY',
+      confirmButtonText: 'Aceptar'
+    }).then(()=>this.resetFechaCaducidad());
+  }
+
+  resetFechaCaducidad()
+  {
+    this.fechaCaducidad.setValue('');
   }
 
   /*Imagen*/
@@ -163,6 +219,7 @@ export class AdsCreateComponent implements OnInit {
   sendDatosAdsService(datos:any)
   {
     datos.fechaYHora = this.fechaYHora;
+    datos.fechaCaducidad = this.fechaCaducidadAEnviar;
     this.adsService.createAds(datos, this.fsId, this.selectedImage.name)
     .then(() => {
       this.sendEmailAnuncio(datos.image);
