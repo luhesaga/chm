@@ -43,6 +43,7 @@ import { DocumentsComponent } from './components/documents/documents.component';
 import { AdsCursoComponent } from './components/cursos/ads-curso/ads-curso.component';
 import { CreateAdsCursoComponent } from './components/cursos/ads-curso/create-ads-curso/create-ads-curso.component';
 import { EditAdsCursoComponent } from './components/cursos/ads-curso/edit-ads-curso/edit-ads-curso.component';
+import { ModalDocumentsComponent } from './components/documents/modal-documents/modal-documents.component';
 
 
 
@@ -84,6 +85,7 @@ import { EditAdsCursoComponent } from './components/cursos/ads-curso/edit-ads-cu
     AdsCursoComponent,
     CreateAdsCursoComponent,
     EditAdsCursoComponent,
+    ModalDocumentsComponent,
     ],
   imports: [
     CommonModule,

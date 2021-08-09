@@ -4,6 +4,13 @@ import { LessonsService } from 'src/app/core/services/lessons/lessons.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import {MatDialog} from '@angular/material/dialog';
+import { ModalDocumentsComponent } from './modal-documents/modal-documents.component';
+import { CourseService } from 'src/app/core/services/courses/course.service';
+
+export interface DialogData {
+  cursoId: string;
+}
 
 
 @Component({
@@ -30,7 +37,9 @@ export class DocumentsComponent implements OnInit, AfterViewInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private lessonService: LessonsService,
-    private route: Router
+    private courseService: CourseService,
+    private route: Router,
+    public dialog: MatDialog
   ) {
     this.cursoId = this.activatedRoute.snapshot.params.idCurso;
     this.stdId = this.activatedRoute.snapshot.params.idEstudiante;
@@ -93,8 +102,16 @@ export class DocumentsComponent implements OnInit, AfterViewInit {
           this.cotentVideo.push(video);
         }
       })
-      this.cotentList = this.cotentPDF.concat(this.cotentVideo);
-      console.log(this.cotentList);
+      this.obtenerDocumentos();
+    });
+  }
+
+  obtenerDocumentos()
+  {
+    this.courseService.getDocuments(this.cursoId)
+    .valueChanges()
+    .subscribe(documentos => {
+      this.cotentList = this.cotentPDF.concat(this.cotentVideo).concat(documentos);
       this.dataSource.data = this.cotentList;
     });
   }
@@ -128,11 +145,6 @@ export class DocumentsComponent implements OnInit, AfterViewInit {
     return false;
   }
 
-  obtenerAgregarContenido()
-  {
-    
-  }
-
   goBack() {
 
     if (this.admin) {
@@ -140,6 +152,14 @@ export class DocumentsComponent implements OnInit, AfterViewInit {
     } else {
       this.route.navigate([`cursos/index/${this.cursoId}/${this.stdId}`]);
     }
+  }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(ModalDocumentsComponent, {
+      width: '40rem',
+      height:'80%',
+      data:{cursoId: this.cursoId}
+    });
   }
 
 }

@@ -6,6 +6,11 @@
         <mat-icon matSuffix>search</mat-icon>
         <mat-hint>puede buscar por cualquier campo</mat-hint>
     </mat-form-field>
+    <button
+    *ngIf="this.admin"
+    (click)="openDialog()"
+    mat-raised-button
+    style="background: var(--main-color2); color: white;">Agregar documento</button>
 
     <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
         <!-- nombre del anuncio -->

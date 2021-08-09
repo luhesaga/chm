@@ -130,4 +130,22 @@ export class CourseService {
         descripcion: data.descripcion
       })
   }
+
+  createDocuments(idCurso:string, idDocument:string, data:any): Promise<any> {
+    return this.fireStore.doc(`cursos/${idCurso}/documents/${idDocument}`)
+    .set({
+      id:idDocument,
+      nombreArchivo: data.nombreArchivo,
+      archivo: data.archivo
+    });
+  }
+
+  getDocuments(idCurso:string): AngularFirestoreCollection<any> {
+    return this.fireStore.collection(`cursos/${idCurso}/documents`);
+  }
+
+  deleteDocuments(idCurso:string, idDocument:string): Promise<any> {
+    return this.fireStore.doc(`cursos/${idCurso}/documents/${idDocument}`)
+    .delete();
+  }
 }
