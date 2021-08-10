@@ -23,7 +23,8 @@ export class AdsService {
           imagen: data.image,
           nombreImg: imgName,
           descripcion: data.description,
-          fechaYHora: data.fechaYHora
+          fechaYHora: data.fechaYHora,
+          fechaCaducidad: data.fechaCaducidad
         });
   }
 
@@ -45,7 +46,8 @@ export class AdsService {
         fechaYHora,
         nombreImg: data.imageName,
         imagen: data.image,
-        nombre: data.name
+        nombre: data.name,
+        fechaCaducidad:data.fechaCaducidad
       });
   }
 
@@ -55,7 +57,8 @@ export class AdsService {
         descripcion: data.description,
         nombreImg: data.imageName,
         imagen: data.image,
-        nombre: data.name
+        nombre: data.name,
+        fechaCaducidad:data.fechaCaducidad
       });
   }
 

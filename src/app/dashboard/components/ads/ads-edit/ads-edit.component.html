@@ -67,6 +67,24 @@
                     </ng-container>
                 </mat-error>
             </mat-form-field>
+            <mat-form-field>
+                <mat-label>Fecha de caducidad</mat-label>
+                <input
+                    type="date"
+                    matInput
+                    #myinput
+                    tabIndex=1
+                    formControlName="fechaCaducidad"
+                    (change)="cambiarFormatoFechaCaducidad()"
+                />
+                <mat-error
+                    *ngIf="fechaCaducidad.touched &&
+                    fechaCaducidad.invalid">
+                    <ng-container
+                    *ngIf="fechaCaducidad.hasError('required')">la fecha de caducidad es requerida
+                    </ng-container>
+                </mat-error>
+            </mat-form-field>
             <!-- Descripción del anuncio -->
             <mat-form-field appearance="fill">
                 <mat-label>Descripción</mat-label>

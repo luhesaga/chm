@@ -19,6 +19,7 @@ export class AdsEditComponent implements OnInit {
   fechaYHora: Date;
   id: string;
   updateTime: boolean;
+  fechaCaducidadAEnviar: Date;
 
   constructor(
     private fireStorage: AngularFireStorage,
@@ -46,6 +47,7 @@ export class AdsEditComponent implements OnInit {
       image: ['', Validators.required],
       imageName:[''],
       description: [''],
+      fechaCaducidad: ['', Validators.required],
       fechaYHora: ['']
     })
   }
@@ -63,8 +65,36 @@ export class AdsEditComponent implements OnInit {
     this.decriptionField.setValue(ads.descripcion);
     this.imageField.setValue(ads.imagen);
     this.imageNameField.setValue(ads.nombreImg);
+    this.cambiarFormatoFechaCaducidadString(ads.fechaCaducidad.toDate());
     this.showUploadedImage(ads.imagen);
     this.uploadedImageLocation(ads);
+  }
+
+  cambiarFormatoFechaCaducidadString(fecha:Date)
+  {
+    this.fechaCaducidadAEnviar = fecha;
+    const dia = this.formatoDiasMes(fecha.getDate(), 'dia');
+    const mes = this.formatoDiasMes(fecha.getMonth(), 'mes');
+    const ano = fecha.getFullYear();
+    this.fechaCaducidad.setValue(`${ano}-${mes}-${dia}`);
+  }
+
+  formatoDiasMes(numero:number, tipo:string):string
+  {
+    let numeroString:string;
+    if(tipo=== 'mes')
+    {
+      ++numero;
+    }
+    if(numero<10)
+    {
+      numeroString = '0'+numero;
+    }
+    else
+    {
+      numeroString = ''+numero;
+    }
+    return numeroString;
   }
 
   showUploadedImage(imageUrl:string)
@@ -135,6 +165,10 @@ export class AdsEditComponent implements OnInit {
       return this.formAds.get('imageName')
     }
 
+    get fechaCaducidad() {
+      return this.formAds.get('fechaCaducidad');
+    }
+
     /*Editar ads*/
     editAds(data:any):void
     {
@@ -200,6 +234,7 @@ export class AdsEditComponent implements OnInit {
 
     upDateWithTime(data:any):void
     {
+      data.fechaCaducidad = this.fechaCaducidadAEnviar;
       this.adsService.editAds(data,this.id,this.fechaYHora)
       .then(() => {
         Swal.fire({
@@ -221,6 +256,7 @@ export class AdsEditComponent implements OnInit {
 
     upDateWithOutTime(data:any):void
     {
+      data.fechaCaducidad = this.fechaCaducidadAEnviar;
       this.adsService.editAdsWithOutTime(data,this.id)
       .then(() => {
         Swal.fire({
@@ -243,6 +279,17 @@ export class AdsEditComponent implements OnInit {
     timeUpdate($event: MatSlideToggleChange):void
     {
       this.updateTime = $event.checked;
+    }
+
+    cambiarFormatoFechaCaducidad()
+    {
+      let fechaCaducidadCadena:string=this.fechaCaducidad.value;
+      let fechaCaducidad = new Date();
+      fechaCaducidad.setMonth((Number(fechaCaducidadCadena.substring(5,7))-1));
+      fechaCaducidad.setDate(Number(fechaCaducidadCadena.substring(8,10)));
+      fechaCaducidad.setFullYear(Number(fechaCaducidadCadena.substring(0,4)));
+      fechaCaducidad.setHours(0,0,0);
+      this.fechaCaducidadAEnviar = fechaCaducidad;
     }
 
 }

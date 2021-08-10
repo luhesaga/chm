@@ -6,6 +6,11 @@
         <mat-icon matSuffix>search</mat-icon>
         <mat-hint>puede buscar por cualquier campo</mat-hint>
     </mat-form-field>
+    <button
+    *ngIf="this.admin"
+    (click)="openDialog()"
+    mat-raised-button
+    style="background: var(--main-color2); color: white;">Agregar documento</button>
 
     <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
         <!-- nombre del anuncio -->
@@ -22,7 +27,7 @@
                 *matCellDef="let element"
                 matTooltip="Documento"
                 class="name">
-                {{ element.nombreArchivo }}
+                {{ element.nombreArchivo ? element.nombreArchivo: element.titulo }}
             </td>
         </ng-container>
 
@@ -30,13 +35,18 @@
         <ng-container matColumnDef="enlace">
             <th mat-header-cell *matHeaderCellDef id="acciones">Descargar</th>
             <td mat-cell *matCellDef="let element" class="buttons">
-                <a href="{{element.archivo}}" target="_blank">
+                <a href="{{element.archivo ? element.archivo : element.contenido}}" target="_blank">
                     <button
                         mat-stroked-button
                         color="primary"
                         matTooltip="Descargar documento"
                         >
-                        <mat-icon style="color: rgba(0, 114, 121, 0.95);">file_download</mat-icon>
+                        <mat-icon
+                        *ngIf="element.archivo"
+                        style="color: rgba(0, 114, 121, 0.95);">file_download</mat-icon>
+                        <mat-icon
+                        *ngIf="element.contenido"
+                        style="color: rgba(0, 114, 121, 0.95);">visibility</mat-icon>
                     </button>
                 </a>
             </td>
