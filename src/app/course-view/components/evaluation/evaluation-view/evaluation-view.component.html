@@ -6,10 +6,27 @@
             <p><span>{{ seconds }}</span> segundos</p>
         </div>
     </section>
-    <section class="question-container">
-        <div id="question"></div>
+    <section class="exam-end" *ngIf="testEnd">
+        <h3>Puedes revisar tus respuestas, cuando estes listo da clic en Finalizar</h3>
+        <div class="answersList">
+            <div class="listItem" *ngFor="let item of totalAnswers; let i = index">
+                <p>{{ 'pregunta '+ (i + 1) + '. ' }}</p>
+                <p>{{ item.visto ? 'Respondida' : 'No respondida' }}</p>
+                <mat-icon *ngIf="item.visto" style="color: green;">check_circle</mat-icon>
+                <mat-icon *ngIf="!item.visto" style="color: tomato;">error</mat-icon>
+                <button (click)="goToQuestion(i)">ver</button>
+            </div>
+        </div>
+        
     </section>
-    <section class="options-container">
+    <section class="question-container" *ngIf="!testEnd">
+        <p>{{ 'Pregunta: ' + (qNumber + 1)}}</p>
+        <div id="question"><p *ngIf="qNumber">{{
+            qType !== 3 ? parseHTML(questions[qNumber]?.question)
+            : qFormatter(questions[qNumber]?.question)
+            }}</p></div>
+    </section>
+    <section class="options-container" *ngIf="!testEnd">
         <!-- Selección unica -->
         <div class="unique-selection" *ngIf="qType === 1">
             <mat-radio-group
@@ -18,18 +35,33 @@
                 [(ngModel)]="uniqueSelAnswer"
                 (change)="uniqueSelected($event)">
                     <div class="answers-table" *ngFor="let item of questions[qNumber]?.answers">
-                        <p>{{item.value}}</p>
+                        <p>{{letters[item.value - 1] + '. '}}</p>
                         <mat-radio-button value="{{item.value}}">{{item.answer}}</mat-radio-button>
                     </div>
             </mat-radio-group>
         </div>
         <!-- selección multiple -->
         <div class="multiple-selection" *ngIf="qType === 2">
-            seleccion multiple
+            <div class="multiple-selection">
+                <div class="multiple-opt" *ngFor="let item of questions[qNumber]?.answers">
+                    <mat-checkbox
+                        [(ngModel)]="multipleOpt[item.value - 1]"
+                        color="primary">
+                    </mat-checkbox>
+                    <p>{{letters[item.value - 1] + '. '}}</p>
+                    <p>{{ item.answer }}</p>
+                </div>
+            </div>
         </div>
         <!-- Rellenar blancos -->
-        <div class="multiple-selection" *ngIf="qType === 3">
-            Rellenar blancos
+        <div class="whites-fill" *ngIf="qType === 3">
+            <p>Escribe tus respuestas sin tildes ni caracteres de puntuación.</p>
+            <div class="white-answers" *ngFor="let o of inputsWhite">
+                <mat-form-field class="example-full-width" appearance="fill">
+                    <mat-label>{{ o.index + '. ' }}</mat-label>
+                    <input [(ngModel)]="inputsWhite[o.index - 1].answer" matInput placeholder="tu respuesta">
+                </mat-form-field>
+            </div>
         </div>
         <!-- Relacionar -->
         <div class="relation" *ngIf="qType === 4">
@@ -40,7 +72,7 @@
                 <div class="relation-sel-opt">
                     <mat-form-field appearance="fill">
                         <mat-label></mat-label>
-                        <mat-select (selectionChange)="relationSelected($event, item.value - 1)">
+                        <mat-select [(ngModel)]="relOpt[item.value -1]" (selectionChange)="relationSelected($event, item.value - 1)">
                             <mat-option *ngFor="let q of questions[qNumber].answers" [value]="q">
                                 {{letters[q.value - 1]}}
                             </mat-option>
@@ -48,9 +80,8 @@
                     </mat-form-field>
                 </div>
                 <div class="relation-opt">
-                    <p>{{letters[item.value - 1] + '. ' + parseOption(randomAnswers[item.value - 1])}}</p>
+                    <p>{{ letters[item.value - 1] + '. ' + parseOption(questions[qNumber].randomAnswers[item.value -1]) }}</p>
                 </div>
-                
             </div>
         </div>
         <!--  Respuesta Libre -->
@@ -81,8 +112,20 @@
     </section>
     <section class="buttons-container">
         <div class="buttons">
-            <button mat-raised-button (click)="previousQuestion()">Pregunta anterior</button>
-            <button mat-raised-button (click)="nextQuestion()">Pregunta siguiente</button>
+            <button
+                color="primary"
+                mat-raised-button
+                (click)="previousQuestion()"
+                [disabled]="qNumber === 0">
+                    Pregunta anterior
+            </button>
+            <button
+                color="primary"
+                mat-raised-button
+                (click)="nextQuestion()"
+                [disabled]="testEnd">
+                    Pregunta siguiente
+            </button>
             <button mat-raised-button (click)="finishTest()">Finalizar Prueba</button>
         </div>
     </section>

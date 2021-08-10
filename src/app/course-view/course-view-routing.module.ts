@@ -43,6 +43,14 @@ const routes: Routes = [
           path: 'evaluacion/:idCurso/:idLesson/:idContent/:stdId',
           component: EvaluationHomeComponent
         },
+        {
+          path: 'final-evaluacion/:idCurso/:idLesson/:idContent/:exercId/:stdId/:testId',
+          component: EvaluationFinishComponent
+        },
+        {
+          path: 'final-evaluacion/:idCurso/:idLesson/:idContent/:exercId/:stdId/:testId/:consulta',
+          component: EvaluationFinishComponent
+        }
 
       ]
   },
@@ -50,10 +58,6 @@ const routes: Routes = [
     path: 'ver-evaluacion/:idCurso/:idLesson/:idContent/:exercId/:stdId',
     component: EvaluationViewComponent
   },
-  {
-    path: 'final-evaluacion/:idCurso/:idLesson/:idContent/:exercId/:stdId',
-    component: EvaluationFinishComponent
-  }
 
 ];
 

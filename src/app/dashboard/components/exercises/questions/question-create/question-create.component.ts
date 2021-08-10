@@ -406,6 +406,7 @@ export class QuestionCreateComponent implements OnInit, OnDestroy {
           tarea: this.tarea ? this.tarea : '',
         }
       );
+      console.log(this.questionToSave);
 
       this.exercService.addQuestion(this.courseId, this.exerciseId, this.questionToSave)
       .then(() => {

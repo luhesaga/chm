@@ -24,7 +24,7 @@ export class ExercisesCreateComponent implements OnInit {
   feedback = '1';
   mostrarResultado = '2';
   seleccion = '1';
-  barajar = '2';
+  // barajar = '2';
   intentos = 1;
   duracion = 30;
   porcentaje = 60;
@@ -53,9 +53,9 @@ export class ExercisesCreateComponent implements OnInit {
       this.seleccion = this.data.content.seleccion ?
                         this.data.content.seleccion.toString() :
                         this.seleccion;
-      this.barajar = this.data.content.barajar ?
-                      this.data.content.barajar.toString() :
-                      this.barajar;
+      // this.barajar = this.data.content.barajar ?
+      //                 this.data.content.barajar.toString() :
+      //                 this.barajar;
       this.intentos = this.data.content.intentos ?
                       this.data.content.intentos :
                       this.intentos;
@@ -84,7 +84,7 @@ export class ExercisesCreateComponent implements OnInit {
       feedback: ['', Validators.required],
       showResults: ['', Validators.required],
       questionSelect: ['', Validators.required],
-      mixAnswers: ['', Validators.required],
+      // mixAnswers: ['', Validators.required],
       maxTries: ['', Validators.required],
       duration: ['', Validators.required],
       percentage: ['', Validators.required],
@@ -108,9 +108,9 @@ export class ExercisesCreateComponent implements OnInit {
     return this.form.get('questionSelect');
   }
 
-  get mixAnswers() {
-    return this.form.get('mixAnswers');
-  }
+  // get mixAnswers() {
+  //   return this.form.get('mixAnswers');
+  // }
 
   get maxTries() {
     return this.form.get('maxTries');

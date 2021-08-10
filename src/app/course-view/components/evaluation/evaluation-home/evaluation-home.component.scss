@@ -102,5 +102,19 @@ section {
                 font-size: 1.5rem;
             }
         }
+
+        .previous-test-info {
+            margin: 16px;
+
+            .previous-test-results{
+                display: flex;
+
+                p {
+                    border: 1px solid grey;
+                    padding: 8px 16px;
+                    margin: 0;
+                }
+            }
+        }
     }
 }

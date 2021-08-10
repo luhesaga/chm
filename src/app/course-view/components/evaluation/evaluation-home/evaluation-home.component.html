@@ -18,6 +18,15 @@
                     <li>Necesitas {{ getAnswersToPass() }} respuestas correctas para aprobar.</li>
                 </ul>
             </div>
+            <div class="previous-test-info" *ngIf="previousTest?.length >= 1">
+                <p>has realizado {{ previousTest?.length}} intentos de {{ exercises?.intentos }} posibles. </p>
+                <div class="previous-test-results" *ngFor="let item of previousTestAnswers; let i = index">
+                    <p>intento {{ (i + 1) + ': ' }}</p>
+                    <p>{{ item.correctas }} respuestas correctas</p>
+                    <p>{{ item.nota }}%</p>
+                    <p><a (click)="goToTestResult(item.id)">ver</a></p>
+                </div>
+            </div>
             <div class="btn">
                 <button mat-raised-button color="primary" (click)="startExam()">Empezar prueba</button>
             </div>
