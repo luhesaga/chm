@@ -14,6 +14,7 @@ export class ReplyForoComponent implements OnInit {
   idLesson:string;
   idContent:string;
   idReplyForo:string;
+  usuario: string;
 
   tipo:string;
   answer: string;
@@ -119,8 +120,8 @@ export class ReplyForoComponent implements OnInit {
           idUsuario:usuario.id,
         }
         this.lessonService.pushComentario(data,this.idCurso,this.idLesson,this.idContent, this.idReplyForo);
-        subUsuario.unsubscribe();
         this.goToForo();
+        subUsuario.unsubscribe();
       })
   }
 

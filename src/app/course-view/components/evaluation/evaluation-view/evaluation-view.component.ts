@@ -126,6 +126,7 @@ export class EvaluationViewComponent implements OnInit, OnDestroy {
               if (ex.seleccion === 2) {
                 this.questions = this.sortArray(questionsReceived);
               } else { this.questions = questionsReceived; }
+              // console.log(this.questions);
               this.sortRelationQuestions();
               this.setTotalAnswers();
               // this.totalAnswers.length = this.questions.length;
@@ -509,6 +510,17 @@ export class EvaluationViewComponent implements OnInit, OnDestroy {
     let option = document.createElement('div');
     option.innerHTML = answer.answer;
     return option.textContent;
+  }
+
+  injectAnswerHtml(answer) {
+    const item = document.getElementById(`answer${answer.value}`);
+    item.innerHTML = answer.answer;
+  }
+
+  injectRelationHtml(answer, n) {
+    //console.log(answer);
+    const item = document.getElementById(`relation${n}`);
+    item.innerHTML = answer.answer;
   }
 
   parseOption(answer) {

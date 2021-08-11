@@ -36,7 +36,11 @@
                 (change)="uniqueSelected($event)">
                     <div class="answers-table" *ngFor="let item of questions[qNumber]?.answers">
                         <p>{{letters[item.value - 1] + '. '}}</p>
-                        <mat-radio-button value="{{item.value}}">{{item.answer}}</mat-radio-button>
+                        <mat-radio-button value="{{item.value}}">
+                            <p id="{{'answer' + item.value}}">
+                                {{ injectAnswerHtml(item) }}
+                            </p>
+                        </mat-radio-button>
                     </div>
             </mat-radio-group>
         </div>
@@ -49,7 +53,7 @@
                         color="primary">
                     </mat-checkbox>
                     <p>{{letters[item.value - 1] + '. '}}</p>
-                    <p>{{ item.answer }}</p>
+                    <p  id="{{'answer' + item.value}}">{{ injectAnswerHtml(item) }}</p>
                 </div>
             </div>
         </div>
@@ -67,7 +71,8 @@
         <div class="relation" *ngIf="qType === 4">
             <div class="relation-options" *ngFor="let item of questions[qNumber].answers">
                 <div class="rel-question">
-                    <p>{{item.value + '. ' + parseAnswer(item)}}</p>
+                    <p>{{item.value + '. '}}</p>
+                    <p  id="{{'answer' + item.value}}">{{ injectAnswerHtml(item) }}</p>
                 </div>
                 <div class="relation-sel-opt">
                     <mat-form-field appearance="fill">
@@ -80,7 +85,10 @@
                     </mat-form-field>
                 </div>
                 <div class="relation-opt">
-                    <p>{{ letters[item.value - 1] + '. ' + parseOption(questions[qNumber].randomAnswers[item.value -1]) }}</p>
+                    <p>{{ letters[item.value - 1] + '. ' }}</p>
+                    <p id="{{'relation' + item.value}}">
+                        {{ injectRelationHtml(questions[qNumber].randomAnswers[item.value -1], item.value) }}
+                    </p>
                 </div>
             </div>
         </div>

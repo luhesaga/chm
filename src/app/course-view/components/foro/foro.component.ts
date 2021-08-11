@@ -155,18 +155,18 @@ export class ForoComponent implements OnInit, DoCheck {
   }
 
   goToReplyForo(): void {
-    this.router.navigateByUrl(`course-view/${this.idCurso}/${this.idLesson}/reply-foro/${this.idCurso}/${this.idLesson}/${this.idContent}/responder`);
+    this.router.navigateByUrl(`course-view/${this.idCurso}/${this.idLesson}/${this.stdId}/reply-foro/${this.idCurso}/${this.idLesson}/${this.idContent}/${this.stdId}/responder`);
   }
 
   goToCitarForo(): void {
-    this.router.navigateByUrl(`course-view/${this.idCurso}/${this.idLesson}/reply-foro/${this.idCurso}/${this.idLesson}/${this.idContent}/citar`);
+    this.router.navigateByUrl(`course-view/${this.idCurso}/${this.idLesson}/${this.stdId}/reply-foro/${this.idCurso}/${this.idLesson}/${this.idContent}/${this.stdId}/citar`);
   }
 
   goToReplyUsario(idForo): void {
-    this.router.navigateByUrl(`course-view/${this.idCurso}/${this.idLesson}/reply-foro/${this.idCurso}/${this.idLesson}/${this.idContent}/responder/${idForo}`);
+    this.router.navigateByUrl(`course-view/${this.idCurso}/${this.idLesson}/${this.stdId}/reply-foro/${this.idCurso}/${this.idLesson}/${this.idContent}/${this.stdId}/responder/${idForo}`);
   }
 
   goToEditarReply(idForo): void {
-    this.router.navigateByUrl(`course-view/${this.idCurso}/${this.idLesson}/reply-foro/${this.idCurso}/${this.idLesson}/${this.idContent}/editar/${idForo}`);
+    this.router.navigateByUrl(`course-view/${this.idCurso}/${this.idLesson}/${this.stdId}/reply-foro/${this.idCurso}/${this.idLesson}/${this.idContent}/${this.stdId}/editar/${idForo}`);
   }
 }
