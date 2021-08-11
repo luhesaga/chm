@@ -1,11 +1,30 @@
 <div class="main-container">
     <div class="recover-container">
         <div class="recover" id="recover">
-            <form action="">
+            <form
+            [formGroup]="recoverForm"
+            (ngSubmit)="resetPassword(recoverForm.value)">
                 <h2>¿Olvido su contraseña?</h2>
                 <p>Le enviaremos un correo con instrucciones para cambiarla.</p>
-                <input type="email" placeholder="Su email">
-                <button type="submit">Recuperar</button>
+                <input
+                formControlName="email"
+                type="email" placeholder="Su email">
+                <div class="validation-error">
+                    <ng-container *ngFor="let validation of validationMessages.email">
+                      <div *ngIf="
+                                recoverForm.get('email').hasError(validation.type) &&
+                                (recoverForm.get('email').dirty ||
+                                recoverForm.get('email').touched)
+                                ">
+                                <div class="mensajeError">
+                                <label>{{validation.message}}</label>
+                                </div>
+                        </div>
+                    </ng-container>
+                </div>
+                <button
+                [disabled]="!recoverForm.valid"
+                type="submit">Recuperar</button>
             </form>
         </div>
     </div>

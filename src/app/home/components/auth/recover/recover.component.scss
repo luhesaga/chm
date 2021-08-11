@@ -80,6 +80,11 @@ app-footer {
     width: 100%;
 }
 
+.mensajeError
+{
+    color:red;
+}
+
 @media (max-width: 480px) {
     .recover-container .recover {
         padding: 5px;
