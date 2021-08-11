@@ -14,7 +14,7 @@ export class ReplyForoComponent implements OnInit {
   idLesson:string;
   idContent:string;
   idReplyForo:string;
-  usuario: string;
+  stdId: string;
 
   tipo:string;
   answer: string;
@@ -33,6 +33,7 @@ export class ReplyForoComponent implements OnInit {
     this.idLesson = this.activatedRoute.snapshot.params.idLesson;
     this.idContent= this.activatedRoute.snapshot.params.idContent;
     this.idReplyForo = this.activatedRoute.snapshot.params.idReplayForo;
+    this.stdId = this.activatedRoute.snapshot.params.stdId;
    }
 
   ngOnInit(): void {
@@ -109,7 +110,7 @@ export class ReplyForoComponent implements OnInit {
   enviarComentario()
   {
     let usuario:any;
-    const subUsuario = this.auth.user$.subscribe(u => 
+    const subUsuario = this.auth.user$.subscribe(u =>
       {
         usuario=u;
         const data= {
@@ -135,7 +136,7 @@ export class ReplyForoComponent implements OnInit {
 
   goToForo()
   {
-    this.router.navigateByUrl(`course-view/${this.idCurso}/${this.idLesson}/foro/${this.idCurso}/${this.idLesson}/${this.idContent}`)
+    this.router.navigateByUrl(`course-view/${this.idCurso}/${this.idLesson}/${this.stdId}/foro/${this.idCurso}/${this.idLesson}/${this.idContent}/${this.stdId}`)
   }
 
   goToLogin()

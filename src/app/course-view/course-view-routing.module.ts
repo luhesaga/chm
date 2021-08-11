@@ -20,11 +20,11 @@ const routes: Routes = [
     children:
       [
         {
-          path: 'reply-foro/:idCurso/:idLesson/:idContent/:tipo/:idReplayForo',
+          path: 'reply-foro/:idCurso/:idLesson/:idContent/:stdId/:tipo',
           component: ReplyForoComponent
         },
         {
-          path: 'reply-foro/:idCurso/:idLesson/:idContent/:tipo',
+          path: 'reply-foro/:idCurso/:idLesson/:idContent/:stdId/:tipo/:idReplayForo',
           component: ReplyForoComponent
         },
         {
