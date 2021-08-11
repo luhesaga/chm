@@ -49,4 +49,8 @@ export class AuthService {
     return this.af.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then(r => console.log(r));
   }
 
+  resetPassword(email: string){
+    return this.af.sendPasswordResetEmail(email);
+  }
+
 }

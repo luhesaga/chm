@@ -75,7 +75,19 @@
                                     <p>{{item.value}}</p>
                                     <mat-radio-button value="{{item.value}}" [checked]="item.respuesta"></mat-radio-button>
                                     <div>
-                                        <textarea [(ngModel)]="item.answer"></textarea>
+                                        <editor
+                                        apiKey="fa82nlmdggdzt2rwcpx7k706ohjcnf9wo3ioar2p06d10yyk"
+                                        class="mat-elevation-z1"
+                                        (onInit)="handleEditorInit($event)"
+                                        [init]="{
+                                            icons: 'material',
+                                            skin: 'borderless',
+                                            plugins: ['wordcount', 'lists', 'image imagetools'],
+                                            menubar: false,
+                                            toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | image | media',
+                                            media_live_embeds: true
+                                        }"
+                                        [(ngModel)]="item.answer"></editor>
                                     </div>
                                     <div>
                                         <textarea [(ngModel)]="item.comment"></textarea>
@@ -93,7 +105,19 @@
                                     color="primary">
                                 </mat-checkbox>
                                 <div>
-                                    <textarea [(ngModel)]="item.answer"></textarea>
+                                    <editor
+                                    apiKey="fa82nlmdggdzt2rwcpx7k706ohjcnf9wo3ioar2p06d10yyk"
+                                    class="mat-elevation-z1"
+                                    (onInit)="handleEditorInit($event)"
+                                    [init]="{
+                                        icons: 'material',
+                                        skin: 'borderless',
+                                        plugins: ['wordcount', 'lists', 'image imagetools'],
+                                        menubar: false,
+                                        toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | image | media',
+                                        media_live_embeds: true
+                                    }"
+                                    [(ngModel)]="item.answer"></editor>
                                 </div>
                                 <div>
                                     <textarea [(ngModel)]="item.comment"></textarea>
