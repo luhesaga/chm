@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UsersService } from '../../../../core/services/users/users.service';
 import countries from './cities';
 import Swal from 'sweetalert2';
+import { AuthService } from 'src/app/core/services/auth/auth.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -13,6 +14,7 @@ import Swal from 'sweetalert2';
 export class UserProfileComponent implements OnInit, OnDestroy {
 
   form: FormGroup;
+  formPassword: FormGroup;
 
   idUser;
   userReceived;
@@ -37,9 +39,11 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private formBuilder: FormBuilder,
     private route: Router,
+    private auth: AuthService
   ) {
     this.idUser = this.activatedRoute.snapshot.params.idUser;
     this.buildForm();
+    this.buildFormPassword();
   }
 
   ngOnInit(): void {
@@ -63,6 +67,23 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       codigoPais: [''],
       telefono: ['']
     })
+  }
+
+  buildFormPassword(): void {
+    this.formPassword = this.formBuilder.group({
+      oldPassword: ['', Validators.required,],
+      newPassword: ['', [Validators.required, Validators.minLength(6)], ]
+    })
+  }
+
+  get oldPasswordField()
+  {
+    return this.formPassword.get('oldPassword');
+  }
+
+  get newPasswordField()
+  {
+    return this.formPassword.get('newPassword');
   }
 
   get nombresField() {
@@ -152,5 +173,55 @@ export class UserProfileComponent implements OnInit, OnDestroy {
             });
 		});
   }
+
+  validPassword()
+  {
+    if(this.formPassword.valid)
+    {
+      const oldPassword= this.formPassword.get('oldPassword').value;
+      this.auth.passwordValid(oldPassword).then(()=>{
+        this.updatePassword();
+      },
+      ()=>{this.mensajeError('Contraseña actual es incorrecta')});
+    }
+    else
+    {
+      this.mensajeError('Los campos para cambiar la contraseña son incorrectos');
+    }
+  }
+
+  mensajeError(mensaje:string)
+  {
+    Swal.fire({
+      icon: 'error',
+      title: mensaje,
+      confirmButtonText:'Cerrar'
+    });
+  }
+
+  updatePassword()
+  {
+    const newPassword = this.formPassword.get('newPassword').value;
+    this.auth.passwordChange(newPassword).then(()=>{
+      this.mensajeExito('Contraseña cambiada exitosamente');
+    },()=>{
+      this.mensajeError('No se pudo cambiar la contraseña por problemas de conexión');
+    });
+  }
+
+  mensajeExito(mensaje:string)
+  {
+    Swal.fire({
+      icon: 'success',
+      title: mensaje,
+      confirmButtonText:'Aceptar'
+    }).then(()=> this.resetFormPassword());
+  }
+
+  resetFormPassword()
+  {
+    this.formPassword.reset();
+  }
+
 
 }

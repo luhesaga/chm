@@ -122,7 +122,7 @@ export class DocumentsComponent implements OnInit, AfterViewInit {
 
   filtrarUrlVideo(cadenaConUrl:string)
   {
-    return cadenaConUrl.match(/https:\/\/+[\Wa-z0-9]+\?/i);
+    return cadenaConUrl.match(/https:\/\/[\W\w]*\?/i);
   }
 
   encontrarContentPDF(idContent:string):boolean

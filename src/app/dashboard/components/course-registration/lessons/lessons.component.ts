@@ -28,6 +28,8 @@ export class LessonsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   userLessons;
 
+  certificado:boolean;
+
   constructor(
     private lessonService: LessonsService,
     private activatedRoute: ActivatedRoute,
@@ -35,7 +37,7 @@ export class LessonsComponent implements OnInit, AfterViewInit, OnDestroy {
   ) {
     this.courseId = this.activatedRoute.snapshot.params.courseId;
     this.stdId = this.activatedRoute.snapshot.params.stdId;
-
+    this.certificado = false;
   }
 
   ngAfterViewInit(): void {
@@ -104,6 +106,41 @@ export class LessonsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   goToCourseView(element: any): void {
     this.router.navigateByUrl(`dashboard/course-view/${this.courseId}/${element.id}/${this.stdId}`);
+  }
+
+  lessonActivated(element:any):boolean
+  {
+    let index = this.dataSource.data.findIndex((lession:any)=> lession.id===element.id);
+    if( index === 0 )
+    {
+      return true;
+    }
+    else
+    {
+      let lession: any = this.dataSource.data[index-1];
+      if(lession.porcentaje===100)
+      {
+        return true;
+      }
+      else
+      {
+        return false;
+      }
+    }
+  }
+
+  generarCertificado()
+  {
+    const lastIndex = this.dataSource.data.length - 1;
+    const lession:any = this.dataSource.data[lastIndex];
+    if (lession.porcentaje === 100)
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
   }
 
 }

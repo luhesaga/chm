@@ -61,6 +61,8 @@ export class LessonsService {
           archivo: data.archivo,
           nombreArchivo: filename,
           foro: data.foro,
+          foroCalificable:data.foroCalificable,
+          foroTipoCalificacion: data.foroTipoCalificacion,
           posicion: data.posicion,
           ejercicio: data.ejercicio,
         });
@@ -77,6 +79,8 @@ export class LessonsService {
         archivo: data.archivo,
         nombreArchivo: filename,
         foro: data.foro,
+        foroCalificable:data.foroCalificable,
+        foroTipoCalificacion: data.foroTipoCalificacion,
         ejercicio: data.ejercicio,
       });
   }

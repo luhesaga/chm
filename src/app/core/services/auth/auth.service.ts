@@ -53,4 +53,20 @@ export class AuthService {
     return this.af.sendPasswordResetEmail(email);
   }
 
+  async passwordValid(oldPass) {
+    const user = firebase.auth().currentUser;
+    const credential = firebase.auth.EmailAuthProvider.credential(
+      user.email,
+      oldPass
+    );
+    await user.reauthenticateWithCredential(credential);
+    /**/
+  }
+
+  passwordChange(newPassword)
+  {
+    const user = firebase.auth().currentUser;
+    return user.updatePassword(newPassword);
+  }
+
 }

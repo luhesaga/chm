@@ -1,12 +1,24 @@
 
 <div class="container">
     <h2>Lecciones</h2>
-    <mat-form-field appearance="legacy" class="search">
-        <mat-label>Buscar</mat-label>
-        <input matInput (input)="applyFilter($event.target.value)" placeholder="Buscar lección"> <!---->
-        <mat-icon matSuffix>search</mat-icon>
-        <mat-hint>Puede buscar por cualquier campo</mat-hint>
-    </mat-form-field>
+    <div class="leccionesHeader">
+        <div>
+            <mat-form-field appearance="legacy" class="search">
+                <mat-label>Buscar</mat-label>
+                <input matInput (input)="applyFilter($event.target.value)" placeholder="Buscar lección"> <!---->
+                <mat-icon matSuffix>search</mat-icon>
+                <mat-hint>Puede buscar por cualquier campo</mat-hint>
+            </mat-form-field>
+        </div>
+        <div *ngIf="generarCertificado()">
+            <button
+            mat-raised-button
+            style="background: var(--main-color2); color: white;">
+            <mat-icon>school</mat-icon>
+            Generar certificado</button>
+        </div>
+    </div>
+
 
     <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
 
@@ -50,13 +62,23 @@
         <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef id="acciones">Acciones</th>
             <td mat-cell *matCellDef="let element" class="buttons">
-                <button
+                <div *ngIf="lessonActivated(element)">
+                    <button
                     mat-stroked-button
                     color="primary"
                     matTooltip="Estudiar lección"
                     (click)="goToCourseView(element)">
                     <mat-icon style="color: darkcyan;">visibility</mat-icon>
-                </button>
+                    </button>
+                </div>
+                <div *ngIf="!lessonActivated(element)">
+                    <button
+                    mat-stroked-button
+                    color="primary"
+                    matTooltip="Lección deshabilitada">
+                    <mat-icon style="color: darkcyan;">visibility_off</mat-icon>
+                    </button>
+                </div>
             </td>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

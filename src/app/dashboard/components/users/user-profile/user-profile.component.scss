@@ -50,7 +50,7 @@ form h4 {
     font-size: 1.1rem;
 }
 
-.id-fields, .ubication-fields {
+.id-fields, .ubication-fields, .changePassword {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: auto;
@@ -59,6 +59,6 @@ form h4 {
     margin: 24px;
 }
 
-.id-fields .email, .ubication-fields .email {
+.id-fields .email, .ubication-fields .email, .oldPassword, .newPassword {
     grid-column: 1 / 3;
 }
