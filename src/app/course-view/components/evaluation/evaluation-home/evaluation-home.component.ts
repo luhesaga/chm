@@ -4,6 +4,11 @@ import { CourseService } from '../../../../core/services/courses/course.service'
 import { LessonsService } from '../../../../core/services/lessons/lessons.service';
 import { ExercisesService } from '../../../../core/services/exercises/exercises.service';
 import Swal from 'sweetalert2';
+import { Subject } from 'rxjs';
+import { AsyncSubject } from 'rxjs';
+import { AngularFireStorage } from '@angular/fire/storage';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { finalize, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-evaluation-home',
@@ -11,6 +16,8 @@ import Swal from 'sweetalert2';
   styleUrls: ['./evaluation-home.component.scss']
 })
 export class EvaluationHomeComponent implements OnInit, OnDestroy, DoCheck {
+
+  private editorSubject: Subject<any> = new AsyncSubject();
 
   idCurso;
   idLesson;
@@ -34,12 +41,34 @@ export class EvaluationHomeComponent implements OnInit, OnDestroy, DoCheck {
   previousTest;
   previousTestAnswers:any = [];
 
+  tarea = 0;
+  userAnswer;
+  documentType;
+
+  // para cargar archivos
+  edit = false;
+  archivo;
+  ruta;
+  question;
+  percentageProgressBar = 0;
+	showProgressBar = false;
+	archives: any = [];
+  fsId;
+  changePDF;
+  confirmDelPDF;
+  public url = new URL('http://pdfviewer.net/assets/pdfs/GraalVM.pdf');
+
+  calificacion: any;
+  comentarioTutor;
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private courseService: CourseService,
     private lessonService: LessonsService,
     private exerciseService: ExercisesService,
+    private fs: AngularFireStorage,
+    private fireStore: AngularFirestore,
   ) {
     this.idCurso = this.activatedRoute.snapshot.params.idCurso;
     this.idLesson = this.activatedRoute.snapshot.params.idLesson;
@@ -68,6 +97,11 @@ export class EvaluationHomeComponent implements OnInit, OnDestroy, DoCheck {
       this.idContent = idContent;
       this.ngOnInit();
     }
+  }
+
+  handleEditorInit(e) {
+    this.editorSubject.next(e.editor);
+    this.editorSubject.complete();
   }
 
   getCourse() {
@@ -106,7 +140,7 @@ export class EvaluationHomeComponent implements OnInit, OnDestroy, DoCheck {
       .valueChanges()
       .subscribe(exd => {
         this.previousTest = exd;
-        console.log(this.previousTest);
+        // console.log(this.previousTest);
         if (exd) {
           this.userTries = exd.length;
         }
@@ -119,16 +153,72 @@ export class EvaluationHomeComponent implements OnInit, OnDestroy, DoCheck {
     let exc = this.exerciseService.exerciseDetail(this.idCurso, content.ejercicio.id)
       .valueChanges()
       .subscribe((exerc: any) => {
-        console.log(exerc)
         this.exercises = exerc;
-        this.questions = exerc.preguntas;
-        if (this.userTries >= exerc.intentos) {
-          this.canViewTest = false;
+        if (exerc.preguntas[0]?.type === 6) {
+          this.prepareTest(exerc, content.ejercicio.id);
+        } else {
+          this.tarea = 1;
+          this.questions = exerc.preguntas;
+          if (this.userTries >= exerc.intentos) {
+            this.canViewTest = false;
+          }
+          this.getPreviousTestAnswers(content)
         }
-        this.getPreviousTestAnswers(content)
-        console.log(`puede ver la prueba: ${this.canViewTest}`);
+        // console.log(`puede ver la prueba: ${this.canViewTest}`);
         exc.unsubscribe();
     })
+  }
+
+  prepareTest(test, exId) {
+    this.tarea = 2;
+    this.documentType = this.exercises.preguntas[0].tarea.tipoDocumento;
+    this.getTestDetail(exId);
+  }
+
+  getTestDetail(exId) {
+    let test = this.exerciseService.getUserAnswers(this.idCurso, exId, this.stdId)
+      .valueChanges()
+      .subscribe(t => {
+        if (t[0]) {
+          this.edit = true;
+          this.fsId = t[0].id;
+          this.archivo = t[0].respuestas.archivo;
+          this.userAnswer = this.parseHTML(t[0].respuestas.respuesta);
+          this.question = t[0].respuestas.question;
+          this.ruta = t[0].respuestas.ruta;
+          this.calificacion = t[0].respuestas.calificacion ? t[0].respuestas.calificacion : 'pendiente por calificar.';
+          this.comentarioTutor = t[0].respuestas.comentario ? t[0].respuestas.comentario : 'Sin comentarios del tutor.';
+        }
+        if (!this.edit) {
+          this.fsId = this.fireStore.createId();
+        }
+        test.unsubscribe();
+      })
+  }
+
+  setDocType() {
+    let docType;
+    switch (this.documentType) {
+      case 1:
+        docType = 'Puede escribir su respuesta o subir un documento.';
+        break;
+      case 2:
+        docType = 'Por favor escriba su respuesta.';
+        break;
+      case 3:
+        docType = 'Por favor cargue un archivo de Word o PDF con su respuesta.'
+        break;
+      default:
+        break;
+    }
+    return docType;
+  }
+
+  setQuestion() {
+    let question = document.getElementById('test-question');
+    if (question) {
+      question.innerHTML = this.exercises.preguntas[0].question;
+    }
   }
 
   getPreviousTestAnswers(content) {
@@ -139,17 +229,21 @@ export class EvaluationHomeComponent implements OnInit, OnDestroy, DoCheck {
         .subscribe(pta => {
           let cont = 0;
           let valor = 0;
+          // const fecha = new Date(pta.fecha);
+          // console.log(fecha.toLocaleDateString());
           pta.respuestas.forEach(r => {
-            valor += r.valor;
-            if (r.correcta) {
-              cont += 1;
+            if (r.valor) {
+              valor += r.valor;
+              if (r.correcta) {
+                cont += 1;
+              }
             }
           })
           // console.log(valor);
           pta.nota = Math.ceil((valor / pta.respuestas.length * 100) / 100);
           pta.correctas = cont;
           this.previousTestAnswers.push(pta);
-          console.log(this.previousTestAnswers);
+          // console.log(this.previousTestAnswers);
           prTsAn.unsubscribe();
         });
     });
@@ -217,6 +311,138 @@ export class EvaluationHomeComponent implements OnInit, OnDestroy, DoCheck {
     const exid = this.exercId;
     const stdid = this.stdId;
     this.router.navigate([`course-view/${cid}/${lid}/${stdid}/final-evaluacion/${cid}/${lid}/${cntid}/${exid}/${stdid}/${id}/consulta`])
+  }
+
+  saveOrUpdateTest() {
+    switch (this.documentType) {
+      case 1:
+        if (!this.userAnswer && !this.archivo) {
+          Swal.fire({
+            icon: 'error',
+            title: '!Error!',
+            text: 'Debe escribir una respuesta o subir un archivo.',
+            confirmButtonText: 'cerrar',
+          });
+        } else {
+          this.saveTest();
+        }
+        break;
+      case 2:
+        if (!this.userAnswer) {
+          Swal.fire({
+            icon: 'error',
+            title: '!Error!',
+            text: 'Debe escribir una respuesta.',
+            confirmButtonText: 'cerrar',
+          });
+        } else {
+          this.saveTest();
+        }
+        break;
+      case 3:
+        if (!this.archivo) {
+          Swal.fire({
+            icon: 'error',
+            title: '!Error!',
+            text: 'Debe subir un archivo.',
+            confirmButtonText: 'cerrar',
+          });
+        } else {
+          this.saveTest();
+        }
+        break;
+      default:
+        break;
+    }
+  }
+
+  saveTest() {
+    const respuesta = this.prepareTestAnswer();
+    this.exerciseService.addUserAnswers
+      (this.idCurso, this.exercId, this.stdId, respuesta, this.fsId)
+        .then(() => {
+          Swal.fire({
+            icon: 'success',
+            title: '!Cambios guardados!',
+            text: 'Su respuesta ha sido guardada exitosamente, espera la calificación del tutor.',
+            confirmButtonText: 'cerrar',
+          });
+          this.markAsViewed();
+          this.ngOnInit();
+        })
+        .catch(err => console.log(err));
+  }
+
+  prepareTestAnswer() {
+    const test = {
+      question: this.parseHTML(this.exercises.preguntas[0].question),
+      respuesta: this.userAnswer ? this.userAnswer : '',
+      archivo: this.archivo ? this.archivo : '',
+      ruta: this.ruta ? this.ruta : '',
+    }
+
+    return test;
+  }
+
+  parseHTML(html) {
+    let option = document.createElement('div');
+    option.innerHTML = html;
+    return option.textContent;
+  }
+
+  uploadPDF(event) {
+    this.uploadNewPDF(event);
+  }
+
+  uploadNewPDF(event) {
+
+    const cid = this.idCurso;
+    const lid = this.idLesson;
+    const cntid = this.idContent;
+
+    this.showProgressBar = true
+    const file = event.target.files[0] as File;
+    const name = file.name;
+    const fileRef = this.fs.ref(`ejercicios/${cid}/tareas/${lid}/${cntid}/${this.fsId}/${name}`);
+    const path = `ejercicios/${cid}/tareas/${lid}/${cntid}/${this.fsId}/${file.name}`;
+    const task = this.fs.upload(path, file);
+
+    task.percentageChanges()
+      .pipe(map(Math.ceil))
+      .pipe(finalize(() => {
+        const urlFile = fileRef.getDownloadURL()
+        urlFile.subscribe(url => {
+          this.ruta = url;
+          //console.log(this.archivoField);
+          // borrar imagen previamente cargada
+          if (this.archives.length > 0) {
+            this.deletePDF(file.name);
+            this.archives.length = 0;
+          }
+          this.archives.push(name);
+          this.archivo = file.name;
+        })
+          this.showProgressBar = false;
+        }))
+        .subscribe(per => {
+          this.percentageProgressBar = per;
+        });
+  }
+
+  deletePDF(PDFName) {
+    const cid = this.idCurso;
+    const lid = this.idLesson;
+    const cntid = this.idContent;
+    let url;
+    if (this.edit) {
+      if (this.confirmDelPDF !== PDFName && this.confirmDelPDF !== null) {
+        url = this.confirmDelPDF;
+        this.fs.ref(`ejercicios/${cid}/tareas/${lid}/${cntid}/${this.fsId}/${url}`).delete();
+      }
+    } else {
+      url = this.archives[0];
+      this.fs.ref(`ejercicios/${cid}/tareas/${lid}/${cntid}/${this.fsId}/${url}`).delete();
+    }
   }
 
 }

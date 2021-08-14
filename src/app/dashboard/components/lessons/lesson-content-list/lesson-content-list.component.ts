@@ -130,6 +130,16 @@ export class LessonContentListComponent implements OnInit, AfterViewInit, OnDest
   }
 
   deleteContent(data) {
+    // console.log(data);
+    let pos = data.posicion;
+    // actualizar posiciones
+    if (pos !== this.dataSource.data.length) {
+      for (let i = pos; i < this.dataSource.data.length; i++) {
+        const lesson: any = this.dataSource.data[i];
+        this.positionEdit(lesson.id, lesson.posicion - 1);
+      }
+    }
+    // eliminar leccion
     const cId = this.CourseId;
     const lId = this.LessonId;
     Swal.fire({

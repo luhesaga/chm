@@ -34,6 +34,11 @@ export class ReplyForoComponent implements OnInit {
     this.idContent= this.activatedRoute.snapshot.params.idContent;
     this.idReplyForo = this.activatedRoute.snapshot.params.idReplayForo;
     this.stdId = this.activatedRoute.snapshot.params.stdId;
+    // console.log(`tipo: ${this.tipo}`);
+    // console.log(`curso: ${this.idCurso}`);
+    // console.log(`leccion: ${this.idLesson}`);
+    // console.log(`contenido: ${this.idContent}`);
+    // console.log(`reply: ${this.idReplyForo}`);
    }
 
   ngOnInit(): void {

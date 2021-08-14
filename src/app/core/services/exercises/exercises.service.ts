@@ -67,8 +67,7 @@ export class ExercisesService {
   }
 
   addUserAnswers(courseId: string, exercId: string, userId: string, answers: any, id: string) {
-    const tiempo = Date.now();
-    let fecha = new Date(tiempo);
+    let fecha = new Date().toUTCString();
     return this.fireStore.doc(`ejercicios/${courseId}/ejercicios/${exercId}/${userId}/${id}`)
     .set({
       id,
@@ -78,8 +77,8 @@ export class ExercisesService {
   }
 
   updateUserAnswers(courseId: string, exercId: string, userId: string, answers: any, id: string) {
-    const tiempo = Date.now();
-    let fecha = new Date(tiempo);
+
+    let fecha = new Date().toUTCString();
     return this.fireStore.doc(`ejercicios/${courseId}/ejercicios/${exercId}/${userId}/${id}`)
     .update({
       fecha,
@@ -88,7 +87,8 @@ export class ExercisesService {
   }
 
   getUserAnswers(courseId: string, exercId: string, userId: string): AngularFirestoreCollection {
-    return this.fireStore.collection(`ejercicios/${courseId}/ejercicios/${exercId}/${userId}`);
+    return this.fireStore.collection(`ejercicios/${courseId}/ejercicios/${exercId}/${userId}`, ref =>
+    ref.orderBy('fecha', 'asc'));
   }
 
   detailTest(courseId: string, exercId: string, userId: string, testId: string): AngularFirestoreDocument {

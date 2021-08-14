@@ -125,10 +125,14 @@ export class EvaluationViewComponent implements OnInit, OnDestroy {
               const questionsReceived = ex.preguntas;
               if (ex.seleccion === 2) {
                 this.questions = this.sortArray(questionsReceived);
-              } else { this.questions = questionsReceived; }
+                this.sortRelationQuestions();
+                this.setTotalAnswers();
+              } else {
+                this.questions = questionsReceived;
+                this.sortRelationQuestions();
+                this.setTotalAnswers();
+              }
               // console.log(this.questions);
-              this.sortRelationQuestions();
-              this.setTotalAnswers();
               // this.totalAnswers.length = this.questions.length;
               // console.log(this.totalAnswers)
               this.loadQuestion();
@@ -201,9 +205,8 @@ export class EvaluationViewComponent implements OnInit, OnDestroy {
     this.questions.forEach(q => {
       if (q.type === 4) {
         q.randomAnswers = this.sortArray(q.answers);
-        // console.log(q);
       }
-    })
+    });
   }
 
   loadQuestion() {
@@ -382,6 +385,7 @@ export class EvaluationViewComponent implements OnInit, OnDestroy {
 
   saveMultipleAnswer() {
     // console.log(this.questions[this.qNumber].answers);
+    // console.log(this.questions[this.qNumber].question);
     let respuestas: any = [];
     let opcionesEscogidas: any = [];
     for (let index = 0; index < this.questions[this.qNumber].answers.length; index++) {
@@ -397,6 +401,7 @@ export class EvaluationViewComponent implements OnInit, OnDestroy {
       respuestas.push({
         value: index + 1,
         respuesta: this.questions[this.qNumber].answers[index].answer,
+        correcta: this.questions[this.qNumber].answers[index].respuesta,
       })
       if (this.questions[this.qNumber].answers[index].respuesta === o) {
         cont += 1;
@@ -411,6 +416,7 @@ export class EvaluationViewComponent implements OnInit, OnDestroy {
       pregunta: this.parseHTML(this.questions[this.qNumber].question),
       opcionesEscogidas,
       respuestas,
+      respuestasorg: this.questions[this.qNumber].answers,
       tipoPregunta: this.qType,
       valor,
       visto: true,
@@ -520,7 +526,7 @@ export class EvaluationViewComponent implements OnInit, OnDestroy {
   injectRelationHtml(answer, n) {
     //console.log(answer);
     const item = document.getElementById(`relation${n}`);
-    item.innerHTML = answer.answer;
+    item.innerHTML = answer.comment;
   }
 
   parseOption(answer) {

@@ -5,8 +5,8 @@
       [opened]="(isHandset$ | async) === false">
     <mat-toolbar class="headerSideBar">
       <div class="volver">
-        <p><mat-icon (click)="goToLecciones()">arrow_back</mat-icon></p>
         <p><mat-icon (click)="goHome()">home</mat-icon></p>
+        <p><mat-icon (click)="goToLecciones()">arrow_back</mat-icon></p>
       </div>
       <div><img class="imagenCurso" [src]="course?.imagen" alt=""></div>
       <h3><span>profesor:</span>{{course?.profesor}}</h3>

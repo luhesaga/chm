@@ -18,16 +18,21 @@ export class EvaluationFinishComponent implements OnInit, OnDestroy {
   testId;
   revitionView = false;
 
-  testReceived;
+  //testReceived;
   test;
 
-  anwersReceived;
+  //anwersReceived;
   answers;
 
   result: number;
   revition = false;
+  revitionAll = false;
 
-  textoFinal: string = 'Haz finalizado la Prueba.'
+  textoFinal: string = 'Haz finalizado la Prueba.';
+  mostrarResultados;
+
+  letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'O',
+              'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'X', 'Y', 'Z'];
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -43,27 +48,57 @@ export class EvaluationFinishComponent implements OnInit, OnDestroy {
     const consulta = this.activatedRoute.snapshot.params.consulta;
     if (consulta) {
       this.revitionView = true;
-      console.log(this.revitionView);
+      // console.log(this.revitionView);
     }
-    console.log(`curso: ${this.idCurso} leccion: ${this.idLesson}`);
-    console.log(`contenido: ${this.idContent} ejercicio: ${this.exercId} usuario: ${this.stdId}`);
+    // console.log(`curso: ${this.idCurso} leccion: ${this.idLesson}`);
+    // console.log(`contenido: ${this.idContent} ejercicio: ${this.exercId} usuario: ${this.stdId}`);
   }
 
   ngOnInit(): void {
-    this.testReceived =this.exerService.exerciseDetail(this.idCurso, this.exercId)
+    this.getAllTest();
+    this.getAnswers();
+  }
+
+  ngOnDestroy(): void {
+    // this.testReceived.unsubscribe();
+    // this.anwersReceived.unsubscribe();
+  }
+
+  getAllTest() {
+    const finishExams = this.exerService.getUserAnswers(this.idCurso, this.exercId, this.stdId)
+          .valueChanges()
+          .subscribe(all => {
+            console.log(all.length);
+            this.getTest(all.length);
+            finishExams.unsubscribe();
+          })
+  }
+
+  getTest(totalTest) {
+    let testReceived =this.exerService.exerciseDetail(this.idCurso, this.exercId)
       .valueChanges()
       .subscribe((ex: any) => {
+        console.log(ex);
+        if (totalTest < ex.intentos) {
+          this.revitionAll = false;
+        } else {
+          this.revitionAll = true;
+        }
+        this.mostrarResultados = ex.mostrarResultados;
         this.test = ex;
         if (ex.textoFinal) {
           this.textoFinal = this.parseHTML(ex.textoFinal);
         }
-        console.log(ex);
+        testReceived.unsubscribe();
       });
-    this.anwersReceived = this.exerService.detailTest(this.idCurso, this.exercId, this.stdId, this.testId)
+  }
+
+  getAnswers() {
+    let anwersReceived = this.exerService.detailTest(this.idCurso, this.exercId, this.stdId, this.testId)
       .valueChanges()
       .subscribe(u => {
-        console.log(u);
         this.answers = u.respuestas;
+        console.log(this.answers);
         let nota: number = 0;
         let contType5 = 0;
         u.respuestas.forEach(r => {
@@ -74,26 +109,36 @@ export class EvaluationFinishComponent implements OnInit, OnDestroy {
         });
         if (contType5 > 0) { this.revition = true }
         this.result = Math.ceil((nota / (u.respuestas.length * 100)) * 100);
-      })
+        anwersReceived.unsubscribe();
+      });
   }
 
-  ngOnDestroy(): void {
-    this.testReceived.unsubscribe();
-    this.anwersReceived.unsubscribe();
-  }
-
-  goBack() {
+  goBack(revitionView) {
     const cid = this.idCurso;
     const lid = this.idLesson;
     const sid = this.stdId;
     const cntid = this.idContent;
-    this.router.navigate([`course-view/${cid}/${lid}/${sid}/evaluacion/${cid}/${lid}/${cntid}/${sid}`]);
+    if (revitionView) {
+      this.router.navigate([`course-view/${cid}/${lid}/${sid}/evaluacion/${cid}/${lid}/${cntid}/${sid}`]);
+    } else {
+      this.router.navigateByUrl(`dashboard/course-view/${cid}/${lid}/${sid}`);
+    }
   }
 
   parseHTML(html) {
     let option = document.createElement('div');
     option.innerHTML = html;
     return option.textContent;
+  }
+
+  qFormatter(question) {
+    let q = question.slice();
+    while(q.indexOf('[') !== -1) {
+      const inicio = q.indexOf('[');
+      const final = q.indexOf(']');
+      q = this.parseHTML(q.replace(q.substring(inicio, final +1), '________'));
+    }
+    return q;
   }
 
 }

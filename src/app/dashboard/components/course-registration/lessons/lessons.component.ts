@@ -106,4 +106,8 @@ export class LessonsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.router.navigateByUrl(`dashboard/course-view/${this.courseId}/${element.id}/${this.stdId}`);
   }
 
+  goBack() {
+    this.router.navigate([`cursos/index/${this.courseId}/${this.stdId}`]);
+  }
+
 }

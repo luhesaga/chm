@@ -10,7 +10,7 @@ import { UsersService } from '../../../core/services/users/users.service';
   templateUrl: './foro.component.html',
   styleUrls: ['./foro.component.scss']
 })
-export class ForoComponent implements OnInit, DoCheck {
+export class ForoComponent implements OnInit, DoCheck, OnDestroy {
 
   idCurso: string;
   idLesson: string;
@@ -22,6 +22,8 @@ export class ForoComponent implements OnInit, DoCheck {
   respuestas: any;
 
   usuario: any;
+
+  answersReceived;
 
   constructor(
     private userService: UsersService,
@@ -54,6 +56,10 @@ export class ForoComponent implements OnInit, DoCheck {
       this.markAsViewed();
       this.getContent();
     }
+  }
+
+  ngOnDestroy(): void {
+    this.answersReceived.unsubscribe();
   }
 
   markAsViewed() {
@@ -104,11 +110,11 @@ export class ForoComponent implements OnInit, DoCheck {
   }
 
   getAnswersList(): void {
-    let answers = this.lessonService.listReplyForo(this.idCurso, this.idLesson, this.idContent)
+    this.answersReceived = this.lessonService.listReplyForo(this.idCurso, this.idLesson, this.idContent)
       .valueChanges()
       .subscribe(respuestas => {
         this.respuestas = respuestas;
-        answers.unsubscribe();
+        // answers.unsubscribe();
       });
   }
 

@@ -27,7 +27,7 @@
     <div *ngIf="!idReplyForo">
         <button class="corner-button" (click)="enviarForo()"> <span>Enviar</span> </button>
     </div>
-    <div *ngIf="this.tipo === 'responder'">
+    <div *ngIf="this.tipo === 'responder' && idReplyForo">
         <button class="corner-button"  (click)="enviarComentario()"> <span>Comentar</span> </button>
     </div>
     <div>

@@ -1,5 +1,5 @@
 <main>
-    <section>
+    <section class="normal-test" *ngIf="tarea === 1">
         <div class="exercise-img">
             <img src="/assets/icons/examen.svg" alt="imagen evaluación">
         </div>
@@ -30,6 +30,85 @@
             <div class="btn">
                 <button mat-raised-button color="primary" (click)="startExam()">Empezar prueba</button>
             </div>
+        </div>
+    </section>
+    <section class="tarea" *ngIf="tarea === 2 && !edit">
+        <div class="tarea-info">
+            <h2>{{exercises?.nombre}}</h2>
+        </div>
+        <div class="question">
+            <div id="test-question">{{setQuestion()}}</div>
+        </div>
+        <div class="question-editor">
+            <h3>{{ setDocType() }}</h3>
+            <div class="mat-form-field-wrapper" *ngIf="documentType !== 3">
+                <editor
+                apiKey="fa82nlmdggdzt2rwcpx7k706ohjcnf9wo3ioar2p06d10yyk"
+                class="mat-elevation-z1"
+                [(ngModel)]="userAnswer"
+                (onInit)="handleEditorInit($event)"
+                [init]="{
+                    icons: 'material',
+                    skin: 'borderless',
+                    plugins: ['wordcount', 'lists', 'image imagetools'],
+                    menubar: false,
+                    min_height: 350,
+                    width : '750',
+                    toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | image',
+                    media_live_embeds: true
+                }"
+                ></editor>
+            </div>
+            <!-- subir archivo -->
+            <div *ngIf="documentType !== 2">
+                <div class="upload-image-main">
+                    <div class="image-upload">
+                        <label class="btn-upload">
+                            <button
+                                color="primary"
+                                class="up-btn"
+                                [disabled]="showProgressBar"
+                                type="button"
+                                mat-raised-button
+                                (click)="fileInput.click()"
+                                matTooltip="Cargar documento">
+                                    <mat-icon aria-hidden="false" aria-label="Carga de archivo">cloud_upload</mat-icon>
+                                    Cargar archivo
+                            </button>
+                            <input
+                                type="file"
+                                accept="application/pdf, .doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                                #fileInput
+                                (change)="uploadPDF($event)" />
+                        </label>
+                    </div>
+                    <div class="progress">
+                        <mat-hint *ngIf="!archivo">Puede añadir un archivo Word ó PDF.</mat-hint>
+                        <mat-progress-bar *ngIf="showProgressBar" mode="determinate" [value]="percentageProgressBar"></mat-progress-bar>
+                        <p *ngIf="showProgressBar">{{ 'cargando ' + percentageProgressBar + '%' }}</p>
+                    </div>
+                    <div class="fileUploaded" *ngIf="archivo">
+                        <a [href]="ruta" target="_blank">{{archivo}}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="button">
+            <button mat-raised-button color="primary" (click)="saveOrUpdateTest()">Enviar Tarea</button>
+        </div>
+    </section>
+    <section class="revision-tarea" *ngIf="tarea === 2 && edit">
+        <h2>Tarea enviada</h2>
+        <h4>Calificación:</h4>
+        <p>{{ calificacion }}</p>
+        <h4>Comentario del tutor:</h4>
+        <p>{{ comentarioTutor }}</p>
+        <h4>Pregunta:</h4>
+        <p>{{ question }}</p>
+        <h4>Tu respuesta:</h4>
+        <div class="repuesta-subida">
+            <p *ngIf="userAnswer">{{ userAnswer }}</p>
+            <a *ngIf="archivo" [href]="ruta" target="_blank">{{archivo}}</a>
         </div>
     </section>
 </main>

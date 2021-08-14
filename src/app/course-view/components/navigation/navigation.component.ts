@@ -109,6 +109,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
       ).valueChanges()
         .subscribe((element: any) => {
           if (element) {
+            // console.log(element);
             if (element.visto) {
               content.visto = true;
             }

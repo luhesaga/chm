@@ -20,69 +20,72 @@ $dur: .5s;
 {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     margin-top: 1.5rem;
+    margin-left: 1.5rem;
+    width: 100%;
 }
 
 .corner-button {
-    margin-left: 1.5rem;
-    margin-top: 2rem;
-    font-family: 'Lato', sans-serif;
-    letter-spacing: .02rem;
-    cursor: pointer;
-    background: transparent;
-    border: $border-width solid currentColor;
-    padding: 1rem 1rem;
-    font-size: 1.5rem;
-    color: $fg;
+  margin-top: 1rem;
+  font-family: 'Lato', sans-serif;
+  letter-spacing: .02rem;
+  cursor: pointer;
+  background: transparent;
+  border: $border-width solid var(--main-color2);
+  padding: 0.5rem 0.5rem;
+  font-size: 1rem;
+  color: $fg;
+  position: relative;
+  transition: color $dur;
+
+  &:hover {
+    color: var(--main-color2);
+    &::before { width: 0; }
+    &::after { height: 0; }
+  }
+  &:active {
+    border-width: $border-width / 2;
+  }
+  
+  //bit lame about the extra span. 
+  //it's to get the text to appear on top of the psewudo elements. is there a dom-less way to do it?
+  span {
     position: relative;
-    transition: color $dur;
-  
-    &:hover {
-      color: var(--main-color2);
-      &::before { width: 0; }
-      &::after { height: 0; }
-    }
-    &:active {
-      border-width: $border-width / 2;
-    }
-    
-    //bit lame about the extra span. 
-    //it's to get the text to appear on top of the psewudo elements. is there a dom-less way to do it?
-    span {
-      position: relative;
-      z-index: 2;
-    }
-    &::before, &::after {
-      content: '';
-      position: absolute;
-      background: white;
-      z-index: 1;
-      transition: all $dur;
-    }
-    //the 101% is because of a pixel rounding issue in firefox
-    &::before {
-      width: calc(100% - #{$corner-size});
-      height: calc(101% + #{$border-width * 2});
-      top: -$border-width;
-      left: 50%;
-      transform: translateX(-50%);
-    }
-    &::after {
-      height: calc(100% - #{$corner-size});
-      width: calc(101% + #{$border-width * 2});
-      left: -$border-width;
-      top: 50%;
-      transform: translateY(-50%);
-    }
+    z-index: 2;
   }
-  
-  .corner-button2
-  {
-    margin-top: 2rem;
-    &:hover {
-      color: #08D5FE;
-      &::before { width: 0; }
-      &::after { height: 0; }
-    }
+  &::before, &::after {
+    content: '';
+    position: absolute;
+    background: white;
+    z-index: 1;
+    transition: all $dur;
   }
+  //the 101% is because of a pixel rounding issue in firefox
+  &::before {
+    width: calc(100% - #{$corner-size});
+    height: calc(101% + #{$border-width * 2});
+    top: -$border-width;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  &::after {
+    height: calc(100% - #{$corner-size});
+    width: calc(101% + #{$border-width * 2});
+    left: -$border-width;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+
+.corner-button2
+{
+  margin-left: 1.5rem;
+  margin-top: 1rem;
+  &:hover {
+    color: #f50057;
+    &::before { width: 0; }
+    &::after { height: 0; }
+  }
+}
 
