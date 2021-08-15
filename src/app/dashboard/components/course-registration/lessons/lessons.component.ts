@@ -132,7 +132,7 @@ export class LessonsComponent implements OnInit, AfterViewInit, OnDestroy {
   generarCertificado()
   {
     const lastIndex = this.dataSource.data.length - 1;
-    const lession:any = this.dataSource.data[lastIndex];
+    const lession:any = this.dataSource.data[lastIndex] || {porcentaje:0};
     if (lession.porcentaje === 100)
     {
       return true;
