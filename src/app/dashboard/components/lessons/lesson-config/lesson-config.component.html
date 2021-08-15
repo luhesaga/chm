@@ -102,6 +102,25 @@
                             media_live_embeds: true
                         }">
                 </editor>
+                <div class="calificarForo">
+                    <mat-slide-toggle
+                    (change)="foroTipoCalificacionRequerida()"
+                    [(ngModel)]="foroCalificable"
+                    formControlName="foroCalificable">
+                    Calificar foro
+                    </mat-slide-toggle>
+                    <mat-radio-group
+                    *ngIf="foroCalificable"
+                    [(ngModel)]="foroTipoCalificacion"
+                    formControlName="foroTipoCalificacion">
+                    <mat-radio-button value="Automatica">
+                        Automatica
+                    </mat-radio-button>
+                    <mat-radio-button value="Manual">
+                        Manual
+                    </mat-radio-button>
+                    </mat-radio-group>
+                </div>
             </div>
             <!-- ejercicio -->
             <div *ngIf="contentOption === 'Agregar ejercicio'" class="ejercicio">

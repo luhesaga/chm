@@ -153,4 +153,43 @@
             <a mat-raised-button color="warn" (click)="goToHome()">Cancelar</a>
         </div>
     </form>
+
+    <form [formGroup]="formPassword" (ngSubmit)="validPassword()">
+        <h4>Cambiar contraseña</h4>
+        <div class="changePassword">
+            <mat-form-field class="example-full-width oldPassword" appearance="fill">
+                <mat-label>Contraseña actual</mat-label>
+                <input
+                    autocomplete="off"
+                    type="password"
+                    matInput
+                    formControlName="oldPassword"
+                    tabIndex=1 />
+                <mat-error *ngIf="oldPasswordField.touched && oldPasswordField.invalid">
+                    <ng-container *ngIf="oldPasswordField.hasError('required')">La contraseña actual es requerida</ng-container>
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="example-full-width newPassword" appearance="fill">
+                <mat-label>Contraseña nueva</mat-label>
+                <input
+                    autocomplete="off"
+                    type="password"
+                    matInput
+                    formControlName="newPassword"
+                    tabIndex=1 />
+                <mat-error *ngIf="newPasswordField.touched && newPasswordField.invalid">
+                    <ng-container *ngIf="newPasswordField.hasError('required')">La contraseña nueva es requerida</ng-container>
+                    <ng-container *ngIf="newPasswordField.hasError('minlength')">La contraseña nueva debe tener mínimo 6 caracteres</ng-container>
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="buttons">
+            <button
+                type="submit"
+                mat-raised-button
+                style="margin: 24px; color: var(--main-color2);">
+                    Cambiar contraseña
+            </button>
+        </div>
+    </form>
 </main>

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, ChangeDetectorRef, AfterContentChecked } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AsyncSubject, Subject } from 'rxjs';
@@ -14,7 +14,7 @@ import { ExercisesService } from '../../../../core/services/exercises/exercises.
   templateUrl: './lesson-config.component.html',
   styleUrls: ['./lesson-config.component.scss']
 })
-export class LessonConfigComponent implements OnInit, OnDestroy {
+export class LessonConfigComponent implements OnInit, OnDestroy, AfterContentChecked {
   // datos recibidos componente lesson-list
   courseId: string;
   lessonId: string;
@@ -27,6 +27,8 @@ export class LessonConfigComponent implements OnInit, OnDestroy {
   contenido;
   archivo;
   foro;
+  foroCalificable;
+  foroTipoCalificacion;
 
   private editorSubject: Subject<any> = new AsyncSubject();
 
@@ -74,7 +76,8 @@ export class LessonConfigComponent implements OnInit, OnDestroy {
     private lessonService: LessonsService,
     private fs: AngularFireStorage,
     private fireStore: AngularFirestore,
-    private exercisesSercice: ExercisesService
+    private exercisesSercice: ExercisesService,
+    private cdref: ChangeDetectorRef
   ) {
     this.courseId = this.activatedRoute.snapshot.params.cid;
     this.lessonId = this.activatedRoute.snapshot.params.lid;
@@ -87,6 +90,12 @@ export class LessonConfigComponent implements OnInit, OnDestroy {
     //console.log(`id curso: ${this.courseId}, id lección: ${this.lessonId}, id contenido: ${this.contentId}`);
 
     this.buildForm()
+  }
+
+  ngAfterContentChecked() {
+
+    this.cdref.detectChanges();
+
   }
 
   ngOnInit(): void {
@@ -105,6 +114,8 @@ export class LessonConfigComponent implements OnInit, OnDestroy {
           this.confirmDelPDF = content.nombreArchivo;
           this.archivoField.setValue(content.archivo);
           this.foro = content.foro;
+          this.foroCalificable= content.foroCalificable;
+          this.foroTipoCalificacion = content.foroTipoCalificacion
           this.fsId = content.id;
           this.exerciseSelected = content.ejercicio;
           switch (content.tipo) {
@@ -165,6 +176,8 @@ export class LessonConfigComponent implements OnInit, OnDestroy {
       contenido: [''],
       archivo: [''],
       foro: [''],
+      foroCalificable:[false],
+      foroTipoCalificacion:[''],
       ejercicio: [''],
     })
   }
@@ -187,6 +200,16 @@ export class LessonConfigComponent implements OnInit, OnDestroy {
 
   get foroField() {
     return this.form.get('foro');
+  }
+
+  get foroCalificableField()
+  {
+    return this.form.get('foroCalificable');
+  }
+
+  get foroTipoCalificacionField()
+  {
+    return this.form.get('foroTipoCalificacion');
   }
 
   get ejercicioField() {
@@ -436,6 +459,21 @@ export class LessonConfigComponent implements OnInit, OnDestroy {
     } else {
       url = this.archives[0];
       this.fs.ref(`cursos/${this.courseId}/lecciones/${this.lessonId}/contenidos/${this.fsId}/${url}`).delete();
+    }
+  }
+
+  foroTipoCalificacionRequerida()
+  {
+    if(this.foroCalificable)
+    {
+      this.foroTipoCalificacionField.setValidators(Validators.required);
+    }
+    else
+    {
+      this.foroTipoCalificacionField.clearValidators();
+      this.foroTipoCalificacionField.updateValueAndValidity();
+      this.foroTipoCalificacion = '';
+      this.foroTipoCalificacionField.setValue('');
     }
   }
 

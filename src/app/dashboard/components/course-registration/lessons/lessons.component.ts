@@ -28,6 +28,8 @@ export class LessonsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   userLessons;
 
+  certificado: boolean;
+
   constructor(
     private lessonService: LessonsService,
     private activatedRoute: ActivatedRoute,
@@ -35,7 +37,7 @@ export class LessonsComponent implements OnInit, AfterViewInit, OnDestroy {
   ) {
     this.courseId = this.activatedRoute.snapshot.params.courseId;
     this.stdId = this.activatedRoute.snapshot.params.stdId;
-
+    this.certificado = false;
   }
 
   ngAfterViewInit(): void {
@@ -66,10 +68,10 @@ export class LessonsComponent implements OnInit, AfterViewInit, OnDestroy {
   getLessonsContent(lessons) {
     lessons.forEach(lesson => {
       this.contentReceived = this.lessonService.listLessonContent(this.courseId, lesson.id)
-      .valueChanges()
-      .subscribe(lessonContents => {
-        this.getUserProgress(lessonContents, lesson);
-      })
+        .valueChanges()
+        .subscribe(lessonContents => {
+          this.getUserProgress(lessonContents, lesson);
+        })
     });
   }
 
@@ -79,22 +81,22 @@ export class LessonsComponent implements OnInit, AfterViewInit, OnDestroy {
 
     lessonContents.forEach(content => {
       this.userProgress = this.lessonService.ContentProgress(this.courseId, lesson.id, content.id, this.stdId)
-      .valueChanges()
-      .subscribe(visto => {
-        let cont = 0;
-        if (visto) {
-          arr.forEach(item => {
-            if (content.id === item.id) {
-              cont += 1;
+        .valueChanges()
+        .subscribe(visto => {
+          let cont = 0;
+          if (visto) {
+            arr.forEach(item => {
+              if (content.id === item.id) {
+                cont += 1;
+              }
+            })
+            if (cont === 0) {
+              arr.push(content);
             }
-          })
-          if (cont === 0) {
-            arr.push(content);
+            //console.log(arr);
           }
-          //console.log(arr);
-        }
-        lesson.porcentaje = Math.ceil(((lessonContents.length - (lessonContents.length - arr.length)) / lessonContents.length) * 100);
-      });
+          lesson.porcentaje = Math.ceil(((lessonContents.length - (lessonContents.length - arr.length)) / lessonContents.length) * 100);
+        });
     });
   }
 
@@ -108,6 +110,33 @@ export class LessonsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   goBack() {
     this.router.navigate([`cursos/index/${this.courseId}/${this.stdId}`]);
+  }
+
+  lessonActivated(element: any): boolean {
+    let index = this.dataSource.data.findIndex((lession: any) => lession.id === element.id);
+    if (index === 0) {
+      return true;
+    }
+    else {
+      let lession: any = this.dataSource.data[index - 1];
+      if (lession.porcentaje === 100) {
+        return true;
+      }
+      else {
+        return false;
+      }
+    }
+  }
+
+  generarCertificado() {
+    const lastIndex = this.dataSource.data.length - 1;
+    const lession: any = this.dataSource.data[lastIndex] || { porcentaje: 0 };
+    if (lession.porcentaje === 100) {
+      return true;
+    }
+    else {
+      return false;
+    }
   }
 
 }

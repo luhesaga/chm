@@ -64,7 +64,19 @@ export class LessonCreateComponent implements OnInit {
       } else {
         this.editLesson();
       }
+    }else
+    {
+      this.mensajeError('Debe tener titulo la lección');
     }
+  }
+
+  mensajeError(mensaje:string)
+  {
+    Swal.fire({
+      icon:'error',
+      title: mensaje,
+      confirmButtonText: 'Cerrar'
+    });
   }
 
   editLesson() {
