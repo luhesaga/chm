@@ -44,6 +44,9 @@ import { AdsCursoComponent } from './components/cursos/ads-curso/ads-curso.compo
 import { CreateAdsCursoComponent } from './components/cursos/ads-curso/create-ads-curso/create-ads-curso.component';
 import { EditAdsCursoComponent } from './components/cursos/ads-curso/edit-ads-curso/edit-ads-curso.component';
 import { ModalDocumentsComponent } from './components/documents/modal-documents/modal-documents.component';
+import { CarrerasComponent } from './components/carreras/carreras.component';
+import { CreateCarrerasComponent } from './components/carreras/create-carreras/create-carreras.component';
+import { ModalVistaAdsComponent } from './components/cursos/ads-curso/modal-vista-ads/modal-vista-ads.component';
 
 
 
@@ -86,6 +89,9 @@ import { ModalDocumentsComponent } from './components/documents/modal-documents/
     CreateAdsCursoComponent,
     EditAdsCursoComponent,
     ModalDocumentsComponent,
+    CarrerasComponent,
+    CreateCarrerasComponent,
+    ModalVistaAdsComponent,
     ],
   imports: [
     CommonModule,

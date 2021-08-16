@@ -1,0 +1,38 @@
+<main>
+    <form>
+        <div class="title">
+            <mat-icon>class</mat-icon>
+            <h2>Crear nueva carrera</h2>
+        </div>
+        <div class="upload-image-main">
+            <div class="image-upload">
+                <label class="btn-upload">
+                    <button
+                    class="up-btn"
+                    type="button"
+                    mat-raised-button
+                    (click)="fileInput.click()"
+                    matTooltip="Cargar foto de la carrera">
+                    <mat-icon aria-hidden="false" aria-label="Cargar imagen">cloud_upload</mat-icon>
+                    Cargar Imagen
+                    </button>
+                    <input type="file" accept="image/png, image/jpeg" #fileInput/>
+                </label>
+            </div>
+            <div class="progress">
+                <mat-hint>Puede añadir una imagen de portada para el curso, debe estar en formato JPG o PNG.</mat-hint>
+                <!--<mat-progress-bar *ngIf="showProgressBar" mode="determinate" [value]="percentageProgressBar"></mat-progress-bar>
+                <p *ngIf="showProgressBar">{{ 'cargando ' + percentageProgressBar + '%' }}</p>-->
+            </div>
+        </div>
+        <div class="form-inputs">
+            <mat-form-field>
+                <mat-label>Nombre de la carrera</mat-label>
+                <input 
+                type="text"
+                matInput
+                tabIndex=1/>
+            </mat-form-field>
+        </div>
+    </form>
+</main>
