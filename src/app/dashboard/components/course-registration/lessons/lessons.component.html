@@ -36,7 +36,7 @@
                 *matCellDef="let element"
                 matTooltip="Lección"
                 class="name"
-                (click)="goToCourseView(element)"
+                (click)="lessonActivated(element) ? goToCourseView(element) : ''"
                 >
                 {{ element.nombre }}
             </td>
@@ -75,7 +75,7 @@
                     <button
                     mat-stroked-button
                     color="primary"
-                    matTooltip="Lección deshabilitada">
+                    matTooltip="Lección deshabilitada, debe completar la lección anterior.">
                     <mat-icon style="color: darkcyan;">visibility_off</mat-icon>
                     </button>
                 </div>

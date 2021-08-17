@@ -14,31 +14,54 @@ main {
     align-items: center;
 }
 
-.end-text {
-    margin: 16px 0;
+.test-info {
+    margin: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 95%;
+    border: 1px solid #cfd8dc;
+    border-radius: 10px;
 
     h2 {
-        font-size: 1.2rem;
+        margin-top: 16px;
+        font-size: 1.3rem;
     }
-}
 
-.answers-revition {
-    width: 95%;
-    margin: 16px 8px;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: auto;
-    gap: 8px 8px;
+    h3 {
+        margin-top: 16px;
+    }
 
-    .answers-list {
+    .user-info {
+        width: 70%;
+        display: grid;
+        grid-template-columns: 0.5fr 1fr;
+        grid-template-rows: auto;
+        row-gap: 0.8px;
+        column-gap: 0.8px;
+
+        p {
+            border: 1px solid #cfd8dc;
+            margin: 0;
+            padding: 8px;
+        }
+    }
+
+    .total-result {
         display: flex;
         align-items: center;
-        justify-content: flex-start;
-        border: 1px solid grey;
-        padding: 4px;
+        margin: 16px;
+        padding: 8px;
+
+        h3 {
+            margin: 0 8px;
+            font-weight: 400;
+            font-size: 1.3rem;
+        }
 
         p {
             margin: 0 8px;
+            font-size: 1.2rem;
         }
     }
 }
@@ -101,19 +124,67 @@ main {
             }
         }
 
-        .feedback {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 16px;
+        .result {
+            width: 90%;
             border: 1px solid var(--main-color2);
             border-radius: 5px;
-            background-color: azure;
             display: flex;
             align-items: center;
+            padding: 8px;
+            margin: 16px 8px;
 
             p {
+                margin: 0;
+                font-size: 1.1rem;
+            }
+
+            .result-value {
+                margin-left: 16px;
+                font-weight: 500;
+            }
+
+            mat-icon {
                 margin: 0 16px;
             }
         }
     }
+
+    .edit-result {
+        width: 50%;
+
+        .config-container {
+            width: 95%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            mat-panel-title {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+
+                p {
+                    margin: 0 16px;
+                    color: var(--main-color2);
+                    font-size: 1.1rem;
+                    font-weight: 600;
+                }
+            }
+
+            .config-options {
+                width: 100%;
+
+                mat-form-field {
+                    width: 100%;
+                }
+            }
+        }
+    }
+}
+
+.buttons {
+    margin: 16px 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 16px;
 }

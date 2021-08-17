@@ -88,7 +88,7 @@ export class EvaluationViewComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.exerciseReceived.unsubscribe();
+    // this.exerciseReceived.unsubscribe();
   }
 
   handleEditorInit(e) {
@@ -101,7 +101,7 @@ export class EvaluationViewComponent implements OnInit, OnDestroy {
   }
 
   getExercise() {
-    this.exerciseReceived = this.exercService.exerciseDetail(this.idCurso, this.exercId)
+    let exerciseReceived = this.exercService.exerciseDetail(this.idCurso, this.exercId)
       .valueChanges()
       .subscribe((ex: any) => {
         const finishExams = this.exercService.getUserAnswers(this.idCurso, this.exercId, this.stdId)
@@ -139,6 +139,7 @@ export class EvaluationViewComponent implements OnInit, OnDestroy {
               this.loadAnswers();
             }
           })
+          exerciseReceived.unsubscribe();
       })
   }
 
@@ -347,7 +348,7 @@ export class EvaluationViewComponent implements OnInit, OnDestroy {
       } else {
         this.qNumber += 1;
         this.testEnd = true;
-        // console.log(this.qNumber)
+        //console.log(this.totalAnswers);
       }
     }
   }

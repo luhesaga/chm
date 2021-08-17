@@ -18,7 +18,7 @@ export class EvaluationFinishComponent implements OnInit, OnDestroy {
   testId;
   revitionView = false;
 
-  //testReceived;
+  testReceived;
   test;
 
   //anwersReceived;
@@ -60,7 +60,6 @@ export class EvaluationFinishComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // this.testReceived.unsubscribe();
     // this.anwersReceived.unsubscribe();
   }
 
@@ -68,7 +67,6 @@ export class EvaluationFinishComponent implements OnInit, OnDestroy {
     const finishExams = this.exerService.getUserAnswers(this.idCurso, this.exercId, this.stdId)
           .valueChanges()
           .subscribe(all => {
-            console.log(all.length);
             this.getTest(all.length);
             finishExams.unsubscribe();
           })
@@ -78,7 +76,6 @@ export class EvaluationFinishComponent implements OnInit, OnDestroy {
     let testReceived =this.exerService.exerciseDetail(this.idCurso, this.exercId)
       .valueChanges()
       .subscribe((ex: any) => {
-        console.log(ex);
         if (totalTest < ex.intentos) {
           this.revitionAll = false;
         } else {
@@ -97,8 +94,13 @@ export class EvaluationFinishComponent implements OnInit, OnDestroy {
     let anwersReceived = this.exerService.detailTest(this.idCurso, this.exercId, this.stdId, this.testId)
       .valueChanges()
       .subscribe(u => {
+        if (u.fecha) {
+          u.fecha = new Date(u.fecha).toLocaleDateString();
+        }
+        console.log(u);
+        this.testReceived = u;
         this.answers = u.respuestas;
-        console.log(this.answers);
+        // console.log(this.answers);
         let nota: number = 0;
         let contType5 = 0;
         u.respuestas.forEach(r => {

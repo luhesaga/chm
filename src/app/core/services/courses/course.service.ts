@@ -22,6 +22,11 @@ export class CourseService {
     return this.fireStore.doc(`cursos/${courseId}/matriculados/${userId}`);
   }
 
+  listRegisteredUsers(courseId: string): AngularFirestoreCollection {
+    return this.fireStore.collection(`cursos/${courseId}/matriculados`, ref =>
+      ref.orderBy('nombre', 'asc'));
+  }
+
   coursesByCategory(category: string): AngularFirestoreCollection {
     return this.fireStore.collection(`cursos`, ref =>
       ref.where('categoria', '==', category));

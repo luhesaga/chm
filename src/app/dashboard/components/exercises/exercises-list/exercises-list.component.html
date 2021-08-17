@@ -47,6 +47,13 @@
             (click)="goToQuestionList(element.id)">
             <mat-icon style="color: black;">build</mat-icon>
           </button>
+          <button
+            mat-stroked-button
+            color="primary"
+            matTooltip="Resultados estudiantes"
+            (click)="goToResults(element)">
+            <mat-icon style="color: greenyellow;">equalizer</mat-icon>
+          </button>
           <button mat-stroked-button color="secondary" (click)="deleteExercise(element)">
             <mat-icon>delete</mat-icon>
           </button>

@@ -136,6 +136,10 @@ export class ExercisesListComponent implements OnInit, OnDestroy, AfterViewInit 
     this.router.navigate([`cursos/ejercicios/${this.courseId}/questions/${id}`]);
   }
 
+  goToResults(evaluation) {
+    this.router.navigate([`cursos/ejercicios/revisar/${this.courseId}/${evaluation.id}`]);
+  }
+
   answersQuantity(id): number {
     let largo;
     this.dataSource.data.forEach((ex: any) => {

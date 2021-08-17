@@ -239,17 +239,13 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
   }
 
   setImgSizeToNormal(img) {
-    //img.setAttribute('width', this.imgWidth);
     img.setAttribute('width', '80%');
-    //img.setAttribute('height', this.imgHeight);
     img.setAttribute('height', '80%');
   }
 
   setFontSize() {
     const parrafo = document.querySelector('p span');
-    console.log(parrafo);
     if (parrafo) {
-      console.log(parrafo);
       parrafo.setAttribute('style','font-size: 1.2rem; text-align: justify; color: #333333');
       parrafo.parentElement.setAttribute('style','text-align: left');
     }
@@ -268,8 +264,6 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
       videoconferencia: this.meetOpt,
     }
 
-    console.log(opt);
-
     this.courseService.editCourseOptions(this.id, opt)
       .then(() => {
         Swal.fire({
@@ -278,7 +272,6 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
           text: 'Guardado exitosamente',
           confirmButtonText: 'cerrar',
         });
-        
       })
       .catch((error) => {
         Swal.fire({

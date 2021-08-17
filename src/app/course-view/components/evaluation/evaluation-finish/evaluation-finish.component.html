@@ -13,7 +13,8 @@
         *ngIf="test?.retroalimentacion === 1 && (mostrarResultados !== 2 && mostrarResultados !== 5)">
             Has obtenido un resultado de {{result}}%
         </p>
-        <p *ngIf="revition">Hay preguntas pendientes de revisión por el tutor.</p>
+        <p *ngIf="revition">{{ testReceived?.revisado ? 'La prueba fué calificada por el tutor.' : 'Hay preguntas pendientes de revisión por el tutor.' }}</p>
+        <p *ngIf="testReceived?.revisado">Fecha de Revisión: {{testReceived.fecha}}</p>
     </section>
     <section
         class="answers-revition"
@@ -62,7 +63,7 @@
                     <p *ngIf="r.respuesta">{{ letters[r.value - 1] + '. ' + parseHTML(r.answer) }}</p>
                 </div>
             </div>
-            <!-- preguntas respuesta libre -->
+            <!-- preguntas rellenar blancos -->
             <div *ngIf="item.tipoPregunta === 3">
                 <p class="q-number">{{'pregunta ' + (i + 1) + '. '}}</p>
                 <p>{{ qFormatter(item.pregunta) }}</p>
@@ -101,10 +102,16 @@
                 <p class="q-a-title">Tu respuesta:</p>
                 <p>{{ parseHTML(item.opcionesEscogidas) }}</p>
                 <p class="q-a-title">Respuesta Correcta</p>
-                <p>Debe calificarla el tutor</p>
+                <p>{{ testReceived?.revisado ? 'Revisada por el tutor.' : 'Debe revisarla el tutor.' }}</p>
             </div>
-            <mat-icon *ngIf="item.valor === 100 && item.tipoPregunta !== 5" style="color: green;">check_circle</mat-icon>
-            <p *ngIf="item.valor === 100 && item.tipoPregunta !== 5">Correcta</p>
+            <!-- retro del tutor -->
+            <p class="q-a-title" *ngIf="item.retro">Comentario del tutor</p>
+            <div class="feedback" *ngIf="item.retro">
+                <p>{{item.retro}}</p>
+            </div>
+            <!-- resultado de la pregunta -->
+            <mat-icon *ngIf="item.valor === 100" style="color: green;">check_circle</mat-icon>
+            <p *ngIf="item.valor === 100">Correcta</p>
             <!-- Parcialmente correcta -->
             <mat-icon *ngIf="item.valor > 0 && item.valor < 100 && item.tipoPregunta !== 5" style="color: orange;">error</mat-icon>
             <p *ngIf="item.valor > 0 && item.valor < 100 && item.tipoPregunta !== 5">Parcial</p>
@@ -112,8 +119,12 @@
             <mat-icon *ngIf="item.valor === 0 && item.tipoPregunta !== 5" style="color: tomato;">error</mat-icon>
             <p *ngIf="item.valor === 0 && item.tipoPregunta !== 5">Incorrecta</p>
             <!-- Respuestas libres -->
-            <mat-icon *ngIf="item.tipoPregunta == 5" style="color: orange;">error</mat-icon>
-            <p *ngIf="item.tipoPregunta === 5">Pendiente por revisión</p>
+            <mat-icon *ngIf="(item.valor > 0 && item.valor < 100) && (item.tipoPregunta == 5 && testReceived?.revisado)" style="color: orange;">error</mat-icon>
+            <p *ngIf="(item.valor > 0 && item.valor < 100) && (item.tipoPregunta == 5 && testReceived?.revisado)">Parcial</p>
+            <mat-icon *ngIf="(item.valor === 0) && (item.tipoPregunta == 5 && testReceived?.revisado)" style="color: tomato;">error</mat-icon>
+            <p *ngIf="(item.valor === 0) && (item.tipoPregunta == 5 && testReceived?.revisado)">Incorrecta</p>
+            <mat-icon *ngIf="item.tipoPregunta == 5 && !testReceived?.revisado" style="color: orange;">error</mat-icon>
+            <p *ngIf="item.tipoPregunta == 5 && !testReceived?.revisado">Pendiente por revisión</p>
 
         </div>
     </section>

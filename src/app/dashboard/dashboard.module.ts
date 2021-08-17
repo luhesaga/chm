@@ -44,6 +44,8 @@ import { AdsCursoComponent } from './components/cursos/ads-curso/ads-curso.compo
 import { CreateAdsCursoComponent } from './components/cursos/ads-curso/create-ads-curso/create-ads-curso.component';
 import { EditAdsCursoComponent } from './components/cursos/ads-curso/edit-ads-curso/edit-ads-curso.component';
 import { ModalDocumentsComponent } from './components/documents/modal-documents/modal-documents.component';
+import { ExercisesRevComponent } from './components/exercises/exercises-rev/exercises-rev/exercises-rev.component';
+import { ExercisesRevDetailComponent } from './components/exercises/exercises-rev-detail/exercises-rev-detail/exercises-rev-detail.component';
 
 
 
@@ -86,6 +88,8 @@ import { ModalDocumentsComponent } from './components/documents/modal-documents/
     CreateAdsCursoComponent,
     EditAdsCursoComponent,
     ModalDocumentsComponent,
+    ExercisesRevComponent,
+    ExercisesRevDetailComponent,
     ],
   imports: [
     CommonModule,

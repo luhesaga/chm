@@ -86,6 +86,17 @@ export class ExercisesService {
     });
   }
 
+  AnswersRevition(courseId: string, exercId: string, userId: string, answers: any, id: string) {
+
+    let fecha = new Date().toUTCString();
+    return this.fireStore.doc(`ejercicios/${courseId}/ejercicios/${exercId}/${userId}/${id}`)
+    .update({
+      revisado: true,
+      fechaRevision: fecha,
+      respuestas: answers,
+    });
+  }
+
   getUserAnswers(courseId: string, exercId: string, userId: string): AngularFirestoreCollection {
     return this.fireStore.collection(`ejercicios/${courseId}/ejercicios/${exercId}/${userId}`, ref =>
     ref.orderBy('fecha', 'asc'));
@@ -93,5 +104,9 @@ export class ExercisesService {
 
   detailTest(courseId: string, exercId: string, userId: string, testId: string): AngularFirestoreDocument {
     return this.fireStore.doc(`ejercicios/${courseId}/ejercicios/${exercId}/${userId}/${testId}`);
+  }
+
+  deleteTest(courseId: string, exercId: string, userId: string, id: string) {
+    return this.fireStore.doc(`ejercicios/${courseId}/ejercicios/${exercId}/${userId}/${id}`).delete();
   }
 }

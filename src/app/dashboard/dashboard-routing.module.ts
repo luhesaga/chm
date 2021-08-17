@@ -37,6 +37,8 @@ import { DocumentsComponent } from './components/documents/documents.component';
 import { AdsCursoComponent } from './components/cursos/ads-curso/ads-curso.component';
 import { CreateAdsCursoComponent } from './components/cursos/ads-curso/create-ads-curso/create-ads-curso.component';
 import { EditAdsCursoComponent } from './components/cursos/ads-curso/edit-ads-curso/edit-ads-curso.component';
+import { ExercisesRevComponent } from './components/exercises/exercises-rev/exercises-rev/exercises-rev.component';
+import { ExercisesRevDetailComponent } from './components/exercises/exercises-rev-detail/exercises-rev-detail/exercises-rev-detail.component';
 
 
 const routes: Routes = [
@@ -138,6 +140,14 @@ const routes: Routes = [
       {
         path: 'cursos/ejercicios/crear/:courseId',
         component: ExercisesCreateComponent
+      },
+      {
+        path: 'cursos/ejercicios/revisar/:courseId/:exerciseId',
+        component: ExercisesRevComponent
+      },
+      {
+        path: 'cursos/ejercicios/revisar/detalle/:courseId/:exerciseId/:testId/:stdId',
+        component: ExercisesRevDetailComponent
       },
       {
         path: 'cursos/ejercicios/editar/:courseId/:exerciseId',

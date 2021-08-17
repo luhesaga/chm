@@ -13,49 +13,46 @@
 }
 
 table {
-    width: 80%;
+    width: 95%;
     margin: 0 auto;
     text-align: left;
 }
 
-.mat-header-cell
-{
+.example-margin {
+    margin: 0 12px;
+    position: relative;
+    padding-bottom: 16px;
+    //color: var(--main-color2) !important;
+}
+
+.example-margin span {
+    //color: var(--main-color2);
+    font-size: 12px;
+    position: absolute;
+    left: 8px;
+    bottom: 0;
+}
+
+.mat-header-cell {
     color: black;
     text-align: center;
 }
 
-.mat-cell
-{
-    color:rgba(0,0,0,.54);
+.mat-cell {
+    color: rgba(0, 0, 0, .54);
     padding: 0;
     margin: 0;
 }
 
-td.mat-cell:last-of-type
-{
+td.mat-cell:last-of-type {
     padding: 0;
 }
 
-// .name
-// {
-//     cursor: pointer;
-// }
-
-.buttons
-{
+.buttons {
     text-align: center;
 }
 
-.buttons .mat-stroked-button
-{
+.buttons .mat-stroked-button {
     margin-left: 5px;
     min-width: 40px;
-}
-
-.leccionesHeader
-{
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    margin-bottom: 1rem;
 }
