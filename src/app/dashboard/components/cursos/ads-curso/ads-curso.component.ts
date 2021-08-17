@@ -6,6 +6,13 @@ import { MatPaginator } from '@angular/material/paginator';
 import Swal from 'sweetalert2';
 import { CourseService } from 'src/app/core/services/courses/course.service';
 import { UsersService } from 'src/app/core/services/users/users.service';
+import {MatDialog} from '@angular/material/dialog';
+import { ModalVistaAdsComponent } from './modal-vista-ads/modal-vista-ads.component';
+
+export interface DialogData {
+  descripcion: string;
+  titulo: string;
+}
 
 @Component({
   selector: 'app-ads-curso',
@@ -29,7 +36,8 @@ export class AdsCursoComponent implements OnInit, AfterViewInit {
     private activatedRoute: ActivatedRoute,
     private courseService: CourseService,
     private userService: UsersService,
-    private router: Router
+    private router: Router,
+    public dialog: MatDialog
   ) {
     this.matriculados =[];
     this.idCurso = this.activatedRoute.snapshot.params.idCurso;
@@ -148,6 +156,17 @@ export class AdsCursoComponent implements OnInit, AfterViewInit {
     } else {
       this.router.navigate([`cursos/index/${this.idCurso}/${this.stdId}`]);
     }
+  }
+
+  openModalVista(element:any) {
+    const dialogRef = this.dialog.open(ModalVistaAdsComponent,{
+      width: '90%',
+      height:'30rem',
+      data:{
+        descripcion:element.descripcion,
+        titulo: element.titulo
+      }
+    });
   }
 
 

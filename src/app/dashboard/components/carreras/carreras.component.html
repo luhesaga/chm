@@ -1,0 +1,15 @@
+<div class="container">
+
+    <h2>Gestión de Carreras</h2>
+    <mat-form-field appearance="legacy" class="search">
+        <mat-label>Buscar</mat-label>
+        <input matInput placeholder="Placeholder"><!--(keyup)="applyFilter($event.target.value)" -->
+        <mat-icon matSuffix>search</mat-icon>
+        <mat-hint>puede buscar por cualquier campo</mat-hint>
+    </mat-form-field>
+    <button
+        mat-raised-button
+        routerLink="/carreras/create"
+        style="background: var(--main-color2); color: white;">Crear nuevo</button>
+
+</div>
