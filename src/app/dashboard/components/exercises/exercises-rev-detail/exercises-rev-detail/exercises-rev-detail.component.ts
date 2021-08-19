@@ -17,10 +17,11 @@ export class ExercisesRevDetailComponent implements OnInit {
   stdId;
   exercise;
   user;
-  answers;
-  answersModified;
+  answers: any = [];
+  answersModified: any;
   fecha;
   result;
+  tarea = false;
 
   letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'O',
               'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'X', 'Y', 'Z'];
@@ -62,27 +63,56 @@ export class ExercisesRevDetailComponent implements OnInit {
   }
 
   getAnswers() {
+    this.answers.length = 0;
     let anwersReceived = this.exerciseService.detailTest(this.courseId, this.exerciseId, this.stdId, this.testId)
       .valueChanges()
       .subscribe(u => {
-        this.answers = u.respuestas;
-        this.answersModified = u.respuestas.slice()
+        // console.log(u);
         this.fecha = new Date(u.fecha).toLocaleDateString();
-        this.getTotalResult(u.respuestas);
+        if (u.tipo !== 'tarea') {
+          this.answers = u.respuestas;
+          this.answersModified = u.respuestas.slice()
+          this.getTotalResult(u.respuestas);
+        } else {
+          this.tarea = true;
+          if (u.respuestas[0]) {
+            this.answers.push(u.respuestas[0]);
+          } else {
+            this.answers.push(u.respuestas);
+          }
+          this.answersModified = this.answers.slice();
+          this.getTotalResult(this.answers);
+        }
         anwersReceived.unsubscribe();
       });
   }
 
   getTotalResult(answers) {
     let nota: number = 0;
-    answers.forEach(r => {
-      nota += r.valor;
-    });
-    this.result = Math.ceil((nota / (answers.length * 100)) * 100);
+    if (!this.tarea) {
+      answers.forEach(r => {
+        if (r.valor) {
+          nota += r.valor;
+        }
+      });
+      if (nota > 0) {
+        this.result = Math.ceil((nota / (answers.length * 100)) * 100);
+      } else {
+        this.result = 0;
+      }
+    } else {
+      // console.log(answers)
+      this.result = answers[0].valor ? answers[0].valor : 0;
+    }
   }
 
   saveCalification(item, i) {
     this.answersModified[i] = item;
+    this.getTotalResult(this.answersModified);
+  }
+
+  saveTaskCalification() {
+    this.answersModified = this.answers;
     this.getTotalResult(this.answersModified);
   }
 
@@ -108,6 +138,11 @@ export class ExercisesRevDetailComponent implements OnInit {
     let option = document.createElement('div');
     option.innerHTML = html;
     return option.textContent;
+  }
+
+  parseAnswer() {
+    let item = document.getElementById('userAnswer');
+    item.innerHTML = this.answers[0].respuesta ? this.answers[0].respuesta : 'sin respuesta online';
   }
 
   qFormatter(question) {

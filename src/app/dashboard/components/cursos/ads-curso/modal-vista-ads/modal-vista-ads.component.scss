@@ -1,4 +1,4 @@
-    .title {
+.title {
     display: flex;
     justify-content: space-between;
     //background: #37474f;
@@ -8,20 +8,30 @@
     padding: 8px 16px;
     align-items: center;
     margin-bottom: 0.5rem;
-        h2{
-            width: 100%;
-            text-align: center;
-        }
-        mat-icon{
-            cursor: pointer;
-        }
+
+    h2 {
+        width: 100%;
+        text-align: center;
     }
 
-    .title mat-icon {
+    mat-icon {
+        cursor: pointer;
+    }
+}
+
+.title mat-icon {
     color: white;
-    }
+}
 
-    .title h2 {
+.title h2 {
     font-weight: 500;
     margin: 0 16px 0px 40px;
-    }
+}
+
+section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 24px;
+}

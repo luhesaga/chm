@@ -1,5 +1,7 @@
 <div class="title dialog-header-close">
     <h2>{{data.titulo}}</h2>
     <mat-icon mat-dialog-close style="color: red;">close</mat-icon>
-  </div>
-<div [innerHTML]="data.descripcion"></div>
+</div>
+<section>
+  <div id="ads-content">{{parseHTML(data.descripcion)}}</div>
+</section>

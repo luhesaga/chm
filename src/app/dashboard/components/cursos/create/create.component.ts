@@ -101,8 +101,8 @@ listCategories() {
 listTeachers() {
 	this.userService.listTeachers().valueChanges()
 		.subscribe((teachers: any) => {
+			this.teachers = [];
 			teachers.forEach(element => {
-				this.teachers = [];
 				const teacher = {
 					id: element.id,
 					profesor: element.nombres + ' ' + element.apellidos,

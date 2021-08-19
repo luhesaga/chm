@@ -16,11 +16,52 @@
             <p>{{ result >= exercise?.porcentaje ? 'Aprobado' : 'No Aprobado'}}</p>
         </div>
     </section>
-    <section class="buttons">
+    <section class="buttons" *ngIf="!tarea">
         <button mat-raised-button color="primary" (click)="saveRevition()">Guardar todos los cambios</button>
         <button mat-raised-button color="warn" (click)="goBack()">Cancelar</button>
     </section>
-    <section class="total-revition">
+    <section class="total-revition" *ngIf="tarea">
+        <div class="questions-and-answers">
+            <div style="width: 100%;">
+                <p class="q-number">pregunta:</p>
+                <p>{{ answers[0].question }}</p>
+                <p class="q-a-title">Respuesta online:</p>
+                <p id="userAnswer">{{ parseAnswer() }}</p>
+                <p class="q-a-title">Archivo subido</p>
+                <a href="{{answers[0].ruta}}">{{ answers[0].archivo }}</a>
+                <div class="edit-result">
+                    <div class="config-container">
+                        <mat-accordion class="example-headers-align" multi>
+                            <mat-expansion-panel>
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        <p>Editar calificación</p>
+                                        <mat-icon>settings</mat-icon>
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <div class="config-options">
+                                    <mat-form-field class="example-full-width" appearance="fill">
+                                        <mat-label>Calificación</mat-label>
+                                        <input
+                                            [(ngModel)]="answers[0].valor"
+                                            matInput type="number"
+                                            placeholder="1 a 100"
+                                            min="0" max="100">
+                                    </mat-form-field>
+                                    <mat-form-field class="example-full-width" appearance="fill">
+                                        <mat-label>Retroalimentación</mat-label>
+                                        <textarea [(ngModel)]="answers[0].retro" matInput placeholder="Escriba un comentario"></textarea>
+                                    </mat-form-field>
+                                </div>
+                                <button (click)="saveTaskCalification()" mat-raised-button>Guardar</button>
+                            </mat-expansion-panel>
+                        </mat-accordion>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="total-revition" *ngIf="!tarea">
         <div class="questions-and-answers" *ngFor="let item of answers; let i = index">
             <!-- opcion unica -->
             <div style="width: 100%;" *ngIf="item.tipoPregunta === 1">

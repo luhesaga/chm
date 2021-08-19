@@ -68,20 +68,44 @@ export class ExercisesRevComponent implements OnInit, AfterViewInit {
         if (item.length > 0) {
           item.forEach(test => {
             let fecha = new Date(test.fecha).toLocaleDateString();
-            let valor = 0;
-            test.respuestas.forEach(result => {
-              valor += result.valor;
-            })
-            valor = Math.ceil((valor / (test.respuestas.length * 100)) * 100);
-            this.data.push({
-              nombreEstudiante: u.nombre,
-              idEstudiante: u.id,
-              idTest: test.id,
-              nota: valor,
-              resultados: test,
-              fecha: fecha,
-              estado: test.revisado ? 'Revisada' : 'Pendiente por revisión'
-            })
+            if (!test.tipo) {
+              let valor = 0;
+              test.respuestas.forEach(result => {
+                valor += result.valor;
+              })
+              valor = Math.ceil((valor / (test.respuestas.length * 100)) * 100);
+              this.data.push({
+                nombreEstudiante: u.nombre,
+                idEstudiante: u.id,
+                idTest: test.id,
+                nota: valor,
+                resultados: test,
+                fecha: fecha,
+                estado: test.revisado ? 'Revisada' : 'Pendiente por revisión'
+              })
+            } else {
+              if (test.respuestas[0]) {
+                this.data.push({
+                  nombreEstudiante: u.nombre,
+                  idEstudiante: u.id,
+                  idTest: test.id,
+                  resultados: test,
+                  nota: test.respuestas[0].valor ? test.respuestas[0].valor : 0,
+                  fecha: fecha,
+                  estado: test.revisado ? 'Revisada' : 'Pendiente por revisión'
+                })
+              } else {
+                this.data.push({
+                  nombreEstudiante: u.nombre,
+                  idEstudiante: u.id,
+                  idTest: test.id,
+                  resultados: test,
+                  nota: test.respuestas.valor ? test.respuestas.valor : 0,
+                  fecha: fecha,
+                  estado: test.revisado ? 'Revisada' : 'Pendiente por revisión'
+                })
+              }
+            }
           })
         }
         userTest.unsubscribe();

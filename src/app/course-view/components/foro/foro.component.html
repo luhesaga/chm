@@ -17,9 +17,9 @@
     <div class="foro | respuestas">
     <h3>{{respuesta.nombreCompleto}}</h3>
     <div *ngIf="respuesta.tipo === 'citar'">
-      <div [innerHTML]="contenido.foro" class="cita"></div>
+      <div id="{{respuesta.id}}" class="cita">{{parseHTML(contenido.foro, respuesta.id)}}</div>
     </div>
-    <div [innerHTML]="respuesta.contenido"></div>
+    <div id="{{respuesta.id + 'resp'}}">{{parseHTML(respuesta.contenido, respuesta.id)}}</div>
       <button
       (click)="goToReplyUsario(respuesta.id)"
       class="corner-button">
@@ -45,7 +45,7 @@
         <h3 class="tituloComentario">Comentarios</h3>
         <div *ngFor="let comentario of respuesta.comentario; let i = index" class="comentario">
           <h4>{{comentario.nombreCompleto}}</h4>
-          <div [innerHTML]="comentario.contenido"></div>
+          <div id="{{respuesta.id + 'com'}}">{{parseHTML(comentario.contenido, respuesta.id)}}</div>
           <button
           *ngIf="usuario.id === comentario.idUsuario ||
           usuario.perfil === 'administrador'"

@@ -182,12 +182,22 @@ export class EvaluationHomeComponent implements OnInit, OnDestroy, DoCheck {
         if (t[0]) {
           this.edit = true;
           this.fsId = t[0].id;
-          this.archivo = t[0].respuestas.archivo;
-          this.userAnswer = this.parseHTML(t[0].respuestas.respuesta);
-          this.question = t[0].respuestas.question;
-          this.ruta = t[0].respuestas.ruta;
-          this.calificacion = t[0].respuestas.calificacion ? t[0].respuestas.calificacion : 'pendiente por calificar.';
-          this.comentarioTutor = t[0].respuestas.comentario ? t[0].respuestas.comentario : 'Sin comentarios del tutor.';
+
+          if (t[0].respuestas[0]) {
+            this.calificacion = t[0].respuestas[0].valor ? t[0].respuestas[0].valor + '%' : 'pendiente por calificar.';
+            this.comentarioTutor = t[0].respuestas[0].retro ? t[0].respuestas[0].retro : 'Sin comentarios del tutor.';
+            this.question = t[0].respuestas[0].question;
+            this.ruta = t[0].respuestas[0].ruta;
+            this.archivo = t[0].respuestas[0].archivo;
+            this.userAnswer = this.parseHTML(t[0].respuestas[0].respuesta);
+          } else {
+            this.calificacion = t[0].respuestas.valor ? t[0].respuestas.valor + '%' : 'pendiente por calificar.';
+            this.comentarioTutor = t[0].respuestas.retro ? t[0].respuestas.retro : 'Sin comentarios del tutor.';
+            this.question = t[0].respuestas.question;
+            this.ruta = t[0].respuestas.ruta;
+            this.archivo = t[0].respuestas.archivo;
+            this.userAnswer = this.parseHTML(t[0].respuestas.respuesta);
+          }
         }
         if (!this.edit) {
           this.fsId = this.fireStore.createId();
@@ -358,7 +368,7 @@ export class EvaluationHomeComponent implements OnInit, OnDestroy, DoCheck {
 
   saveTest() {
     const respuesta = this.prepareTestAnswer();
-    this.exerciseService.addUserAnswers
+    this.exerciseService.addUserJob
       (this.idCurso, this.exercId, this.stdId, respuesta, this.fsId)
         .then(() => {
           Swal.fire({

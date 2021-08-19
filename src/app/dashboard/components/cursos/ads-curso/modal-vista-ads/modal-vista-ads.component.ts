@@ -16,4 +16,9 @@ export class ModalVistaAdsComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  parseHTML(data) {
+    let ads = document.getElementById('ads-content')
+    ads.innerHTML = data;
+  }
+
 }

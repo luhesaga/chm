@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
 import { UsersService } from '../../../../core/services/users/users.service';
-import Swal from 'sweetalert2';
+//import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 
 @Component({
@@ -46,9 +46,9 @@ export class RegisterComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private userService: UsersService,
+    //private userService: UsersService,
     private auth: AuthService,
-    private route: Router
+   // private route: Router
   ) {
     this.userForm = this.formBuilder.group({
       nombres: new FormControl('', Validators.compose([
@@ -81,39 +81,7 @@ export class RegisterComponent implements OnInit {
   }
 
   saveUser(data): void {
-
-    this.auth.registerUser(data.mail, data.password)
-      .then((res) => {
-        this.userService.createUser(data, res.user.uid)
-          .then(() => {
-            Swal.fire({
-              icon: 'success',
-              title: 'Exito!',
-              text: 'Usuario agregado exitosamente',
-              confirmButtonText: 'cerrar',
-            });
-            this.route.navigate(['home/login']);
-          })
-          .catch((error) => {
-            Swal.fire({
-              icon: 'error',
-              title: 'error',
-              text: 'Ocurrio un error' + error,
-              confirmButtonText: 'cerrar',
-            });
-          });
-      })
-      .catch((error) => {
-        const message = this.printErrorByCode(error.code);
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: message,
-          backdrop: false,
-          confirmButtonColor: '#eb445a',
-          confirmButtonText: 'cerrar',
-        });
-      });
+    this.auth.registerUser(data.mail, data.password, data);
   }
 
   printErrorByCode(code: string): string {

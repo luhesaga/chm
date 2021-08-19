@@ -76,6 +76,17 @@ export class ExercisesService {
     });
   }
 
+  addUserJob(courseId: string, exercId: string, userId: string, answers: any, id: string) {
+    let fecha = new Date().toUTCString();
+    return this.fireStore.doc(`ejercicios/${courseId}/ejercicios/${exercId}/${userId}/${id}`)
+    .set({
+      id,
+      tipo: 'tarea',
+      fecha,
+      respuestas: answers,
+    });
+  }
+
   updateUserAnswers(courseId: string, exercId: string, userId: string, answers: any, id: string) {
 
     let fecha = new Date().toUTCString();
@@ -98,6 +109,7 @@ export class ExercisesService {
   }
 
   getUserAnswers(courseId: string, exercId: string, userId: string): AngularFirestoreCollection {
+    // console.log(`curso: ${courseId} ejercicio: ${exercId} usuario: ${userId}`)
     return this.fireStore.collection(`ejercicios/${courseId}/ejercicios/${exercId}/${userId}`, ref =>
     ref.orderBy('fecha', 'asc'));
   }

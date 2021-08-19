@@ -4,6 +4,7 @@ import { AuthService } from 'src/app/core/services/auth/auth.service';
 import { LessonsService } from 'src/app/core/services/lessons/lessons.service';
 import Swal from 'sweetalert2';
 import { UsersService } from '../../../core/services/users/users.service';
+import { ForumService } from '../../../core/services/forums/forum.service';
 
 @Component({
   selector: 'app-foro',
@@ -25,11 +26,15 @@ export class ForoComponent implements OnInit, DoCheck, OnDestroy {
 
   answersReceived;
 
+  qualifyAnswer = true;
+  userQualifyAnswers: any;
+
   constructor(
     private userService: UsersService,
     private router: Router,
     private lessonService: LessonsService,
     private activatedRoute: ActivatedRoute,
+    private foroService: ForumService
   ) {
     this.usuario = {};
     this.respuestas = [];
@@ -43,6 +48,7 @@ export class ForoComponent implements OnInit, DoCheck, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.getUserAnswers();
     this.getContent();
     this.getLogguedUser();
     this.markAsViewed();
@@ -60,6 +66,18 @@ export class ForoComponent implements OnInit, DoCheck, OnDestroy {
 
   ngOnDestroy(): void {
     this.answersReceived.unsubscribe();
+  }
+
+  getUserAnswers() {
+    let userAnswers = this.foroService.getUserAnswers(this.idCurso, this.idLesson, this.idContent, this.stdId)
+      .valueChanges()
+      .subscribe(ans => {
+        if (ans.length > 0) {
+          this.qualifyAnswer = false;
+          this.userQualifyAnswers = ans;
+        }
+        userAnswers.unsubscribe();
+      })
   }
 
   markAsViewed() {
@@ -120,7 +138,13 @@ export class ForoComponent implements OnInit, DoCheck, OnDestroy {
 
 
   deleteReplyForo(idForo: string): void {
-    this.lessonService.deleteReplyForo(this.idCurso, this.idLesson, this.idContent, idForo);
+    this.lessonService.deleteReplyForo(this.idCurso, this.idLesson, this.idContent, idForo)
+      .then(() => {
+        if (!this.qualifyAnswer) {
+          this.foroService.deleteUserAnswer(this.idCurso, this.idLesson, this.idContent, this.stdId, this.userQualifyAnswers[0].id);
+        }
+      })
+      .catch(err => console.log(err));
   }
 
   getAdsToDelete(idForo: string): void {
@@ -174,5 +198,16 @@ export class ForoComponent implements OnInit, DoCheck, OnDestroy {
 
   goToEditarReply(idForo): void {
     this.router.navigateByUrl(`course-view/${this.idCurso}/${this.idLesson}/${this.stdId}/reply-foro/${this.idCurso}/${this.idLesson}/${this.idContent}/${this.stdId}/editar/${idForo}`);
+  }
+
+  parseHTML(html, id) {
+    let element = document.getElementById(id);
+    if (!element) {
+      element = document.getElementById(id + 'resp');
+    }
+    if (!element) {
+      element = document.getElementById(id + 'com');
+    }
+    element.innerHTML = html;
   }
 }

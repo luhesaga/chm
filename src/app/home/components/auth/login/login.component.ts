@@ -57,31 +57,7 @@ export class LoginComponent implements OnInit {
   loginUser(data): void {
     const email = data.mail;
     const pass = data.password;
-    this.auth.loginUser(email, pass)
-      .then((res) => {
-        console.log(res);
-        Swal.fire({
-          html: '<h1 style="color: white;">Estamos preparando todo para ti</h1>',
-          background: 'rgba(0,0,0,.5)',
-          showConfirmButton: false,
-          backdrop: true,
-          timer: 1000,
-          timerProgressBar: false,
-          onBeforeOpen: () => {
-            Swal.showLoading();
-          }}).then(() => {
-            this.route.navigate(['dashboard']);
-          });
-      })
-      .catch((error) => {
-        console.log(error);
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: '¡usuario o contraseña invalidos!',
-          confirmButtonText: 'cerrar',
-        });
-      });
+    this.auth.loginUser(email, pass);
   }
 
   printErrorByCode(code: string): string {
