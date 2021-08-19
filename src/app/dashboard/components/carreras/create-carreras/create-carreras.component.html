@@ -1,5 +1,5 @@
 <main>
-    <form>
+    <form [formGroup]="formCarreras" (ngSubmit)="validarFormulario()">
         <div class="title">
             <mat-icon>class</mat-icon>
             <h2>Crear nueva carrera</h2>
@@ -16,7 +16,7 @@
                     <mat-icon aria-hidden="false" aria-label="Cargar imagen">cloud_upload</mat-icon>
                     Cargar Imagen
                     </button>
-                    <input type="file" accept="image/png, image/jpeg" #fileInput/>
+                    <input (change) ="otenerImagen($event)" type="file" accept="image/png, image/jpeg" #fileInput/>
                 </label>
             </div>
             <div class="progress">
@@ -24,15 +24,27 @@
                 <!--<mat-progress-bar *ngIf="showProgressBar" mode="determinate" [value]="percentageProgressBar"></mat-progress-bar>
                 <p *ngIf="showProgressBar">{{ 'cargando ' + percentageProgressBar + '%' }}</p>-->
             </div>
+            <picture>
+                <img *ngIf="showImage.src" [src]="showImage.src" alt="portada de la carrera">
+            </picture>
         </div>
         <div class="form-inputs">
             <mat-form-field>
                 <mat-label>Nombre de la carrera</mat-label>
-                <input 
+                <input
+                formControlName="titulo"
                 type="text"
                 matInput
                 tabIndex=1/>
             </mat-form-field>
+        </div>
+        <div class="buttons">
+            <button
+                type="submit"
+                tabIndex=4
+                mat-raised-button
+                >Crear carrera</button>
+                <!--<a mat-raised-button (click)="cancel()" tabIndex=5>Cancelar</a>-->
         </div>
     </form>
 </main>

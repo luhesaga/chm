@@ -149,7 +149,7 @@ export class CreateAdsCursoComponent implements OnInit {
   {
     estudiantes.forEach(estudiante => 
     {
-      this.userService.detailUser(estudiante.id).valueChanges()
+      const unsuscribeUser = this.userService.detailUser(estudiante.id).valueChanges()
       .subscribe((estudianteMail:any)=> {
         const data = {
           to:estudianteMail.correo,
@@ -161,6 +161,7 @@ export class CreateAdsCursoComponent implements OnInit {
         e =>{
           console.log(e);
         });
+        unsuscribeUser.unsubscribe();
       });
     });
   }
