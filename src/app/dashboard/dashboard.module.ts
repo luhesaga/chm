@@ -49,6 +49,7 @@ import { ExercisesRevDetailComponent } from './components/exercises/exercises-re
 import { CarrerasComponent } from './components/carreras/carreras.component';
 import { CreateCarrerasComponent } from './components/carreras/create-carreras/create-carreras.component';
 import { ModalVistaAdsComponent } from './components/cursos/ads-curso/modal-vista-ads/modal-vista-ads.component';
+import { EditCarrerasComponent } from './components/carreras/edit-carreras/edit-carreras.component';
 
 
 
@@ -96,6 +97,7 @@ import { ModalVistaAdsComponent } from './components/cursos/ads-curso/modal-vist
     CarrerasComponent,
     CreateCarrerasComponent,
     ModalVistaAdsComponent,
+    EditCarrerasComponent,
     ],
   imports: [
     CommonModule,
