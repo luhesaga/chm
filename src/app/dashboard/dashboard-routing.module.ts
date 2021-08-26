@@ -42,6 +42,8 @@ import { ExercisesRevDetailComponent } from './components/exercises/exercises-re
 import { CarrerasComponent } from './components/carreras/carreras.component';
 import { CreateCarrerasComponent } from './components/carreras/create-carreras/create-carreras.component';
 import { EditCarrerasComponent } from './components/carreras/edit-carreras/edit-carreras.component';
+import { AddEstudiantesComponent } from './components/carreras/add-estudiantes/add-estudiantes.component';
+import { AddCursoComponent } from './components/carreras/add-curso/add-curso.component';
 
 
 const routes: Routes = [
@@ -247,6 +249,14 @@ const routes: Routes = [
       {
         path: 'carreras/edit/:idCarreras',
         component:EditCarrerasComponent
+      },
+      {
+        path: 'carreras/add-estudiantes/:idCarreras',
+        component:AddEstudiantesComponent
+      },
+      {
+        path: 'carreras/add-curso/:idCarreras',
+        component:AddCursoComponent
       }
     ]
   },

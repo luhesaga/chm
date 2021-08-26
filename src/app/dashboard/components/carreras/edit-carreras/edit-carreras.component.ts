@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { AngularFireStorage } from '@angular/fire/storage';
-import { AngularFirestore } from '@angular/fire/firestore';
 import Swal from 'sweetalert2';
 import { CarrerasService } from 'src/app/core/services/carreras/carreras.service';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -18,7 +17,6 @@ export class EditCarrerasComponent implements OnInit {
   idCarreras:string;
 
   constructor(
-    private fireStore: AngularFirestore,
     private fireStorage: AngularFireStorage,
     private formBuilder: FormBuilder,
     private carrerasService: CarrerasService,

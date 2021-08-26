@@ -50,6 +50,10 @@ import { CarrerasComponent } from './components/carreras/carreras.component';
 import { CreateCarrerasComponent } from './components/carreras/create-carreras/create-carreras.component';
 import { ModalVistaAdsComponent } from './components/cursos/ads-curso/modal-vista-ads/modal-vista-ads.component';
 import { EditCarrerasComponent } from './components/carreras/edit-carreras/edit-carreras.component';
+import { AddEstudiantesComponent } from './components/carreras/add-estudiantes/add-estudiantes.component';
+import { AddCursoComponent } from './components/carreras/add-curso/add-curso.component';
+import { DescripcionCarreraComponent } from './components/carreras/descripcion-carrera/descripcion-carrera.component';
+import { DescripcionEditComponent } from './components/carreras/descripcion-carrera/descripcion-edit/descripcion-edit.component';
 
 
 
@@ -98,6 +102,10 @@ import { EditCarrerasComponent } from './components/carreras/edit-carreras/edit-
     CreateCarrerasComponent,
     ModalVistaAdsComponent,
     EditCarrerasComponent,
+    AddEstudiantesComponent,
+    AddCursoComponent,
+    DescripcionCarreraComponent,
+    DescripcionEditComponent,
     ],
   imports: [
     CommonModule,

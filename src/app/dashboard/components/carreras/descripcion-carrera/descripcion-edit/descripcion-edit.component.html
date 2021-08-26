@@ -1,0 +1,40 @@
+<main>
+    <div class="title dialog-header-close">
+        <mat-icon>edit</mat-icon>
+        <h2>Editar {{ data.campoEdit }} de la carrera</h2>
+        <mat-icon mat-dialog-close style="color: red;">close</mat-icon>
+    </div>
+    <mat-dialog-content>
+        <form>
+            <div class="mat-form-field-wrapper">
+            <editor
+                apiKey="fa82nlmdggdzt2rwcpx7k706ohjcnf9wo3ioar2p06d10yyk"
+                class="mat-elevation-z1"
+                [(ngModel)]="contenido"
+                name="contenido"
+                (onInit)="handleEditorInit($event)"
+                [init]="{
+                    icons: 'material',
+                    skin: 'borderless',
+                    plugins: ['wordcount', 'lists', 'image imagetools', 'media'],
+                    menubar: false,
+                    min_height: 350,
+                    width : '750',
+                    toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | image | media',
+                    media_live_embeds: true
+                }"
+            ></editor>
+        </div>
+            <div class="buttons">
+            <button
+                (click)="validarContenido()"
+                mat-stroked-button
+                style="background: var(--main-color2); color: white;"
+                type="submit">
+                Guardar
+            </button>
+            <button mat-raised-button mat-dialog-close cdkFocusInitial>Cerrar</button>
+            </div>
+        </form>
+    </mat-dialog-content>
+</main>

@@ -18,7 +18,16 @@ export class CarrerasService {
     return this.fireStore.doc(`carreras/${id}`).set({
       nombre: data.nombre,
       image: data.image,
-      id
+      id,
+      descripcion:'',
+      introduccion:'',
+      objetivo:'',
+      contenido:'',
+      duracion:'',
+      requisitosPrevios:'',
+      dirigido:'',
+      evaluacion:'',
+      requisitosCalificacion:''
     });
   }
 
@@ -38,6 +47,57 @@ export class CarrerasService {
       nombre: data.nombre,
       image: data.image,
     });
+  }
+
+  actualizarDescripcionCarrera(data:any, id:string):Promise <void>
+  {
+    return this.fireStore.doc(`carreras/${id}`).update({
+      descripcion:data.descripcion,
+      introduccion:data.introduccion,
+      objetivo:data.objetivo,
+      contenido:data.contenido,
+      duracion:data.duracion,
+      requisitosPrevios:data.requisitosPrevios,
+      dirigido:data.dirigido,
+      evaluacion:data.evaluacion,
+      requisitosCalificacion:data.requisitosCalificacion
+    });
+  }
+
+  matriculadosObtener(id:string)
+  {
+    return this.fireStore.collection(`carreras/${id}/matriculados`);
+  }
+
+  matricularUsuario(id:string, idCarreras: string, nombre:string)
+  {
+    return this.fireStore.doc(`carreras/${idCarreras}/matriculados/${id}`).set({
+      id,
+      nombre
+    });
+  }
+
+  desmatricularUsuario(id:string, idCarreras: string)
+  {
+    return this.fireStore.doc(`carreras/${idCarreras}/matriculados/${id}`).delete();
+  }
+
+  cursosAgregadosObtener(id:string)
+  {
+    return this.fireStore.collection(`carreras/${id}/cursos`);
+  }
+
+  agregarCurso(id:string, idCarreras: string, nombre:string)
+  {
+    return this.fireStore.doc(`carreras/${idCarreras}/cursos/${id}`).set({
+      id,
+      nombre
+    });
+  }
+
+  quitarCurso(id:string, idCarreras: string)
+  {
+    return this.fireStore.doc(`carreras/${idCarreras}/cursos/${id}`).delete();
   }
 }
 
