@@ -54,6 +54,9 @@ import { AddEstudiantesComponent } from './components/carreras/add-estudiantes/a
 import { AddCursoComponent } from './components/carreras/add-curso/add-curso.component';
 import { DescripcionCarreraComponent } from './components/carreras/descripcion-carrera/descripcion-carrera.component';
 import { DescripcionEditComponent } from './components/carreras/descripcion-carrera/descripcion-edit/descripcion-edit.component';
+import { CarrerasDetailComponent } from './components/carreras/carreras-detail/carreras-detail.component';
+import { CatalogoCarrerasComponent } from './components/carreras/catalogo-carreras/catalogo-carreras.component';
+import { StarRatingModule } from 'angular-star-rating';
 
 
 
@@ -106,6 +109,8 @@ import { DescripcionEditComponent } from './components/carreras/descripcion-carr
     AddCursoComponent,
     DescripcionCarreraComponent,
     DescripcionEditComponent,
+    CarrerasDetailComponent,
+    CatalogoCarrerasComponent,
     ],
   imports: [
     CommonModule,
@@ -115,6 +120,7 @@ import { DescripcionEditComponent } from './components/carreras/descripcion-carr
     LayoutModule,
     ReactiveFormsModule,
     FormsModule,
+    StarRatingModule,
     MatCarouselModule.forRoot(),
   ],
   exports: [

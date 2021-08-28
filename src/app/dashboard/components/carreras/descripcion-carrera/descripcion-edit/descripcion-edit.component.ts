@@ -54,6 +54,9 @@ export class DescripcionEditComponent implements OnInit  {
       case 'introducción':
         this.contenido = this.carrera.introduccion;
       break;
+      case 'Objetivos':
+        this.contenido = this.carrera.objetivo;
+      break;
       case 'contenido':
         this.contenido = this.carrera.contenido;
       break;
@@ -104,6 +107,9 @@ export class DescripcionEditComponent implements OnInit  {
       break;
       case 'introducción':
         this.carrera.introduccion = this.contenido;
+      break;
+      case 'Objetivos':
+        this.carrera.objetivo = this.contenido;
       break;
       case 'contenido':
         this.carrera.contenido = this.contenido;

@@ -1,0 +1,20 @@
+<section class="main-container">
+    <h2>nuestras carresas</h2>
+    <div class="courses-container">
+        <div class="single-course" *ngFor="let item of carreras">
+            <div class="course-image">
+                <img src="{{ item.image }}" alt="" loading="lazy" />
+                <div class="course-info">
+                    <span class="material-icons">info</span>
+                </div>
+            </div>
+            <div class="course-detail">
+                <h3><a>{{ item.nombre }}</a></h3>
+                <div class="ranking">
+                    <star-rating [starType]="'svg'" [rating]="3.8" [staticColor]="'ok'" [step]="0.5" [showHalfStars]="true"></star-rating>
+                    <p>80 votos | 25 visitas</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

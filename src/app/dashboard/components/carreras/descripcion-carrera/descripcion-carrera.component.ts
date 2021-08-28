@@ -63,6 +63,9 @@ export class DescripcionCarreraComponent implements OnInit, OnDestroy {
       case 'introducción':
         this.carrera.introduccion = '';
       break;
+      case 'Objetivos':
+        this.carrera.objetivo = '';
+      break;
       case 'contenido':
         this.carrera.contenido = '';
       break;
