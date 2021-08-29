@@ -4,7 +4,7 @@
             <h1>{{this.carrera.nombre}}</h1>
         </div>
         <div class="introduction-text">
-            <div id="descripcion" [innerHTML]="this.carrera.descripcion"></div>
+            <div id="descripcion"></div>
         </div>
     </section>
 
@@ -22,7 +22,8 @@
                             <h3>Introducción</h3>
                         </mat-panel-title>
                     </mat-expansion-panel-header>
-                    <div [innerHTML]="this.carrera.introduccion"></div>
+                    <div id="introduccion"></div>
+                    {{this.mostrarIntroduccion()}}
                 </mat-expansion-panel>
 
                 <mat-expansion-panel
@@ -35,7 +36,8 @@
                             <h3>Objetivos</h3>
                         </mat-panel-title>
                     </mat-expansion-panel-header>
-                    <div [innerHTML]="this.carrera.objetivo"></div>
+                    <div id="objetivos"></div>
+                    {{this.mostrarObjetivos()}}
                 </mat-expansion-panel>
 
                 <mat-expansion-panel
@@ -48,7 +50,8 @@
                             <h3>Contenido</h3>
                         </mat-panel-title>
                     </mat-expansion-panel-header>
-                    <div [innerHTML]="this.carrera.contenido"></div>
+                    <div id="contenido"></div>
+                    {{this.mostrarContenido()}}
                 </mat-expansion-panel>
 
                 <mat-expansion-panel
@@ -61,7 +64,8 @@
                             <h3>Duración</h3>
                         </mat-panel-title>
                     </mat-expansion-panel-header>
-                    <div [innerHTML]="this.carrera.duracion"></div>
+                    <div id="duracion"></div>
+                    {{this.mostrarDuracion()}}
                 </mat-expansion-panel>
 
                 <mat-expansion-panel
@@ -74,7 +78,8 @@
                             <h3>Requisitos previos</h3>
                         </mat-panel-title>
                     </mat-expansion-panel-header>
-                    <div [innerHTML]="this.carrera.requisitosPrevios"></div>
+                    <div id="requisitosPrevios"></div>
+                    {{this.mostrarRequisitosPrevios()}}
                 </mat-expansion-panel>
 
                 <mat-expansion-panel
@@ -87,7 +92,8 @@
                             <h3>Dirigido a</h3>
                         </mat-panel-title>
                     </mat-expansion-panel-header>
-                    <div [innerHTML]="this.carrera.dirigido"></div>
+                    <div id="dirigido"></div>
+                    {{this.mostrarDirigidoA()}}
                 </mat-expansion-panel>
 
                 <mat-expansion-panel
@@ -100,7 +106,8 @@
                             <h3>Evaluación de aprendizaje</h3>
                         </mat-panel-title>
                     </mat-expansion-panel-header>
-                    <div [innerHTML]="this.carrera.evaluacion"></div>
+                    <div id="evaluacion"></div>
+                    {{this.mostrarEvaluacion()}}
                 </mat-expansion-panel>
 
                 <mat-expansion-panel
@@ -113,7 +120,8 @@
                             <h3>Requisitos para calificación</h3>
                         </mat-panel-title>
                     </mat-expansion-panel-header>
-                    <div [innerHTML]="this.carrera.requisitosCalificacion"></div>
+                    <div id="requisitosCalificacion"></div>
+                    {{this.mostrarRequisitosCalificacion()}}
                 </mat-expansion-panel>
 
             </mat-accordion>

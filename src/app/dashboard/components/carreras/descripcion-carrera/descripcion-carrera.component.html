@@ -15,8 +15,7 @@
                         <mat-card-title>Descripción</mat-card-title>
                     </mat-card-header>
                     <mat-card-content>
-                        <div [innerHTML]="this.carrera.descripcion"></div>
-                        <div *ngIf="!this.carrera.descripcion">No establecido</div>
+                        <div id="descripcion"></div>
                     </mat-card-content>
                     <mat-card-actions>
                         <button mat-button (click)="descriptionEdit('descripción')">Editar</button>
@@ -32,8 +31,7 @@
                         <mat-card-title>Introducción</mat-card-title>
                     </mat-card-header>
                     <mat-card-content>
-                        <div [innerHTML]="this.carrera.introduccion"></div>
-                        <div *ngIf="!this.carrera.introduccion">No establecido</div>
+                        <div id="introduccion"></div>
                     </mat-card-content>
                     <mat-card-actions>
                         <button mat-button (click)="descriptionEdit('introducción')">Editar</button>
@@ -49,8 +47,7 @@
                         <mat-card-title>Contenido</mat-card-title>
                     </mat-card-header>
                     <mat-card-content>
-                        <div [innerHTML]="this.carrera.contenido"></div>
-                        <div *ngIf="!this.carrera.contenido">No establecido</div>
+                        <div id="contenido"></div>
                     </mat-card-content>
                     <mat-card-actions>
                         <button mat-button (click)="descriptionEdit('contenido')">Editar</button>
@@ -66,8 +63,7 @@
                         <mat-card-title>Objetivos</mat-card-title>
                     </mat-card-header>
                     <mat-card-content>
-                        <div [innerHTML]="this.carrera.objetivo"></div>
-                        <div *ngIf="!this.carrera.objetivo">No establecido</div>
+                        <div id="objetivo"></div>
                     </mat-card-content>
                     <mat-card-actions>
                         <button mat-button (click)="descriptionEdit('Objetivos')">Editar</button>
@@ -83,8 +79,7 @@
                         <mat-card-title>Duración</mat-card-title>
                     </mat-card-header>
                     <mat-card-content>
-                        <div [innerHTML]="this.carrera.duracion"></div>
-                        <div *ngIf="!this.carrera.duracion">No establecido</div>
+                        <div id="duracion"></div>
                     </mat-card-content>
                     <mat-card-actions>
                         <button mat-button (click)="descriptionEdit('duración')">Editar</button>
@@ -100,8 +95,7 @@
                     <mat-card-title>Requisitos previos</mat-card-title>
                     </mat-card-header>
                     <mat-card-content>
-                        <div [innerHTML]="this.carrera.requisitosPrevios"></div>
-                        <div *ngIf="!this.carrera.requisitosPrevios">No establecido</div>
+                        <div id="requisitosPrevios"></div>
                     </mat-card-content>
                     <mat-card-actions>
                     <button mat-button (click)="descriptionEdit('requisitos previos')">Editar</button>
@@ -117,8 +111,7 @@
                     <mat-card-title>Dirigido a</mat-card-title>
                     </mat-card-header>
                     <mat-card-content>
-                        <div [innerHTML]="this.carrera.dirigido"></div>
-                        <div *ngIf="!this.carrera.dirigido">No establecido</div>
+                        <div id="dirigido"></div>
                     </mat-card-content>
                     <mat-card-actions>
                     <button mat-button (click)="descriptionEdit('dirigido a')">Editar</button>
@@ -134,8 +127,7 @@
                     <mat-card-title>Evaluación de aprendizaje</mat-card-title>
                     </mat-card-header>
                     <mat-card-content>
-                        <div [innerHTML]="this.carrera.evaluacion"></div>
-                        <div *ngIf="!this.carrera.evaluacion">No establecido</div>
+                        <div id="evaluacion"></div>
                     </mat-card-content>
                     <mat-card-actions>
                     <button mat-button (click)="descriptionEdit('evaluación de aprendizaje')">Editar</button>
@@ -151,8 +143,7 @@
                     <mat-card-title>Requisitos para calificación</mat-card-title>
                     </mat-card-header>
                     <mat-card-content>
-                        <div [innerHTML]="this.carrera.requisitosCalificacion"></div>
-                        <div *ngIf="!this.carrera.requisitosCalificacion">No establecido</div>
+                        <div id="requisitosCalificacion"></div>
                     </mat-card-content>
                     <mat-card-actions>
                     <button mat-button (click)="descriptionEdit('requisitos para calificación')">Editar</button>

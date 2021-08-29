@@ -31,8 +31,56 @@ export class CarrerasDetailComponent implements OnInit {
   {
     this.carrerasService.obtenerCarrera(this.idCarrera)
     .valueChanges()
-    .subscribe(carrera => this.carrera = carrera,
+    .subscribe(carrera => {
+      this.carrera = carrera;
+      this.mostrarDescipcion();
+    },
       ()=>{console.log('error')});
+  }
+
+
+  mostrarDescipcion(){
+    document.getElementById('descripcion').innerHTML = this.carrera.descripcion;
+  }
+
+  mostrarIntroduccion()
+  {
+    document.getElementById('introduccion').innerHTML = this.carrera.introduccion;
+  }
+
+  mostrarObjetivos()
+  {
+    document.getElementById('objetivos').innerHTML = this.carrera.objetivo;
+  }
+
+  mostrarContenido()
+  {
+    document.getElementById('contenido').innerHTML = this.carrera.contenido;
+  }
+
+  mostrarDuracion()
+  {
+    document.getElementById('duracion').innerHTML = this.carrera.duracion;
+  }
+
+  mostrarRequisitosPrevios()
+  {
+    document.getElementById('requisitosPrevios').innerHTML = this.carrera.requisitosPrevios;
+  }
+
+  mostrarDirigidoA()
+  {
+    document.getElementById('dirigido').innerHTML = this.carrera.dirigido;
+  }
+
+  mostrarEvaluacion()
+  {
+    document.getElementById('evaluacion').innerHTML = this.carrera.evaluacion;
+  }
+
+  mostrarRequisitosCalificacion()
+  {
+    document.getElementById('requisitosCalificacion').innerHTML = this.carrera.requisitosCalificacion;
   }
 
 }

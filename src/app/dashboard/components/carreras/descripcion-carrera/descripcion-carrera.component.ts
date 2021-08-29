@@ -36,11 +36,90 @@ export class DescripcionCarreraComponent implements OnInit, OnDestroy {
   {
     this.unsubscribeCarrera = this.carrerasService.obtenerCarrera(this.data.id)
     .valueChanges()
-    .subscribe(carrera => this.carrera = carrera,
+    .subscribe(carrera => {
+      this.carrera = carrera;
+      this.mostrarCarrera();
+    },
       ()=>{
         this.mensajeError('Error de conexión');
         this.dialog.close();
       });
+  }
+
+  mostrarCarrera()
+  {
+    if(this.carrera.descripcion)
+    {
+      document.getElementById('descripcion').innerHTML = this.carrera.descripcion;
+    }
+    else
+    {
+      document.getElementById('descripcion').innerHTML = 'No establecido';
+    }
+    if(this.carrera.introduccion)
+    {
+      document.getElementById('introduccion').innerHTML = this.carrera.introduccion;
+    }
+    else
+    {
+      document.getElementById('introduccion').innerHTML = 'No establecido';
+    }
+    if(this.carrera.contenido)
+    {
+      document.getElementById('contenido').innerHTML = this.carrera.contenido;
+    }
+    else
+    {
+      document.getElementById('contenido').innerHTML = 'No establecido';
+    }
+    if(this.carrera.objetivo)
+    {
+      document.getElementById('objetivo').innerHTML = this.carrera.objetivo;
+    }
+    else
+    {
+      document.getElementById('objetivo').innerHTML = 'No establecido';
+    }
+    if(this.carrera.duracion)
+    {
+      document.getElementById('duracion').innerHTML = this.carrera.duracion;
+    }
+    else
+    {
+      document.getElementById('duracion').innerHTML = 'No establecido';
+    }
+    if(this.carrera.requisitosPrevios)
+    {
+      document.getElementById('requisitosPrevios').innerHTML = this.carrera.requisitosPrevios;
+    }
+    else
+    {
+      document.getElementById('requisitosPrevios').innerHTML = 'No establecido';
+    }
+    if(this.carrera.dirigido)
+    {
+      document.getElementById('dirigido').innerHTML = this.carrera.dirigido;
+    }
+    else
+    {
+      document.getElementById('dirigido').innerHTML = 'No establecido';
+    }
+    if(this.carrera.evaluacion)
+    {
+      document.getElementById('evaluacion').innerHTML = this.carrera.evaluacion;
+    }
+    else
+    {
+      document.getElementById('evaluacion').innerHTML = 'No establecido';
+    }
+    if(this.carrera.requisitosCalificacion)
+    {
+      document.getElementById('requisitosCalificacion').innerHTML = this.carrera.requisitosCalificacion;
+    }
+    else
+    {
+      document.getElementById('requisitosCalificacion').innerHTML = 'No establecido';
+    }
   }
 
   descriptionEdit(campoEdit:string){
