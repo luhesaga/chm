@@ -56,3 +56,37 @@ cursor: pointer;
 {
     color:rgb(13 121 127);
 }
+
+.menuVariado {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+    justify-content: space-between;
+    align-items: center;
+
+    .botonMatricular {
+        text-align: right;
+
+        button {
+            background: var(--main-color2);
+            height: 2.5rem;
+            color: white;
+            //border-radius: 1rem;
+            border: none;
+            padding: 0 16px;
+            margin-right: 24px;
+            cursor: pointer;
+        }
+    }
+}
+
+.botonMatricular-item {
+    display: grid;
+    grid-auto-flow: column;
+    align-items: center;
+}
+
+.botonMatricular-texto {
+    margin-left: 0.5rem;
+}

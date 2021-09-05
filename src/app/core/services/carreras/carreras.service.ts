@@ -69,11 +69,22 @@ export class CarrerasService {
     return this.fireStore.collection(`carreras/${id}/matriculados`);
   }
 
-  matricularUsuario(id:string, idCarreras: string, nombre:string)
+  matricularUsuario(data:any, idCarreras: string)
   {
-    return this.fireStore.doc(`carreras/${idCarreras}/matriculados/${id}`).set({
-      id,
-      nombre
+    return this.fireStore.doc(`carreras/${idCarreras}/matriculados/${data.id}`).set({
+      id:data.id,
+      matriculaIndividual:data.matriculaIndividual,
+      nombre: `${data.nombres} ${data.apellidos}`,
+      fechaMatricula: data.fechaMatricula,
+      fechaFinalizacionMatricula: data.fechaFinalizacionMatricula,
+      tipoMatricula:data.tipoMatricula
+    });
+  }
+
+  actualizarMatriculaIndividual(data:any, idCarreras: string)
+  {
+    return this.fireStore.doc(`carreras/${idCarreras}/matriculados/${data.id}`).update({
+      matriculaIndividual:data.matriculaIndividual,
     });
   }
 

@@ -99,6 +99,15 @@ export class CourseService {
       })
   }
 
+  updateUserOfCourse(data: any, courseId: string, stdId: string): Promise<void> {
+    return this.fireStore.doc(`cursos/${courseId}/matriculados/${stdId}`)
+      .update({
+        fechaMatricula: data.fechaMatricula,
+        tipoMatricula: data.tipoMatricula,
+        fechaFinalizacionMatricula: data.fechaFinalizacionMatricula
+      })
+  }
+
   deleteUserFromCourse(idCurso: string, idEstudiante: string) {
     return this.fireStore.doc(`cursos/${idCurso}/matriculados/${idEstudiante}`).delete();
   }

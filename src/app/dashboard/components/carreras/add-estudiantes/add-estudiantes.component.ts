@@ -1,11 +1,14 @@
 import { Component, OnInit, AfterViewInit, ViewChild  } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import {MatDialog} from '@angular/material/dialog';
 import { UsersService } from 'src/app/core/services/users/users.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { CarrerasService } from 'src/app/core/services/carreras/carreras.service';
 import Swal from 'sweetalert2';
+import { MatricularEstudiantesCarreraComponent } from './matricular-estudiantes-carrera/matricular-estudiantes-carrera.component';
+import { CourseService } from 'src/app/core/services/courses/course.service';
 
 @Component({
   selector: 'app-add-estudiantes',
@@ -24,9 +27,10 @@ export class AddEstudiantesComponent implements OnInit, AfterViewInit  {
   matriculados:any[];
 
   constructor(
+    public dialog: MatDialog,
     private activatedRoute: ActivatedRoute,
-    private userService: UsersService,
-    private carrerasService: CarrerasService
+    private carrerasService: CarrerasService,
+    private courseService: CourseService
     )
     {
       this.idCarreras = this.activatedRoute.snapshot.params.idCarreras;
@@ -41,13 +45,21 @@ export class AddEstudiantesComponent implements OnInit, AfterViewInit  {
     this.dataSource.sort = this.sort;
   }
 
+  openDialog()
+  {
+    this.dialog.open(MatricularEstudiantesCarreraComponent,{
+      height: '90%',
+      width: '90%',
+      data:{idCarrera: this.idCarreras}
+    });
+  }
+
   obtenerUsuarios()
   {
-    this.userService.listUsers()
+    this.carrerasService.matriculadosObtener(this.idCarreras)
     .valueChanges()
     .subscribe(users => {
       this.dataSource.data=users;
-      this.obtenerMatriculados();
     }, () => this.mensajeError('Error de conexión, por favor recargue la pagina'));
   }
 
@@ -55,41 +67,10 @@ export class AddEstudiantesComponent implements OnInit, AfterViewInit  {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  obtenerMatriculados()
-  {
-    this.carrerasService.matriculadosObtener(this.idCarreras )
-    .valueChanges()
-    .subscribe(matriculados => {this.colocarMatriculadosEnTabla(matriculados)}
-    , () => this.mensajeError('Error de conexión, por favor recargue la pagina'));
-  }
-
-  colocarMatriculadosEnTabla(matriculados:any[])
-  {
-    this.dataSource.data.forEach((usuario:any) =>{
-      const usuarioMatriculado =matriculados.findIndex(matriculado => matriculado.id === usuario.id);
-      if(usuarioMatriculado === -1)
-      {
-        usuario.matriculado = false;
-      }
-      else
-      {
-        usuario.matriculado = true;
-      }
-    });
-  }
-
-  matricularUsuario(element:any)
-  {
-    const nombre = element.nombres+' '+element.apellidos
-    this.carrerasService.matricularUsuario(element.id, this.idCarreras, nombre)
-    .then(()=>{}
-    , () => this.mensajeError('No se pudo matricular al usuario, por favor intente otra vez'));
-  }
-
   desmatricularUsuario(id:string)
   {
     this.carrerasService.desmatricularUsuario(id, this.idCarreras)
-    .then(()=>{}
+    .then(()=>{this.mensajeExito('Desmatriculado exitosamente')}
     , () => this.mensajeError('No se pudo desmatricular al usuario, por favor intente otra vez'));
   }
 
@@ -100,6 +81,74 @@ export class AddEstudiantesComponent implements OnInit, AfterViewInit  {
       text:mensaje,
       confirmButtonText: 'Cerrar'
     })
+  }
+
+  async deleteStudent(element:any)
+  {
+    this.mensajeDesmatricularEstudiante(element.nombre);
+    let error= false;
+    let i =0;
+    const ultimaMatricula = element.matriculaIndividual.length - 1;
+    while(i<= ultimaMatricula && !error)
+    {
+      await this.actualizarMatriculaIndividual(element.matriculaIndividual[i], element.id)
+      .then(result => error = result);
+      i++;
+    }
+
+    if(!error)
+    {
+      this.desmatricularUsuario(element.id);
+    }
+    else{
+      this.mensajeError(`${element.nombre} no se pudo desmatricular, intentelo otra vez`);
+    }
+  }
+
+  async actualizarMatriculaIndividual(matriculaIndividual:any, idEstudiante:string): Promise<boolean>
+  {
+    let error;
+    await this.courseService.updateUserOfCourse(matriculaIndividual, matriculaIndividual.cursoId, idEstudiante)
+    .then(()=> {
+      error= false;
+    }, ()=> error=true);
+    return error;
+  }
+
+  mensajeDesmatricularEstudiante(nombre:string)
+  {
+    Swal.fire({
+      title: `Desmatriculando al estudiante ${nombre}`,
+      confirmButtonColor:'#007279',
+      didOpen:()=>{
+        Swal.showLoading();
+      }
+    });
+  }
+
+  mensajeExito(mensaje:string)
+  {
+    Swal.fire({
+      icon: 'success',
+      text:mensaje,
+      confirmButtonText: 'Aceptar'
+    });
+  }
+
+  validarDesmatricula(element:any)
+  {
+    Swal.fire({
+      icon: 'warning',
+      text:`¿Seguro desea desmatricular a ${element.nombre}?`,
+      confirmButtonText: 'Si',
+      showCancelButton:true,
+      cancelButtonText:'No',
+    }).then(confirm =>{
+      if(confirm.value)
+      {
+        this.deleteStudent(element);
+      }
+    });
   }
 
 }

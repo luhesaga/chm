@@ -1,11 +1,26 @@
 <div class="container">
     <h2>Agregar cursos</h2>
-    <mat-form-field appearance="legacy" class="search">
-        <mat-label>Buscar</mat-label>
-        <input matInput placeholder="Placeholder" (keyup)="applyFilter($event.target.value)" ><!---->
-        <mat-icon matSuffix>search</mat-icon>
-        <mat-hint>puede buscar por cualquier campo</mat-hint>
-    </mat-form-field>
+
+    <div class="menuVariado">
+        <div class="busquedaEstudiante">
+            <mat-form-field appearance="legacy" class="search">
+                <mat-label>Buscar</mat-label>
+                <input matInput placeholder="Placeholder" (keyup)="applyFilter($event.target.value)" ><!---->
+                <mat-icon matSuffix>search</mat-icon>
+                <mat-hint>puede buscar por cualquier campo</mat-hint>
+            </mat-form-field>
+        </div>
+
+        <div class="botonAgregarCurso">
+            <button (click)="openDialog()">
+                <div class="botonAgregarCurso-item">
+                    <mat-icon>library_add</mat-icon>
+                    <div class="botonAgregarCurso-texto">Agregar curso</div>
+                </div>
+            </button>
+        </div>
+
+    </div>
 
     <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
 
@@ -27,19 +42,15 @@
             <td mat-cell *matCellDef="let element" class="buttons">
 
                 <button
-                *ngIf="element.agregado"
-                mat-stroked-button
-                class="agregado"
-                matTooltip="Matriculado"
-                (click)="quitarCurso(element.id)"
-                > Agregado</button>
-                <button
-                *ngIf="!element.agregado"
-                mat-stroked-button
-                matTooltip="Desmatriculado"
-                class="quitado"
-                (click)="agregarCurso(element)"
-                > No agregado</button>
+                mat-mini-fab
+                color="warn"
+                matTooltip="Quitar curso"
+                (click)="validarQuitarCurso(element.id)"
+                >
+                    <mat-icon>
+                        <span class="material-icons">clear</span>
+                    </mat-icon>
+                </button>
 
             </td>
         </ng-container>
