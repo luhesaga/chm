@@ -134,7 +134,7 @@ export class AddCursoComponent implements OnInit, AfterViewInit {
     this.obtenerUsuarioParaDesmatricular(idCurso, desmatricular, noDesmatricular);
   }
 
-  obtenerUsuarioParaDesmatricular(idCurso:string, estudiantes:any[], noDesmatricular:any[])
+  async obtenerUsuarioParaDesmatricular(idCurso:string, estudiantes:any[], noDesmatricular:any[])
   {
     const cantidadEstudiantes = estudiantes.length - 1;
     const desmatricular =[];
@@ -181,7 +181,16 @@ export class AddCursoComponent implements OnInit, AfterViewInit {
     }
     else
     {
-      this.recorrerArrayNoDesmatricular(noDesmatricular);
+      await this.recorrerArrayNoDesmatricular(noDesmatricular)
+      .then(e => error =e);
+      if(!error)
+      {
+        this.quitarCurso(idCurso);
+      }
+      else
+      {
+        this.mensajeError('No se pudo quitar el curso, por favor intente otra vez');
+      }
     }
   }
 
@@ -267,7 +276,7 @@ export class AddCursoComponent implements OnInit, AfterViewInit {
     });
   }
 
-  validarQuitarCurso(id:string)
+  validarQuitarCurso(id:string, nombre:string)
   {
     Swal.fire({
       icon: 'warning',
@@ -279,7 +288,18 @@ export class AddCursoComponent implements OnInit, AfterViewInit {
     .then((result)=> {
       if(result.value)
       {
-        this.obtenerCurso(id)
+        this.obtenerCurso(id);
+        this.mensajeQuitandoCurso(nombre)
+      }
+    });
+  }
+
+  mensajeQuitandoCurso(nombre:string)
+  {
+    Swal.fire({
+      title: `Quitando curso de ${nombre}`,
+      didOpen:()=>{
+        Swal.showLoading();
       }
     });
   }
