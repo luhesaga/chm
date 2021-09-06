@@ -156,6 +156,17 @@ export class AgregarCursoComponent implements OnInit, OnDestroy, AfterViewInit{
         });
       });
     }
+    else
+    {
+      if(!error)
+      {
+        this.agregarCursoACarrera(element);
+      }
+      else
+      {
+        this.mensajeError('No se pudo agregar la materia intentelo otra vez');
+      }
+    }
   }
 
   async estadoEstudianteMatriculado(estudianteMatriculado:any[], cursoId:string)

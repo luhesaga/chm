@@ -1,0 +1,52 @@
+<div class="dialog-header-close">
+    <h1>{{ carrera.nombre }}</h1>
+    <mat-icon mat-dialog-close>close</mat-icon>
+</div>
+
+<main>
+    <mat-dialog-content>
+        <section *ngIf="carrera.introduccion">
+            <h2>Introducción</h2>
+            <div id="introduccion"></div>
+        </section>
+
+        <section *ngIf="carrera.objetivo">
+            <h2>Objetivos</h2>
+            <div id="objetivo"></div>
+        </section>
+
+        <section *ngIf="carrera.contenido">
+            <h2>Contenido</h2>
+            <div id="contenido"></div>
+        </section>
+
+        <section *ngIf="carrera.duracion">
+            <h2>Duración</h2>
+            <div id="duracion"></div>
+        </section>
+
+        <section *ngIf="carrera.requisitosPrevios">
+            <h2>Requisitos previos</h2>
+            <div id="requisitos"></div>
+        </section>
+
+        <section *ngIf="carrera.dirigido">
+            <h2>Dirigido a</h2>
+            <div id="dirigido"></div>
+        </section>
+
+        <section *ngIf="carrera.evaluacion">
+            <h2>Evaluación de aprendizaje</h2>
+            <div id="evaluacion"></div>
+        </section>
+
+        <section *ngIf="carrera.requisitosCalificacion">
+            <h2>Requisitos para Calificación</h2>
+            <div id="calificacion"></div>
+        </section>
+
+    </mat-dialog-content>
+    <div mat-dialog-actions>
+        <button mat-raised-button [mat-dialog-close]="data" cdkFocusInitial>Cerrar</button>
+    </div>
+</main>

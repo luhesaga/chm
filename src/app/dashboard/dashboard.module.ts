@@ -59,6 +59,7 @@ import { CatalogoCarrerasComponent } from './components/carreras/catalogo-carrer
 import { StarRatingModule } from 'angular-star-rating';
 import { MatricularEstudiantesCarreraComponent } from './components/carreras/add-estudiantes/matricular-estudiantes-carrera/matricular-estudiantes-carrera.component';
 import { AgregarCursoComponent } from './components/carreras/add-curso/agregar-curso/agregar-curso.component';
+import { CarrerasInfoComponent } from './components/carreras/catalogo-carreras/carreras-info/carreras-info.component';
 
 
 
@@ -115,6 +116,7 @@ import { AgregarCursoComponent } from './components/carreras/add-curso/agregar-c
     CatalogoCarrerasComponent,
     MatricularEstudiantesCarreraComponent,
     AgregarCursoComponent,
+    CarrerasInfoComponent,
     ],
   imports: [
     CommonModule,

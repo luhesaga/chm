@@ -267,6 +267,14 @@ const routes: Routes = [
       {
         path: 'carreras/catalogo/:idUser',
         component:CatalogoCarrerasComponent
+      },
+      {
+        path: 'carreras/detail/:idCarreras/:idUser',
+        component:CarrerasDetailComponent
+      },
+      {
+        path: 'carreras/detail/:idCarreras/:home',
+        component:CarrerasDetailComponent
       }
     ]
   },
