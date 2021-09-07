@@ -273,7 +273,7 @@ const routes: Routes = [
         component:CarrerasDetailComponent
       },
       {
-        path: 'carreras/detail/:idCarreras/:home',
+        path: 'carreras/detail/:idCarreras/home/:home',
         component:CarrerasDetailComponent
       }
     ]
