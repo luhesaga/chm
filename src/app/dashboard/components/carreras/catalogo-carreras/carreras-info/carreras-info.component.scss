@@ -1,0 +1,44 @@
+.dialog-header-close {
+    display: flex;
+    justify-content: space-between;
+    margin: 8px 16px;
+}
+
+.dialog-header-close h1 {
+    font-weight: 600;
+    color: var(--main-color2);
+}
+
+main {
+    margin: 20px 50px;
+}
+
+main section {
+    margin-bottom: 50px;
+}
+
+main section h2 {
+    color: var(--main-color2);
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+main section p {
+    font-size: 1.1rem;
+    text-align: justify;
+}
+
+main section h4 {
+    font-weight: 600;
+    font-size: 1rem;
+    margin-left: 16px;
+}
+
+main section ul {
+    margin-left: 24px;
+}
+
+main section ul li {
+    list-style: none;
+    font-size: 1.1rem;
+}

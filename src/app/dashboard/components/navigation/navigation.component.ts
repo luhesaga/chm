@@ -45,6 +45,10 @@ export class NavigationComponent {
     this.route.navigate([`/dashboard/cursos/list/${this.logguedUser.id}`])
   }
 
+  goToCarreraCatalogo() {
+    this.route.navigate([`/dashboard/carreras/catalogo/${this.logguedUser.id}`])
+  }
+
   goToMyCourses() {
     this.route.navigate([`/dashboard/mis-cursos/${this.logguedUser.id}`])
   }

@@ -45,6 +45,11 @@ import { ForumRevComponent } from './components/forum/forum-rev/forum-rev/forum-
 import { ForumUsersAnswersComponent } from './components/forum/forum-users-answers/forum-users-answers/forum-users-answers.component';
 import { ForumRevDetailComponent } from './components/forum/forum-rev-detail/forum-rev-detail/forum-rev-detail.component';
 import { EvaluationsHomeComponent } from './components/evaluations/evaluations-home/evaluations-home/evaluations-home.component';
+import { EditCarrerasComponent } from './components/carreras/edit-carreras/edit-carreras.component';
+import { AddEstudiantesComponent } from './components/carreras/add-estudiantes/add-estudiantes.component';
+import { AddCursoComponent } from './components/carreras/add-curso/add-curso.component';
+import { CarrerasDetailComponent } from './components/carreras/carreras-detail/carreras-detail.component';
+import { CatalogoCarrerasComponent } from './components/carreras/catalogo-carreras/catalogo-carreras.component';
 
 
 const routes: Routes = [
@@ -262,6 +267,34 @@ const routes: Routes = [
       {
         path: 'carreras/create',
         component:CreateCarrerasComponent
+      },
+      {
+        path: 'carreras/edit/:idCarreras',
+        component:EditCarrerasComponent
+      },
+      {
+        path: 'carreras/add-estudiantes/:idCarreras',
+        component:AddEstudiantesComponent
+      },
+      {
+        path: 'carreras/add-curso/:idCarreras',
+        component:AddCursoComponent
+      },
+      {
+        path: 'carreras/detail/:idCarreras',
+        component:CarrerasDetailComponent
+      },
+      {
+        path: 'carreras/catalogo/:idUser',
+        component:CatalogoCarrerasComponent
+      },
+      {
+        path: 'carreras/detail/:idCarreras/:idUser',
+        component:CarrerasDetailComponent
+      },
+      {
+        path: 'carreras/detail/:idCarreras/home/:home',
+        component:CarrerasDetailComponent
       }
     ]
   },

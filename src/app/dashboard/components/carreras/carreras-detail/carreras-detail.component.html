@@ -1,0 +1,146 @@
+<main>
+    <section class="introduction-container">
+        <div class="introduction-title">
+            <h1>{{this.carrera.nombre}}</h1>
+        </div>
+        <div class="introduction-text">
+            <div id="descripcion"></div>
+        </div>
+    </section>
+
+    <section class="information-container">
+        <div class="information">
+            <h2>Información de la carrera</h2>
+            <mat-accordion>
+                <mat-expansion-panel
+                    *ngIf="this.carrera.introduccion"
+                    (opened)="panelOpenState = true"
+                    (closed)="panelOpenState = false"
+                    >
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <h3>Introducción</h3>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div id="introduccion"></div>
+                    {{this.mostrarIntroduccion()}}
+                </mat-expansion-panel>
+
+                <mat-expansion-panel
+                    *ngIf="this.carrera.objetivo"
+                    (opened)="panelOpenState = true"
+                    (closed)="panelOpenState = false"
+                    >
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <h3>Objetivos</h3>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div id="objetivos"></div>
+                    {{this.mostrarObjetivos()}}
+                </mat-expansion-panel>
+
+                <mat-expansion-panel
+                    *ngIf="this.carrera.contenido"
+                    (opened)="panelOpenState = true"
+                    (closed)="panelOpenState = false"
+                    >
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <h3>Contenido</h3>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div id="contenido"></div>
+                    {{this.mostrarContenido()}}
+                </mat-expansion-panel>
+
+                <mat-expansion-panel
+                    *ngIf="this.carrera.duracion"
+                    (opened)="panelOpenState = true"
+                    (closed)="panelOpenState = false"
+                    >
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <h3>Duración</h3>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div id="duracion"></div>
+                    {{this.mostrarDuracion()}}
+                </mat-expansion-panel>
+
+                <mat-expansion-panel
+                    *ngIf="this.carrera.requisitosPrevios"
+                    (opened)="panelOpenState = true"
+                    (closed)="panelOpenState = false"
+                    >
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <h3>Requisitos previos</h3>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div id="requisitosPrevios"></div>
+                    {{this.mostrarRequisitosPrevios()}}
+                </mat-expansion-panel>
+
+                <mat-expansion-panel
+                    *ngIf="this.carrera.dirigido"
+                    (opened)="panelOpenState = true"
+                    (closed)="panelOpenState = false"
+                    >
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <h3>Dirigido a</h3>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div id="dirigido"></div>
+                    {{this.mostrarDirigidoA()}}
+                </mat-expansion-panel>
+
+                <mat-expansion-panel
+                    *ngIf="this.carrera.evaluacion"
+                    (opened)="panelOpenState = true"
+                    (closed)="panelOpenState = false"
+                    >
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <h3>Evaluación de aprendizaje</h3>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div id="evaluacion"></div>
+                    {{this.mostrarEvaluacion()}}
+                </mat-expansion-panel>
+
+                <mat-expansion-panel
+                    *ngIf="this.carrera.requisitosCalificacion"
+                    (opened)="panelOpenState = true"
+                    (closed)="panelOpenState = false"
+                    >
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <h3>Requisitos para calificación</h3>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div id="requisitosCalificacion"></div>
+                    {{this.mostrarRequisitosCalificacion()}}
+                </mat-expansion-panel>
+
+            </mat-accordion>
+            <button 
+            *ngIf="!idUser && !home"
+            class="btn-back" routerLink="/dashboard/carreras">{{ '<< Volver a Lista de carreras' }}</button>
+            <div class="buttons" *ngIf="idUser || home">
+                <button
+                    mat-raised-button
+                    style="background: var(--main-color2); color: white; margin-right: 24px;"
+                    (click)="goToBuy()">
+                        {{ !home ? 'Incribirse' : 'Comprar'}}
+                </button>
+                <button
+                    mat-raised-button
+                    (click)="goBack()">
+                        Regresar
+                </button>
+            </div>
+        </div>
+    </section>
+</main>

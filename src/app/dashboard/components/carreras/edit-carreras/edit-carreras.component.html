@@ -2,7 +2,7 @@
     <form [formGroup]="formCarreras" (ngSubmit)="validarFormulario()">
         <div class="title">
             <mat-icon>class</mat-icon>
-            <h2>Crear nueva carrera</h2>
+            <h2>Editar carrera</h2>
         </div>
         <div class="upload-image-main">
             <div class="image-upload">
@@ -20,7 +20,7 @@
                 </label>
             </div>
             <div class="progress">
-                <mat-hint>Puede añadir una imagen de portada para la carrera, debe estar en formato JPG o PNG.</mat-hint>
+                <mat-hint>Puede añadir una imagen de portada para el curso, debe estar en formato JPG o PNG.</mat-hint>
             </div>
             <picture>
                 <img *ngIf="showImage.src" [src]="showImage.src" alt="portada de la carrera">
@@ -41,7 +41,7 @@
                 type="submit"
                 tabIndex=4
                 mat-raised-button
-                >Crear carrera</button>
+                >Editar carrera</button>
                 <a mat-raised-button (click)="volverAListaCarreras()" tabIndex=5>Cancelar</a>
         </div>
     </form>

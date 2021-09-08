@@ -53,6 +53,17 @@ import { ForumRevComponent } from './components/forum/forum-rev/forum-rev/forum-
 import { ForumUsersAnswersComponent } from './components/forum/forum-users-answers/forum-users-answers/forum-users-answers.component';
 import { ForumRevDetailComponent } from './components/forum/forum-rev-detail/forum-rev-detail/forum-rev-detail.component';
 import { EvaluationsHomeComponent } from './components/evaluations/evaluations-home/evaluations-home/evaluations-home.component';
+import { EditCarrerasComponent } from './components/carreras/edit-carreras/edit-carreras.component';
+import { AddEstudiantesComponent } from './components/carreras/add-estudiantes/add-estudiantes.component';
+import { AddCursoComponent } from './components/carreras/add-curso/add-curso.component';
+import { DescripcionCarreraComponent } from './components/carreras/descripcion-carrera/descripcion-carrera.component';
+import { DescripcionEditComponent } from './components/carreras/descripcion-carrera/descripcion-edit/descripcion-edit.component';
+import { CarrerasDetailComponent } from './components/carreras/carreras-detail/carreras-detail.component';
+import { CatalogoCarrerasComponent } from './components/carreras/catalogo-carreras/catalogo-carreras.component';
+import { StarRatingModule } from 'angular-star-rating';
+import { MatricularEstudiantesCarreraComponent } from './components/carreras/add-estudiantes/matricular-estudiantes-carrera/matricular-estudiantes-carrera.component';
+import { AgregarCursoComponent } from './components/carreras/add-curso/agregar-curso/agregar-curso.component';
+import { CarrerasInfoComponent } from './components/carreras/catalogo-carreras/carreras-info/carreras-info.component';
 
 
 
@@ -104,6 +115,16 @@ import { EvaluationsHomeComponent } from './components/evaluations/evaluations-h
     ForumUsersAnswersComponent,
     ForumRevDetailComponent,
     EvaluationsHomeComponent,
+    EditCarrerasComponent,
+    AddEstudiantesComponent,
+    AddCursoComponent,
+    DescripcionCarreraComponent,
+    DescripcionEditComponent,
+    CarrerasDetailComponent,
+    CatalogoCarrerasComponent,
+    MatricularEstudiantesCarreraComponent,
+    AgregarCursoComponent,
+    CarrerasInfoComponent,
     ],
   imports: [
     CommonModule,
@@ -113,6 +134,7 @@ import { EvaluationsHomeComponent } from './components/evaluations/evaluations-h
     LayoutModule,
     ReactiveFormsModule,
     FormsModule,
+    StarRatingModule,
     MatCarouselModule.forRoot(),
   ],
   exports: [
