@@ -1,0 +1,46 @@
+<div class="container">
+    <h2>Foros del curso</h2>
+    <mat-form-field appearance="legacy" class="search">
+        <mat-label>Buscar</mat-label>
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
+        <mat-icon matSuffix>search</mat-icon>
+        <mat-hint>puede buscar por cualquier campo</mat-hint>
+    </mat-form-field>
+    <!-- <button
+        mat-raised-button
+        (click)="openDialog(null)"
+        style="background: var(--main-color2); color: white;">Crear nuevo</button> -->
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+        <!-- leccion -->
+        <ng-container matColumnDef="leccion">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header id="leccion">Lección</th>
+            <td mat-cell *matCellDef="let element" class="leccion">
+                {{ element.leccion }}
+            </td>
+        </ng-container>
+
+        <!-- foro -->
+        <ng-container matColumnDef="foro">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header id="foro">Foro</th>
+            <td mat-cell *matCellDef="let element">{{ element.foro.titulo }}</td>
+        </ng-container>
+
+        <!-- botones de acción -->
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef id="acciones">Acciones</th>
+            <td mat-cell *matCellDef="let element" class="buttons">
+                <button mat-stroked-button color="primary" matTooltip="Ver comentarios de usuarios"
+                    (click)="goToForumAnswers(element)">
+                    <mat-icon style="color: green;">visibility</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[10, 15, 20]" showFirstLastButtons></mat-paginator>
+    <button mat-stroked-button color="primary" (click)="goBack()" style="background: var(--main-color2); color: white;">
+        << Regresar </button>
+</div>

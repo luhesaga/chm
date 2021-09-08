@@ -30,7 +30,7 @@ export class CoursesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.courseService.listCourses().valueChanges()
+    let cursos = this.courseService.listCourses().valueChanges()
     .subscribe(courses => {
       courses.forEach(c => {
         this.catService.detailCategory(c.categoria).valueChanges()
@@ -39,6 +39,7 @@ export class CoursesComponent implements OnInit {
           })
       })
       this.cursos = courses;
+      cursos.unsubscribe();
     });
   }
 

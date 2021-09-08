@@ -35,6 +35,7 @@
             </mat-card-actions>
             <div class="card-btn-actions">
                 <button
+                    *ngIf="admin"
                     mat-mini-fab
                     aria-label="botón editar reunión"
                     matTooltip="editar reunión"
@@ -42,6 +43,7 @@
                         <mat-icon>edit</mat-icon>
                 </button>
                 <button
+                    *ngIf="admin"
                     mat-mini-fab
                     aria-label="botón eliminar reunión"
                     matTooltip="eliminar reunión"

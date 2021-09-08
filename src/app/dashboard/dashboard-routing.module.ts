@@ -41,6 +41,10 @@ import { ExercisesRevComponent } from './components/exercises/exercises-rev/exer
 import { ExercisesRevDetailComponent } from './components/exercises/exercises-rev-detail/exercises-rev-detail/exercises-rev-detail.component';
 import { CarrerasComponent } from './components/carreras/carreras.component';
 import { CreateCarrerasComponent } from './components/carreras/create-carreras/create-carreras.component';
+import { ForumRevComponent } from './components/forum/forum-rev/forum-rev/forum-rev.component';
+import { ForumUsersAnswersComponent } from './components/forum/forum-users-answers/forum-users-answers/forum-users-answers.component';
+import { ForumRevDetailComponent } from './components/forum/forum-rev-detail/forum-rev-detail/forum-rev-detail.component';
+import { EvaluationsHomeComponent } from './components/evaluations/evaluations-home/evaluations-home/evaluations-home.component';
 
 
 const routes: Routes = [
@@ -166,6 +170,22 @@ const routes: Routes = [
       {
         path: 'cursos/ejercicios/:courseId/preguntas/edit/:exerciseId/:questionPosition/:questionType/:answerTrue',
         component: QuestionCreateComponent
+      },
+      {
+        path: 'cursos/evaluaciones/:courseId',
+        component: EvaluationsHomeComponent
+      },
+      {
+        path: 'cursos/foros/revisar/:courseId',
+        component: ForumRevComponent
+      },
+      {
+        path: 'cursos/foros/revisar/respuestas/:courseId/:lessonId/:forumId',
+        component: ForumUsersAnswersComponent
+      },
+      {
+        path: 'cursos/foros/revisar/respuesta-estudiante/:courseId/:lessonId/:forumId/:stdId/:userForumId',
+        component: ForumRevDetailComponent
       },
       {
         path: 'cursos/glosario/:courseId',

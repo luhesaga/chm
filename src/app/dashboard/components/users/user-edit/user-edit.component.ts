@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Router, ActivatedRoute, Params} from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import Swal from 'sweetalert2';
 import { UsersService } from '../../../../core/services/users/users.service';
 
@@ -19,14 +19,13 @@ export class UserEditComponent implements OnInit {
     public dialog: MatDialogRef<UserEditComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private formBuilder: FormBuilder,
-	  private userService: UsersService,
-	  private route: Router
+    private userService: UsersService,
+    private route: Router
   ) {
-	  this.buildForm()
-   }
+    this.buildForm()
+  }
 
   ngOnInit(): void {
-    console.log(this.data);
     this.user = {
       id: this.data.content.id,
       nombres: this.data.content.nombres,
@@ -34,7 +33,6 @@ export class UserEditComponent implements OnInit {
       correo: this.data.content.correo,
       perfil: this.data.content.perfil
     }
-    console.log(this.user);
   }
 
   private buildForm(): void {
@@ -65,9 +63,9 @@ export class UserEditComponent implements OnInit {
   updateUser(event: Event) {
     event.preventDefault();
     this.form.markAllAsTouched();
-	  if (this.form.valid) {
-		  this.form.disable();
-	  }
+    if (this.form.valid) {
+      this.form.disable();
+    }
     const data = this.form.value;
     this.userService.editUser(data, this.user.id)
       .then(() => {
@@ -81,13 +79,13 @@ export class UserEditComponent implements OnInit {
         this.dialog.close();
       })
       .catch((error) => {
-            Swal.fire({
+        Swal.fire({
           icon: 'error',
           title: 'error',
           text: 'Ocurrio un error' + error,
           confirmButtonText: 'cerrar',
-              });
-          });
+        });
+      });
   }
 
 }

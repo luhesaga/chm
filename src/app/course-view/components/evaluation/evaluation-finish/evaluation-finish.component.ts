@@ -97,7 +97,7 @@ export class EvaluationFinishComponent implements OnInit, OnDestroy {
         if (u.fecha) {
           u.fecha = new Date(u.fecha).toLocaleDateString();
         }
-        console.log(u);
+        // console.log(u);
         this.testReceived = u;
         this.answers = u.respuestas;
         // console.log(this.answers);

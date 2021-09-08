@@ -1,0 +1,62 @@
+<div class="container">
+    <h2>Respuestas del foro</h2>
+    <mat-form-field appearance="legacy" class="search">
+        <mat-label>Buscar</mat-label>
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
+        <mat-icon matSuffix>search</mat-icon>
+        <mat-hint>puede buscar por cualquier campo</mat-hint>
+    </mat-form-field>
+    <!-- <button
+        mat-raised-button
+        (click)="openDialog(null)"
+        style="background: var(--main-color2); color: white;">Crear nuevo</button> -->
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+        <!-- Estudiante -->
+        <ng-container matColumnDef="estudiante">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header id="estudiante">Estudiante</th>
+            <td mat-cell *matCellDef="let element" class="estudiante">
+                {{ element.estudiante }}
+            </td>
+        </ng-container>
+
+        <!-- fecha -->
+        <ng-container matColumnDef="fecha">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header id="fecha">Fecha</th>
+            <td mat-cell *matCellDef="let element">{{ element.fecha }}</td>
+        </ng-container>
+
+        <!-- nota -->
+        <ng-container matColumnDef="nota">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header id="nota">Nota</th>
+            <td mat-cell *matCellDef="let element">{{ element.nota + '%' }}</td>
+        </ng-container>
+
+        <!-- estado -->
+        <ng-container matColumnDef="estado">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header id="estado">Estado</th>
+            <td mat-cell *matCellDef="let element">{{ element.estado }}</td>
+        </ng-container>
+
+        <!-- botones de acción -->
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef id="acciones">Acciones</th>
+            <td mat-cell *matCellDef="let element" class="buttons">
+                <button mat-stroked-button color="primary" matTooltip="Ver respuesta"
+                    (click)="goToUserAnswer(element)">
+                    <mat-icon style="color: green;">visibility</mat-icon>
+                </button>
+                <!-- <button mat-stroked-button color="primary" matTooltip="Agregar preguntas"
+                    (click)="deleteForum(element)">
+                    <mat-icon style="color: black;">delete</mat-icon>
+                </button> -->
+            </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[10, 15, 20]" showFirstLastButtons></mat-paginator>
+    <button mat-stroked-button color="primary" (click)="goBack()" style="background: var(--main-color2); color: white;">
+        << Regresar </button>
+</div>

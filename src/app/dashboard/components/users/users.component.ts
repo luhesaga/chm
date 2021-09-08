@@ -26,10 +26,17 @@ export class UsersComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit(): void {
-    this.userService
+    this.getUSers();
+  }
+
+  getUSers() {
+    let usuarios = this.userService
       .listUsers()
       .valueChanges()
-      .subscribe(users => (this.dataSource.data = users));
+      .subscribe(users => {
+        this.dataSource.data = users;
+        usuarios.unsubscribe();
+      });
   }
 
   ngAfterViewInit(): void {

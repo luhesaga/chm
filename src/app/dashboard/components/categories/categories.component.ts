@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -13,10 +13,11 @@ import { Router } from '@angular/router';
   templateUrl: './categories.component.html',
   styleUrls: ['./categories.component.scss']
 })
-export class CategoriesComponent implements OnInit {
+export class CategoriesComponent implements OnInit, OnDestroy {
 
   displayedColumns: string[] = ['nombre', 'codigo', 'activo', 'cursos', 'actions'];
   dataSource = new MatTableDataSource();
+  categories;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -29,17 +30,21 @@ export class CategoriesComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.catService
-      .listCategories()
+    this.getCategories();
+  }
+
+  ngOnDestroy(): void {
+    this.categories.unsubscribe();
+  }
+
+  getCategories() {
+    this.categories = this.catService.listCategories()
       .valueChanges()
       .subscribe(categories => {
         categories.forEach(cat => {
-          // console.log(cat);
           this.courseService.coursesByCategory(cat.id).valueChanges()
             .subscribe(cursos => {
-              // console.log(cursos.length);
               cat.cursos = cursos.length;
-              // console.log(cat);
             })
         })
         this.dataSource.data = categories;
@@ -70,32 +75,32 @@ export class CategoriesComponent implements OnInit {
       cancelButtonColor: '#d33',
       confirmButtonText: 'Si, estoy seguro!'
     })
-    .then((result) => {
-      if (result.value) {
-        this.catService.deleteCategory(id)
-          .then(() => {
-            this.courseService.coursesByCategory(id).valueChanges()
-              .subscribe(courses => {
-                courses.forEach(c => {
-                  this.courseService.deleteCategory(c.id);
-                })
-              });
-            Swal.fire(
-              'Eliminado!',
-              'Eliminación exitosa.',
-              'success',
-            );
-        })
-        .catch((error) => {
-          Swal.fire(
-            'Error!',
-            `La operación no se pudó realizar, ${error}.`,
-            'error',
-          );
-        });
-      }
-    })
-    .catch(error => console.log(error));
+      .then((result) => {
+        if (result.value) {
+          this.catService.deleteCategory(id)
+            .then(() => {
+              this.courseService.coursesByCategory(id).valueChanges()
+                .subscribe(courses => {
+                  courses.forEach(c => {
+                    this.courseService.deleteCategory(c.id);
+                  })
+                });
+              Swal.fire(
+                'Eliminado!',
+                'Eliminación exitosa.',
+                'success',
+              );
+            })
+            .catch((error) => {
+              Swal.fire(
+                'Error!',
+                `La operación no se pudó realizar, ${error}.`,
+                'error',
+              );
+            });
+        }
+      })
+      .catch(error => console.log(error));
   }
 
   checkActive(event: Event) {

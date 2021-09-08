@@ -99,6 +99,11 @@ export class LessonsService {
       ref.orderBy('posicion', 'asc'));
   }
 
+  listCalificableLessons(courseId, lessonId): AngularFirestoreCollection   {
+    return this.fireStore.collection(`cursos/${courseId}/lecciones/${lessonId}/contenido`, ref =>
+    ref.where('tipo','in', ['Agregar ejercicio', 'Agregar foro']));
+  }
+
   listLessonContentPDF(courseId, lessonId): AngularFirestoreCollection {
     //console.log(`curso: ${courseId}, leccion: ${lessonId}`);
     return this.fireStore.collection(`cursos/${courseId}/lecciones/${lessonId}/contenido`, ref =>
@@ -111,6 +116,11 @@ export class LessonsService {
     return this.fireStore.collection(`cursos/${courseId}/lecciones/${lessonId}/contenido`, ref =>
       ref.where('tipo','==','Agregar contenido')
       .orderBy('posicion', 'asc'));
+  }
+
+  listForums(courseId, lessonId) {
+    return this.fireStore.collection(`cursos/${courseId}/lecciones/${lessonId}/contenido`, ref =>
+      ref.where('tipo', '==', 'Agregar foro'));
   }
 
   editLessonContentPosition(courseId: string, lessonId: string, contentId: string, pos: number): Promise<void> {

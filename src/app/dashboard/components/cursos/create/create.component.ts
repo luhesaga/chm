@@ -64,7 +64,7 @@ ngAfterViewInit() {
 }
 
 getCourse() {
-	this.courseService.detailCourse(this.id).valueChanges()
+	let cursos = this.courseService.detailCourse(this.id).valueChanges()
 		.subscribe(curso => {
 			// console.log(curso);
 			this.fsId = this.id;
@@ -76,12 +76,13 @@ getCourse() {
 			// console.log(this.selectedCategory);
 			this.selectedTeacher = curso.profesor;
 			// console.log(this.selectedTeacher);
+			cursos.unsubscribe();
 		});
 	// console.log(this.selectedCategory);
 }
 
 listCategories() {
-	this.catService.listCategories().valueChanges()
+	let categorias = this.catService.listCategories().valueChanges()
 		.subscribe((cat: any) => {
 			this.categories = [];
 			cat.forEach(element => {
@@ -95,11 +96,12 @@ listCategories() {
 					this.categories.push(category);
 				}
 			});
+			categorias.unsubscribe();
 		});
 }
 
 listTeachers() {
-	this.userService.listTeachers().valueChanges()
+	let profesores = this.userService.listTeachers().valueChanges()
 		.subscribe((teachers: any) => {
 			this.teachers = [];
 			teachers.forEach(element => {
@@ -109,6 +111,7 @@ listTeachers() {
 				}
 				this.teachers.push(teacher);
 			})
+			profesores.unsubscribe();
 		});
 }
 

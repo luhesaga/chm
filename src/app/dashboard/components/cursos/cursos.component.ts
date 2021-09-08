@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -17,13 +17,15 @@ import { CategoryService } from '../../../core/services/categories/category.serv
   templateUrl: './cursos.component.html',
   styleUrls: ['./cursos.component.scss']
 })
-export class CursosComponent implements OnInit, AfterViewInit {
+export class CursosComponent implements OnInit, AfterViewInit, OnDestroy {
 
   displayedColumns: string[] = ['nombre', 'categoria', 'actions'];
   dataSource = new MatTableDataSource();
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+
+  courseReceived;
 
   constructor(
     private courseService: CourseService,
@@ -33,7 +35,11 @@ export class CursosComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit(): void {
-    this.courseService
+    this.getCourses();
+  }
+
+  getCourses() {
+    this.courseReceived = this.courseService
       .listCourses()
       .valueChanges()
       .subscribe(courses => {
@@ -46,6 +52,10 @@ export class CursosComponent implements OnInit, AfterViewInit {
 
         this.dataSource.data = courses
       });
+  }
+
+  ngOnDestroy(): void {
+    this.courseReceived.unsubscribe();
   }
 
   ngAfterViewInit(): void {

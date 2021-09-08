@@ -1,0 +1,54 @@
+<main>
+    <section class="forum-info">
+        <h2>Foro {{ forum?.titulo }}</h2>
+        <div class="user-info">
+            <p>Estudiante</p>
+            <p>{{ userForum?.nombreCompleto }}</p>
+            <p>Fecha de respuesta</p>
+            <p>{{ userForum?.fecha }}</p>
+        </div>
+        <div class="total-result">
+            <h3>Puntuación total:</h3>
+            <p>{{ userForum?.valor + '%' }} </p>
+        </div>
+    </section>
+    <section class="total-revition">
+        <div class="questions-and-answers">
+            <div style="width: 100%;">
+                <p class="q-number">Foro:</p>
+                <p id="question">{{ parseAnswer('question', forum?.foro) }}</p>
+                <p class="q-a-title">Respuesta:</p>
+                <p id="userAnswer">{{ parseAnswer('userAnswer', userForum?.contenido) }}</p>
+                <div class="edit-result">
+                    <div class="config-container">
+                        <mat-accordion class="example-headers-align" multi>
+                            <mat-expansion-panel>
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        <p>Editar calificación</p>
+                                        <mat-icon>settings</mat-icon>
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+                                <div class="config-options" *ngIf="userForum">
+                                    <mat-form-field class="example-full-width" appearance="fill">
+                                        <mat-label>Calificación</mat-label>
+                                        <input
+                                            [(ngModel)]="userForum.valor"
+                                            matInput type="number"
+                                            placeholder="1 a 100"
+                                            min="0" max="100">
+                                    </mat-form-field>
+                                </div>
+                                <!-- <button (click)="saveForumCalification()" mat-raised-button>Guardar</button> -->
+                            </mat-expansion-panel>
+                        </mat-accordion>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="buttons">
+        <button mat-raised-button (click)="saveForumRevition()" color="primary">Guardar revisión</button>
+        <button mat-raised-button (click)="goBack()" color="warn">Regresar</button>
+    </section>
+</main>

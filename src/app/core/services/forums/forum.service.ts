@@ -14,9 +14,11 @@ export class ForumService {
 
   forumAnswer(data: any, courseId, lessonId, contentId) {
     let answerId = this.fireStore.createId();
+    let fecha = new Date().toUTCString();
     this.fireStore.doc(`cursos/${courseId}/lecciones/${lessonId}/contenido/${contentId}/respuestas-foro/${data.id}/respuestas-user/${answerId}`)
       .set({
         tiempo: data.tiempo,
+        fecha,
         tipo: data.tipo,
         contenido: data.contenido,
         nombreCompleto: data.nombreCompleto,
@@ -30,6 +32,15 @@ export class ForumService {
     this.fireStore.doc(`cursos/${courseId}/lecciones/${lessonId}/contenido/${contentId}/respuestas-foro/${userId}/respuestas-user/${foroId}`)
       .update({
         contenido: data,
+      });
+  }
+
+  setForumRevition(data: any, courseId, lessonId, contentId, userId, foroId) {
+    return this.fireStore.doc(`cursos/${courseId}/lecciones/${lessonId}/contenido/${contentId}/respuestas-foro/${userId}/respuestas-user/${foroId}`)
+      .update({
+        valor: data.valor,
+        estado: data.estado,
+        calificado: true,
       });
   }
 

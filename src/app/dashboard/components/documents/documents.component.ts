@@ -1,10 +1,10 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LessonsService } from 'src/app/core/services/lessons/lessons.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import {MatDialog} from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ModalDocumentsComponent } from './modal-documents/modal-documents.component';
 import { CourseService } from 'src/app/core/services/courses/course.service';
 
@@ -18,15 +18,21 @@ export interface DialogData {
   templateUrl: './documents.component.html',
   styleUrls: ['./documents.component.scss']
 })
-export class DocumentsComponent implements OnInit, AfterViewInit {
+export class DocumentsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   admin = true;
-  cursoId:string;
+  cursoId: string;
   lessonsId: any[];
-  cotentPDF:any[];
-  cotentVideo:any[];
-  cotentList:any[];
-  stdId:any;
+  contentPDF: any[];
+  contentVideo: any[];
+  contentList: any[];
+  stdId: any;
+
+  //observables
+  listLessons: any;
+  PDFLessons: any;
+  listDocuments: any;
+  ytVideos: any;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -47,13 +53,13 @@ export class DocumentsComponent implements OnInit, AfterViewInit {
     if (this.stdId) {
       this.admin = false;
     }
-    this.obtenerIdLessons();
-    this.cotentPDF = [];
-    this.cotentVideo =[];
-    this.cotentList =[];
-   }
+    this.contentPDF = [];
+    this.contentVideo = [];
+    this.contentList = [];
+  }
 
   ngOnInit(): void {
+    this.obtenerIdLessons();
   }
 
   ngAfterViewInit(): void {
@@ -61,85 +67,91 @@ export class DocumentsComponent implements OnInit, AfterViewInit {
     this.dataSource.sort = this.sort;
   }
 
-  obtenerIdLessons()
-  {
-    this.lessonService.listLessons(this.cursoId)
-    .valueChanges()
-    .subscribe(lessons => {
-      this.lessonsId=[];
-      lessons.forEach(lesson => this.lessonsId.push(lesson.id));
-      this.obtenerContenido();
-    });
-  }
-
-  obtenerContenido():void
-  {
-
-    this.lessonsId.forEach(idLesson => {
-      this.lessonService.listLessonContentPDF(this.cursoId,idLesson)
-      .valueChanges()
-      .subscribe((contentPDF:any[]) => {
-        contentPDF.forEach(content => {
-        if(!this.encontrarContentPDF(content.id))
-        {
-          this.cotentPDF.push(content);
-        }
-        });
-        this.obtenerVideosYoutube(idLesson);
-      });
-    });
-  }
-
-  obtenerVideosYoutube(idLesson:string)
-  {
-    this.lessonService.listLessonAgregarContenido(this.cursoId,idLesson)
-    .valueChanges()
-    .subscribe((videos:any[])=>{
-      videos.forEach(video => {
-        if(!this.encontrarContentVideo(video.id))
-        {
-          video.contenido = this.filtrarUrlVideo(video.contenido);
-          this.cotentVideo.push(video);
-        }
-      })
-      this.obtenerDocumentos();
-    });
-  }
-
-  obtenerDocumentos()
-  {
-    this.courseService.getDocuments(this.cursoId)
-    .valueChanges()
-    .subscribe(documentos => {
-      this.cotentList = this.cotentPDF.concat(this.cotentVideo).concat(documentos);
-      this.dataSource.data = this.cotentList;
-    });
+  ngOnDestroy(): void {
+    this.listLessons.unsubscribe();
+    this.PDFLessons.unsubscribe();
+    this.listDocuments.unsubscribe();
+    this.ytVideos.unsubscribe();
   }
 
   applyFilter(filterValue: string): void {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  filtrarUrlVideo(cadenaConUrl:string)
-  {
-    return cadenaConUrl.match(/https:\/\/[\W\w]*\?/i);
+  obtenerIdLessons() {
+    this.listLessons = this.lessonService.listLessons(this.cursoId)
+      .valueChanges()
+      .subscribe(lessons => {
+        this.lessonsId = [];
+        lessons.forEach(lesson => this.lessonsId.push(lesson.id));
+        this.getContent();
+      });
   }
 
-  encontrarContentPDF(idContent:string):boolean
-  {
-    let encontrado = this.cotentPDF.findIndex(content => content.id === idContent);
-    if(encontrado !== -1)
-    {
+  getContent(): void {
+    this.lessonsId.forEach(lessonId => {
+      this.PDFLessons = this.lessonService.listLessonContentPDF(this.cursoId, lessonId)
+        .valueChanges()
+        .subscribe((contentPDF: any[]) => {
+          contentPDF.forEach(content => {
+            if (!this.getPDFContent(content.id)) {
+              this.contentPDF.push(content);
+            }
+          });
+          this.getYTVideos(lessonId);
+        });
+    });
+  }
+
+  getDocuments() {
+    this.listDocuments = this.courseService.getDocuments(this.cursoId)
+      .valueChanges()
+      .subscribe(documentos => {
+        this.contentList = this.contentPDF.concat(this.contentVideo).concat(documentos);
+        this.dataSource.data = this.contentList;
+      });
+  }
+
+  getYTVideos(idLesson: string) {
+    this.ytVideos = this.lessonService.listLessonAgregarContenido(this.cursoId, idLesson)
+      .valueChanges()
+      .subscribe((videos: any[]) => {
+        videos.forEach(video => {
+          if (!this.getVideoContent(video.id)) {
+            video.contenido = this.filtrarUrlVideo(video.contenido);
+            if (video.contenido) {
+              this.contentVideo.push(video);
+            }
+          }
+        })
+        this.getDocuments();
+      });
+  }
+
+  filtrarUrlVideo(cadenaConUrl: string) {
+    const inicioLink = cadenaConUrl.indexOf('src="') + 5;
+    const link = cadenaConUrl.substring(inicioLink, cadenaConUrl.length - 1);
+    const finLink = link.indexOf('"');
+    const newLink = link.substring(0, finLink);
+    let isImg = false;
+    if (newLink.indexOf('jpg') !== -1 || newLink.indexOf('png') !== -1 || inicioLink === -1) {
+      isImg = true;
+    }
+    return isImg ? null : newLink;
+    //return cadenaConUrl.match(/https:\/\/[\W\w]*\?/i);
+  }
+
+  getPDFContent(idContent: string): boolean {
+    let encontrado = this.contentPDF.findIndex(content => content.id === idContent);
+    if (encontrado !== -1) {
       return true;
     }
     return false;
   }
 
-  encontrarContentVideo(idVideo:string):boolean
-  {
-    let encontrado = this.cotentVideo.findIndex(video => video.id === idVideo);
-    if(encontrado !== -1)
-    {
+  getVideoContent(idVideo: string): boolean {
+    let encontrado = this.contentVideo.findIndex(video => video.id === idVideo);
+    if (encontrado !== -1) {
       return true;
     }
     return false;
@@ -157,8 +169,8 @@ export class DocumentsComponent implements OnInit, AfterViewInit {
   openDialog(): void {
     const dialogRef = this.dialog.open(ModalDocumentsComponent, {
       width: '40rem',
-      height:'80%',
-      data:{cursoId: this.cursoId}
+      height: '80%',
+      data: { cursoId: this.cursoId }
     });
   }
 

@@ -15,18 +15,18 @@ import { AngularFirestore } from '@angular/fire/firestore';
 })
 export class EvaluationViewComponent implements OnInit, OnDestroy {
 
-  @HostListener('window:keydown', ['$event'])
-  handleKeyDown(event: KeyboardEvent) {
-    // console.log(event);
-    switch (event.key) {
-      case 'ArrowRight':
-        this.nextQuestion();
-        break;
-      case 'ArrowLeft':
-        this.previousQuestion();
-        break;
-    }
-  }
+  // @HostListener('window:keydown', ['$event'])
+  // handleKeyDown(event: KeyboardEvent) {
+  //   // console.log(event);
+  //   switch (event.key) {
+  //     case 'ArrowRight':
+  //       this.nextQuestion();
+  //       break;
+  //     case 'ArrowLeft':
+  //       this.previousQuestion();
+  //       break;
+  //   }
+  // }
 
   private editorSubject: Subject<any> = new AsyncSubject();
 
@@ -48,6 +48,7 @@ export class EvaluationViewComponent implements OnInit, OnDestroy {
   qType = 0;
   finishedExams;
   testEnd = false;
+  endTempo = false;
 
   // respuestas seleccionadas
   totalAnswers: any = [];
@@ -78,8 +79,8 @@ export class EvaluationViewComponent implements OnInit, OnDestroy {
     this.stdId = this.activatedRoute.snapshot.params.stdId;
     //console.log(`curso: ${this.idCurso} leccion: ${this.idLesson}`);
     //console.log(`contenido: ${this.idContent} ejercicio: ${this.exercId} usuario: ${this.stdId}`);
-    this.noBackButton();
-    this.getCloseEvent();
+    this.noBackButton(true);
+    window.addEventListener('beforeunload', this.getCloseEvent);
   }
 
   ngOnInit(): void {
@@ -89,6 +90,9 @@ export class EvaluationViewComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     // this.exerciseReceived.unsubscribe();
+    this.noBackButton(false);
+    this.endTempo = true;
+    window.removeEventListener('beforeunload', this.getCloseEvent);
   }
 
   handleEditorInit(e) {
@@ -145,13 +149,14 @@ export class EvaluationViewComponent implements OnInit, OnDestroy {
 
   setTotalAnswers() {
     for (let index = 0; index < this.questions.length; index++) {
-      this.totalAnswers.push({index});
+      this.totalAnswers.push({index, valor: 0, visto: false});
     }
   }
 
   setTimer(ex) {
     if (ex.duracion < 60) {
       this.date = new Date(`2021-01-01 00:${ex.duracion}:59`);
+      // this.date = new Date('2021-01-01 00:00:10'); // para pruebas
     } else {
       this.date = new Date('2021-01-01 00:59:59');
     }
@@ -160,22 +165,22 @@ export class EvaluationViewComponent implements OnInit, OnDestroy {
 
   // iniciar cronometro
   startTempo() {
-    const interval = setInterval(() => {
-      this.minutes = this.padLeft(this.date.getMinutes() + "");
-      this.seconds = this.padLeft(this.date.getSeconds() + "");
-      //console.log(this.minutes, this.seconds);
-      this.date = new Date(this.date.getTime() - 1000);
-      if(this.minutes == '00' && this.seconds == '00' ) {
-        Swal.fire({
-          icon: 'info',
-          title: '!Terminó el tiempo!',
-          text: 'El tiempo ha terminado, se guardara el progreso.',
-          confirmButtonText: 'cerrar',
-        });
-        clearInterval(interval);
-        this.goToFinish();
-      }
-    }, 1200);
+    let interval  = setInterval(() => {
+        this.minutes = this.padLeft(this.date.getMinutes() + "");
+        this.seconds = this.padLeft(this.date.getSeconds() + "");
+        //console.log(this.minutes, this.seconds);
+        this.date = new Date(this.date.getTime() - 1000);
+        if(this.minutes == '00' && this.seconds == '00' && !this.endTempo ) {
+          Swal.fire({
+            icon: 'info',
+            title: '!Terminó el tiempo!',
+            text: 'El tiempo ha terminado, se guardara el progreso.',
+            confirmButtonText: 'cerrar',
+          });
+          clearInterval(interval);
+          this.goToFinish();
+        }
+      }, 1200);
   }
 
   // rellenar ceros
@@ -648,19 +653,20 @@ export class EvaluationViewComponent implements OnInit, OnDestroy {
     this.router.navigate([`course-view/${cid}/${lid}/${stdid}/final-evaluacion/${cid}/${lid}/${cntid}/${exid}/${stdid}/${testId}`])
   }
   // desactivar botón atrás
-  noBackButton() {
+  noBackButton(state) {
     window.location.hash="no-back-button";
     window.location.hash="Again-No-back-button" //chrome
     window.onhashchange=function(){window.location.hash="no-back-button";}
+    if (!state) {
+      window.onhashchange = () => false;
+    }
   }
   // controlar cierre
-  getCloseEvent() {
-    window.addEventListener("beforeunload", (event) => {
-      event.preventDefault();
-      let bool = event.returnValue;
-      event.returnValue = bool;
-      return event;
-    });
+  getCloseEvent(event) {
+    event.preventDefault();
+    let bool = event.returnValue;
+    event.returnValue = bool;
+    return event;
   }
   // validar si ya hizo la prueba
   getOutOfHere() {

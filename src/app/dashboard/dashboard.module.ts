@@ -49,6 +49,10 @@ import { ExercisesRevDetailComponent } from './components/exercises/exercises-re
 import { CarrerasComponent } from './components/carreras/carreras.component';
 import { CreateCarrerasComponent } from './components/carreras/create-carreras/create-carreras.component';
 import { ModalVistaAdsComponent } from './components/cursos/ads-curso/modal-vista-ads/modal-vista-ads.component';
+import { ForumRevComponent } from './components/forum/forum-rev/forum-rev/forum-rev.component';
+import { ForumUsersAnswersComponent } from './components/forum/forum-users-answers/forum-users-answers/forum-users-answers.component';
+import { ForumRevDetailComponent } from './components/forum/forum-rev-detail/forum-rev-detail/forum-rev-detail.component';
+import { EvaluationsHomeComponent } from './components/evaluations/evaluations-home/evaluations-home/evaluations-home.component';
 
 
 
@@ -96,6 +100,10 @@ import { ModalVistaAdsComponent } from './components/cursos/ads-curso/modal-vist
     CarrerasComponent,
     CreateCarrerasComponent,
     ModalVistaAdsComponent,
+    ForumRevComponent,
+    ForumUsersAnswersComponent,
+    ForumRevDetailComponent,
+    EvaluationsHomeComponent,
     ],
   imports: [
     CommonModule,

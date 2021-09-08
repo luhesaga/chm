@@ -41,6 +41,10 @@
         *ngIf="((mostrarResultados !== 2 && mostrarResultados !== 3 )
                 && test?.retroalimentacion === 1 && revitionAll) || mostrarResultados === 5 && test?.retroalimentacion === 1">
         <div class="questions-and-answers" *ngFor="let item of answers; let i = index">
+            <!-- no contestada -->
+            <div *ngIf="!item.tipoPregunta">
+                <p class="q-number">{{'pregunta ' + (i + 1) + '. '}}</p>
+            </div>
             <!-- opcion unica -->
             <div *ngIf="item.tipoPregunta === 1">
                 <p class="q-number">{{'pregunta ' + (i + 1) + '. '}}</p>

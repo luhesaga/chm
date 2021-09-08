@@ -35,6 +35,7 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
   libraryOpt = true;
   glossaryOpt = true;
   meetOpt = true;
+  forumOpt = true;
 
   isMobile = false;
 
@@ -58,10 +59,12 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
   ) {
     this.id = this.activatedRoute.snapshot.params.id;
     this.stdId = this.activatedRoute.snapshot.params.stdId;
+    // console.log(this.stdId);
 
     if (this.stdId) {
       this.admin = false;
     }
+    // console.log(this.admin);
 
     this.breakpointObserver.observe([
       Breakpoints.Large,
@@ -129,6 +132,7 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
       this.libraryOpt = opt.biblioteca ? opt.biblioteca : false;
       this.glossaryOpt = opt.glosario ? opt.glosario : false;
       this.meetOpt = opt.videoconferencia ? opt.videoconferencia: opt.meet;
+      this.forumOpt = opt.foros ? opt.foros : false;
     }
 
   }
@@ -169,6 +173,18 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
     }
   }
 
+  goToEvaluations() {
+    this.route.navigate([`cursos/evaluaciones/${this.id}`]);
+  }
+
+  goToForum() {
+    if (this.admin) {
+      this.route.navigate([`cursos/foros/revisar/${this.id}`]);
+    } else {
+      console.log('foros');
+    }
+  }
+
   goBack() {
 
     if (this.admin) {
@@ -197,7 +213,9 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
     this.categoria = cat.nombre;
 
     this.descrDiv = document.getElementById('descripcion');
-    this.descrDiv.innerHTML = curso.descripcion;
+    if (this.descrDiv) {
+      this.descrDiv.innerHTML = curso.descripcion;
+    }
     this.loadDescriptionVideoOrImg();
   }
 
@@ -262,6 +280,7 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
       biblioteca: this.libraryOpt,
       glosario: this.glossaryOpt,
       videoconferencia: this.meetOpt,
+      foros: this.forumOpt
     }
 
     this.courseService.editCourseOptions(this.id, opt)

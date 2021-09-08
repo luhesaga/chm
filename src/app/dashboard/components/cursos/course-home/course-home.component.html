@@ -26,6 +26,7 @@
                             <mat-checkbox class="example-margin" [(ngModel)]="documentsOpt" color="primary">Documentos</mat-checkbox>
                             <mat-checkbox class="example-margin" [(ngModel)]="lessonsOpt" color="primary">Lecciones</mat-checkbox>
                             <mat-checkbox class="example-margin" [(ngModel)]="exercisesOpt" color="primary">Ejercicios</mat-checkbox>
+                            <!-- <mat-checkbox class="example-margin" [(ngModel)]="forumOpt" color="primary">Foros</mat-checkbox> -->
                             <mat-checkbox class="example-margin" [(ngModel)]="evaluationsOpt" color="primary">Evaluaciones</mat-checkbox>
                             <mat-checkbox class="example-margin" [(ngModel)]="adsOpt" color="primary">Anuncios</mat-checkbox>
                             <mat-checkbox class="example-margin" [(ngModel)]="libraryOpt" color="primary">Biblioteca Virtual</mat-checkbox>
@@ -84,7 +85,15 @@
             <div class="img"><img src="/assets/icons/evaluaciones.svg" alt=""></div>
 
             <div class="options">
-                <a>Evaluaciones</a>
+                <a (click)="goToEvaluations()">Evaluaciones</a>
+            </div>
+        </div>
+
+        <div class="card" *ngIf="(admin)">
+            <div class="img"><img src="/assets/icons/charla.png" alt=""></div>
+
+            <div class="options">
+                <a (click)="goToForum()">Revisar Foros</a>
             </div>
         </div>
 
@@ -113,7 +122,7 @@
         </div>
 
         <div class="card" *ngIf="(admin) || (!admin && meetOpt)">
-            <div class="img"><img src="/assets/icons/video-conf.svg" alt=""></div>
+            <div class="img"><img src="/assets/icons/video-conf1.png" alt=""></div>
 
             <div class="options">
                 <a (click)="goToVideo()">Videoconferencia</a>

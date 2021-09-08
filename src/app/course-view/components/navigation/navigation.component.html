@@ -9,7 +9,10 @@
         <p><mat-icon (click)="goToLecciones()">arrow_back</mat-icon></p>
       </div>
       <div><img class="imagenCurso" [src]="course?.imagen" alt=""></div>
-      <h3><span>profesor:</span>{{course?.profesor}}</h3>
+      <div class="teacher-name">
+        <span>profesor:</span>
+        <h3>{{course?.profesor}}</h3>
+      </div>
     </mat-toolbar>
     <mat-nav-list *ngIf="!home">
       <h3 class="nombreLeccion">{{lesson?.posicion}}. {{lesson?.nombre}}</h3>

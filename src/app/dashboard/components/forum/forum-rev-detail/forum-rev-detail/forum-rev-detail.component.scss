@@ -1,0 +1,202 @@
+* {
+    box-sizing: border-box;
+}
+
+main {
+    background: white;
+    box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+    border-radius: 4px;
+    margin: 36px auto;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.forum-info {
+    margin: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 95%;
+    border: 1px solid #cfd8dc;
+    border-radius: 10px;
+
+    h2 {
+        margin-top: 16px;
+        font-size: 1.3rem;
+    }
+
+    h3 {
+        margin-top: 16px;
+    }
+
+    .user-info {
+        width: 70%;
+        display: grid;
+        grid-template-columns: 0.5fr 1fr;
+        grid-template-rows: auto;
+        row-gap: 0.8px;
+        column-gap: 0.8px;
+
+        p {
+            border: 1px solid #cfd8dc;
+            margin: 0;
+            padding: 8px;
+        }
+    }
+
+    .total-result {
+        display: flex;
+        align-items: center;
+        margin: 16px;
+        padding: 8px;
+
+        h3 {
+            margin: 0 8px;
+            font-weight: 400;
+            font-size: 1.3rem;
+        }
+
+        p {
+            margin: 0 8px;
+            font-size: 1.2rem;
+        }
+    }
+}
+
+.total-revition {
+    width: 95%;
+    height: auto;
+    margin: 1rem 0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+
+    .questions-and-answers {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        margin: 8px 16px;
+        padding: 16px;
+
+        #question, #userAnswer {
+            border: 1px solid var(--main-color2);
+            border-radius: 10px;
+            padding: 8px;
+        }
+
+        a {
+            cursor: pointer;
+            text-decoration: none;
+            color: var(--main-color2);
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin: 8px 0 32px 0;
+        }
+
+        .q-number, .q-a-title {
+            color: var(--main-color2);
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .q-relation, .q-free {
+            display: flex;
+            flex-direction: column;
+            margin: 8px;
+            padding: 8px;
+            border: 1px solid var(--main-color2);
+            border-radius: 5px;
+            background-color: azure;
+
+            h5 {
+                font-weight: 900;
+                color: var(--main-color2);
+            }
+        }
+
+        .q-free {
+            p {
+                margin: 0 16px;
+            }
+        }
+
+        .q-mult {
+            p {
+                margin: 0 24px;
+                margin-bottom: 16px;
+                font-weight: 400;
+            }
+        }
+
+        .result {
+            width: 90%;
+            border: 1px solid var(--main-color2);
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            margin: 16px 8px;
+
+            p {
+                margin: 0;
+                font-size: 1.1rem;
+            }
+
+            .result-value {
+                margin-left: 16px;
+                font-weight: 500;
+            }
+
+            mat-icon {
+                margin: 0 16px;
+            }
+        }
+    }
+
+    .edit-result {
+        width: 50%;
+        margin-top: 16px;
+
+        .config-container {
+            width: 95%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            mat-panel-title {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+
+                p {
+                    margin: 0 16px;
+                    color: var(--main-color2);
+                    font-size: 1.1rem;
+                    font-weight: 600;
+                }
+            }
+
+            .config-options {
+                width: 100%;
+
+                mat-form-field {
+                    width: 100%;
+                }
+            }
+        }
+    }
+}
+
+
+.buttons {
+    margin: 16px 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 16px;
+}
