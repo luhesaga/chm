@@ -69,6 +69,10 @@ export class CarrerasService {
     return this.fireStore.collection(`carreras/${id}/matriculados`);
   }
 
+  getRegisteredUser(careerId: string, stdId: string) {
+    return this.fireStore.doc(`carreras/${careerId}/matriculados/${stdId}`);
+  }
+
   matricularUsuario(data:any, idCarreras: string)
   {
     return this.fireStore.doc(`carreras/${idCarreras}/matriculados/${data.id}`).set({

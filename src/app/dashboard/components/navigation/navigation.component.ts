@@ -53,6 +53,10 @@ export class NavigationComponent {
     this.route.navigate([`/dashboard/mis-cursos/${this.logguedUser.id}`])
   }
 
+  goToMyCareers() {
+    this.route.navigate([`/dashboard/mis-carreras/${this.logguedUser.id}`])
+  }
+
   logout():void {
     this.auth.logout();
     this.route.navigate(['/home']);

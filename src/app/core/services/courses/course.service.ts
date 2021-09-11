@@ -117,16 +117,19 @@ export class CourseService {
   }
 
   createAnuncio(data: any, courseId: string, idAnuncio: string): Promise<void> {
+    let fecha = new Date().toUTCString();
     return this.fireStore.doc(`cursos/${courseId}/anuncios/${idAnuncio}`)
       .set({
         id: idAnuncio,
         titulo: data.titulo,
-        descripcion: data.descripcion
+        descripcion: data.descripcion,
+        fecha
       })
   }
 
   obtenerAnuncios(idCurso: string): AngularFirestoreCollection {
-    return this.fireStore.collection(`cursos/${idCurso}/anuncios`);
+    return this.fireStore.collection(`cursos/${idCurso}/anuncios`, ref =>
+      ref.orderBy('fecha', 'asc'));
   }
 
   deleteAnuncio(courseId: string, idAnuncio: string): Promise<any> {
@@ -137,11 +140,18 @@ export class CourseService {
     return this.fireStore.doc(`cursos/${idCurso}/anuncios/${idAnuncio}`);
   }
 
-  editarAnuncio(data: any, courseId: string, idAnuncio: string): Promise<void> {
+  editarAnuncio(data: any, courseId: string, idAnuncio: string, dateUpdate: boolean, date: string): Promise<void> {
+    let fecha;
+    if (dateUpdate) {
+      fecha = new Date().toUTCString();
+    } else {
+      fecha = date;
+    }
     return this.fireStore.doc(`cursos/${courseId}/anuncios/${idAnuncio}`)
       .update({
         titulo: data.titulo,
-        descripcion: data.descripcion
+        descripcion: data.descripcion,
+        fecha
       })
   }
 

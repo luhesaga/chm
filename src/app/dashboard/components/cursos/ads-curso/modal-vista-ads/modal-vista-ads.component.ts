@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import {MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DialogData } from '../ads-curso.component';
 
 @Component({
@@ -9,8 +9,7 @@ import { DialogData } from '../ads-curso.component';
 })
 export class ModalVistaAdsComponent implements OnInit {
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData) 
-  { 
+  constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData) {
   }
 
   ngOnInit(): void {

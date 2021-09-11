@@ -50,6 +50,7 @@ import { AddEstudiantesComponent } from './components/carreras/add-estudiantes/a
 import { AddCursoComponent } from './components/carreras/add-curso/add-curso.component';
 import { CarrerasDetailComponent } from './components/carreras/carreras-detail/carreras-detail.component';
 import { CatalogoCarrerasComponent } from './components/carreras/catalogo-carreras/catalogo-carreras.component';
+import { MycareersComponent } from './components/mycareers/mycareers.component';
 
 
 const routes: Routes = [
@@ -243,6 +244,10 @@ const routes: Routes = [
       {
         path: 'mis-cursos/lecciones/:courseId/:stdId',
         component: LessonsComponent,
+      },
+      {
+        path: 'mis-carreras/:stdId',
+        component: MycareersComponent
       },
       {
         path: 'add-student/:idCurso',

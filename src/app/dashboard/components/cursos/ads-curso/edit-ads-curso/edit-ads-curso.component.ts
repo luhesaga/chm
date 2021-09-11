@@ -13,13 +13,14 @@ import { AuthService } from 'src/app/core/services/auth/auth.service';
 })
 export class EditAdsCursoComponent implements OnInit {
 
-  contenido:any;
-  opciones:any;
+  contenido: any;
+  opciones: any;
   idCurso: string;
-  idAnuncio:string;
-  matriculados:any[];
-  estudiantesSeleccionados:any[];
-  usuarioEnSeccion:any;
+  idAnuncio: string;
+  matriculados: any[];
+  estudiantesSeleccionados: any[];
+  usuarioEnSeccion: any;
+  dateUpdate = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -29,15 +30,15 @@ export class EditAdsCursoComponent implements OnInit {
     private auth: AuthService,
     private route: Router
   ) {
-    this.contenido={}
-    this.opciones={
-      todoCurso:false,
-      estudiantesSeleccionados:false,
-      miCopia:false
+    this.contenido = {}
+    this.opciones = {
+      todoCurso: false,
+      estudiantesSeleccionados: false,
+      miCopia: false
     }
     this.obtenerUsuarioEnSeccion();
-    this.estudiantesSeleccionados =[];
-    this.matriculados=[];
+    this.estudiantesSeleccionados = [];
+    this.matriculados = [];
     this.idCurso = this.activatedRoute.snapshot.params.idCurso;
     this.idAnuncio = this.activatedRoute.snapshot.params.idAnuncio;
     this.obtenerIdMatriculados();
@@ -47,46 +48,40 @@ export class EditAdsCursoComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  obtenerAnuncio()
-  {
+  obtenerAnuncio() {
     this.courseService.obtenerAnuncio(this.idCurso, this.idAnuncio)
-    .valueChanges()
-    .subscribe(anuncio => {
-      if(anuncio)
-      {
-        this.contenido=anuncio;
-      }
-      else
-      {
-        this.mensajeAnuncioEliminado();
-      }
-    });
+      .valueChanges()
+      .subscribe(anuncio => {
+        if (anuncio) {
+          this.contenido = anuncio;
+        }
+        else {
+          this.mensajeAnuncioEliminado();
+        }
+      });
   }
 
-  mensajeAnuncioEliminado(){
+  mensajeAnuncioEliminado() {
     Swal.fire({
-      title:'El anuncio ha sido eliminado',
-      icon:'error',
+      title: 'El anuncio ha sido eliminado',
+      icon: 'error',
       confirmButtonText: 'volver'
-    }).then(()=> this.volverAListaAnuncio());
+    }).then(() => this.volverAListaAnuncio());
   }
 
-  obtenerUsuarioEnSeccion()
-  {
-    this.auth.user$.subscribe(usuario => this.usuarioEnSeccion =usuario,
-    () => this.mensajeErrorIdMatriculados());
+  obtenerUsuarioEnSeccion() {
+    this.auth.user$.subscribe(usuario => this.usuarioEnSeccion = usuario,
+      () => this.mensajeErrorIdMatriculados());
   }
 
-  obtenerIdMatriculados()
-  {
+  obtenerIdMatriculados() {
     this.courseService.getRegisteredUSers(this.idCurso)
-    .valueChanges()
-    .subscribe(matriculados => this.matriculados=matriculados,
-    ()=> this.mensajeErrorIdMatriculados());
+      .valueChanges()
+      .subscribe(matriculados => this.matriculados = matriculados,
+        () => this.mensajeErrorIdMatriculados());
   }
 
-  mensajeErrorIdMatriculados()
-  {
+  mensajeErrorIdMatriculados() {
     Swal.fire({
       icon: 'error',
       title: 'Hay un error de conexión',
@@ -94,17 +89,15 @@ export class EditAdsCursoComponent implements OnInit {
     })
   }
 
-  validarContenidoAnuncio()
-  {
-    const titulo:string = this.contenido.titulo;
+  validarContenidoAnuncio() {
+    const titulo: string = this.contenido.titulo;
     const descripcion: string = this.contenido.descripcion;
-    if(this.validarTituloAnuncio(titulo) &&
-    this.validarDescripcionAnuncio(descripcion))
-    {
+    if (this.validarTituloAnuncio(titulo) &&
+      this.validarDescripcionAnuncio(descripcion)) {
       Swal.fire({
-        confirmButtonColor:'#005691',
+        confirmButtonColor: '#005691',
         title: 'Editando el anuncio',
-        didOpen:()=>{
+        didOpen: () => {
           Swal.showLoading()
         }
       })
@@ -112,205 +105,174 @@ export class EditAdsCursoComponent implements OnInit {
     }
   }
 
-  editarAnuncio()
-  {
-    this.courseService.editarAnuncio(this.contenido,this.idCurso, this.idAnuncio)
-    .then(()=>this.opcionesElegidas(),()=>this.mensajeErrorEditarAnuncio());
+  editarAnuncio() {
+    this.courseService.editarAnuncio(this.contenido, this.idCurso, this.idAnuncio, this.dateUpdate, this.contenido.fecha)
+      .then(() => this.opcionesElegidas(), () => this.mensajeErrorEditarAnuncio());
   }
 
-    opcionesElegidas()
-  {
-    if(this.opciones.todoCurso)
-    {
+  opcionesElegidas() {
+    if (this.opciones.todoCurso) {
       this.obtenerAnuncioEstudiante();
       this.enviarEmailEstudiantes(this.matriculados);
-    }else if(this.opciones.estudiantesSeleccionados)
-    {
+    } else if (this.opciones.estudiantesSeleccionados) {
       this.obtenerUsuarioSeleccionados();
       this.enviarEmailEstudiantes(this.estudiantesSeleccionados);
     }
-    if(this.opciones.miCopia)
-    {
+    if (this.opciones.miCopia) {
       this.enviarmeEmail();
     }
     this.mensajeAnuncioEditado();
   }
 
-  enviarmeEmail()
-  {
+  enviarmeEmail() {
     const data = {
-      to:this.usuarioEnSeccion.correo,
+      to: this.usuarioEnSeccion.correo,
       titulo: this.contenido.titulo,
       contenido: this.contenido.descripcion
     }
-    const unsubscribe =this.mailService.sendEmailAnuncioCurso(data)
-    .subscribe(() => unsubscribe.unsubscribe(),
-    e =>{
-      console.log(e);
-    });
+    const unsubscribe = this.mailService.sendEmailAnuncioCurso(data)
+      .subscribe(() => unsubscribe.unsubscribe(),
+        e => {
+          console.log(e);
+        });
   }
 
-  obtenerUsuarioSeleccionados()
-  {
-    if(this.estudiantesSeleccionados.length>0)
-    {
+  obtenerUsuarioSeleccionados() {
+    if (this.estudiantesSeleccionados.length > 0) {
       this.estudiantesSeleccionados.forEach(seleccionado => {
         let unsubscribe = this.userService.obtenerAnuncioEstudiante(seleccionado.id, this.idAnuncio)
-        .valueChanges()
-        .subscribe(anuncio => {
-          if(anuncio)
-          {
-            this.editarAnuncioEstudainte(seleccionado.id);
-          }
-          else
-          {
-            this.agregarAnuncioEstudiante(seleccionado.id);
-          }
-          unsubscribe.unsubscribe();
-        }, () => this.mensajeErrorNotficarEstudiantes());
+          .valueChanges()
+          .subscribe(anuncio => {
+            if (anuncio) {
+              this.editarAnuncioEstudainte(seleccionado.id);
+            }
+            else {
+              this.agregarAnuncioEstudiante(seleccionado.id);
+            }
+            unsubscribe.unsubscribe();
+          }, () => this.mensajeErrorNotficarEstudiantes());
       })
     }
   }
 
-  obtenerAnuncioEstudiante()
-  {
-    if (this.matriculados)
-    {
+  obtenerAnuncioEstudiante() {
+    if (this.matriculados) {
       this.matriculados.forEach(matriculado => {
         let unsubscribe = this.userService.obtenerAnuncioEstudiante(matriculado.id, this.idAnuncio)
-        .valueChanges()
-        .subscribe((anuncio) => {
-          if(anuncio)
-          {
-            this.editarAnuncioEstudainte(matriculado.id);
-          }
-          else
-          {
-            this.agregarAnuncioEstudiante(matriculado.id);
-          }
-          unsubscribe.unsubscribe();
-        }, () => this.mensajeErrorNotficarEstudiantes());
+          .valueChanges()
+          .subscribe((anuncio) => {
+            if (anuncio) {
+              this.editarAnuncioEstudainte(matriculado.id);
+            }
+            else {
+              this.agregarAnuncioEstudiante(matriculado.id);
+            }
+            unsubscribe.unsubscribe();
+          }, () => this.mensajeErrorNotficarEstudiantes());
       });
     }
   }
 
-  agregarAnuncioEstudiante(idEstudiante:string)
-  {
+  agregarAnuncioEstudiante(idEstudiante: string) {
     const data = {
       titulo: this.contenido.titulo,
-      idAnuncios:this.idAnuncio
+      idAnuncios: this.idAnuncio
     }
     this.userService.agregarAnuncios(data, idEstudiante, this.idAnuncio)
-    .then(()=>{}, () => this.mensajeErrorNotficarEstudiantes());
+      .then(() => { }, () => this.mensajeErrorNotficarEstudiantes());
   }
 
-  async editarAnuncioEstudainte(idEstudiante:string)
-  {
+  async editarAnuncioEstudainte(idEstudiante: string) {
     this.userService.editarAnuncios(this.contenido, idEstudiante, this.idAnuncio)
-    .then(()=>{}, () => this.mensajeErrorNotficarEstudiantes());
+      .then(() => { }, () => this.mensajeErrorNotficarEstudiantes());
   }
 
-  enviarEmailEstudiantes(estudiantes:any[])
-  {
-    estudiantes.forEach(estudiante => 
-    {
+  enviarEmailEstudiantes(estudiantes: any[]) {
+    estudiantes.forEach(estudiante => {
       const unsubscribeUser = this.userService.detailUser(estudiante.id).valueChanges()
-      .subscribe((estudianteMail:any)=> {
-        const data = {
-          to:estudianteMail.correo,
-          titulo: this.contenido.titulo,
-          contenido: this.contenido.descripcion
-        }
-        const unsubscribe =this.mailService.sendEmailAnuncioCurso(data)
-        .subscribe(() => unsubscribe.unsubscribe(),
-        e =>{
-          console.log(e);
+        .subscribe((estudianteMail: any) => {
+          const data = {
+            to: estudianteMail.correo,
+            titulo: this.contenido.titulo,
+            contenido: this.contenido.descripcion
+          }
+          const unsubscribe = this.mailService.sendEmailAnuncioCurso(data)
+            .subscribe(() => unsubscribe.unsubscribe(),
+              e => {
+                console.log(e);
+              });
+          unsubscribeUser.unsubscribe();
         });
-        unsubscribeUser.unsubscribe();
-      });
     });
   }
 
-  mensajeErrorEditarAnuncio()
-  {
+  mensajeErrorEditarAnuncio() {
     Swal.fire({
-      icon:'error',
-      title:'No se pudo editar el anuncio',
-      text:'Por favor intente otra vez editar el anuncio',
+      icon: 'error',
+      title: 'No se pudo editar el anuncio',
+      text: 'Por favor intente otra vez editar el anuncio',
       confirmButtonText: 'Aceptar'
     });
   }
 
-  mensajeErrorNotficarEstudiantes()
-  {
+  mensajeErrorNotficarEstudiantes() {
     Swal.fire({
-      icon:'error',
-      title:'No se pudo notificar todos los estudiantes',
-      text:'Por favor intente otra vez editar el anuncio',
+      icon: 'error',
+      title: 'No se pudo notificar todos los estudiantes',
+      text: 'Por favor intente otra vez editar el anuncio',
       confirmButtonText: 'Aceptar'
     });
   }
 
-  validarTituloAnuncio(titulo:string):boolean
-  {
-    if(titulo.length<3)
-    {
+  validarTituloAnuncio(titulo: string): boolean {
+    if (titulo.length < 3) {
       Swal.fire({
-        title:'Titulo del anuncio',
-        text:'El titulo del anuncio debe tener mas de 3 caracteres',
+        title: 'Titulo del anuncio',
+        text: 'El titulo del anuncio debe tener mas de 3 caracteres',
         icon: 'info',
-        confirmButtonText:'Aceptar'
+        confirmButtonText: 'Aceptar'
       });
       return false;
-    }else
-    {
+    } else {
       return true;
     }
   }
 
-  validarDescripcionAnuncio(descripcion:string)
-  {
-    if(descripcion==='')
-    {
+  validarDescripcionAnuncio(descripcion: string) {
+    if (descripcion === '') {
       Swal.fire({
-        title:'Descripción del anuncio',
-        text:'La descripción del anuncio no debe estar vacío',
+        title: 'Descripción del anuncio',
+        text: 'La descripción del anuncio no debe estar vacío',
         icon: 'info',
-        confirmButtonText:'Aceptar'
+        confirmButtonText: 'Aceptar'
       });
       return false;
-    }else
-    {
+    } else {
       return true;
     }
   }
 
-  seleccionarEstudiantes(matriculado:any,elegido:boolean)
-  {
-    if(elegido)
-    {
+  seleccionarEstudiantes(matriculado: any, elegido: boolean) {
+    if (elegido) {
       this.estudiantesSeleccionados.push(matriculado);
     }
-    else
-    {
+    else {
       const posicion = this.estudiantesSeleccionados.findIndex(
         estudiante => estudiante.id === matriculado.id
       );
-      this.estudiantesSeleccionados.splice(posicion,1);
+      this.estudiantesSeleccionados.splice(posicion, 1);
     }
   }
 
-  volverAListaAnuncio()
-  {
+  volverAListaAnuncio() {
     this.route.navigate([`/cursos/anuncios/${this.idCurso}`]);
   }
 
-  mensajeAnuncioEditado()
-  {
+  mensajeAnuncioEditado() {
     Swal.fire({
-      title:'Anuncio editado exitosamente',
+      title: 'Anuncio editado exitosamente',
       icon: 'success'
-    }).then(()=> this.volverAListaAnuncio());
+    }).then(() => this.volverAListaAnuncio());
   }
 
 

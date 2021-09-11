@@ -30,6 +30,7 @@
                 </editor>
             </div>
             <section class="opciones">
+                <mat-checkbox [(ngModel)]="dateUpdate">¿actualizar fecha? aparecerá en ultimo lugar.</mat-checkbox>
                 <mat-checkbox [(ngModel)]="this.opciones.miCopia">Enviarme una copia por e-mail</mat-checkbox>
                 <mat-checkbox [(ngModel)]="this.opciones.todoCurso">Enviar a todos los usuarios de este curso</mat-checkbox>
                 <mat-checkbox [(ngModel)]="this.opciones.estudiantesSeleccionados">Enviar solamente a los usuarios seleccionados</mat-checkbox>

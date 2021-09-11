@@ -46,8 +46,6 @@ export class AdsCursoComponent implements OnInit, AfterViewInit {
     if (this.stdId) {
       this.admin = false;
     }
-    this.obtenerIdMatriculados();
-    this.listaAnunciosCurso();
   }
 
   ngAfterViewInit(): void {
@@ -56,6 +54,8 @@ export class AdsCursoComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    this.obtenerIdMatriculados();
+    this.listaAnunciosCurso();
   }
 
   applyFilter(filterValue: string): void {

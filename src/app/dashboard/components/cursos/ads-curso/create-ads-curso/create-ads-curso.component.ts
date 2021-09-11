@@ -30,11 +30,10 @@ export class CreateAdsCursoComponent implements OnInit {
     private auth: AuthService,
     private route: Router
   ) {
-    this.obtenerUsuarioEnSeccion();
+
     this.estudiantesSeleccionados =[];
     this.matriculados=[];
     this.idCurso = this.activatedRoute.snapshot.params.idCurso;
-    this.obtenerIdMatriculados();
     this.contenido={
       descripcion:'',
       titulo:''
@@ -70,6 +69,8 @@ export class CreateAdsCursoComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.obtenerUsuarioEnSeccion();
+    this.obtenerIdMatriculados();
   }
 
   crearAnuncio()
