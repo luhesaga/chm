@@ -13,8 +13,12 @@
             <div class="course-detail">
                 <h3><a (click)="goToCourseDetail(item.id)">{{ item.nombre }}</a></h3>
                 <div class="ranking">
-                    <star-rating [starType]="'svg'" [rating]="3.8" [staticColor]="'ok'" [step]="0.5" [showHalfStars]="true"></star-rating>
-                    <p>80 votos | 25 visitas</p>
+                    <star-rating [starType]="'svg'"
+                    (starClickChange)="agregarEstrella($event.rating, item)"
+                    [disabled]="item.haVotado"
+                    [rating]="item.promedio"
+                    [staticColor]="'ok'" [step]="0.5" [showHalfStars]="true"></star-rating>
+                    <p>{{item.promedio}} {{item.promedio<2 ? 'estrella':'estrellas'}} | {{item.nroVotos}} votos</p>
                 </div>
                 <div class="profesor-info">
                     <img

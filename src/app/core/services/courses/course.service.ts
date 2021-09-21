@@ -44,7 +44,8 @@ export class CourseService {
         imagen: data.image,
         nombreImg: imgName,
         categoria: data.categoria,
-        profesor: data.profesor
+        profesor: data.profesor,
+        calificacionEstrellas:[]
       });
   }
 
@@ -171,5 +172,12 @@ export class CourseService {
   deleteDocuments(idCurso:string, idDocument:string): Promise<any> {
     return this.fireStore.doc(`cursos/${idCurso}/documents/${idDocument}`)
     .delete();
+  }
+
+  agregarEstrella(calificacionEstrellas:any[], idCurso:string)
+  {
+    return this.fireStore.doc(`cursos/${idCurso}`).update({
+      calificacionEstrellas
+    });
   }
 }
