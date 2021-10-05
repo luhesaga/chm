@@ -13,7 +13,8 @@
         <div *ngIf="generarCertificado()">
             <button
             mat-raised-button
-            style="background: var(--main-color2); color: white;">
+            style="background: var(--main-color2); color: white;"
+            (click)="downloadPDFCerticate()">
             <mat-icon>school</mat-icon>
             Generar certificado</button>
         </div>

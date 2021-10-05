@@ -51,6 +51,7 @@ import { AddCursoComponent } from './components/carreras/add-curso/add-curso.com
 import { CarrerasDetailComponent } from './components/carreras/carreras-detail/carreras-detail.component';
 import { CatalogoCarrerasComponent } from './components/carreras/catalogo-carreras/catalogo-carreras.component';
 import { MycareersComponent } from './components/mycareers/mycareers.component';
+import { CareerCoursesComponent } from './components/mycareers/career-courses/career-courses.component';
 
 
 const routes: Routes = [
@@ -105,6 +106,10 @@ const routes: Routes = [
       },
       {
         path: 'cursos/index/:id/:stdId',
+        component: CourseHomeComponent
+      },
+      {
+        path: 'cursos/index/:id/:stdId/:careerId',
         component: CourseHomeComponent
       },
       {
@@ -248,6 +253,10 @@ const routes: Routes = [
       {
         path: 'mis-carreras/:stdId',
         component: MycareersComponent
+      },
+      {
+        path: 'mis-carreras/cursos/:careerId/:stdId',
+        component: CareerCoursesComponent
       },
       {
         path: 'add-student/:idCurso',

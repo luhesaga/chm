@@ -49,6 +49,9 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
 
   curso;
 
+  careerId: string;
+  carrera = false;
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private courseService: CourseService,
@@ -59,12 +62,15 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
   ) {
     this.id = this.activatedRoute.snapshot.params.id;
     this.stdId = this.activatedRoute.snapshot.params.stdId;
-    // console.log(this.stdId);
+    this.careerId = this.activatedRoute.snapshot.params.careerId;
 
     if (this.stdId) {
       this.admin = false;
     }
-    // console.log(this.admin);
+
+    if (this.careerId) {
+      this.carrera = true;
+    }
 
     this.breakpointObserver.observe([
       Breakpoints.Large,
@@ -189,6 +195,8 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
 
     if (this.admin) {
       this.route.navigate(['dashboard/cursos']);
+    } else if (this.carrera) {
+      this.route.navigate([`dashboard/mis-carreras/cursos/${this.careerId}/${this.stdId}`]);
     } else {
       this.route.navigate([`dashboard/mis-cursos/${this.stdId}`]);
     }

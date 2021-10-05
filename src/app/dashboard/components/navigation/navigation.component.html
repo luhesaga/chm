@@ -50,6 +50,29 @@
       </mat-expansion-panel>
       <!-- // cursos ofrecidos -->
       <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+        <mat-expansion-panel-header *ngIf="logguedUser.perfil==='administrador' || logguedUser.perfil==='profesor'" class="admin-header">
+          <mat-panel-title class="admin">
+            <mat-list>
+              <mat-list-item>
+                <button mat-icon-button>
+                  <mat-icon>military_tech</mat-icon>
+                </button>
+                <span class="main-option">Carreras</span>
+              </mat-list-item>
+            </mat-list>
+          </mat-panel-title>
+          <mat-panel-description>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <mat-list>
+          <mat-list-item class="secondary-list">
+            <a mat-list-item (click)="goToCarreraCatalogo()">Catálogo de carreras</a>
+            <mat-divider></mat-divider>
+          </mat-list-item>
+        </mat-list>
+      </mat-expansion-panel>
+       <!-- // cursos ofrecidos -->
+      <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
         <mat-expansion-panel-header class="admin-header">
           <mat-panel-title class="admin">
             <mat-list>
@@ -69,14 +92,10 @@
             <a mat-list-item (click)="goToCoursesList()">Catálogo de cursos</a>
             <mat-divider></mat-divider>
           </mat-list-item>
-          <mat-list-item class="secondary-list">
-            <a mat-list-item (click)="goToCarreraCatalogo()">Carreras</a>
-            <mat-divider></mat-divider>
-          </mat-list-item>
         </mat-list>
       </mat-expansion-panel>
        <!-- // Perfil -->
-       <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+      <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
         <mat-expansion-panel-header class="admin-header">
           <mat-panel-title class="admin">
             <mat-list>
@@ -115,12 +134,12 @@
           </mat-panel-description>
         </mat-expansion-panel-header>
         <mat-list>
+          <!-- <mat-list-item class="secondary-list">
+            <a mat-list-item (click)="goToMyCareers()">Mis carreras</a>
+            <mat-divider></mat-divider>
+          </mat-list-item> -->
           <mat-list-item class="secondary-list">
             <a mat-list-item (click)="goToMyCourses()">Mis cursos</a>
-            <mat-divider></mat-divider>
-          </mat-list-item>
-          <mat-list-item class="secondary-list">
-            <a mat-list-item (click)="goToMyCareers()">Mis carreras</a>
             <mat-divider></mat-divider>
           </mat-list-item>
           <mat-list-item class="secondary-list">
@@ -177,7 +196,7 @@
           <mat-list-item class="secondary-list">
             <a
               mat-list-item
-              href="http://biblioteca-chym.esy.es/index.php"
+              href="https://biblioteca.chym-ndt.com/index.php"
               target="_blank">Biblioteca virtual</a>
             <mat-divider></mat-divider>
           </mat-list-item>

@@ -1,4 +1,24 @@
-<p>mycareers works!</p>
-<div *ngFor="let career of userCareers">
-    {{ career.nombre }}
-</div>
+<main>
+    <header>
+        <h2>Mis Carreras</h2>
+    </header>
+    <section class="career-list" *ngIf="userCareers?.length > 0">
+        <div class="career-details" *ngFor="let career of userCareers">
+            <figure>
+                <img src="{{ career.imagen }}" alt="portada carrera">
+            </figure>
+            <div class="career-info">
+                <h3>{{ career.nombre }}</h3>
+                <p>tu suscripción termina en:
+                    <span>{{ career.fechaFin === 'nunca' ? 'suscripción ilimitada' : career.fechaFin.toLocaleString() }}</span>
+                </p>
+                <button mat-raised-button (click)="goToCoursesList(career.id)">Ir a cursos de la carrera</button>
+            </div>
+        </div>
+    </section>
+    <section class="no-careers" *ngIf="userCareers?.length <= 0">
+        <p>Aún no has adquirido ninguna carrera, te invitamos a conocerlas.</p>
+        <button mat-raised-button color="primary" (click)="goToCareersList()">Ver carreras ofertadas</button>
+    </section>
+</main>
+

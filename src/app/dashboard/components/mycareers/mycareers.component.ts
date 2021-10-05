@@ -28,9 +28,7 @@ export class MycareersComponent implements OnInit {
     let careersList = this.careerService.obtenerCarreras()
       .valueChanges()
       .subscribe(careers => {
-        // console.log(careers)
         this.getRegisteredUsers(careers);
-        // console.log(this.userCareers);
         careersList.unsubscribe();
       })
   }
@@ -42,19 +40,32 @@ export class MycareersComponent implements OnInit {
         .valueChanges()
         .subscribe((uc: any) => {
           if (uc) {
-            // console.log(uc);
-            let career = {
-              id: c.id,
-              nombre: c.nombre,
-              imagen: c.imagen,
-              fechaFin: uc.fechaFinalizacionMatricula
-            }
-            this.userCareers.push(career);
+            this.userCareers.push(this.setUserCareer(c, uc));
             console.log(this.userCareers);
           }
           userCareer.unsubscribe();
         });
     });
+  }
+
+  setUserCareer(careerData, userOpt) {
+    const endDate = userOpt.fechaFinalizacionMatricula === 'nunca' ?
+      'nunca' : new Date(userOpt.fechaFinalizacionMatricula.seconds * 1000);
+
+    return {
+      id: careerData.id,
+      nombre: careerData.nombre,
+      imagen: careerData.image,
+      fechaFin: endDate
+    }
+  }
+
+  goToCareersList() {
+    this.router.navigate([`/dashboard/carreras/catalogo/${this.userId}`]);
+  }
+
+  goToCoursesList(careerId) {
+    this.router.navigate([`/dashboard/mis-carreras/cursos/${careerId}/${this.userId}`]);
   }
 
 }

@@ -65,6 +65,7 @@ import { MatricularEstudiantesCarreraComponent } from './components/carreras/add
 import { AgregarCursoComponent } from './components/carreras/add-curso/agregar-curso/agregar-curso.component';
 import { CarrerasInfoComponent } from './components/carreras/catalogo-carreras/carreras-info/carreras-info.component';
 import { MycareersComponent } from './components/mycareers/mycareers.component';
+import { CareerCoursesComponent } from './components/mycareers/career-courses/career-courses.component';
 
 
 
@@ -127,6 +128,7 @@ import { MycareersComponent } from './components/mycareers/mycareers.component';
     AgregarCursoComponent,
     CarrerasInfoComponent,
     MycareersComponent,
+    CareerCoursesComponent,
     ],
   imports: [
     CommonModule,

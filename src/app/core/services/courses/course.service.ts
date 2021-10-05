@@ -108,6 +108,19 @@ export class CourseService {
       })
   }
 
+  registeredUSerDetail(courseId: string, stdId: string) {
+    return this.fireStore.doc(`cursos/${courseId}/matriculados/${stdId}`);
+  }
+
+  courseFinish(courseId: string, stdId: string) {
+    const fecha = new Date()
+    return this.fireStore.doc(`cursos/${courseId}/matriculados/${stdId}`)
+      .update({
+        finalizado: true,
+        fechaFin: fecha,
+      })
+  }
+
   deleteUserFromCourse(idCurso: string, idEstudiante: string) {
     return this.fireStore.doc(`cursos/${idCurso}/matriculados/${idEstudiante}`).delete();
   }
@@ -117,7 +130,7 @@ export class CourseService {
   }
 
   createAnuncio(data: any, courseId: string, idAnuncio: string): Promise<void> {
-    let fecha = new Date().toUTCString();
+    let fecha = new Date();
     return this.fireStore.doc(`cursos/${courseId}/anuncios/${idAnuncio}`)
       .set({
         id: idAnuncio,
@@ -129,7 +142,7 @@ export class CourseService {
 
   obtenerAnuncios(idCurso: string): AngularFirestoreCollection {
     return this.fireStore.collection(`cursos/${idCurso}/anuncios`, ref =>
-      ref.orderBy('fecha', 'asc'));
+      ref.orderBy('fecha', 'desc'));
   }
 
   deleteAnuncio(courseId: string, idAnuncio: string): Promise<any> {
@@ -143,7 +156,7 @@ export class CourseService {
   editarAnuncio(data: any, courseId: string, idAnuncio: string, dateUpdate: boolean, date: string): Promise<void> {
     let fecha;
     if (dateUpdate) {
-      fecha = new Date().toUTCString();
+      fecha = new Date();
     } else {
       fecha = date;
     }

@@ -1,0 +1,28 @@
+<main>
+    <section>
+        <h2 class="section-title">Cursos {{ careerReceived?.nombre }}</h2>
+        <div class="course-container" *ngFor="let course of careerCourses">
+            <div class="course-img">
+                <img
+                    class="imagenCurso"
+                    [src]="course.imagen"
+                    alt="imagen del curso"
+                    (click)="goToCourseHome(course.id)"
+                    matTooltip="{{ 'ir al curso: ' + course.nombre }}">
+            </div>
+            <div class="course-data">
+                <h2
+                    class="nombreCurso"
+                    (click)="goToCourseHome(course.id)"
+                    matTooltip="{{ 'ir al curso: ' + course.nombre }}">
+                        {{course.nombre}}
+                </h2>
+                <p>
+                    <!-- <mat-icon>engineering</mat-icon> -->
+                    Profesor:
+                    <span> {{course.profesor}} </span>
+                </p>
+            </div>
+        </div>
+    </section>
+</main>
