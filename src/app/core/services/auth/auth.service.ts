@@ -37,12 +37,17 @@ export class AuthService {
         return of(null);
       })
     );
+
+  }
+
+  getDate() {
+    return this.af.authState;
   }
 
   loginUser(email: string, password: string): Promise<any> {
     return this.af.signInWithEmailAndPassword(email, password)
       .then((result) => {
-        console.log(result);
+        // console.log(result);
         if (result.user.emailVerified !== true) {
           result.user.sendEmailVerification();
           Swal.fire({
@@ -85,6 +90,7 @@ export class AuthService {
     return this.af.createUserWithEmailAndPassword(email, password)
       .then((result) => {
         if (result.user.emailVerified !== true) {
+          data.fechaCreacion = result.user.metadata.creationTime;
           result.user.sendEmailVerification();
           this.userService.createUser(data, result.user.uid)
             .then(() => {

@@ -6,6 +6,7 @@ import { MatSort } from '@angular/material/sort';
 import Swal from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
 import { UserEditComponent } from './user-edit/user-edit.component';
+import { AuthService } from '../../../core/services/auth/auth.service';
 
 @Component({
   selector: 'app-users',

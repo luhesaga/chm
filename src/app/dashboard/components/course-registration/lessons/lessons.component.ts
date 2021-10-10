@@ -26,10 +26,9 @@ export class LessonsComponent implements OnInit, AfterViewInit, OnDestroy {
   LogguedUser;
   course;
 
-  // lessonsReceived;
-  // contentReceived;
+  lessonsReceived;
   contents;
-  // userProgress;
+  finished = false;
 
   userLessons;
 
@@ -60,18 +59,40 @@ export class LessonsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    //this.lessonsReceived.unsubscribe();
-    //this.contentReceived.unsubscribe();
-    //this.userProgress.unsubscribe();
+    this.lessonsReceived.unsubscribe();
   }
 
-  listLesson(): void {
-    let lessonsReceived = this.lessonService.listLessons(this.courseId)
+  generarCertificado(lessons): boolean {
+    const lesson: any = lessons[lessons.length - 1] || { porcentaje: 0 };
+    if (lesson.porcentaje === 100) {
+      console.log(lesson);
+      let isFinished = this.courseService.registeredUSerDetail(this.courseId, this.stdId)
+        .valueChanges()
+        .subscribe((f: any) => {
+          if (f.finalizado) {
+            this.fechaFin = f.fechaFin;
+          } else {
+            this.courseService.courseFinish(this.courseId, this.stdId)
+              .then(() => {
+                this.fechaFin = new Date();
+              })
+              .catch(err => console.log(err));
+          }
+          isFinished.unsubscribe();
+        });
+      return true;
+    } else {
+      console.log(lesson);
+      return false;
+    }
+  }
+
+  listLesson() {
+    this.lessonsReceived = this.lessonService.listLessons(this.courseId)
       .valueChanges()
       .subscribe(lessons => {
         this.getLessonsContent(lessons)
         this.dataSource.data = lessons;
-        lessonsReceived.unsubscribe();
       })
 
   }
@@ -81,13 +102,13 @@ export class LessonsComponent implements OnInit, AfterViewInit, OnDestroy {
       let contentReceived = this.lessonService.listLessonContent(this.courseId, lesson.id)
         .valueChanges()
         .subscribe(lessonContents => {
-          this.getUserProgress(lessonContents, lesson);
+          this.getUserProgress(lessonContents, lesson, lessons);
           contentReceived.unsubscribe();
-        })
+        });
     });
   }
 
-  getUserProgress(lessonContents, lesson) {
+  getUserProgress(lessonContents, lesson, lessons) {
     lesson.porcentaje = 0;
     const arr = []
 
@@ -108,6 +129,7 @@ export class LessonsComponent implements OnInit, AfterViewInit, OnDestroy {
             //console.log(arr);
           }
           lesson.porcentaje = Math.ceil(((lessonContents.length - (lessonContents.length - arr.length)) / lessonContents.length) * 100);
+          this.finished = this.generarCertificado(lessons);
           userProgress.unsubscribe();
         });
     });
@@ -135,15 +157,6 @@ export class LessonsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  goToCourseView(element: any) {
-    console.log(element);
-    this.router.navigate([`dashboard/course-view/${this.courseId}/${element.id}/${this.stdId}`]);
-  }
-
-  goBack() {
-    this.router.navigate([`cursos/index/${this.courseId}/${this.stdId}`]);
-  }
-
   lessonActivated(element: any): boolean {
     let index = this.dataSource.data.findIndex((lesson: any) => lesson.id === element.id);
     if (index === 0) {
@@ -160,31 +173,12 @@ export class LessonsComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  generarCertificado() {
-    const lastIndex = this.dataSource.data.length - 1;
-    const lesson: any = this.dataSource.data[lastIndex] || { porcentaje: 0 };
-    if (lesson.porcentaje === 100) {
-      let finish = this.courseService.registeredUSerDetail(this.courseId, this.stdId)
-        .valueChanges()
-        .subscribe((f: any) => {
-          if (f.finalizado) {
-            this.fechaFin = f.fechaFin;
-            return true;
-          } else {
-            this.courseService.courseFinish(this.courseId, this.stdId)
-              .then(() => {
-                this.fechaFin = new Date();
-                return true
-              })
-              .catch(err => console.log(err));
-          }
-          finish.unsubscribe();
-        })
-      return true;
-    }
-    else {
-      return false;
-    }
+  goToCourseView(element: any) {
+    this.router.navigate([`dashboard/course-view/${this.courseId}/${element.id}/${this.stdId}`]);
+  }
+
+  goBack() {
+    this.router.navigate([`cursos/index/${this.courseId}/${this.stdId}`]);
   }
 
   downloadPDFCerticate() {

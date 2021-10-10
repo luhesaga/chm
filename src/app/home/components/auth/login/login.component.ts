@@ -4,6 +4,7 @@ import { AuthService } from 'src/app/core/services/auth/auth.service';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { type } from 'os';
+import { UsersService } from '../../../../core/services/users/users.service';
 
 @Component({
   selector: 'app-login',
@@ -35,6 +36,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private auth: AuthService,
+    private userServ: UsersService,
     private route: Router
   ) {
     this.loginForm = this.formBuilder.group({
@@ -57,7 +59,18 @@ export class LoginComponent implements OnInit {
   loginUser(data): void {
     const email = data.mail;
     const pass = data.password;
-    this.auth.loginUser(email, pass);
+    this.auth.loginUser(email, pass)
+      .then(() => {
+        let getDate = this.auth.getDate().subscribe(u => {
+          let user = this.auth.user$.subscribe((us: any) => {
+            if (!us.fechaCreacion) {
+              this.userServ.updateCreateDate(us.id, u.metadata.creationTime);
+            }
+            user.unsubscribe();
+          });
+          getDate.unsubscribe();
+        })
+      });
   }
 
   printErrorByCode(code: string): string {

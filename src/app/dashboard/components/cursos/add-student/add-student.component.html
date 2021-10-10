@@ -76,6 +76,24 @@
                 </td>
             </ng-container>
 
+            <!-- fecha registro -->
+            <ng-container matColumnDef="fecha">
+                <th
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+                id="fecha">
+                    Fecha Registro
+                </th>
+                <td
+                    mat-cell
+                    *matCellDef="let element"
+                    matTooltip="Fecha de registro en la plataforma"
+                    class="fecha">
+                    {{ element.fechaCreacion }}
+                </td>
+            </ng-container>
+
             <!-- botones de acción -->
             <ng-container matColumnDef="actions">
                 <th mat-header-cell *matHeaderCellDef id="acciones">Acciones</th>

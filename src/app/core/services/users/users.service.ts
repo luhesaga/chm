@@ -37,6 +37,15 @@ export class UsersService {
       )
   }
 
+  updateCreateDate(userId, fecha) {
+    return this.fireStore.doc(`usuarios/${userId}`)
+      .update(
+        {
+          fechaCreacion: fecha,
+        }
+      )
+  }
+
   listTeachers(): AngularFirestoreCollection {
     return this.fireStore.collection('usuarios', ref =>
       ref.where('perfil', '==', 'profesor'));
