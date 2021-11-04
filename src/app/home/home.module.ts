@@ -19,6 +19,7 @@ import { CourseDetailComponent } from './components/courses/course-detail/course
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MainComponent } from './components/main/main.component';
 import { DashboardModule } from '../dashboard/dashboard.module';
+import { CertValidationComponent } from './components/certificates/cert-validation/cert-validation.component';
 
 
 
@@ -36,7 +37,8 @@ import { DashboardModule } from '../dashboard/dashboard.module';
     ContactComponent,
     CourseInfoComponent,
     CourseDetailComponent,
-    MainComponent
+    MainComponent,
+    CertValidationComponent
   ],
   imports: [
     CommonModule,

@@ -4,9 +4,9 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { LessonsService } from 'src/app/core/services/lessons/lessons.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import jsPDF from 'jspdf';
 import { UsersService } from '../../../../core/services/users/users.service';
 import { CourseService } from '../../../../core/services/courses/course.service';
+import { CerticateService } from '../../../../core/services/certificate/certicate.service';
 
 @Component({
   selector: 'app-lessons',
@@ -40,6 +40,7 @@ export class LessonsComponent implements OnInit, AfterViewInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private userService: UsersService,
     private courseService: CourseService,
+    private certificate: CerticateService,
     private router: Router,
   ) {
     this.courseId = this.activatedRoute.snapshot.params.courseId;
@@ -82,7 +83,7 @@ export class LessonsComponent implements OnInit, AfterViewInit, OnDestroy {
         });
       return true;
     } else {
-      console.log(lesson);
+      //console.log(lesson);
       return false;
     }
   }
@@ -140,6 +141,7 @@ export class LessonsComponent implements OnInit, AfterViewInit, OnDestroy {
       .valueChanges()
       .subscribe(u => {
         this.LogguedUser = u;
+        console.log(this.LogguedUser);
         user.unsubscribe();
       })
   }
@@ -179,93 +181,6 @@ export class LessonsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   goBack() {
     this.router.navigate([`cursos/index/${this.courseId}/${this.stdId}`]);
-  }
-
-  downloadPDFCerticate() {
-    // fecha finalizacion del curso
-    let f = new Date(this.fechaFin.seconds * 1000);
-    const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-    const fecha = (f.getDate() + ' de ' + meses[f.getMonth()] + ' de ' + f.getFullYear());
-    // horas del curso
-    let hours = this.getCourseDuration();
-
-    let student = `${this.LogguedUser.nombres} ${this.LogguedUser.apellidos}`;
-    // let student = `Luis Hernando Sarmiento Garzón`;
-    let teacher = `${this.course.profesor}`;
-    let text1 = 'Hace constar que';
-    let text2 = `Cursó y aprobó satisfactoriamente la acción de formación`;
-    let course = `${this.course.nombre}`;
-    let text4 = `ASNT NDT LEVEL II`;
-    let text5 = `Director General`;
-
-    let doc = new jsPDF(
-      {
-        orientation: 'l',
-        format: 'letter',
-        unit: 'px'
-      }
-    );
-
-    // Funcion para centrar los textos
-    const centerText = (text: string) => {
-      let fontSize = doc.getFontSize();
-      let pageWidth = doc.internal.pageSize.width;
-      let txtWidth = doc.getStringUnitWidth(text) * fontSize / doc.internal.scaleFactor;
-      return Math.ceil((pageWidth - txtWidth) / 2);
-    };
-
-    doc.setFillColor(236, 239, 241);
-    doc.rect(0, 0, 756, 612, "F");
-    doc.addImage('../../../assets/img/certificate-banner.png', 'PNG', 20, 3, 580, 80);
-    doc.addImage('../../../assets/img/certificate-lines.png', 'PNG', 3, 3, 70, 450);
-    doc.setFontSize(16);
-    doc.setTextColor(0, 114, 121);
-    doc.text(text1, centerText(text1), 110);
-    doc.setFontSize(28);
-    doc.setTextColor(55, 71, 79);
-    doc.text(student.toUpperCase(), centerText(student), 160);
-    doc.setFontSize(16);
-    doc.setTextColor(0, 114, 121);
-    doc.text(text2, centerText(text2), 200,);
-    doc.setFontSize(28);
-    doc.setTextColor(55, 71, 79);
-    doc.text(course, centerText(course), 235);
-    doc.setFontSize(14);
-    doc.setTextColor(0, 114, 121);
-    doc.text(`Realizado:`, 100, 295);
-    doc.setTextColor(55, 71, 79);
-    doc.text(fecha, 160, 295);
-    doc.setTextColor(0, 114, 121);
-    doc.text(`Duracion:`, 380, 295);
-    doc.setTextColor(55, 71, 79);
-    doc.text(`${hours} HORAS`, 440, 295);
-    doc.setTextColor(0, 114, 121);
-    doc.text(`Lugar:`, 380, 315);
-    doc.setTextColor(55, 71, 79);
-    doc.text(`Barranquilla - Colombia`, 430, 315);
-    doc.setFontSize(18);
-    doc.setFont('times', 'bold');
-    doc.text(teacher, centerText(teacher), 370);
-    doc.setFontSize(14);
-    doc.setTextColor(0, 114, 121);
-    doc.setFont('times', 'normal');
-    doc.text(text4, centerText(text4), 385);
-    doc.text(text5, centerText(text5), 400);
-    doc.addImage('../../../assets/img/logo-ASNT.png', 'PNG', 450, 340, 100, 90);
-    doc.save(`certificado.pdf`);
-
-  }
-
-  getCourseDuration() {
-    let hours = this.course.duracion.toUpperCase();
-    let h;
-    let pos = hours.indexOf('HORAS');
-    if (hours.substring(pos - 4)[0] === '>') {
-      h = hours.substring(pos - 3, pos - 1);
-    } else {
-      h = hours.substring(pos - 4, pos - 1);
-    }
-    return h;
   }
 
 }

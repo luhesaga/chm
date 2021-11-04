@@ -57,6 +57,14 @@ export class NavigationComponent {
     this.route.navigate([`/dashboard/mis-carreras/${this.logguedUser.id}`])
   }
 
+  goToMyCertificates() {
+    this.route.navigate([`dashboard/mis-certificados/${this.logguedUser.id}`]);
+  }
+
+  goToAdmCertificates() {
+    this.route.navigate(['dashboard/certificados']);
+  }
+
   logout():void {
     this.auth.logout();
     this.route.navigate(['/home']);

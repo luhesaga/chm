@@ -25,12 +25,15 @@ export class CreateComponent implements OnInit, AfterViewInit {
 	images: any = [];
 	categories: any = [];
 	selectedCategory: string;
+	selectedType: string;
+	types: string [] = ['Certificacion', 'Asistencia', 'Aprobacion'];
 	teachers: any = [];
 	selectedTeacher: string;
 
 	//datos para editar curso
 	imageName: string;
 	name: string;
+	initials: string;
 	imgUrl;
 	confirmDelImg;
 	changeImg = false;
@@ -72,7 +75,9 @@ getCourse() {
 			this.imageField.setValue(curso.imagen);
 			this.imageName = curso.nombreImg;
 			this.name = curso.nombre;
+			this.initials = curso.sigla;
 			this.selectedCategory = curso.categoria;
+			this.selectedType = curso.tipoCerticado;
 			// console.log(this.selectedCategory);
 			this.selectedTeacher = curso.profesor;
 			// console.log(this.selectedTeacher);
@@ -118,6 +123,8 @@ listTeachers() {
 private buildForm(): void {
 	this.form = this.formBuilder.group({
 		name: ['', Validators.required,],
+		initials: ['', Validators.required,],
+		tipoCert: ['', Validators.required],
 		image: ['', Validators.required],
 		categoria: [''],
 		profesor: [''],
@@ -126,6 +133,14 @@ private buildForm(): void {
 
 get nameField() {
 	return this.form.get('name');
+}
+
+get initialsField() {
+	return this.form.get('initials');
+}
+
+get tipoCertField() {
+	return this.form.get('tipoCert');
 }
 
 get imageField() {

@@ -41,10 +41,12 @@ export class CourseService {
       .set({
         id,
         nombre: data.name,
+        sigla: data.initials.toUpperCase(),
         imagen: data.image,
         nombreImg: imgName,
         categoria: data.categoria,
-        profesor: data.profesor
+        profesor: data.profesor,
+        tipoCerticado: data.tipoCert,
       });
   }
 
@@ -52,10 +54,12 @@ export class CourseService {
     return this.fireStore.doc(`cursos/${id}`)
       .update({
         nombre: data.name,
+        sigla: data.initials.toUpperCase(),
         imagen: data.image,
         nombreImg: imgName,
         categoria: data.categoria,
-        profesor: data.profesor
+        profesor: data.profesor,
+        tipoCerticado: data.tipoCert,
       });
   }
 

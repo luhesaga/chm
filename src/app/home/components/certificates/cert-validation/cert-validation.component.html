@@ -1,0 +1,52 @@
+<main>
+    <section class="search">
+        <h1>Validación de certicados expedidos</h1>
+        <p>Puede buscar por código de certificado o por identificación.</p>
+        <form
+            [formGroup]="validationForm"
+            (ngSubmit)="validateCert($event)">
+            <div class="form-inputs">
+                <mat-form-field>
+                    <mat-label>Certificado o identificación</mat-label>
+                    <input
+                        type="text"
+                        matInput
+                        formControlName="certificado"
+                        #myinput
+                        tabIndex=1/>
+                    <mat-error *ngIf="certificadoField.touched && certificadoField.invalid">
+                        <ng-container *ngIf="certificadoField.hasError('required')">campo requerido</ng-container>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="buttons">
+                <button
+                    type="submit"
+                    tabIndex=4
+                    mat-raised-button
+                    color="primary"
+                    [disabled]="validationForm.invalid">
+                        Validar certificado
+                </button>
+            </div>
+        </form>
+    </section>
+    <section class="cert-show" *ngIf="show">
+        <div class="cert-container" *ngFor="let item of certReceived">
+            <div class="titles">
+                <p>Certificado</p>
+                <p>Nombre</p>
+                <p>Técnica</p>
+                <p>Expedición</p>
+                <p>Expiración</p>
+            </div>
+            <div class="cert-data">
+                <p>{{ item.certificado }}</p>
+                <p>{{ item.estudiante }}</p>
+                <p>{{ item.tecnica }}</p>
+                <p>{{ item.fechaFin }}</p>
+                <p>{{ item.fechaExp ? item.fechaExp : 'n/a' }}</p>
+            </div>
+        </div>
+    </section>
+</main>

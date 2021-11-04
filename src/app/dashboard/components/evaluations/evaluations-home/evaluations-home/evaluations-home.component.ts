@@ -139,17 +139,23 @@ export class EvaluationsHomeComponent implements OnInit, AfterViewInit {
       .valueChanges()
       .subscribe((item: any) => {
         let valor = 0;
+        let mayor = 0;
         if (item.length > 0) {
-          item[0].respuestas.forEach(r => {
-            valor += r.valor;
-          });
-          if (valor > 0) {
-            valor = Math.ceil((valor / (item[0].respuestas.length * 100)) * 100);
-          } else {
-            valor = 0;
-          }
+          item.forEach(prueba => {
+            prueba.respuestas.forEach(r => {
+              valor += r.valor;
+            });
+            if (valor > 0) {
+              valor = Math.ceil((valor / (prueba.respuestas.length * 100)) * 100);
+              if (valor > mayor) {
+                mayor = valor;
+              }
+            } else {
+              valor = 0;
+            }
+          })
         }
-        ejercicio.valor = valor;
+        ejercicio.valor = mayor;
         this.data[index].contenidos.push(ejercicio);
         userTest.unsubscribe();
       });

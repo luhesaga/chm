@@ -46,6 +46,10 @@
             <a mat-list-item routerLink="ads/ads-list">Anuncios</a>
             <mat-divider></mat-divider>
           </mat-list-item>
+          <mat-list-item class="secondary-list">
+            <a mat-list-item (click)="goToAdmCertificates()">Certificados</a>
+            <mat-divider></mat-divider>
+          </mat-list-item>
         </mat-list>
       </mat-expansion-panel>
       <!-- // cursos ofrecidos -->
@@ -143,7 +147,7 @@
             <mat-divider></mat-divider>
           </mat-list-item>
           <mat-list-item class="secondary-list">
-            <a mat-list-item routerLink="#">Mis Certificados</a>
+            <a mat-list-item (click)="goToMyCertificates()">Mis Certificados</a>
             <mat-divider></mat-divider>
           </mat-list-item>
         </mat-list>

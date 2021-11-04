@@ -47,10 +47,34 @@
             <ng-container *ngIf="nameField.hasError('required')">El nombre es requerido</ng-container>
           </mat-error>
         </mat-form-field>
+        <!-- sigla para certificado -->
+        <mat-form-field>
+          <mat-label>Sigla para Certificados</mat-label>
+          <input
+            type="text"
+            matInput
+            formControlName="initials"
+            [(ngModel)]="initials"
+            #myinput
+            tabIndex=2/>
+          <mat-error *ngIf="initialsField.touched && initialsField.invalid">
+            <ng-container *ngIf="initialsField.hasError('required')">Este campo es requerido</ng-container>
+          </mat-error>
+        </mat-form-field>
+        <!-- Tipo de certificado -->
+        <mat-form-field appearance="fill">
+          <mat-label>Tipo de certifricado</mat-label>
+          <mat-select tabIndex=3 matNativeControl [(value)]="selectedType" [(ngModel)]="selectedType" formControlName="tipoCert">
+            <mat-option value="" selected></mat-option>
+            <mat-option *ngFor="let type of types" [value]="type">
+              {{type}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
         <!-- Seleccionar Categoria -->
         <mat-form-field appearance="fill">
           <mat-label>Categoria</mat-label>
-          <mat-select tabIndex=2 matNativeControl [(value)]="selectedCategory" [(ngModel)]="selectedCategory" formControlName="categoria">
+          <mat-select tabIndex=4 matNativeControl [(value)]="selectedCategory" [(ngModel)]="selectedCategory" formControlName="categoria">
             <mat-option value="" selected></mat-option>
             <mat-option *ngFor="let cat of categories" [value]="cat.id">
               {{cat.nombre}}
@@ -60,7 +84,7 @@
         <!-- Seleccionar profesor -->
         <mat-form-field appearance="fill">
           <mat-label>Profesor</mat-label>
-          <mat-select tabIndex=3 matNativeControl [(ngModel)]="selectedTeacher" formControlName="profesor">
+          <mat-select tabIndex=5 matNativeControl [(ngModel)]="selectedTeacher" formControlName="profesor">
             <mat-option value="" selected></mat-option>
             <mat-option *ngFor="let item of teachers" [value]="item.profesor">
               {{item.profesor}}

@@ -1,0 +1,29 @@
+<main>
+    <section class="title">
+        <h2>Certificados</h2>
+        <h4 *ngIf="hasCertificates">Listado de certificaciones obtenidas.</h4>
+        <h4 *ngIf="!hasCertificates">No tienes certificados todavía.</h4>
+    </section>
+    <section *ngIf="hasCertificates" class="certification-list">
+        <div *ngFor="let item of certificatesList" class="certificate">
+            <div class="course-img">
+                <img [src]="item.imagen" alt="imagen del curso">
+                <div class="download-btn">
+                    <button mat-stroked-button color="primary" (click)="downloadPDF(item)">Descargar certificado</button>
+                </div>
+            </div>
+            <div class="certificate-data">
+                <p>No. Certificado</p>
+                <p>{{ item.certificado ? item.certificado : '-' }}</p>
+                <p>Curso:</p>
+                <p>{{ item.curso }}</p>
+                <p>Profesor:</p>
+                <p>{{ item.profesor }}</p>
+                <p>Fecha de expedición:</p>
+                <p>{{ item.fechaFinalizacion }}</p>
+                <p>Fecha de expiración:</p>
+                <p>{{ item.fechaExpiracion ? item.fechaExpiracion : 'n/a' }}</p>
+            </div>
+        </div>
+    </section>
+</main>

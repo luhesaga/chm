@@ -63,6 +63,7 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
     this.id = this.activatedRoute.snapshot.params.id;
     this.stdId = this.activatedRoute.snapshot.params.stdId;
     this.careerId = this.activatedRoute.snapshot.params.careerId;
+    console.log(this.stdId);
 
     if (this.stdId) {
       this.admin = false;
@@ -180,7 +181,11 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
   }
 
   goToEvaluations() {
-    this.route.navigate([`cursos/evaluaciones/${this.id}`]);
+    if (this.admin) {
+      this.route.navigate([`cursos/evaluaciones/${this.id}`]);
+    } else {
+      this.route.navigate([`cursos/evaluaciones/estudiante/${this.id}/${this.stdId}`]);
+    }
   }
 
   goToForum() {

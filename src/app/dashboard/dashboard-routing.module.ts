@@ -52,6 +52,10 @@ import { CarrerasDetailComponent } from './components/carreras/carreras-detail/c
 import { CatalogoCarrerasComponent } from './components/carreras/catalogo-carreras/catalogo-carreras.component';
 import { MycareersComponent } from './components/mycareers/mycareers.component';
 import { CareerCoursesComponent } from './components/mycareers/career-courses/career-courses.component';
+import { StdEvaluationComponent } from './components/evaluations/std-evaluation/std-evaluation.component';
+import { StdCerticatesComponent } from './components/certificates/std-certicates/std-certicates.component';
+import { AdmEditCertificateComponent } from './components/certificates/adm-edit-certificate/adm-edit-certificate.component';
+import { AdmListCertificatesComponent } from './components/certificates/adm-list-certificates/adm-list-certificates.component';
 
 
 const routes: Routes = [
@@ -187,6 +191,10 @@ const routes: Routes = [
         component: EvaluationsHomeComponent
       },
       {
+        path: 'cursos/evaluaciones/estudiante/:courseId/:stdId',
+        component: StdEvaluationComponent
+      },
+      {
         path: 'cursos/foros/revisar/:courseId',
         component: ForumRevComponent
       },
@@ -257,6 +265,22 @@ const routes: Routes = [
       {
         path: 'mis-carreras/cursos/:careerId/:stdId',
         component: CareerCoursesComponent
+      },
+      {
+        path: 'mis-certificados/:stdId',
+        component: StdCerticatesComponent
+      },
+      // {
+      //   path: 'crear-certificado',
+      //   component: AdmCreateCertificateComponent
+      // },
+      {
+        path: 'editar-certificado/:certificado',
+        component: AdmEditCertificateComponent
+      },
+      {
+        path: 'certificados',
+        component: AdmListCertificatesComponent
       },
       {
         path: 'add-student/:idCurso',

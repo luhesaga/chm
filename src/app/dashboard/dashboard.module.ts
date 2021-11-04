@@ -66,7 +66,10 @@ import { AgregarCursoComponent } from './components/carreras/add-curso/agregar-c
 import { CarrerasInfoComponent } from './components/carreras/catalogo-carreras/carreras-info/carreras-info.component';
 import { MycareersComponent } from './components/mycareers/mycareers.component';
 import { CareerCoursesComponent } from './components/mycareers/career-courses/career-courses.component';
-
+import { StdEvaluationComponent } from './components/evaluations/std-evaluation/std-evaluation.component';
+import { StdCerticatesComponent } from './components/certificates/std-certicates/std-certicates.component';
+import { AdmListCertificatesComponent } from './components/certificates/adm-list-certificates/adm-list-certificates.component';
+import { AdmEditCertificateComponent } from './components/certificates/adm-edit-certificate/adm-edit-certificate.component';
 
 
 @NgModule({
@@ -129,6 +132,10 @@ import { CareerCoursesComponent } from './components/mycareers/career-courses/ca
     CarrerasInfoComponent,
     MycareersComponent,
     CareerCoursesComponent,
+    StdEvaluationComponent,
+    StdCerticatesComponent,
+    AdmListCertificatesComponent,
+    AdmEditCertificateComponent,
     ],
   imports: [
     CommonModule,

@@ -101,7 +101,7 @@ export class LessonsService {
 
   listCalificableLessons(courseId, lessonId): AngularFirestoreCollection   {
     return this.fireStore.collection(`cursos/${courseId}/lecciones/${lessonId}/contenido`, ref =>
-    ref.where('tipo','in', ['Agregar ejercicio', 'Agregar foro']));
+    ref.where('tipo','in', ['Agregar ejercicio', 'Agregar foro']).orderBy('posicion', 'asc'));
   }
 
   listLessonContentPDF(courseId, lessonId): AngularFirestoreCollection {

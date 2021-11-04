@@ -10,6 +10,7 @@ import { ContactComponent } from './components/contact/contact.component';
 import { CourseInfoComponent } from './components/courses/course-info/course-info.component';
 import { CourseDetailComponent } from './components/courses/course-detail/course-detail.component';
 import { MainComponent } from './components/main/main.component';
+import { CertValidationComponent } from './components/certificates/cert-validation/cert-validation.component';
 
 const routes: Routes = [
   {
@@ -35,6 +36,10 @@ const routes: Routes = [
       {
         path: 'detalle-curso/:id',
         component: CourseDetailComponent
+      },
+      {
+        path: 'validar-certificado',
+        component: CertValidationComponent
       },
       {
         path: ':tag',

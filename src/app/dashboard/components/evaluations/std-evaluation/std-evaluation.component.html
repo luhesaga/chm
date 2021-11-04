@@ -1,0 +1,61 @@
+<main>
+    <section class="title">
+        <h2>{{ courseReceived?.nombre }}</h2>
+        <h4>Notas del curso</h4>
+    </section>
+    <section class="congrats" *ngIf="isCertifiable()">
+        <h3>¡Felicidades! has aprobado el curso.</h3>
+        <button
+            *ngIf="hasCC"
+            mat-raised-button
+            style="background: var(--main-color2); color: white;"
+            (click)="downloadPDFCerticate()">
+                <mat-icon>school</mat-icon>
+                Generar certificado
+        </button>
+        <div class="update-data" *ngIf="!hasCC">
+            <mat-label>
+                <mat-icon>feedback</mat-icon>
+                <p>No tenemos registrada tu cédula, por favor actualiza tus datos para generar tu certificado.</p>
+            </mat-label>
+            <button
+            mat-raised-button
+            style="background: var(--main-color2); color: white;"
+            (click)="goToProfile()">
+                <mat-icon>find_replace</mat-icon>
+                Actualizar datos
+        </button>
+        </div>
+    </section>
+    <section class="colors">
+        <div class="circle forum"></div>
+        <p>Foros</p>
+        <div class="circle exercise"></div>
+        <p>Evaluaciones - tareas</p>
+    </section>
+    <section *ngFor="let leccion of lessonsReceived; let i = index" class="lesson-evaluation">
+        <div class="lesson-name">
+            <p><span>Módulo </span>{{ leccion.nombre }}</p>
+        </div>
+        <div class="bar-titles">
+            <p>Ejercicio</p>
+            <p>Nota</p>
+        </div>
+        <div *ngFor="let item of leccion.notasLecciones" class="content-grades">
+            <p [class]="item.tipo === 'Agregar foro' ? 'forum' : 'exercise'">{{item.titulo}}</p>
+            <p [class]="item.valor < 75 ? 'lost' : 'win'">{{ item.valor + '%' }}</p>
+        </div>
+    </section>
+    <div class="total">
+        <p>Total:  
+            <span
+                [class]="(totalGrade / totalContents) < 75 ? 'lost' : 'win'">
+                    {{ getTotal(totalGrade, totalContents) + '%' }}
+            </span>
+        </p>
+    </div>
+    <div class="button">
+        <button mat-raised-button color="primary" (click)="goBack()">Regresar</button>
+    </div>
+    
+</main>
