@@ -21,6 +21,7 @@ export class EditAdsCursoComponent implements OnInit {
   estudiantesSeleccionados: any[];
   usuarioEnSeccion: any;
   dateUpdate = false;
+  courseName: string;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -46,6 +47,16 @@ export class EditAdsCursoComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getCourse();
+  }
+
+  getCourse() {
+    let course = this.courseService.detailCourse(this.idCurso)
+      .valueChanges()
+      .subscribe(c => {
+        this.courseName = c.nombre;
+        course.unsubscribe();
+      })
   }
 
   obtenerAnuncio() {
@@ -128,8 +139,10 @@ export class EditAdsCursoComponent implements OnInit {
     const data = {
       to: this.usuarioEnSeccion.correo,
       titulo: this.contenido.titulo,
-      contenido: this.contenido.descripcion
+      contenido: this.contenido.descripcion,
+      curso: this.courseName
     }
+    //console.log(data);
     const unsubscribe = this.mailService.sendEmailAnuncioCurso(data)
       .subscribe(() => unsubscribe.unsubscribe(),
         e => {
@@ -194,8 +207,10 @@ export class EditAdsCursoComponent implements OnInit {
           const data = {
             to: estudianteMail.correo,
             titulo: this.contenido.titulo,
-            contenido: this.contenido.descripcion
+            contenido: this.contenido.descripcion,
+            curso: this.courseName
           }
+          //console.log(data);
           const unsubscribe = this.mailService.sendEmailAnuncioCurso(data)
             .subscribe(() => unsubscribe.unsubscribe(),
               e => {

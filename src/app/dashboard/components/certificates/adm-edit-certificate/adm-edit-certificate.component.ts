@@ -35,7 +35,6 @@ export class AdmEditCertificateComponent implements OnInit {
     private certificate: CerticateService,
   ) {
     this.certId = this.activatedRoute.snapshot.params.certificado;
-    console.log(this.certId);
     if (this.certId) {
       this.edit = true;
     }
@@ -67,7 +66,6 @@ export class AdmEditCertificateComponent implements OnInit {
       let cert = this.certificate.certificateByCertId(this.certId)
         .valueChanges({idField: 'certId'})
         .subscribe((c: any) => {
-          console.log(c);
           let tipo = this.certificate.tipoCert.filter(x => x.sigla === c[0].tipo)[0].nombre;
           this.certificadoField.setValue(c[0].certificado);
           this.fechaFinField.setValue(c[0].fechaFin ? this.formatDate(c[0].fechaFin) : null);
@@ -125,7 +123,6 @@ export class AdmEditCertificateComponent implements OnInit {
 
   saveCert() {
     const formData = this.form.value;
-    console.log(formData);
     const data = this.getCerticateData(formData);
     this.certificate.generateCerticate(data, true);
     this.route.navigate(['dashboard/certificados']);

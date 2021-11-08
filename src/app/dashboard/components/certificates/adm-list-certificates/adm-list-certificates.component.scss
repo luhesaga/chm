@@ -1,5 +1,5 @@
 main {
-    width: 90%;
+    width: 93%;
     background: white;
     margin: 36px auto;
     padding: 24px;
@@ -52,6 +52,7 @@ td.mat-cell:last-of-type {
   cursor: pointer;
   color: var(--main-color2);
   font-weight: 500;
+  min-width: 150px;
 }
 
 .buttons {

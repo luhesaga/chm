@@ -84,6 +84,7 @@ export class EvaluationsHomeComponent implements OnInit, AfterViewInit {
     let detailUser = this.userService.detailUser(user.id)
       .valueChanges()
       .subscribe((u: any) => {
+        //console.log(u);
         this.data[index].Estudiante = u.nombres + ' ' + u.apellidos;
         this.data[index].Correo = u.correo;
         this.getCourseLessons(index);
@@ -142,6 +143,7 @@ export class EvaluationsHomeComponent implements OnInit, AfterViewInit {
         let mayor = 0;
         if (item.length > 0) {
           item.forEach(prueba => {
+            valor = 0;
             prueba.respuestas.forEach(r => {
               valor += r.valor;
             });
@@ -149,6 +151,7 @@ export class EvaluationsHomeComponent implements OnInit, AfterViewInit {
               valor = Math.ceil((valor / (prueba.respuestas.length * 100)) * 100);
               if (valor > mayor) {
                 mayor = valor;
+                //console.log(mayor);
               }
             } else {
               valor = 0;

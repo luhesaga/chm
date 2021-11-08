@@ -41,7 +41,6 @@ export class AdmListCertificatesComponent implements OnInit, AfterViewInit {
     let cert = this.certificados.certificatesList()
       .valueChanges()
       .subscribe((c: any) => {
-        console.log(c);
         c.forEach(ce => {
           ce.fechaFin = this.formatDate(ce.fechaFin);
           ce.fechaExp = ce.fechaExp ? this.formatDate(ce.fechaExp) : 'n/a';
@@ -54,7 +53,6 @@ export class AdmListCertificatesComponent implements OnInit, AfterViewInit {
   goToHome() {}
 
   goToEdit(data) {
-    console.log(data);
     this.router.navigate([`dashboard/editar-certificado/${data.certificado}`]);
   }
 

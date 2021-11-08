@@ -70,6 +70,7 @@ import { StdEvaluationComponent } from './components/evaluations/std-evaluation/
 import { StdCerticatesComponent } from './components/certificates/std-certicates/std-certicates.component';
 import { AdmListCertificatesComponent } from './components/certificates/adm-list-certificates/adm-list-certificates.component';
 import { AdmEditCertificateComponent } from './components/certificates/adm-edit-certificate/adm-edit-certificate.component';
+import { AdmCreateCertificateComponent } from './components/certificates/adm-create-certificate/adm-create-certificate.component';
 
 
 @NgModule({
@@ -136,6 +137,7 @@ import { AdmEditCertificateComponent } from './components/certificates/adm-edit-
     StdCerticatesComponent,
     AdmListCertificatesComponent,
     AdmEditCertificateComponent,
+    AdmCreateCertificateComponent,
     ],
   imports: [
     CommonModule,

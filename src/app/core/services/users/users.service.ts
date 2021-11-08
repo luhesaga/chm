@@ -53,7 +53,7 @@ export class UsersService {
 
   listStudents(): AngularFirestoreCollection {
     return this.fireStore.collection('usuarios', ref =>
-      ref.where('perfil', '==', 'estudiante'));
+      ref.where('perfil', '==', 'estudiante').orderBy('nombres', 'asc'));
   }
 
   createUser(data, id): Promise<void> {

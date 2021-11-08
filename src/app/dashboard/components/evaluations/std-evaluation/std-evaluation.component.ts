@@ -103,6 +103,7 @@ export class StdEvaluationComponent implements OnInit {
         let mayor = 0;
         if (item.length > 0) {
           item.forEach(prueba => {
+            valor = 0;
             prueba.respuestas.forEach(r => {
               valor += r.valor;
             });

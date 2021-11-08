@@ -1,0 +1,136 @@
+<main>
+    <form [formGroup]="form" (ngSubmit)="saveOrEditCert($event)">
+        <div class="title">
+            <mat-icon>menu_book</mat-icon>
+            <h2>Crear nuevo Certificado</h2>
+        </div>
+        <div class="form-inputs">
+            <!-- certificado -->
+            <mat-form-field>
+                <mat-label>Certificado</mat-label>
+                <input
+                    type="text"
+                    matInput
+                    formControlName="certificado"
+                    #myinput
+                    tabIndex=1/>
+                <mat-error *ngIf="certificadoField.touched && certificadoField.invalid">
+                    <ng-container *ngIf="certificadoField.hasError('required')">Elcertificado es requerido</ng-container>
+                </mat-error>
+            </mat-form-field>
+            <!-- fecha fin -->
+            <mat-form-field appearance="fill">
+                <mat-label>Fecha de expedición</mat-label>
+                <input
+                    matInput
+                    [matDatepicker]="picker"
+                    formControlName="fechaFin"
+                    (dateChange)="DateChanged()"
+                    tabIndex=2>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <mat-error *ngIf="fechaFinField.touched && fechaFinField.invalid">
+                    <ng-container *ngIf="fechaFinField.hasError('required')">campo requerido</ng-container>
+                </mat-error>
+            </mat-form-field>
+            <!-- Fecha Exp -->
+            <mat-form-field appearance="fill">
+                <mat-label>Fecha de Expiración</mat-label>
+                <input
+                    matInput
+                    [matDatepicker]="picker1"
+                    formControlName="fechaExp"
+                    tabIndex=3>
+                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
+                <mat-error *ngIf="fechaExpField.touched && fechaExpField.invalid">
+                    <ng-container *ngIf="fechaExpField.hasError('required')">campo requerido</ng-container>
+                </mat-error>
+            </mat-form-field>
+            <!-- tecnica -->
+            <mat-form-field appearance="fill">
+                <mat-label>Técnica</mat-label>
+                <mat-select
+                    tabIndex=4
+                    matNativeControl
+                    formControlName="tecnica"
+                    (selectionChange)="tecnicaChanged($event)">
+                <mat-option value="" selected></mat-option>
+                <mat-option *ngFor="let t of Tecnicas" [value]="t">
+                    {{t.tipo}}
+                </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <!-- cliente -->
+            <mat-form-field class="example-full-width" appearance="fill">
+                <mat-label>Cliente</mat-label>
+                <input
+                    tabIndex=5
+                    type="text"
+                    placeholder="Seleccione el cliente"
+                    aria-label="Cliente"
+                    matInput
+                    [formControl]="estudianteField"
+                    [matAutocomplete]="auto"
+                    >
+                <mat-autocomplete
+                    #auto="matAutocomplete"
+                    (optionSelected)="userSelected($event)">
+                <mat-option *ngFor="let c of clientesFiltrados | async"
+                    [value]="c.nombres +' ' + c.apellidos">
+                    {{c.nombres + ' ' + c.apellidos}}
+                </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+            <!-- identificacion -->
+            <mat-form-field>
+                <mat-label>Identificación</mat-label>
+                <input
+                    type="text"
+                    matInput
+                    formControlName="identificacion"
+                    tabIndex=6/>
+                <mat-error *ngIf="identificacionField.touched && identificacionField.invalid">
+                    <ng-container *ngIf="identificacionField.hasError('required')">campo requerido</ng-container>
+                </mat-error>
+            </mat-form-field>
+            <!-- Tipo de certificado -->
+            <mat-form-field appearance="fill">
+                <mat-label>Tipo de certifricado</mat-label>
+                <mat-select
+                    tabIndex=7
+                    matNativeControl
+                    formControlName="tipo"
+                    (selectionChange)="typeChanged($event)">
+                    <mat-option value="" selected></mat-option>
+                    <mat-option *ngFor="let type of types" [value]="type">
+                        {{type}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <!-- observacion -->
+            <mat-form-field>
+                <mat-label>Observaciones</mat-label>
+                <input
+                    type="text"
+                    matInput
+                    formControlName="observacion"
+                    #myinput
+                    tabIndex=8/>
+                <mat-error *ngIf="observacionField.touched && observacionField.invalid">
+                    <ng-container *ngIf="observacionField.hasError('required')">campo requerido</ng-container>
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="buttons">
+            <button
+                type="submit"
+                tabIndex=9
+                mat-raised-button
+                [disabled]="form.invalid">
+                    Guardar cambios
+            </button>
+            <a mat-raised-button (click)="goBack();" tabIndex=10>Cancelar</a>
+        </div>
+    </form>
+</main>

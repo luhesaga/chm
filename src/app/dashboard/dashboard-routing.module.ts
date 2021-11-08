@@ -56,6 +56,7 @@ import { StdEvaluationComponent } from './components/evaluations/std-evaluation/
 import { StdCerticatesComponent } from './components/certificates/std-certicates/std-certicates.component';
 import { AdmEditCertificateComponent } from './components/certificates/adm-edit-certificate/adm-edit-certificate.component';
 import { AdmListCertificatesComponent } from './components/certificates/adm-list-certificates/adm-list-certificates.component';
+import { AdmCreateCertificateComponent } from './components/certificates/adm-create-certificate/adm-create-certificate.component';
 
 
 const routes: Routes = [
@@ -270,10 +271,10 @@ const routes: Routes = [
         path: 'mis-certificados/:stdId',
         component: StdCerticatesComponent
       },
-      // {
-      //   path: 'crear-certificado',
-      //   component: AdmCreateCertificateComponent
-      // },
+      {
+        path: 'crear-certificado',
+        component: AdmCreateCertificateComponent
+      },
       {
         path: 'editar-certificado/:certificado',
         component: AdmEditCertificateComponent

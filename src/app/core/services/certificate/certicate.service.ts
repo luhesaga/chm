@@ -28,52 +28,8 @@ export class CerticateService {
 
   public tecnicas = [
     {
-      tipo: 'Inspección Visual I',
-      sigla: 'VTI'
-    },
-    {
-      tipo: 'Inspección Visual II',
-      sigla: 'VTII'
-    },
-    {
-      tipo: 'Partículas Magnéticas I',
-      sigla: 'MTI'
-    },
-    {
-      tipo: 'Partículas Magnéticas II',
-      sigla: 'MTII'
-    },
-    {
-      tipo: 'Prueba de Fuga I',
-      sigla: 'LTI'
-    },
-    {
-      tipo: 'Prueba de Fuga II',
-      sigla: 'LTII'
-    },
-    {
-      tipo: 'Tintas Penetrantes I',
-      sigla: 'PTI'
-    },
-    {
-      tipo: 'Tintas Penetrantes II',
-      sigla: 'PTII'
-    },
-    {
-      tipo: 'Ultrasonido I',
-      sigla: 'UTI'
-    },
-    {
-      tipo: 'Ultrasonido II',
-      sigla: 'UTII'
-    },
-    {
-      tipo: 'Radiografía I',
-      sigla: 'RTI'
-    },
-    {
-      tipo: 'Radiografía II',
-      sigla: 'RTII'
+      tipo: 'ASME IX',
+      sigla: 'AIX'
     },
     {
       tipo: 'Corrientes de Eddie I',
@@ -92,6 +48,58 @@ export class CerticateService {
       sigla: 'AEII',
     },
     {
+      tipo: 'Espesor Película Seca',
+      sigla: 'EPS'
+    },
+    {
+      tipo: 'Inspección Visual I',
+      sigla: 'VTI'
+    },
+    {
+      tipo: 'Inspección Visual II',
+      sigla: 'VTII'
+    },
+    {
+      tipo: 'Intro a los END',
+      sigla: 'IEND'
+    },
+    {
+      tipo: 'Metalurgia del Acero',
+      sigla: 'MET'
+    },
+    {
+      tipo: 'Partículas Magnéticas I',
+      sigla: 'MTI'
+    },
+    {
+      tipo: 'Partículas Magnéticas II',
+      sigla: 'MTII'
+    },
+    {
+      tipo: 'Prueba de Adherencia',
+      sigla: 'PAP'
+    },
+    {
+      tipo: 'Prueba de Fuga I',
+      sigla: 'LTI'
+    },
+    {
+      tipo: 'Prueba de Fuga II',
+      sigla: 'LTII'
+    },
+    {
+      tipo: 'Prueba de Holiday',
+      sigla: 'PCH'
+    },
+    {
+      tipo: 'Radiografía I',
+      sigla: 'RTI'
+    },
+    {
+      tipo: 'Radiografía II',
+      sigla: 'RTII'
+    },
+    {
       tipo: 'Termografia I',
       sigla: 'IRI',
     },
@@ -100,29 +108,21 @@ export class CerticateService {
       sigla: 'IRII'
     },
     {
-      tipo: 'Intro a los END',
-      sigla: 'IEND'
+      tipo: 'Tintas Penetrantes I',
+      sigla: 'PTI'
     },
     {
-      tipo: 'Espesor Película Seca',
-      sigla: 'EPS'
+      tipo: 'Tintas Penetrantes II',
+      sigla: 'PTII'
     },
     {
-      tipo: 'Prueba de Adherencia',
-      sigla: 'PAP'
+      tipo: 'Ultrasonido I',
+      sigla: 'UTI'
     },
     {
-      tipo: 'Prueba de Holiday',
-      sigla: 'PCH'
+      tipo: 'Ultrasonido II',
+      sigla: 'UTII'
     },
-    {
-      tipo: 'ASME IX',
-      sigla: 'AIX'
-    },
-    {
-      tipo: 'Metalurgia del Acero',
-      sigla: 'MET'
-    }
   ];
 
   consecutivo: string;
@@ -216,8 +216,23 @@ export class CerticateService {
       });
   }
 
+  saveNewCert(data) {
+    let tipo = this.tipoCert.filter(x => x.nombre === data.tipo)[0].sigla;
+    return this.fireStore.doc(`certificados/${data.certificado}`)
+      .set({
+        id: data.id,
+        cc: data.identificacion,
+        certificado: data.certificado,
+        fechaFin: data.fechaFin,
+        fechaExp: data.tipo !== 'Certificacion' && data.fechaExp ? new Date(data.fechaExp) : null,
+        tecnica: data.tecnica.tipo,
+        estudiante: data.estudiante,
+        tipo,
+        observacion: data.observacion,
+      });
+  }
+
   updateCert(data) {
-    console.log(data);
     let tipo = this.tipoCert.filter(x => x.nombre === data.tipo)[0].sigla;
     return this.fireStore.doc(`certificados/${data.certId}`)
       .update({
