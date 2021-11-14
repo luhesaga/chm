@@ -1,6 +1,7 @@
 footer {
     display: flex;
-    justify-content: space-around;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
     background: var(--main-color-rgb2);
     height: 70px;
@@ -16,6 +17,15 @@ footer p a {
     color: white;
     cursor: pointer;
     margin-left: 5px;
+}
+
+footer .chym {
+    padding-top: 8px;
+    margin: 0;
+}
+
+footer .made-by {
+    font-size: 0.9rem;
 }
 
 @media (max-width: 600px) {

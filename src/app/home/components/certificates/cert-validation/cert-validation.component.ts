@@ -14,6 +14,7 @@ export class CertValidationComponent implements OnInit {
   validationForm: FormGroup;
   certReceived: any = [];
   show = false;
+  tipos: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -23,6 +24,7 @@ export class CertValidationComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.tipos = this.certificados.tipoCert;
   }
 
   private buildForm(): void {
@@ -47,6 +49,7 @@ export class CertValidationComponent implements OnInit {
           cert.forEach(c => {
             c.fechaFin = this.formatDate(c.fechaFin);
             c.fechaExp = c.fechaExp ? this.formatDate(c.fechaExp) : '';
+            c.tipo = this.tipos.filter(x => x.sigla === c.tipo)[0].nombre;
           });
           this.certReceived = cert;
           this.show = true;
@@ -67,6 +70,7 @@ export class CertValidationComponent implements OnInit {
           cert.forEach(c => {
             c.fechaFin = this.formatDate(c.fechaFin);
             c.fechaExp = c.fechaExp ? this.formatDate(c.fechaExp) : '';
+            c.tipo = this.tipos.filter(x => x.sigla === c.tipo)[0].nombre;
           });
           this.certReceived = cert;
           this.show = true;

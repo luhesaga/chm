@@ -36,9 +36,10 @@
             <div class="titles">
                 <p>Certificado</p>
                 <p>Nombre</p>
-                <p>Técnica</p>
+                <p>Curso/Técnica</p>
                 <p>Expedición</p>
                 <p>Expiración</p>
+                <p>Tipo</p>
             </div>
             <div class="cert-data">
                 <p>{{ item.certificado }}</p>
@@ -46,6 +47,7 @@
                 <p>{{ item.tecnica }}</p>
                 <p>{{ item.fechaFin }}</p>
                 <p>{{ item.fechaExp ? item.fechaExp : 'n/a' }}</p>
+                <p>{{ item.tipo }}</p>
             </div>
         </div>
     </section>

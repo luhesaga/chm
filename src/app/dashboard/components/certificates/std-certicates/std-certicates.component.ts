@@ -14,7 +14,7 @@ export class StdCerticatesComponent implements OnInit {
   stdId;
   coursesList;
   certificatesList: any = [];
-  hasCertificates = false;
+  hasCertificates = true;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -73,8 +73,7 @@ export class StdCerticatesComponent implements OnInit {
       .subscribe((cert: any) => {
         if (cert.length > 0) {
           cert[0].fechaFinalizacion = this.formatDate(cert[0].fechaFin);
-          cert[0].fechaExpiracion =
-            cert[0].fechaExpiracion ? this.formatDate(cert[0].fechaExp) : '';
+          cert[0].fechaExpiracion = cert[0].fechaExp ? this.formatDate(cert[0].fechaExp) : '';
           cert[0].imagen = data.courseImg;
           this.certificatesList.push(cert[0]);
           this.hasCertificates = true;
