@@ -42,7 +42,7 @@ export class AdmListCertificatesComponent implements OnInit, AfterViewInit {
       .valueChanges()
       .subscribe((c: any) => {
         c.forEach(ce => {
-          ce.fechaFin = this.formatDate(ce.fechaFin);
+          ce.fechaFin = ce.fechaFin ? this.formatDate(ce.fechaFin) : null;
           ce.fechaExp = ce.fechaExp ? this.formatDate(ce.fechaExp) : 'n/a';
         });
         this.dataSource.data = c;

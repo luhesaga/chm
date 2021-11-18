@@ -32,51 +32,63 @@ export class CourseRegistrationComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.coursesReceived.unsubscribe();
-    this.categoryreceived.unsubscribe();
-    this.coursesByUserReceived.unsubscribe();
+    //this.coursesReceived.unsubscribe();
+    //this.categoryreceived.unsubscribe();
+    //this.coursesByUserReceived.unsubscribe();
   }
 
   getCourses(): void {
     this.listcourse.length = 0;
-    this.coursesReceived = this.courseService.listCourses()
+    const coursesList = this.coursesReceived = this.courseService.listCourses()
       .valueChanges()
       .subscribe(courses => {
+        console.log(courses);
         courses.forEach((course) => {
           this.getCategory(course);
           this.getUserCourses(course);
         });
-        // console.log(this.listcourse)
+        console.log(this.listcourse)
+        coursesList.unsubscribe();
       });
   }
 
   getCategory(course) {
-    this.categoryreceived = this.catService.detailCategory(course.categoria).valueChanges()
+    const categories = this.catService.detailCategory(course.categoria).valueChanges()
       .subscribe(cat => {
         course.categoria = cat.nombre;
+        categories.unsubscribe();
       });
   }
 
   getUserCourses(course) {
-    this.coursesByUserReceived = this.courseService.listCoursesByUser(course.id, this.userId)
+    const userCourses = this.courseService.listCoursesByUser(course.id, this.userId)
       .valueChanges()
       .subscribe(u => {
-        // futuro desarrollador:
-        // no se porque carajo se repetían algunas veces los cursos
-        // pequeña empanada pa solucionarlo :(
-        let cont = 0
-        this.listcourse.forEach(c => {
-          if (c.id === course.id) {
-            cont += 1
+        if (u) {
+          console.log(u.tipoMatricula);
+          if (u.tipoMatricula === "indefinida") {
+            course.tipoMatricula = "Indefinida"
+          } else {
+            course.tipoMatricula = `termina el ${this.formatDate(u.fechaFinalizacionMatricula)}`;
           }
-        })
-        if (u && cont === 0) {
           this.listcourse.push(course);
         }
+        userCourses.unsubscribe();
       });
   }
 
   goToCourseHome(idCourse: string) {
     this.router.navigateByUrl(`cursos/index/${idCourse}/${this.userId}`);
+  }
+
+  formatDate(date) {
+    const fecha = new Date(date.seconds * 1000);
+    const hoy = new Date();
+    if (fecha > hoy) {
+      console.log('ok');
+    } else {
+      console.log('mamola');
+    }
+    return fecha.toLocaleDateString();
   }
 }

@@ -1,29 +1,22 @@
 <main>
+    <h2 class="section-title">Mis cursos</h2>
     <section>
-        <h2 class="section-title">Mis cursos</h2>
-        <div class="course-container" *ngFor="let course of listcourse">
-            <div class="course-img">
-                <img
-                    class="imagenCurso"
-                    [src]="course.imagen"
-                    alt="imagen del curso"
-                    (click)="goToCourseHome(course.id)"
-                    matTooltip="{{ 'ir al curso: ' + course.nombre }}">
-            </div>
-            <div class="course-data">
-                <h2
-                    class="nombreCurso"
-                    (click)="goToCourseHome(course.id)"
-                    matTooltip="{{ 'ir al curso: ' + course.nombre }}">
-                        {{course.nombre}}
-                </h2>
-                <p>
-                    <!-- <mat-icon>engineering</mat-icon> -->
-                    Profesor:
-                    <span> {{course.profesor}} </span>
-                </p>
-                <p>Categoria: <span>{{course.categoria}}</span></p>
-            </div>
+        <div class="course-container" >
+            <mat-card class="example-card" *ngFor="let course of listcourse">
+                <mat-card-header>
+                    <mat-card-title>{{course.nombre}}</mat-card-title>
+                </mat-card-header>
+                <img mat-card-image [src]="course.imagen" alt="portada del curso">
+                <mat-card-content>
+                    <p>Categoria: <span> {{course.categoria}} </span> </p>
+                    <p>Profesor: <span> {{course.profesor}} </span> </p>
+                    <p>Matricula: <span>{{course.tipoMatricula}}</span></p>
+                    <p>Ultimo ingreso: <span>13/11/2021</span></p>
+                </mat-card-content>
+                <mat-card-actions>
+                    <button mat-button (click)="goToCourseHome(course.id)">VER</button>
+                </mat-card-actions>
+            </mat-card>
         </div>
     </section>
 </main>
