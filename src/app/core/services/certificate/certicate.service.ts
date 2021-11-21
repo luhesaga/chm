@@ -92,6 +92,10 @@ export class CerticateService {
       sigla: 'PCH'
     },
     {
+      tipo: 'QA/QC Soldadura',
+      sigla: 'QAC'
+    },
+    {
       tipo: 'Radiografía I',
       sigla: 'RTI'
     },
@@ -237,6 +241,7 @@ export class CerticateService {
     return this.fireStore.doc(`certificados/${data.certId}`)
       .update({
         certificado: data.certificado,
+        cc: data.identificacion,
         fechaFin: data.fechaFin,
         fechaExp: data.tipo !== 'certificacion' && data.fechaExp ? new Date(data.fechaExp) : null,
         tecnica: data.tecnica,

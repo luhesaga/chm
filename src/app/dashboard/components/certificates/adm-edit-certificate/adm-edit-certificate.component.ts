@@ -51,12 +51,13 @@ export class AdmEditCertificateComponent implements OnInit {
 
   private buildForm(): void {
     this.form = this.formBuilder.group({
-      certificado: [''],
-      fechaFin: [''],
+      certificado: ['', Validators.required],
+      fechaFin: ['', Validators.required],
       fechaExp: [''],
-      tecnica: [''],
-      estudiante: [''],
-      tipo: [''],
+      tecnica: ['', Validators.required],
+      estudiante: ['', Validators.required],
+      identificacion: ['', Validators.required],
+      tipo: ['', Validators.required],
       observacion: [''],
     })
   }
@@ -66,12 +67,14 @@ export class AdmEditCertificateComponent implements OnInit {
       let cert = this.certificate.certificateByCertId(this.certId)
         .valueChanges({idField: 'certId'})
         .subscribe((c: any) => {
+          console.log(c);
           let tipo = this.certificate.tipoCert.filter(x => x.sigla === c[0].tipo)[0].nombre;
           this.certificadoField.setValue(c[0].certificado);
           this.fechaFinField.setValue(c[0].fechaFin ? this.formatDate(c[0].fechaFin) : null);
           this.fechaExpField.setValue(c[0].fechaExp ? this.formatDate(c[0].fechaExp) : null);
           this.tecnicaField.setValue(c[0].tecnica);
           this.estudianteField.setValue(c[0].estudiante);
+          this.identificacionField.setValue(c[0].cc);
           this.tipoField.setValue(tipo);
           this.observacionField.setValue(c[0].observacion);
           this.cid = c[0].certId;
@@ -98,6 +101,10 @@ export class AdmEditCertificateComponent implements OnInit {
 
   get estudianteField() {
     return this.form.get('estudiante');
+  }
+
+  get identificacionField() {
+    return this.form.get('identificacion');
   }
 
   get tipoField() {

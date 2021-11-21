@@ -96,7 +96,7 @@ export class AdmCreateCertificateComponent implements OnInit {
   private buildForm(): void {
     this.form = this.formBuilder.group({
       id: [0],
-      certificado: [''],
+      certificado: ['', Validators.required],
       fechaFin: ['', Validators.required],
       fechaExp: [''],
       tecnica: ['', Validators.required],

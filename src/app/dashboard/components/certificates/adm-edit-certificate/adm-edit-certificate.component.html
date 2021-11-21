@@ -64,6 +64,18 @@
                     <ng-container *ngIf="estudianteField.hasError('required')">campo requerido</ng-container>
                 </mat-error>
             </mat-form-field>
+            <!-- identificacion -->
+            <mat-form-field>
+                <mat-label>Identificación</mat-label>
+                <input
+                    type="text"
+                    matInput
+                    formControlName="identificacion"
+                    tabIndex=6/>
+                <mat-error *ngIf="identificacionField.touched && identificacionField.invalid">
+                    <ng-container *ngIf="identificacionField.hasError('required')">campo requerido</ng-container>
+                </mat-error>
+            </mat-form-field>
             <!-- Tipo de certificado -->
             <mat-form-field appearance="fill">
                 <mat-label>Tipo de certifricado</mat-label>

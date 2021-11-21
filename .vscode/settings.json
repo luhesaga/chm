@@ -2,5 +2,6 @@
     "cSpell.language": ",es",
     "cSpell.words": [
         "Exercises"
-    ]
+    ],
+    "angular.enable-strict-mode-prompt": false
 }

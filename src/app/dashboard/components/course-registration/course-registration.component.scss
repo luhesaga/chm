@@ -21,6 +21,28 @@ main {
         font-size: 1.5rem;
     }
 
+    .no-courses {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        h3 {
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+
+        p {
+            font-size: 1rem;
+
+            a {
+                color: blue;
+                font-weight: 400;
+                cursor: pointer;
+            }
+        }
+    }
+
     section {
         width: 100%;
         display: flex;
@@ -31,9 +53,11 @@ main {
             width: 85%;
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
-            column-gap: 1rem;
+            gap: 1rem;
+            justify-items: center;
+            align-items: center;
             mat-card {
-                width: 90%;
+                width: 82%;
                 padding: 0;
                 background: #fafafa;
 
@@ -60,7 +84,7 @@ main {
 
                     .mat-card-title {
                         margin: 0.5rem;
-                        font-size: 0.8rem;
+                        font-size: 1rem;
                     }
 
                     .mat-card-subtitle {
@@ -80,6 +104,10 @@ main {
                         span {
                             font-weight: normal;
                         }
+
+                        .ult-ingreso {
+                            font-size: 0.7rem;
+                        }
                     }
                 }
 
@@ -96,12 +124,34 @@ main {
     }
 }
 
+@media (max-width: 1516px) {
+    main {
+        section {
+            .course-container {
+                width: 95%;
+            }
+        }
+    }
+}
+
 @media (max-width: 1319px) {
     main {
         section {
             .course-container {
-                width: 80%;
+                width: 90%;
                 grid-template-columns: 1fr 1fr;
+                row-gap: 1rem;
+            }
+        }
+    }
+}
+
+@media (max-width: 757px) {
+    main {
+        section {
+            .course-container {
+                width: 70%;
+                grid-template-columns: 1fr;
                 row-gap: 1rem;
             }
         }

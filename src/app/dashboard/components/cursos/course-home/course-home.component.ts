@@ -6,6 +6,7 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { MatDialog } from '@angular/material/dialog';
 import { CourseInfoComponent } from 'src/app/home/components/courses/course-info/course-info.component';
 import Swal from 'sweetalert2';
+import { LogsService } from 'src/app/core/services/logs/logs.service';
 
 @Component({
   selector: 'app-course-home',
@@ -14,7 +15,7 @@ import Swal from 'sweetalert2';
 })
 export class CourseHomeComponent implements OnInit, OnDestroy {
 
-  id: string;
+  courseId: string;
   ReceivedCourse;
 
   stdId;
@@ -56,17 +57,19 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private courseService: CourseService,
     private catService: CategoryService,
+    private logs: LogsService,
     private breakpointObserver: BreakpointObserver,
     public dialog: MatDialog,
     private route: Router
   ) {
-    this.id = this.activatedRoute.snapshot.params.id;
+    this.courseId = this.activatedRoute.snapshot.params.id;
     this.stdId = this.activatedRoute.snapshot.params.stdId;
     this.careerId = this.activatedRoute.snapshot.params.careerId;
     console.log(this.stdId);
 
     if (this.stdId) {
       this.admin = false;
+      this.setCourseLog();
     }
 
     if (this.careerId) {
@@ -109,7 +112,25 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     // console.info(this.id);
-    this.ReceivedCourse = this.courseService.detailCourse(this.id).valueChanges()
+    this.getCourse();
+  }
+
+  ngOnDestroy(): void {
+    // cerrar subscribe
+    this.ReceivedCourse.unsubscribe();
+  }
+
+  setCourseLog() {
+    const data = {
+      curso: this.courseId,
+      estudiante: this.stdId,
+      fechaIngreso: new Date()
+    }
+    this.logs.courseInLog(data);
+  }
+
+  getCourse() {
+    this.ReceivedCourse = this.courseService.detailCourse(this.courseId).valueChanges()
       .subscribe(curso => {
         this.catService.detailCategory(curso.categoria).valueChanges()
           .subscribe(cat => {
@@ -118,11 +139,6 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
             this.getCourseOptions(curso);
           });
       })
-  }
-
-  ngOnDestroy(): void {
-    // cerrar subscribe
-    this.ReceivedCourse.unsubscribe();
   }
 
   getCourseOptions(course) {
@@ -146,51 +162,51 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
 
   goToLessons() {
     if (this.admin) {
-      this.route.navigate([`cursos/lecciones/${this.id}`]);
+      this.route.navigate([`cursos/lecciones/${this.courseId}`]);
     } else {
-      this.route.navigate([`mis-cursos/lecciones/${this.id}/${this.stdId}`]);
+      this.route.navigate([`mis-cursos/lecciones/${this.courseId}/${this.stdId}`]);
     }
   }
 
   goToExercises() {
-    this.route.navigate([`cursos/ejercicios/${this.id}`]);
+    this.route.navigate([`cursos/ejercicios/${this.courseId}`]);
   }
 
   goToGlossary() {
     if (this.admin) {
-      this.route.navigate([`cursos/glosario/${this.id}`]);
+      this.route.navigate([`cursos/glosario/${this.courseId}`]);
     } else {
-      this.route.navigate([`cursos/glosario/${this.id}/${this.stdId}`]);
+      this.route.navigate([`cursos/glosario/${this.courseId}/${this.stdId}`]);
     }
   }
 
   goToVideo() {
     if (this.admin) {
-      this.route.navigate([`cursos/video-meet/${this.id}`]);
+      this.route.navigate([`cursos/video-meet/${this.courseId}`]);
     } else {
-      this.route.navigate([`cursos/video-meet/${this.id}/${this.stdId}`]);
+      this.route.navigate([`cursos/video-meet/${this.courseId}/${this.stdId}`]);
     }
   }
 
   goToDocuments() {
     if (this.admin) {
-      this.route.navigate([`documents/${this.id}`]);
+      this.route.navigate([`documents/${this.courseId}`]);
     } else {
-      this.route.navigate([`documents/${this.id}/${this.stdId}`]);
+      this.route.navigate([`documents/${this.courseId}/${this.stdId}`]);
     }
   }
 
   goToEvaluations() {
     if (this.admin) {
-      this.route.navigate([`cursos/evaluaciones/${this.id}`]);
+      this.route.navigate([`cursos/evaluaciones/${this.courseId}`]);
     } else {
-      this.route.navigate([`cursos/evaluaciones/estudiante/${this.id}/${this.stdId}`]);
+      this.route.navigate([`cursos/evaluaciones/estudiante/${this.courseId}/${this.stdId}`]);
     }
   }
 
   goToForum() {
     if (this.admin) {
-      this.route.navigate([`cursos/foros/revisar/${this.id}`]);
+      this.route.navigate([`cursos/foros/revisar/${this.courseId}`]);
     } else {
       console.log('foros');
     }
@@ -296,7 +312,7 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
       foros: this.forumOpt
     }
 
-    this.courseService.editCourseOptions(this.id, opt)
+    this.courseService.editCourseOptions(this.courseId, opt)
       .then(() => {
         Swal.fire({
           icon: 'success',
@@ -317,9 +333,9 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
 
   goToAdsCurso() {
     if (this.admin) {
-      this.route.navigate([`cursos/anuncios/${this.id}`]);
+      this.route.navigate([`cursos/anuncios/${this.courseId}`]);
     } else {
-      this.route.navigate([`cursos/anuncios/estudiante/${this.id}/${this.stdId}`]);
+      this.route.navigate([`cursos/anuncios/estudiante/${this.courseId}/${this.stdId}`]);
     }
   }
 
