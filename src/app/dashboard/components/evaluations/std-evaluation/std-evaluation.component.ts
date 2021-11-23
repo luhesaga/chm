@@ -155,7 +155,8 @@ export class StdEvaluationComponent implements OnInit {
     this.cont += 1;
     let certifiable = false;
     if (this.totalGrade && this.totalContents) {
-      if ((this.totalGrade / this.totalContents) >= 75 && this.lastLessonValidation()) {
+      const porcentaje = this.courseReceived.porcentaje ? this.courseReceived.porcentaje : 0;
+      if ((this.totalGrade / this.totalContents) >= porcentaje && this.lastLessonValidation()) {
         certifiable = true;
       }
     }
@@ -202,7 +203,7 @@ export class StdEvaluationComponent implements OnInit {
 
   getCerticateData(): any {
     const data = {
-      horas: this.getCourseDuration(),
+      horas: this.courseReceived.duracionCurso,
       estudiante: `${this.stdReceived.nombres} ${this.stdReceived.apellidos}`,
       documento: 'Con documento de identidad ' + this.addCommas(this.stdReceived.identificacion),
       profesor: `${this.courseReceived.profesor}`,
@@ -227,18 +228,6 @@ export class StdEvaluationComponent implements OnInit {
       x1 = x1.replace(rgx, '$1' + '.' + '$2');
     }
     return x1 + x2;
-  }
-
-  getCourseDuration() {
-    let hours = this.courseReceived.duracion.toUpperCase();
-    let h;
-    let pos = hours.indexOf('HORAS');
-    if (hours.substring(pos - 4)[0] === '>') {
-      h = hours.substring(pos - 3, pos - 1);
-    } else {
-      h = hours.substring(pos - 4, pos - 1);
-    }
-    return h;
   }
 
 }

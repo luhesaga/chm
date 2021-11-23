@@ -24,16 +24,11 @@ export class CreateComponent implements OnInit, AfterViewInit {
 	showProgressBar = false;
 	images: any = [];
 	categories: any = [];
-	selectedCategory: string;
-	selectedType: string;
 	types: string [] = ['Certificacion', 'Asistencia', 'Aprobacion'];
 	teachers: any = [];
-	selectedTeacher: string;
 
 	//datos para editar curso
 	imageName: string;
-	name: string;
-	initials: string;
 	imgUrl;
 	confirmDelImg;
 	changeImg = false;
@@ -69,18 +64,18 @@ ngAfterViewInit() {
 getCourse() {
 	let cursos = this.courseService.detailCourse(this.id).valueChanges()
 		.subscribe(curso => {
-			// console.log(curso);
+			console.log(curso);
 			this.fsId = this.id;
 			this.confirmDelImg = curso.nombreImg;
 			this.imageField.setValue(curso.imagen);
 			this.imageName = curso.nombreImg;
-			this.name = curso.nombre;
-			this.initials = curso.sigla;
-			this.selectedCategory = curso.categoria;
-			this.selectedType = curso.tipoCerticado;
-			// console.log(this.selectedCategory);
-			this.selectedTeacher = curso.profesor;
-			// console.log(this.selectedTeacher);
+			this.nameField.setValue(curso.nombre);
+			this.initialsField.setValue(curso.sigla);
+			this.categoriaField.setValue(curso.categoria);
+			this.tipoCertField.setValue(curso.tipoCerticado);
+			this.profesorField.setValue(curso.profesor);
+			this.durationField.setValue(curso.duracionCurso);
+			this.percentageField.setValue(curso.porcentaje);
 			cursos.unsubscribe();
 		});
 	// console.log(this.selectedCategory);
@@ -96,7 +91,6 @@ listCategories() {
 					nombre: element.nombre,
 					activo: element.activo
 				}
-				// console.log(category);
 				if (category.activo) {
 					this.categories.push(category);
 				}
@@ -128,6 +122,8 @@ private buildForm(): void {
 		image: ['', Validators.required],
 		categoria: [''],
 		profesor: [''],
+		duration: [0, Validators.required],
+		percentage: [0, Validators.required],
 	})
 }
 
@@ -153,6 +149,14 @@ get categoriaField() {
 
 get profesorField() {
 	return this.form.get('profesor');
+}
+
+get durationField() {
+	return this.form.get('duration');
+}
+
+get percentageField() {
+	return this.form.get('percentage');
 }
 
 cancel() {

@@ -40,7 +40,6 @@
             type="text"
             matInput
             formControlName="name"
-            [(ngModel)]="name"
             #myinput
             tabIndex=1/>
           <mat-error *ngIf="nameField.touched && nameField.invalid">
@@ -54,8 +53,6 @@
             type="text"
             matInput
             formControlName="initials"
-            [(ngModel)]="initials"
-            #myinput
             tabIndex=2/>
           <mat-error *ngIf="initialsField.touched && initialsField.invalid">
             <ng-container *ngIf="initialsField.hasError('required')">Este campo es requerido</ng-container>
@@ -64,7 +61,7 @@
         <!-- Tipo de certificado -->
         <mat-form-field appearance="fill">
           <mat-label>Tipo de certifricado</mat-label>
-          <mat-select tabIndex=3 matNativeControl [(value)]="selectedType" [(ngModel)]="selectedType" formControlName="tipoCert">
+          <mat-select tabIndex=3 matNativeControl formControlName="tipoCert">
             <mat-option value="" selected></mat-option>
             <mat-option *ngFor="let type of types" [value]="type">
               {{type}}
@@ -74,7 +71,7 @@
         <!-- Seleccionar Categoria -->
         <mat-form-field appearance="fill">
           <mat-label>Categoria</mat-label>
-          <mat-select tabIndex=4 matNativeControl [(value)]="selectedCategory" [(ngModel)]="selectedCategory" formControlName="categoria">
+          <mat-select tabIndex=4 matNativeControl formControlName="categoria">
             <mat-option value="" selected></mat-option>
             <mat-option *ngFor="let cat of categories" [value]="cat.id">
               {{cat.nombre}}
@@ -84,21 +81,45 @@
         <!-- Seleccionar profesor -->
         <mat-form-field appearance="fill">
           <mat-label>Profesor</mat-label>
-          <mat-select tabIndex=5 matNativeControl [(ngModel)]="selectedTeacher" formControlName="profesor">
+          <mat-select tabIndex=5 matNativeControl formControlName="profesor">
             <mat-option value="" selected></mat-option>
             <mat-option *ngFor="let item of teachers" [value]="item.profesor">
               {{item.profesor}}
             </mat-option>
           </mat-select>
         </mat-form-field>
+        <!-- duración del curso -->
+        <mat-form-field>
+          <mat-label>Duración del curso (horas)</mat-label>
+          <input
+            type="number"
+            matInput
+            formControlName="duration"
+            tabIndex=6/>
+          <mat-error *ngIf="durationField.touched && durationField.invalid">
+            <ng-container *ngIf="durationField.hasError('required')">Este campo es requerido</ng-container>
+          </mat-error>
+        </mat-form-field>
+        <!-- porcentaje de aprobación -->
+        <mat-form-field>
+          <mat-label>Porcentaje de aprobación (%)</mat-label>
+          <input
+            type="number"
+            matInput
+            formControlName="percentage"
+            tabIndex=7/>
+          <mat-error *ngIf="percentageField.touched && percentageField.invalid">
+            <ng-container *ngIf="percentageField.hasError('required')">Este campo es requerido</ng-container>
+          </mat-error>
+        </mat-form-field>
       </div>
       <div class="buttons">
         <button
           type="submit"
-          tabIndex=4
+          tabIndex=8
           mat-raised-button
           [disabled]="form.invalid">{{ id ? 'Guardar cambios' : 'Guardar'}}</button>
-				<a mat-raised-button (click)="cancel()" tabIndex=5>Cancelar</a>
+				<a mat-raised-button (click)="cancel()" tabIndex=9>Cancelar</a>
       </div>
     </form>
   </main>

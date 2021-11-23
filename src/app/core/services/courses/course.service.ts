@@ -47,6 +47,8 @@ export class CourseService {
         categoria: data.categoria,
         profesor: data.profesor,
         tipoCerticado: data.tipoCert,
+        duracionCurso: data.duration,
+        porcentaje: data.percentage,
       });
   }
 
@@ -60,6 +62,8 @@ export class CourseService {
         categoria: data.categoria,
         profesor: data.profesor,
         tipoCerticado: data.tipoCert,
+        duracionCurso: data.duration,
+        porcentaje: data.percentage,
       });
   }
 
