@@ -27,7 +27,8 @@ export class CarrerasService {
       requisitosPrevios:'',
       dirigido:'',
       evaluacion:'',
-      requisitosCalificacion:''
+      requisitosCalificacion:'',
+      calificacionEstrellas:[],
     });
   }
 
@@ -113,6 +114,13 @@ export class CarrerasService {
   quitarCurso(id:string, idCarreras: string)
   {
     return this.fireStore.doc(`carreras/${idCarreras}/cursos/${id}`).delete();
+  }
+
+  agregarEstrella(calificacionEstrellas:any[], idCarreras:string)
+  {
+    return this.fireStore.doc(`carreras/${idCarreras}`).update({
+      calificacionEstrellas
+    });
   }
 }
 
