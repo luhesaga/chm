@@ -28,6 +28,8 @@ export class EvaluationsHomeComponent implements OnInit, AfterViewInit {
   courseName: string;
   data: any;
   modulos: any;
+  suma: number = 0;
+  contador: number = 0;
 
   constructor(
     private router: Router,
@@ -113,6 +115,9 @@ export class EvaluationsHomeComponent implements OnInit, AfterViewInit {
             if (index === 0) {
               this.displayedColumns.push(c.titulo);
             }
+            if (this.data[index].idUsuario === 'liD3gzgnRYUHTo0ntRoksklwnpg1') {
+              console.log(c);
+            }
             if (c.tipo === 'Agregar foro') {
               let ejercicio: any = {
                 idContenido: c.id,
@@ -128,7 +133,6 @@ export class EvaluationsHomeComponent implements OnInit, AfterViewInit {
               }
               this.getUSerResult(ejercicio, this.data[index].idUsuario, index);
             }
-
           });
         }
         contentList.unsubscribe();
@@ -139,10 +143,15 @@ export class EvaluationsHomeComponent implements OnInit, AfterViewInit {
     let userTest = this.exerciseService.getUserAnswers(this.courseId, ejercicio.idContenido, stdId)
       .valueChanges()
       .subscribe((item: any) => {
+        if (stdId === 'liD3gzgnRYUHTo0ntRoksklwnpg1') {
+          console.log(item);
+        }
         let valor = 0;
         let mayor = 0;
         if (item.length > 0) {
+          //console.log(item);
           item.forEach(prueba => {
+            //console.log(prueba);
             valor = 0;
             prueba.respuestas.forEach(r => {
               valor += r.valor;
@@ -159,6 +168,8 @@ export class EvaluationsHomeComponent implements OnInit, AfterViewInit {
           })
         }
         ejercicio.valor = mayor;
+        this.suma = this.suma + ejercicio.valor;
+        this.contador = this.contador + 1;
         this.data[index].contenidos.push(ejercicio);
         userTest.unsubscribe();
       });
@@ -173,6 +184,9 @@ export class EvaluationsHomeComponent implements OnInit, AfterViewInit {
         } else {
           ejercicio.valor = 0;
         }
+        // console.log(ejercicio);
+        this.suma = this.suma + ejercicio.valor;
+        this.contador = this.contador + 1;
         this.data[index].contenidos.push(ejercicio);
         forumResult.unsubscribe();
       })

@@ -1,5 +1,6 @@
 <div class="container">
     <h2>Resultados por estudiante</h2>
+    {{ suma }} / {{ contador }} = {{ suma / contador }}
     <mat-form-field appearance="legacy" class="search">
         <mat-label>Buscar</mat-label>
         <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
