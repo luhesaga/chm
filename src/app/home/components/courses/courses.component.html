@@ -15,10 +15,10 @@
                 <div class="ranking">
                     <star-rating [starType]="'svg'"
                     (starClickChange)="agregarEstrella($event.rating, item)"
-                    [disabled]="item.haVotado"
+                    [disabled]="item.haVotado || !dashboard"
                     [rating]="item.promedio"
                     [staticColor]="'ok'" [step]="0.5" [showHalfStars]="true"></star-rating>
-                    <p>{{item.promedio}} {{item.promedio<2 ? 'estrella':'estrellas'}} | {{item.nroVotos}} votos</p>
+                    <p>{{item.promedio}} {{item.promedio<2 ? 'estrella':'estrellas'}} | {{item.votos}} votos</p>
                 </div>
                 <div class="profesor-info">
                     <img

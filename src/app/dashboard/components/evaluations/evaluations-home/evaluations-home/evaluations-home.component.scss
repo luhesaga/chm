@@ -39,9 +39,14 @@ td.mat-cell:last-of-type {
     min-width: 200px;
 }
 
-.correo {
+.Correo {
     text-align: left;
     min-width: 250px;
+}
+
+.Promedio {
+    color: var(--main-color2);
+    font-weight: 600;
 }
 
 .buttons {

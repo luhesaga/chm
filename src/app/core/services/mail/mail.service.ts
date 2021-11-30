@@ -41,4 +41,9 @@ export class MailService {
     return this.http.post(url, JSON.stringify(data), { headers: this.headers });
   }
 
+  sendRevitionValidation(data: any) {
+    const url = `https://chym-ndt.com/phpMailer/revisionEjercicio.php/`;
+    return this.http.post(url, JSON.stringify(data), { headers: this.headers });
+  }
+
 }

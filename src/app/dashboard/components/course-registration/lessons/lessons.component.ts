@@ -66,7 +66,7 @@ export class LessonsComponent implements OnInit, AfterViewInit, OnDestroy {
   generarCertificado(lessons): boolean {
     const lesson: any = lessons[lessons.length - 1] || { porcentaje: 0 };
     if (lesson.porcentaje === 100) {
-      console.log(lesson);
+      //console.log(lesson);
       let isFinished = this.courseService.registeredUSerDetail(this.courseId, this.stdId)
         .valueChanges()
         .subscribe((f: any) => {
@@ -141,7 +141,7 @@ export class LessonsComponent implements OnInit, AfterViewInit, OnDestroy {
       .valueChanges()
       .subscribe(u => {
         this.LogguedUser = u;
-        console.log(this.LogguedUser);
+        //console.log(this.LogguedUser);
         user.unsubscribe();
       })
   }

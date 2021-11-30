@@ -1,6 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ExercisesService } from '../../../../core/services/exercises/exercises.service';
+import { CourseService } from '../../../../core/services/courses/course.service';
+import { UsersService } from '../../../../core/services/users/users.service';
+import { MailService } from '../../../../core/services/mail/mail.service';
 
 @Component({
   selector: 'app-evaluation-finish',
@@ -20,6 +23,9 @@ export class EvaluationFinishComponent implements OnInit, OnDestroy {
 
   testReceived;
   test;
+  courseInfo;
+  stdInfo;
+  ejercicio;
 
   //anwersReceived;
   answers;
@@ -37,6 +43,9 @@ export class EvaluationFinishComponent implements OnInit, OnDestroy {
   constructor(
     private activatedRoute: ActivatedRoute,
     private exerService: ExercisesService,
+    private courseService: CourseService,
+    private mailService: MailService,
+    private user: UsersService,
     private router: Router,
   ) {
     this.idCurso = this.activatedRoute.snapshot.params.idCurso;
@@ -48,19 +57,39 @@ export class EvaluationFinishComponent implements OnInit, OnDestroy {
     const consulta = this.activatedRoute.snapshot.params.consulta;
     if (consulta) {
       this.revitionView = true;
-      // console.log(this.revitionView);
+      console.log(this.revitionView);
     }
     // console.log(`curso: ${this.idCurso} leccion: ${this.idLesson}`);
     // console.log(`contenido: ${this.idContent} ejercicio: ${this.exercId} usuario: ${this.stdId}`);
   }
 
   ngOnInit(): void {
+    this.getCourseInfo();
+    this.getUserInfo();
     this.getAllTest();
-    this.getAnswers();
+    
   }
 
   ngOnDestroy(): void {
     // this.anwersReceived.unsubscribe();
+  }
+
+  getCourseInfo() {
+    let course = this.courseService.detailCourse(this.idCurso)
+      .valueChanges()
+      .subscribe(c => {
+        this.courseInfo = c;
+        course.unsubscribe();
+      });
+  }
+
+  getUserInfo() {
+    let user = this.user.detailUser(this.stdId)
+      .valueChanges()
+      .subscribe(u => {
+        this.stdInfo = u;
+        user.unsubscribe();
+      });
   }
 
   getAllTest() {
@@ -76,6 +105,7 @@ export class EvaluationFinishComponent implements OnInit, OnDestroy {
     let testReceived =this.exerService.exerciseDetail(this.idCurso, this.exercId)
       .valueChanges()
       .subscribe((ex: any) => {
+        this.ejercicio = ex;
         if (totalTest < ex.intentos) {
           this.revitionAll = false;
         } else {
@@ -86,6 +116,7 @@ export class EvaluationFinishComponent implements OnInit, OnDestroy {
         if (ex.textoFinal) {
           this.textoFinal = this.parseHTML(ex.textoFinal);
         }
+        this.getAnswers();
         testReceived.unsubscribe();
       });
   }
@@ -94,10 +125,12 @@ export class EvaluationFinishComponent implements OnInit, OnDestroy {
     let anwersReceived = this.exerService.detailTest(this.idCurso, this.exercId, this.stdId, this.testId)
       .valueChanges()
       .subscribe(u => {
+        if (u) {
+          this.validateQuestionsType(u);
+        }
         if (u.fecha) {
           u.fecha = new Date(u.fecha).toLocaleDateString();
         }
-        // console.log(u);
         this.testReceived = u;
         this.answers = u.respuestas;
         // console.log(this.answers);
@@ -141,6 +174,42 @@ export class EvaluationFinishComponent implements OnInit, OnDestroy {
       q = this.parseHTML(q.replace(q.substring(inicio, final +1), '________'));
     }
     return q;
+  }
+
+  validateQuestionsType(respuestas) {
+    let cont = 0;
+    if (!this.revitionView) {
+      const preguntas: any[] = this.ejercicio.preguntas ? this.ejercicio.preguntas : null;
+      
+      if (preguntas) {
+        preguntas.forEach(p => {
+          if (p.type === 5) {
+            cont += 1;
+          }
+        });
+
+        if (cont > 0 && !respuestas.revisado) {
+          const data = {
+            to: 'admin@chym-elearning.com',
+            //to: 'luhesaga@gmail.com',
+            asunto: `revision pendiente ${this.stdInfo.nombres} ${this.stdInfo.apellidos}`,
+            curso: this.courseInfo.nombre,
+            estudiante: this.stdInfo.nombres + ' ' + this.stdInfo.apellidos,
+            prueba: this.ejercicio.nombre
+          }
+          console.log('correo enviado');
+          this.sendMail(data);
+        }
+      }      
+    }  
+  }
+
+  sendMail(data) {
+    const unsubscribe = this.mailService.sendRevitionValidation(data)
+      .subscribe(() => unsubscribe.unsubscribe(),
+        e => {
+          console.log(e);
+        });
   }
 
 }

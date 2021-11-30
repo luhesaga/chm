@@ -1,4 +1,10 @@
-import { Component, OnInit, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  AfterViewInit,
+  ElementRef,
+} from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -13,10 +19,9 @@ import * as XLSX from 'xlsx';
 @Component({
   selector: 'app-evaluations-home',
   templateUrl: './evaluations-home.component.html',
-  styleUrls: ['./evaluations-home.component.scss']
+  styleUrls: ['./evaluations-home.component.scss'],
 })
 export class EvaluationsHomeComponent implements OnInit, AfterViewInit {
-
   displayedColumns: string[] = ['Estudiante', 'Correo'];
   dataSource = new MatTableDataSource();
 
@@ -28,8 +33,6 @@ export class EvaluationsHomeComponent implements OnInit, AfterViewInit {
   courseName: string;
   data: any;
   modulos: any;
-  suma: number = 0;
-  contador: number = 0;
 
   constructor(
     private router: Router,
@@ -38,7 +41,7 @@ export class EvaluationsHomeComponent implements OnInit, AfterViewInit {
     private userService: UsersService,
     private lessonService: LessonsService,
     private exerciseService: ExercisesService,
-    private foroService: ForumService,
+    private foroService: ForumService
   ) {
     this.courseId = this.activatedRoute.snapshot.params.courseId;
   }
@@ -58,18 +61,20 @@ export class EvaluationsHomeComponent implements OnInit, AfterViewInit {
   }
 
   getCourseInfo() {
-    let curso = this.courseService.detailCourse(this.courseId)
+    let curso = this.courseService
+      .detailCourse(this.courseId)
       .valueChanges()
-      .subscribe(c => {
+      .subscribe((c) => {
         this.courseName = c.nombre;
         curso.unsubscribe();
-      })
+      });
   }
 
   getCourseUsers() {
     this.data = [];
     this.modulos = [];
-    let courseUsers = this.courseService.listRegisteredUsers(this.courseId)
+    let courseUsers = this.courseService
+      .listRegisteredUsers(this.courseId)
       .valueChanges()
       .subscribe((users: any) => {
         users.forEach((user, index) => {
@@ -83,7 +88,8 @@ export class EvaluationsHomeComponent implements OnInit, AfterViewInit {
   }
 
   getUserData(user, index) {
-    let detailUser = this.userService.detailUser(user.id)
+    let detailUser = this.userService
+      .detailUser(user.id)
       .valueChanges()
       .subscribe((u: any) => {
         //console.log(u);
@@ -91,73 +97,74 @@ export class EvaluationsHomeComponent implements OnInit, AfterViewInit {
         this.data[index].Correo = u.correo;
         this.getCourseLessons(index);
         detailUser.unsubscribe();
-      })
+      });
   }
 
   getCourseLessons(i) {
-    let lessonsList = this.lessonService.listLessons(this.courseId)
+    let lessonsList = this.lessonService
+      .listLessons(this.courseId)
       .valueChanges()
       .subscribe((lessons: any) => {
         lessons.forEach((lesson) => {
           this.getlessonContent(lesson, i);
         });
         lessonsList.unsubscribe();
-      })
+      });
   }
 
   getlessonContent(lesson, index) {
     this.data[index].contenidos = [];
-    let contentList = this.lessonService.listCalificableLessons(this.courseId, lesson.id)
+
+    let contentList = this.lessonService
+      .listCalificableLessons(this.courseId, lesson.id)
       .valueChanges()
-      .subscribe(content => {
+      .subscribe((content) => {
         if (content.length > 0) {
           content.forEach((c: any) => {
             if (index === 0) {
               this.displayedColumns.push(c.titulo);
             }
-            if (this.data[index].idUsuario === 'liD3gzgnRYUHTo0ntRoksklwnpg1') {
-              console.log(c);
-            }
             if (c.tipo === 'Agregar foro') {
               let ejercicio: any = {
                 idContenido: c.id,
                 tituloContenido: c.titulo,
-                idLeccion: lesson.id
-              }
+                idLeccion: lesson.id,
+              };
               this.getForumResult(ejercicio, this.data[index].idUsuario, index);
             } else {
               let ejercicio: any = {
                 idContenido: c.ejercicio.id,
                 tituloContenido: c.ejercicio.nombre,
-                idLeccion: lesson.id
-              }
+                idLeccion: lesson.id,
+              };
               this.getUSerResult(ejercicio, this.data[index].idUsuario, index);
             }
           });
         }
         contentList.unsubscribe();
-      })
+      });
   }
 
   getUSerResult(ejercicio, stdId, index) {
-    let userTest = this.exerciseService.getUserAnswers(this.courseId, ejercicio.idContenido, stdId)
+    let userTest = this.exerciseService
+      .getUserAnswers(this.courseId, ejercicio.idContenido, stdId)
       .valueChanges()
       .subscribe((item: any) => {
-        if (stdId === 'liD3gzgnRYUHTo0ntRoksklwnpg1') {
-          console.log(item);
-        }
         let valor = 0;
         let mayor = 0;
         if (item.length > 0) {
           //console.log(item);
-          item.forEach(prueba => {
-            //console.log(prueba);
+          item.forEach((prueba) => {
             valor = 0;
-            prueba.respuestas.forEach(r => {
-              valor += r.valor;
-            });
+            if (prueba.respuestas.length > 0) {
+              prueba.respuestas.forEach((r) => {
+                valor += r.valor;
+              });
+            }
             if (valor > 0) {
-              valor = Math.ceil((valor / (prueba.respuestas.length * 100)) * 100);
+              valor = Math.ceil(
+                (valor / (prueba.respuestas.length * 100)) * 100
+              );
               if (valor > mayor) {
                 mayor = valor;
                 //console.log(mayor);
@@ -165,18 +172,22 @@ export class EvaluationsHomeComponent implements OnInit, AfterViewInit {
             } else {
               valor = 0;
             }
-          })
+          });
         }
         ejercicio.valor = mayor;
-        this.suma = this.suma + ejercicio.valor;
-        this.contador = this.contador + 1;
         this.data[index].contenidos.push(ejercicio);
         userTest.unsubscribe();
       });
   }
 
   getForumResult(ejercicio, stdId, index) {
-    let forumResult = this.foroService.getUserAnswers(this.courseId, ejercicio.idLeccion, ejercicio.idContenido, stdId)
+    let forumResult = this.foroService
+      .getUserAnswers(
+        this.courseId,
+        ejercicio.idLeccion,
+        ejercicio.idContenido,
+        stdId
+      )
       .valueChanges()
       .subscribe((f: any) => {
         if (f.length > 0) {
@@ -185,24 +196,38 @@ export class EvaluationsHomeComponent implements OnInit, AfterViewInit {
           ejercicio.valor = 0;
         }
         // console.log(ejercicio);
-        this.suma = this.suma + ejercicio.valor;
-        this.contador = this.contador + 1;
         this.data[index].contenidos.push(ejercicio);
         forumResult.unsubscribe();
-      })
+      });
   }
 
   setField(item, i, element) {
+    if (this.displayedColumns.indexOf('Promedio') === -1) {
+      this.displayedColumns.push('Promedio');
+    }
     let fieldValue: string = '';
-
-    if (element) {
-      if (element[item]) {
-        fieldValue = element[item]
-      } else {
-        if (element?.contenidos) {
-          if (element.contenidos.length > 0) {
-            fieldValue = element.contenidos[i - 2]?.valor + '%';
+    if (item !== 'Promedio') {
+      if (element) {
+        if (element[item]) {
+          fieldValue = element[item];
+        } else {
+          if (element?.contenidos) {
+            if (element.contenidos.length > 0) {
+              fieldValue = element.contenidos[i - 3]?.valor + '%';
+            }
           }
+        }
+      }
+    } else {
+      let valor = 0;
+      if (element?.contenidos) {
+        if (element.contenidos.length > 0) {
+          for (let index = 0; index < element.contenidos.length; index++) {
+            const el = element.contenidos[index];
+            valor = valor + el.valor;
+          }
+          valor = Math.ceil(valor / element.contenidos.length);
+          fieldValue = valor + '%';
         }
       }
     }
@@ -213,17 +238,17 @@ export class EvaluationsHomeComponent implements OnInit, AfterViewInit {
   exportAsExcel() {
     // console.log(this.table);
     /* converts a DOM TABLE element to a worksheet */
-    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(this.table.nativeElement);
+    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(
+      this.table.nativeElement
+    );
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
 
     /* save to file */
     XLSX.writeFile(wb, `Evaluaciones curso ${this.courseName}.xlsx`);
-
   }
 
   goBack() {
     this.router.navigate([`cursos/index/${this.courseId}`]);
   }
-
 }
