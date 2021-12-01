@@ -46,4 +46,9 @@ export class MailService {
     return this.http.post(url, JSON.stringify(data), { headers: this.headers });
   }
 
+  daysValidationEmail(data: any) {
+    const url = `https://chym-ndt.com/phpMailer/daysValidation.php/`;
+    return this.http.post(url, JSON.stringify(data), { headers: this.headers });
+  }
+
 }
