@@ -3,125 +3,131 @@ import firebase from 'firebase/app';
 import {
   AngularFirestore,
   AngularFirestoreCollection,
-  AngularFirestoreDocument
+  AngularFirestoreDocument,
 } from '@angular/fire/firestore';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CarrerasService {
+  constructor(public fireStore: AngularFirestore) {}
 
-  constructor(public fireStore: AngularFirestore) { }
-
-  crearCarreras(data:any, id:string):Promise <void>
-  {
+  crearCarreras(data: any, id: string): Promise<void> {
     return this.fireStore.doc(`carreras/${id}`).set({
       nombre: data.nombre,
       image: data.image,
       id,
-      descripcion:'',
-      introduccion:'',
-      objetivo:'',
-      contenido:'',
-      duracion:'',
-      requisitosPrevios:'',
-      dirigido:'',
-      evaluacion:'',
-      requisitosCalificacion:'',
-      calificacionEstrellas:[],
+      descripcion: '',
+      introduccion: '',
+      objetivo: '',
+      contenido: '',
+      duracion: '',
+      requisitosPrevios: '',
+      dirigido: '',
+      evaluacion: '',
+      requisitosCalificacion: '',
+      calificacionEstrellas: [],
     });
   }
 
-  obtenerCarreras():AngularFirestoreCollection
-  {
+  obtenerCarreras(): AngularFirestoreCollection {
     return this.fireStore.collection('carreras');
   }
 
-  obtenerCarrera(id:string):AngularFirestoreDocument <void>
-  {
+  obtenerCarrera(id: string): AngularFirestoreDocument<void> {
     return this.fireStore.doc(`carreras/${id}`);
   }
 
-  actualizarCarreras(data:any, id:string):Promise <void>
-  {
+  actualizarCarreras(data: any, id: string): Promise<void> {
     return this.fireStore.doc(`carreras/${id}`).update({
       nombre: data.nombre,
       image: data.image,
     });
   }
 
-  actualizarDescripcionCarrera(data:any, id:string):Promise <void>
-  {
+  actualizarDescripcionCarrera(data: any, id: string): Promise<void> {
     return this.fireStore.doc(`carreras/${id}`).update({
-      descripcion:data.descripcion,
-      introduccion:data.introduccion,
-      objetivo:data.objetivo,
-      contenido:data.contenido,
-      duracion:data.duracion,
-      requisitosPrevios:data.requisitosPrevios,
-      dirigido:data.dirigido,
-      evaluacion:data.evaluacion,
-      requisitosCalificacion:data.requisitosCalificacion
+      descripcion: data.descripcion,
+      introduccion: data.introduccion,
+      objetivo: data.objetivo,
+      contenido: data.contenido,
+      duracion: data.duracion,
+      requisitosPrevios: data.requisitosPrevios,
+      dirigido: data.dirigido,
+      evaluacion: data.evaluacion,
+      requisitosCalificacion: data.requisitosCalificacion,
     });
   }
 
-  matriculadosObtener(id:string)
-  {
+  matriculadosObtener(id: string): AngularFirestoreCollection {
     return this.fireStore.collection(`carreras/${id}/matriculados`);
   }
 
-  getRegisteredUser(careerId: string, stdId: string) {
+  getRegisteredUser(careerId: string, stdId: string): AngularFirestoreDocument {
     return this.fireStore.doc(`carreras/${careerId}/matriculados/${stdId}`);
   }
 
-  matricularUsuario(data:any, idCarreras: string)
-  {
-    return this.fireStore.doc(`carreras/${idCarreras}/matriculados/${data.id}`).set({
-      id:data.id,
-      matriculaIndividual:data.matriculaIndividual,
-      nombre: `${data.nombres} ${data.apellidos}`,
-      fechaMatricula: data.fechaMatricula,
-      fechaFinalizacionMatricula: data.fechaFinalizacionMatricula,
-      tipoMatricula:data.tipoMatricula
+  matricularUsuario(data: any, idCarreras: string): Promise<void> {
+    return this.fireStore
+      .doc(`carreras/${idCarreras}/matriculados/${data.id}`)
+      .set({
+        id: data.id,
+        matriculaIndividual: data.matriculaIndividual,
+        nombre: `${data.nombres} ${data.apellidos}`,
+        fechaMatricula: data.fechaMatricula,
+        fechaFinalizacionMatricula: data.fechaFinalizacionMatricula,
+        tipoMatricula: data.tipoMatricula,
+      });
+  }
+
+  actualizarMatriculaIndividual(data: any, idCarreras: string): Promise<void> {
+    return this.fireStore
+      .doc(`carreras/${idCarreras}/matriculados/${data.id}`)
+      .update({
+        matriculaIndividual: data.matriculaIndividual,
+      });
+  }
+
+  desmatricularUsuario(id: string, idCarreras: string): Promise<void> {
+    return this.fireStore
+      .doc(`carreras/${idCarreras}/matriculados/${id}`)
+      .delete();
+  }
+
+  getCareerCourses(id: string): AngularFirestoreCollection {
+    return this.fireStore.collection(`carreras/${id}/cursos`, (ref) =>
+      ref.orderBy('posicion', 'asc')
+    );
+  }
+
+  getCareerCourseData(careerId: string, courseId: string): AngularFirestoreDocument {
+    return this.fireStore.doc(`carreras/${careerId}/cursos/${courseId}`);
+  }
+
+  agregarCurso(data): Promise<void> {
+    return this.fireStore
+      .doc(`carreras/${data.idCarrera}/cursos/${data.id}`)
+      .set({
+        id: data.id,
+        nombre: data.nombre,
+        posicion: data.posicion,
+      });
+  }
+
+  setCoursePosition(data): Promise<void> {
+    return this.fireStore.doc(`carreras/${data.idCarrera}/cursos/${data.id}`)
+    .update({
+      posicion: data.posicion,
     });
   }
 
-  actualizarMatriculaIndividual(data:any, idCarreras: string)
-  {
-    return this.fireStore.doc(`carreras/${idCarreras}/matriculados/${data.id}`).update({
-      matriculaIndividual:data.matriculaIndividual,
-    });
-  }
-
-  desmatricularUsuario(id:string, idCarreras: string)
-  {
-    return this.fireStore.doc(`carreras/${idCarreras}/matriculados/${id}`).delete();
-  }
-
-  cursosAgregadosObtener(id:string)
-  {
-    return this.fireStore.collection(`carreras/${id}/cursos`);
-  }
-
-  agregarCurso(id:string, idCarreras: string, nombre:string)
-  {
-    return this.fireStore.doc(`carreras/${idCarreras}/cursos/${id}`).set({
-      id,
-      nombre
-    });
-  }
-
-  quitarCurso(id:string, idCarreras: string)
-  {
+  quitarCurso(id: string, idCarreras: string): Promise<void> {
     return this.fireStore.doc(`carreras/${idCarreras}/cursos/${id}`).delete();
   }
 
-  agregarEstrella(calificacionEstrellas:any[], idCarreras:string)
-  {
+  agregarEstrella(calificacionEstrellas: any[], idCarreras: string): Promise<void> {
     return this.fireStore.doc(`carreras/${idCarreras}`).update({
-      calificacionEstrellas
+      calificacionEstrellas,
     });
   }
 }
-
-

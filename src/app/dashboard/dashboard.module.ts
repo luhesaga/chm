@@ -71,6 +71,7 @@ import { StdCerticatesComponent } from './components/certificates/std-certicates
 import { AdmListCertificatesComponent } from './components/certificates/adm-list-certificates/adm-list-certificates.component';
 import { AdmEditCertificateComponent } from './components/certificates/adm-edit-certificate/adm-edit-certificate.component';
 import { AdmCreateCertificateComponent } from './components/certificates/adm-create-certificate/adm-create-certificate.component';
+import { CarrerasIndexComponent } from './components/carreras/carreras-index/carreras-index.component';
 
 
 @NgModule({
@@ -138,6 +139,7 @@ import { AdmCreateCertificateComponent } from './components/certificates/adm-cre
     AdmListCertificatesComponent,
     AdmEditCertificateComponent,
     AdmCreateCertificateComponent,
+    CarrerasIndexComponent,
     ],
   imports: [
     CommonModule,

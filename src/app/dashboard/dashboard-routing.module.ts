@@ -57,203 +57,215 @@ import { StdCerticatesComponent } from './components/certificates/std-certicates
 import { AdmEditCertificateComponent } from './components/certificates/adm-edit-certificate/adm-edit-certificate.component';
 import { AdmListCertificatesComponent } from './components/certificates/adm-list-certificates/adm-list-certificates.component';
 import { AdmCreateCertificateComponent } from './components/certificates/adm-create-certificate/adm-create-certificate.component';
-
+import { CarrerasIndexComponent } from './components/carreras/carreras-index/carreras-index.component';
 
 const routes: Routes = [
   {
     path: '',
     component: NavigationComponent,
-    canActivate:[LoginGuard],
+    canActivate: [LoginGuard],
     children: [
       {
         path: '',
-        component: MainComponent
+        component: MainComponent,
       },
       {
         path: 'usuarios',
-        component: UsersComponent
+        component: UsersComponent,
       },
       {
         path: 'usuarios/edit',
-        component: UserEditComponent
+        component: UserEditComponent,
       },
       {
         path: 'usuarios/perfil/:idUser',
-        component: UserProfileComponent
+        component: UserProfileComponent,
       },
       {
         path: 'cursos',
-        component: CursosComponent
+        component: CursosComponent,
       },
       {
         path: 'cursos/create',
-        component: CreateComponent
+        component: CreateComponent,
       },
       {
         path: 'cursos/edit',
-        component: CourseEditComponent
+        component: CourseEditComponent,
       },
       {
         path: 'cursos/course-edit/:id',
-        component: CreateComponent
+        component: CreateComponent,
       },
       {
         path: 'cursos/detail/:id',
-        component: CourseDetailComponent
+        component: CourseDetailComponent,
       },
       {
         path: 'cursos/detalle/:id/:userId',
-        component: CourseDetailComponent
+        component: CourseDetailComponent,
       },
       {
         path: 'cursos/index/:id',
-        component: CourseHomeComponent
+        component: CourseHomeComponent,
       },
       {
         path: 'cursos/index/:id/:stdId',
-        component: CourseHomeComponent
+        component: CourseHomeComponent,
       },
       {
         path: 'cursos/index/:id/:stdId/:careerId',
-        component: CourseHomeComponent
+        component: CourseHomeComponent,
+      },
+      {
+        path: 'cursos/index/:id/:stdId/:careerId/:std',
+        component: CourseHomeComponent,
       },
       {
         path: 'cursos/list/:userId',
-        component: CoursesComponent
+        component: CoursesComponent,
       },
       {
         path: 'cursos/anuncios/:idCurso',
-        component: AdsCursoComponent
+        component: AdsCursoComponent,
       },
       {
         path: 'cursos/anuncios/estudiante/:idCurso/:stdId',
         component: AdsCursoComponent,
-        pathMatch:'full'
+        pathMatch: 'full',
       },
       {
         path: 'cursos/anuncios/crear/:idCurso',
         component: CreateAdsCursoComponent,
-        pathMatch:'full'
+        pathMatch: 'full',
       },
       {
         path: 'cursos/anuncios/editar/:idCurso/:idAnuncio',
-        component: EditAdsCursoComponent
+        component: EditAdsCursoComponent,
       },
       {
         path: 'cursos/lecciones/create',
-        component: LessonCreateComponent
+        component: LessonCreateComponent,
       },
       {
         path: 'cursos/:cid/lecciones/config/:lid/:contentId',
-        component: LessonConfigComponent
+        component: LessonConfigComponent,
       },
       {
         path: 'cursos/:cid/lecciones/content-list/:lid',
-        component: LessonContentListComponent
+        component: LessonContentListComponent,
       },
       {
         path: 'cursos/lecciones/:id',
-        component: LeccionesComponent
+        component: LeccionesComponent,
       },
       {
         path: 'cursos/ejercicios/:courseId',
-        component: ExercisesListComponent
+        component: ExercisesListComponent,
       },
       {
         path: 'cursos/ejercicios/crear/:courseId',
-        component: ExercisesCreateComponent
+        component: ExercisesCreateComponent,
       },
       {
         path: 'cursos/ejercicios/revisar/:courseId/:exerciseId',
-        component: ExercisesRevComponent
+        component: ExercisesRevComponent,
       },
       {
         path: 'cursos/ejercicios/revisar/detalle/:courseId/:exerciseId/:testId/:stdId',
-        component: ExercisesRevDetailComponent
+        component: ExercisesRevDetailComponent,
       },
       {
         path: 'cursos/ejercicios/editar/:courseId/:exerciseId',
-        component: ExercisesCreateComponent
+        component: ExercisesCreateComponent,
       },
       {
         path: 'cursos/ejercicios/:courseId/questions/:exerciseId',
-        component: QuestionsListComponent
+        component: QuestionsListComponent,
       },
       {
         path: 'cursos/ejercicios/:courseId/preguntas/add/:exerciseId',
-        component: QuestionCreateComponent
+        component: QuestionCreateComponent,
       },
       {
         path: 'cursos/ejercicios/:courseId/preguntas/edit/:exerciseId/:questionPosition/:questionType/:answerTrue',
-        component: QuestionCreateComponent
+        component: QuestionCreateComponent,
       },
       {
         path: 'cursos/evaluaciones/:courseId',
-        component: EvaluationsHomeComponent
+        component: EvaluationsHomeComponent,
       },
       {
         path: 'cursos/evaluaciones/estudiante/:courseId/:stdId',
-        component: StdEvaluationComponent
+        component: StdEvaluationComponent,
       },
       {
         path: 'cursos/foros/revisar/:courseId',
-        component: ForumRevComponent
+        component: ForumRevComponent,
       },
       {
         path: 'cursos/foros/revisar/respuestas/:courseId/:lessonId/:forumId',
-        component: ForumUsersAnswersComponent
+        component: ForumUsersAnswersComponent,
       },
       {
         path: 'cursos/foros/revisar/respuesta-estudiante/:courseId/:lessonId/:forumId/:stdId/:userForumId',
-        component: ForumRevDetailComponent
+        component: ForumRevDetailComponent,
       },
       {
         path: 'cursos/glosario/:courseId',
-        component: GlossaryListComponent
+        component: GlossaryListComponent,
       },
       {
         path: 'cursos/glosario/:courseId/:stdId',
-        component: GlossaryListComponent
+        component: GlossaryListComponent,
       },
       {
         path: 'cursos/glosario/:courseId/create',
-        component: GlossaryCreateComponent
+        component: GlossaryCreateComponent,
       },
       {
         path: 'cursos/video-meet/:courseId',
-        component: VideoConferenceListComponent
+        component: VideoConferenceListComponent,
       },
       {
         path: 'cursos/video-meet/:courseId/:stdId',
-        component: VideoConferenceListComponent
+        component: VideoConferenceListComponent,
       },
       {
         path: 'categorias',
-        component: CategoriesComponent
+        component: CategoriesComponent,
       },
       {
         path: 'categorias/create',
-        component: CategoryCreateComponent
+        component: CategoryCreateComponent,
       },
       {
         path: 'categorias/edit/:id',
-        component: CategoryCreateComponent
+        component: CategoryCreateComponent,
       },
       {
         path: 'ads/ads-list',
-        component: AdsListComponent
+        component: AdsListComponent,
       },
       {
         path: 'ads/ads-create',
-        component: AdsCreateComponent
+        component: AdsCreateComponent,
       },
       {
         path: 'ads/ads-edit/:id',
-        component: AdsEditComponent
+        component: AdsEditComponent,
       },
       {
         path: 'mis-cursos/:stdId',
-        component: CourseRegistrationComponent
+        component: CourseRegistrationComponent,
+      },
+      {
+        path: 'mis-cursos/:stdId/:careerId',
+        component: CourseRegistrationComponent,
+      },
+      {
+        path: 'mis-cursos/:stdId/:careerId/:std',
+        component: CourseRegistrationComponent,
       },
       {
         path: 'mis-cursos/lecciones/:courseId/:stdId',
@@ -261,27 +273,27 @@ const routes: Routes = [
       },
       {
         path: 'mis-carreras/:stdId',
-        component: MycareersComponent
+        component: MycareersComponent,
       },
       {
         path: 'mis-carreras/cursos/:careerId/:stdId',
-        component: CareerCoursesComponent
+        component: CareerCoursesComponent,
       },
       {
         path: 'mis-certificados/:stdId',
-        component: StdCerticatesComponent
+        component: StdCerticatesComponent,
       },
       {
         path: 'crear-certificado',
-        component: AdmCreateCertificateComponent
+        component: AdmCreateCertificateComponent,
       },
       {
         path: 'editar-certificado/:certificado',
-        component: AdmEditCertificateComponent
+        component: AdmEditCertificateComponent,
       },
       {
         path: 'certificados',
-        component: AdmListCertificatesComponent
+        component: AdmListCertificatesComponent,
       },
       {
         path: 'add-student/:idCurso',
@@ -289,63 +301,70 @@ const routes: Routes = [
       },
       {
         path: 'cursos/registration/:idCurso',
-        component: CourseHomeComponentRegistration
+        component: CourseHomeComponentRegistration,
       },
       {
-        path:'documents/:idCurso',
-        component:DocumentsComponent
+        path: 'documents/:idCurso',
+        component: DocumentsComponent,
       },
       {
-        path:'documents/:idCurso/:idEstudiante',
-        component:DocumentsComponent
+        path: 'documents/:idCurso/:idEstudiante',
+        component: DocumentsComponent,
       },
       {
         path: 'carreras',
-        component:CarrerasComponent
+        component: CarrerasComponent,
       },
       {
         path: 'carreras/create',
-        component:CreateCarrerasComponent
+        component: CreateCarrerasComponent,
       },
       {
         path: 'carreras/edit/:idCarreras',
-        component:EditCarrerasComponent
+        component: EditCarrerasComponent,
       },
       {
         path: 'carreras/add-estudiantes/:idCarreras',
-        component:AddEstudiantesComponent
+        component: AddEstudiantesComponent,
       },
       {
         path: 'carreras/add-curso/:idCarreras',
-        component:AddCursoComponent
+        component: AddCursoComponent,
       },
       {
         path: 'carreras/detail/:idCarreras',
-        component:CarrerasDetailComponent
+        component: CarrerasDetailComponent,
       },
       {
         path: 'carreras/catalogo/:idUser',
-        component:CatalogoCarrerasComponent
+        component: CatalogoCarrerasComponent,
       },
       {
         path: 'carreras/detail/:idCarreras/:idUser',
-        component:CarrerasDetailComponent
+        component: CarrerasDetailComponent,
       },
       {
         path: 'carreras/detail/:idCarreras/home/:home',
-        component:CarrerasDetailComponent
-      }
-    ]
+        component: CarrerasDetailComponent,
+      },
+      {
+        path: 'carreras/index/:careerId/:type',
+        component: CarrerasIndexComponent,
+      },
+    ],
   },
   {
     path: 'course-view',
-    canActivate:[LoginGuard],
-    loadChildren: () => import('../course-view/course-view.module').then((d) => d.CourseViewModule)
-  }
+    canActivate: [LoginGuard],
+    loadChildren: () =>
+      import('../course-view/course-view.module').then(
+        (d) => d.CourseViewModule
+      ),
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class DashboardRoutingModule { }
+export class DashboardRoutingModule {}

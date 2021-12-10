@@ -20,6 +20,10 @@ table {
 
 .buttons {
     text-align: center;
+
+    .mat-mini-fab {
+        margin-left: 1rem;
+    }
 }
 
 .buttons .mat-stroked-button {
@@ -90,3 +94,4 @@ cursor: pointer;
 .botonAgregarCurso-texto {
     margin-left: 0.5rem;
 }
+

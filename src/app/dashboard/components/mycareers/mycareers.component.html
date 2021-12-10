@@ -12,7 +12,7 @@
                 <p>tu suscripción termina en:
                     <span>{{ career.fechaFin === 'nunca' ? 'suscripción ilimitada' : career.fechaFin.toLocaleString() }}</span>
                 </p>
-                <button mat-raised-button (click)="goToCoursesList(career.id)">Ir a cursos de la carrera</button>
+                <button mat-raised-button (click)="goToCareerIndex(career.id)">Ver carrera</button>
             </div>
         </div>
     </section>

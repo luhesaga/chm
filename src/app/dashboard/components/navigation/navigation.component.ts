@@ -27,45 +27,44 @@ export class NavigationComponent {
     private auth: AuthService,
     private route: Router,
   ) {
-    this.logguedUser={}
+    this.logguedUser = {};
   }
 
   ngOnInit(): void {
     this.auth.user$.subscribe((user) => {
-      //console.log(user);
       this.logguedUser = user;
     });
   }
 
-  goToProfile() {
+  goToProfile(): void {
     this.route.navigate([`/usuarios/perfil/${this.logguedUser.id}`]);
   }
 
-  goToCoursesList() {
-    this.route.navigate([`/dashboard/cursos/list/${this.logguedUser.id}`])
+  goToCoursesList(): void {
+    this.route.navigate([`/dashboard/cursos/list/${this.logguedUser.id}`]);
   }
 
-  goToCarreraCatalogo() {
-    this.route.navigate([`/dashboard/carreras/catalogo/${this.logguedUser.id}`])
+  goToCarreraCatalogo(): void {
+    this.route.navigate([`/dashboard/carreras/catalogo/${this.logguedUser.id}`]);
   }
 
-  goToMyCourses() {
-    this.route.navigate([`/dashboard/mis-cursos/${this.logguedUser.id}`])
+  goToMyCourses(): void {
+    this.route.navigate([`/dashboard/mis-cursos/${this.logguedUser.id}`]);
   }
 
-  goToMyCareers() {
+  goToMyCareers(): void {
     this.route.navigate([`/dashboard/mis-carreras/${this.logguedUser.id}`])
   }
 
-  goToMyCertificates() {
+  goToMyCertificates(): void {
     this.route.navigate([`dashboard/mis-certificados/${this.logguedUser.id}`]);
   }
 
-  goToAdmCertificates() {
+  goToAdmCertificates(): void {
     this.route.navigate(['dashboard/certificados']);
   }
 
-  logout():void {
+  logout(): void {
     this.auth.logout();
     this.route.navigate(['/home']);
   }

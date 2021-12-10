@@ -48,7 +48,7 @@ export class MatricularEstudiantesCarreraComponent implements OnInit, AfterViewI
 
   obtenerCursosCarrera()
   {
-    const carreras = this.carrerasService.cursosAgregadosObtener(this.dataReceived.idCarrera)
+    const carreras = this.carrerasService.getCareerCourses(this.dataReceived.idCarrera)
     .valueChanges()
     .subscribe( cursos => {
       this.cursosCarrera = cursos;
@@ -270,7 +270,7 @@ export class MatricularEstudiantesCarreraComponent implements OnInit, AfterViewI
 
   obtenerCursosDeCarrera(user:any)
   {
-    const carreraService = this.carrerasService.cursosAgregadosObtener(this.dataReceived.idCarrera)
+    const carreraService = this.carrerasService.getCareerCourses(this.dataReceived.idCarrera)
     .valueChanges()
     .subscribe(cursos =>{
       carreraService.unsubscribe();

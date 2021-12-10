@@ -23,4 +23,7 @@
             </mat-card>
         </div>
     </section>
+    <section class="buttons" *ngIf="careerView">
+        <button mat-raised-button (click)="goBack()">Regresar</button>
+    </section>
 </main>

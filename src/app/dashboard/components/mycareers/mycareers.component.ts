@@ -5,10 +5,9 @@ import { CarrerasService } from '../../../core/services/carreras/carreras.servic
 @Component({
   selector: 'app-mycareers',
   templateUrl: './mycareers.component.html',
-  styleUrls: ['./mycareers.component.scss']
+  styleUrls: ['./mycareers.component.scss'],
 })
 export class MycareersComponent implements OnInit {
-
   userId: string;
   userCareers: any;
 
@@ -24,48 +23,51 @@ export class MycareersComponent implements OnInit {
     this.getCareers();
   }
 
-  getCareers() {
-    let careersList = this.careerService.obtenerCarreras()
+  getCareers(): void {
+    const careersList = this.careerService
+      .obtenerCarreras()
       .valueChanges()
-      .subscribe(careers => {
+      .subscribe((careers) => {
         this.getRegisteredUsers(careers);
         careersList.unsubscribe();
-      })
+      });
   }
 
-  getRegisteredUsers(careers) {
+  getRegisteredUsers(careers): void {
     this.userCareers = [];
-    careers.forEach(c => {
-      let userCareer = this.careerService.getRegisteredUser(c.id, this.userId)
+    careers.forEach((c) => {
+      const userCareer = this.careerService
+        .getRegisteredUser(c.id, this.userId)
         .valueChanges()
         .subscribe((uc: any) => {
           if (uc) {
             this.userCareers.push(this.setUserCareer(c, uc));
-            console.log(this.userCareers);
           }
           userCareer.unsubscribe();
         });
     });
   }
 
-  setUserCareer(careerData, userOpt) {
-    const endDate = userOpt.fechaFinalizacionMatricula === 'nunca' ?
-      'nunca' : new Date(userOpt.fechaFinalizacionMatricula.seconds * 1000);
+  setUserCareer(careerData, userOpt): any  {
+    const endDate =
+      userOpt.fechaFinalizacionMatricula === 'nunca'
+        ? 'nunca'
+        : new Date(userOpt.fechaFinalizacionMatricula.seconds * 1000);
 
     return {
       id: careerData.id,
       nombre: careerData.nombre,
       imagen: careerData.image,
-      fechaFin: endDate
-    }
+      fechaFin: endDate,
+    };
   }
 
-  goToCareersList() {
+  goToCareersList(): void {
     this.router.navigate([`/dashboard/carreras/catalogo/${this.userId}`]);
   }
 
-  goToCoursesList(careerId) {
-    this.router.navigate([`/dashboard/mis-carreras/cursos/${careerId}/${this.userId}`]);
+  goToCareerIndex(careerId): void {
+    // this.router.navigate([`/dashboard/mis-carreras/cursos/${careerId}/${this.userId}`]);
+    this.router.navigate([`dashboard/carreras/index/${careerId}/${'std'}`]);
   }
-
 }

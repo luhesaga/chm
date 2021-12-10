@@ -12,7 +12,7 @@
         routerLink="/carreras/create"
         style="background: var(--main-color2); color: white;">Crear nuevo</button>
 
-        <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+        <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" aria-describedby="Tabla de carreras">
 
         <!-- nombre de la carrera -->
         <ng-container matColumnDef="nombre">
@@ -21,7 +21,8 @@
             mat-cell
             *matCellDef="let element"
             matTooltip="Ver detalle de la carrera"
-            class="name">
+            class="name"
+            (click)="goToCareerDetail(element)">
                 {{ element.nombre }}
             </td>
         </ng-container>

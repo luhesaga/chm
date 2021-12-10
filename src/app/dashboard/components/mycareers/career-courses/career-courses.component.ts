@@ -42,7 +42,7 @@ export class CareerCoursesComponent implements OnInit {
   }
 
   getCareerCoursesList() {
-    let courseList = this.careerService.cursosAgregadosObtener(this.careerId)
+    let courseList = this.careerService.getCareerCourses(this.careerId)
       .valueChanges()
       .subscribe(courses => {
         console.log(courses)

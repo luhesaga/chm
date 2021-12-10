@@ -1,0 +1,57 @@
+<main>
+  <section class="description">
+    <div class="course-title">
+      <h1>{{ careerReceived?.nombre }}</h1>
+    </div>
+    <div class="career-description">
+      <div id="descripcion"></div>
+    </div>
+  </section>
+  <section class="course-content" *ngIf="admin || (!admin && std)">
+    <div class="card">
+      <div class="img"><img src="/assets/icons/mortarboard.svg" alt="" /></div>
+
+      <div class="options">
+        <a (click)="openDialog()">Descripción</a>
+      </div>
+    </div>
+
+    <div class="card" *ngIf="admin || (!admin && std)">
+      <div class="img">
+        <img src="/assets/icons/online-lesson.svg" alt="" />
+      </div>
+
+      <div class="options">
+        <a (click)="goToCourses()">Cursos</a>
+      </div>
+    </div>
+
+    <div class="card" *ngIf="admin || (!admin && exercisesOpt)">
+      <div class="img"><img src="/assets/icons/check-list.svg" alt="" /></div>
+
+      <div class="options">
+        <a (click)="goToExercises()">Ejercicios</a>
+      </div>
+    </div>
+
+    <div class="card" *ngIf="admin || (!admin && evaluationsOpt)">
+      <div class="img"><img src="/assets/icons/evaluaciones.svg" alt="" /></div>
+
+      <div class="options">
+        <a (click)="goToEvaluations()">Indicadores</a>
+      </div>
+    </div>
+
+    <div class="card" *ngIf="admin || (!admin && adsOpt)">
+      <div class="img"><img src="/assets/icons/anuncio.svg" alt="" /></div>
+
+      <div class="options">
+        <a (click)="goToAdsCurso()">Anuncios</a>
+      </div>
+    </div>
+
+  </section>
+  <section class="buttons">
+    <button mat-button (click)="goBack()"><< Volver a lista de carreras</button>
+  </section>
+</main>

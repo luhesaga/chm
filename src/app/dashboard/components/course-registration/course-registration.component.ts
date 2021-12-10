@@ -5,6 +5,7 @@ import { CategoryService } from '../../../core/services/categories/category.serv
 import { LogsService } from '../../../core/services/logs/logs.service';
 import { UsersService } from '../../../core/services/users/users.service';
 import { MailService } from '../../../core/services/mail/mail.service';
+import { CarrerasService } from '../../../core/services/carreras/carreras.service';
 
 @Component({
   selector: 'app-course-registration',
@@ -12,17 +13,22 @@ import { MailService } from '../../../core/services/mail/mail.service';
   styleUrls: ['./course-registration.component.scss'],
 })
 export class CourseRegistrationComponent implements OnInit, OnDestroy {
-  userId;
+  userId: string;
   noCourses = true;
+  careerId: string;
+  careerView = false;
+  careerUser: any;
+  std = false;
 
-  listcourse = [];
-  unfilteredCourses = [];
+  listcourse: any[] = [];
+  unfilteredCourses: any[] = [];
 
-  student;
+  student: any;
 
   constructor(
     private courseService: CourseService,
     private catService: CategoryService,
+    private careerService: CarrerasService,
     private user: UsersService,
     private mailService: MailService,
     private logs: LogsService,
@@ -30,18 +36,39 @@ export class CourseRegistrationComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute
   ) {
     this.userId = this.activatedRoute.snapshot.params.stdId;
+    this.careerId = this.activatedRoute.snapshot.params.careerId;
+    if (this.careerId) {
+      this.careerView = true;
+    }
+    if (this.activatedRoute.snapshot.params.std) {
+      this.std = true;
+    }
   }
 
   ngOnInit(): void {
-    this.getUserInfo();
+    if (this.careerView) {
+      this.getCareerUserInfo();
+    } else {
+      this.getUserInfo();
+    }
   }
 
   ngOnDestroy(): void {
-    //this.coursesByUserReceived.unsubscribe();
+    // this.coursesByUserReceived.unsubscribe();
   }
 
-  getUserInfo() {
-    let userInfo = this.user
+  getCareerUserInfo(): void {
+    const user = this.careerService.getRegisteredUser(this.careerId, this.userId)
+        .valueChanges()
+        .subscribe(u => {
+          this.careerUser = u;
+          this.getCourses();
+          user.unsubscribe();
+        });
+  }
+
+  getUserInfo(): void {
+    const userInfo = this.user
       .detailUser(this.userId)
       .valueChanges()
       .subscribe((u) => {
@@ -59,13 +86,17 @@ export class CourseRegistrationComponent implements OnInit, OnDestroy {
       .subscribe((courses) => {
         courses.forEach((course) => {
           this.getCategory(course);
-          this.getUserCourses(course);
+          if (!this.careerView) {
+            this.getUserCourses(course);
+          } else {
+            this.getCareerCourses(course);
+          }
         });
         coursesList.unsubscribe();
       });
   }
 
-  getCategory(course) {
+  getCategory(course): void {
     const categories = this.catService
       .detailCategory(course.categoria)
       .valueChanges()
@@ -75,7 +106,7 @@ export class CourseRegistrationComponent implements OnInit, OnDestroy {
       });
   }
 
-  getUserCourses(course) {
+  getUserCourses(course): void {
     const userCourses = this.courseService
       .listCoursesByUser(course.id, this.userId)
       .valueChanges()
@@ -102,7 +133,35 @@ export class CourseRegistrationComponent implements OnInit, OnDestroy {
       });
   }
 
-  getLog(data, course, fechaFin) {
+  getCareerCourses(course): void {
+    const careerCourse = this.careerService.getCareerCourseData(this.careerId, course.id)
+      .valueChanges()
+      .subscribe(cc => {
+        if (cc) {
+          this.noCourses = false;
+          if (this.careerUser.tipoMatricula === 'indefinida') {
+            course.tipoMatricula = 'Indefinida';
+          } else {
+            course.tipoMatricula = `termina el ${this.formatDate(
+              this.careerUser.fechaFinalizacionMatricula
+            )}`;
+          }
+          const data = {
+            curso: course.id,
+            estudiante: this.userId,
+            nombreEstudiante:
+              this.careerUser.nombre,
+            nombreCurso: course.nombre,
+          };
+          // console.log(cc);
+          // console.log(data);
+          this.getLog(data, course, this.careerUser.fechaFinalizacionMatricula);
+          careerCourse.unsubscribe();
+        }
+      });
+  }
+
+  getLog(data, course, fechaFin): void {
     const log = this.logs
       .getCourseInLog(data)
       .valueChanges()
@@ -121,15 +180,21 @@ export class CourseRegistrationComponent implements OnInit, OnDestroy {
       });
   }
 
-  goToCourseHome(idCourse: string) {
-    this.router.navigateByUrl(`cursos/index/${idCourse}/${this.userId}`);
+  goToCourseHome(idCourse: string): void {
+    if (!this.careerView) {
+      this.router.navigateByUrl(`cursos/index/${idCourse}/${this.userId}`);
+    } else if (this.careerView && !this.std) {
+      this.router.navigateByUrl(`cursos/index/${idCourse}/${this.userId}/${this.careerId}`);
+    } else {
+      this.router.navigateByUrl(`cursos/index/${idCourse}/${this.userId}/${this.careerId}/${'std'}`);
+    }
   }
 
-  goToCourseList() {
+  goToCourseList(): void {
     this.router.navigate([`cursos/list/${this.userId}`]);
   }
 
-  formatDate(date) {
+  formatDate(date): string {
     const fecha = new Date(date.seconds * 1000);
     return fecha.toLocaleDateString();
   }
@@ -154,11 +219,11 @@ export class CourseRegistrationComponent implements OnInit, OnDestroy {
     return result;
   }
 
-  formatDateLastIn(date, data) {
+  formatDateLastIn(date, data): string {
     const ultimoIngreso = new Date(date.seconds * 1000);
     const hoy = new Date();
-    let resta = hoy.getTime() - ultimoIngreso.getTime();
-    let dias = Math.round(resta / (1000 * 60 * 60 * 24));
+    const resta = hoy.getTime() - ultimoIngreso.getTime();
+    const dias = Math.round(resta / (1000 * 60 * 60 * 24));
     if (dias >= 15) {
       data.ultimoIngreso = ultimoIngreso.toLocaleString();
       data.diasSinVisita = dias;
@@ -168,11 +233,9 @@ export class CourseRegistrationComponent implements OnInit, OnDestroy {
     return ultimoIngreso.toLocaleString();
   }
 
-  sendEmail(data) {
+  sendEmail(data): void {
     data.to = this.student.correo;
     data.asunto = `${data.nombreEstudiante}, queremos saber de ti`;
-    //console.log(this.student);
-    //console.log(data);
     const unsubscribe = this.mailService.daysValidationEmail(data).subscribe(
       () => unsubscribe.unsubscribe(),
       (e) => {
@@ -180,5 +243,13 @@ export class CourseRegistrationComponent implements OnInit, OnDestroy {
       }
     );
     console.log('correo enviado.');
+  }
+
+  goBack(): void {
+    if (!this.std) {
+      this.router.navigate([`dashboard/carreras/index/${this.careerId}/${'admin'}`]);
+    } else {
+      this.router.navigate([`dashboard/carreras/index/${this.careerId}/${'std'}`]);
+    }
   }
 }
