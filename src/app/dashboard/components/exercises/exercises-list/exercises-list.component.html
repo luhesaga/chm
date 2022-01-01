@@ -1,78 +1,94 @@
 <div class="container">
-    <h2>Ejercicios para curso: {{course?.nombre}}</h2>
-    <mat-form-field appearance="legacy" class="search">
-        <mat-label>Buscar</mat-label>
-        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
-        <mat-icon matSuffix>search</mat-icon>
-        <mat-hint>puede buscar por cualquier campo</mat-hint>
-    </mat-form-field>
-    <button
-      mat-raised-button
-      (click)="openDialog(null)"
-      style="background: var(--main-color2); color: white;">Crear nuevo</button>
-    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
-  
-      <!-- nombre del curso -->
-      <ng-container matColumnDef="nombre">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header id="nombre">Nombre</th>
-        <td
-          mat-cell
-          *matCellDef="let element"
-          class="name">
-            {{ element.nombre }}
-        </td>
-      </ng-container>
-  
-      <!-- preguntas -->
-      <ng-container matColumnDef="preguntas">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header id="preguntas">No. preguntas</th>
-        <td mat-cell *matCellDef="let element">{{ answersQuantity(element.id) }}</td>
-      </ng-container>
-  
-      <!-- botones de acción -->
-      <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef id="acciones">Acciones</th>
-        <td mat-cell *matCellDef="let element" class="buttons">
-          <button
-            mat-stroked-button
-            color="primary"
-            matTooltip="Editar ejercicio"
-            (click)="openDialog(element)">
-            <mat-icon style="color: darkgoldenrod;">edit</mat-icon>
-          </button>
-          <button
-            mat-stroked-button
-            color="primary"
-            matTooltip="Agregar preguntas"
-            (click)="goToQuestionList(element.id)">
-            <mat-icon style="color: black;">build</mat-icon>
-          </button>
-          <button
-            mat-stroked-button
-            color="primary"
-            matTooltip="Resultados estudiantes"
-            (click)="goToResults(element)">
-            <mat-icon style="color: greenyellow;">equalizer</mat-icon>
-          </button>
-          <button mat-stroked-button color="secondary" (click)="deleteExercise(element)">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </td>
-      </ng-container>
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-    </table>
-  
-      <mat-paginator
-        [pageSizeOptions]="[10, 15, 20]"
-        showFirstLastButtons
-      ></mat-paginator>
-      <button
-        mat-stroked-button
-        color="primary"
-        (click)="goBack()"
-        style="background: var(--main-color2); color: white;">
-        << Regresar
-      </button>
-  </div>
-  
+  <h2>Ejercicios para {{careerView ? 'carrera' : 'curso ' + course?.nombre }}</h2>
+  <mat-form-field appearance="legacy" class="search">
+    <mat-label>Buscar</mat-label>
+    <input
+      matInput
+      (keyup)="applyFilter($event.target.value)"
+      placeholder="Buscar"
+    />
+    <mat-icon matSuffix>search</mat-icon>
+    <mat-hint>puede buscar por cualquier campo</mat-hint>
+  </mat-form-field>
+  <button
+    mat-raised-button
+    (click)="openDialog(null)"
+    style="background: var(--main-color2); color: white"
+  >
+    Crear nuevo
+  </button>
+  <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+    <!-- nombre del curso -->
+    <ng-container matColumnDef="nombre">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header id="nombre">
+        Nombre
+      </th>
+      <td mat-cell *matCellDef="let element" class="name">
+        {{ element.nombre }}
+      </td>
+    </ng-container>
+
+    <!-- preguntas -->
+    <ng-container matColumnDef="preguntas">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header id="preguntas">
+        No. preguntas
+      </th>
+      <td mat-cell *matCellDef="let element">
+        {{ answersQuantity(element.id) }}
+      </td>
+    </ng-container>
+
+    <!-- botones de acción -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef id="acciones">Acciones</th>
+      <td mat-cell *matCellDef="let element" class="buttons">
+        <button
+          mat-stroked-button
+          color="primary"
+          matTooltip="Editar ejercicio"
+          (click)="openDialog(element)"
+        >
+          <mat-icon style="color: darkgoldenrod">edit</mat-icon>
+        </button>
+        <button
+          mat-stroked-button
+          color="primary"
+          matTooltip="Agregar preguntas"
+          (click)="goToQuestionList(element.id)"
+        >
+          <mat-icon style="color: black">build</mat-icon>
+        </button>
+        <button
+          mat-stroked-button
+          color="primary"
+          matTooltip="Resultados estudiantes"
+          (click)="goToResults(element)"
+        >
+          <mat-icon style="color: greenyellow">equalizer</mat-icon>
+        </button>
+        <button
+          mat-stroked-button
+          color="secondary"
+          (click)="deleteExercise(element)"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+
+  <mat-paginator
+    [pageSizeOptions]="[10, 15, 20]"
+    showFirstLastButtons
+  ></mat-paginator>
+  <button
+    mat-stroked-button
+    color="primary"
+    (click)="goBack()"
+    style="background: var(--main-color2); color: white"
+  >
+    << Regresar
+  </button>
+</div>

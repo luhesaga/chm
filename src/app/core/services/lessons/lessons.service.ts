@@ -207,7 +207,7 @@ export class LessonsService {
     });
   }
 
-  CreateContentProgress(cid, lid, ctnid, stdid) {
+  CreateContentProgress(cid, lid, ctnid, stdid): Promise<void> {
     // console.log(cid, lid, ctnid, stdid)
     return this.fireStore.doc(`cursos/${cid}/lecciones/${lid}/contenido/${ctnid}/progreso/${stdid}`)
       .set({
@@ -216,7 +216,7 @@ export class LessonsService {
         });
   }
 
-  ContentProgress(cid, lid, ctnid, stdid) {
+  ContentProgress(cid, lid, ctnid, stdid): AngularFirestoreDocument {
     // console.log(cid, lid, ctnid, stdid)
     return this.fireStore.doc(`cursos/${cid}/lecciones/${lid}/contenido/${ctnid}/progreso/${stdid}`);
   }

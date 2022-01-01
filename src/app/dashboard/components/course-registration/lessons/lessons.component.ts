@@ -1,4 +1,10 @@
-import { Component, OnInit, AfterViewInit, ViewChild, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  AfterViewInit,
+  ViewChild,
+  OnDestroy,
+} from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -11,10 +17,9 @@ import { CerticateService } from '../../../../core/services/certificate/certicat
 @Component({
   selector: 'app-lessons',
   templateUrl: './lessons.component.html',
-  styleUrls: ['./lessons.component.scss']
+  styleUrls: ['./lessons.component.scss'],
 })
 export class LessonsComponent implements OnInit, AfterViewInit, OnDestroy {
-
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
@@ -22,7 +27,8 @@ export class LessonsComponent implements OnInit, AfterViewInit, OnDestroy {
   dataSource = new MatTableDataSource();
 
   courseId: string;
-  stdId;
+  careerId: string;
+  stdId: string;
   LogguedUser;
   course;
 
@@ -41,11 +47,13 @@ export class LessonsComponent implements OnInit, AfterViewInit, OnDestroy {
     private userService: UsersService,
     private courseService: CourseService,
     private certificate: CerticateService,
-    private router: Router,
+    private router: Router
   ) {
     this.courseId = this.activatedRoute.snapshot.params.courseId;
+    this.careerId = this.activatedRoute.snapshot.params.careerId;
     this.stdId = this.activatedRoute.snapshot.params.stdId;
     this.certificado = false;
+    console.log(`curso: ${this.courseId} estudiante: ${this.stdId}`);
   }
 
   ngAfterViewInit(): void {
@@ -66,93 +74,99 @@ export class LessonsComponent implements OnInit, AfterViewInit, OnDestroy {
   generarCertificado(lessons): boolean {
     const lesson: any = lessons[lessons.length - 1] || { porcentaje: 0 };
     if (lesson.porcentaje === 100) {
-      //console.log(lesson);
-      let isFinished = this.courseService.registeredUSerDetail(this.courseId, this.stdId)
+      const isFinished = this.courseService
+        .registeredUSerDetail(this.courseId, this.stdId)
         .valueChanges()
         .subscribe((f: any) => {
           if (f.finalizado) {
             this.fechaFin = f.fechaFin;
           } else {
-            this.courseService.courseFinish(this.courseId, this.stdId)
+            this.courseService
+              .courseFinish(this.courseId, this.stdId)
               .then(() => {
                 this.fechaFin = new Date();
               })
-              .catch(err => console.log(err));
+              .catch((err) => console.log(err));
           }
           isFinished.unsubscribe();
         });
       return true;
     } else {
-      //console.log(lesson);
       return false;
     }
   }
 
-  listLesson() {
-    this.lessonsReceived = this.lessonService.listLessons(this.courseId)
+  listLesson(): void {
+    this.lessonsReceived = this.lessonService
+      .listLessons(this.courseId)
       .valueChanges()
-      .subscribe(lessons => {
-        this.getLessonsContent(lessons)
+      .subscribe((lessons) => {
+        this.getLessonsContent(lessons);
         this.dataSource.data = lessons;
-      })
-
+      });
   }
 
-  getLessonsContent(lessons) {
-    lessons.forEach(lesson => {
-      let contentReceived = this.lessonService.listLessonContent(this.courseId, lesson.id)
+  getLessonsContent(lessons): void {
+    lessons.forEach((lesson) => {
+      const contentReceived = this.lessonService
+        .listLessonContent(this.courseId, lesson.id)
         .valueChanges()
-        .subscribe(lessonContents => {
+        .subscribe((lessonContents) => {
           this.getUserProgress(lessonContents, lesson, lessons);
           contentReceived.unsubscribe();
         });
     });
   }
 
-  getUserProgress(lessonContents, lesson, lessons) {
+  getUserProgress(lessonContents, lesson, lessons): void {
     lesson.porcentaje = 0;
-    const arr = []
+    const arr = [];
 
-    lessonContents.forEach(content => {
-      let userProgress = this.lessonService.ContentProgress(this.courseId, lesson.id, content.id, this.stdId)
+    lessonContents.forEach((content) => {
+      const userProgress = this.lessonService
+        .ContentProgress(this.courseId, lesson.id, content.id, this.stdId)
         .valueChanges()
-        .subscribe(visto => {
+        .subscribe((visto) => {
           let cont = 0;
           if (visto) {
-            arr.forEach(item => {
+            arr.forEach((item) => {
               if (content.id === item.id) {
                 cont += 1;
               }
-            })
+            });
             if (cont === 0) {
               arr.push(content);
             }
-            //console.log(arr);
           }
-          lesson.porcentaje = Math.ceil(((lessonContents.length - (lessonContents.length - arr.length)) / lessonContents.length) * 100);
+          lesson.porcentaje = Math.ceil(
+            ((lessonContents.length - (lessonContents.length - arr.length)) /
+              lessonContents.length) *
+              100
+          );
           this.finished = this.generarCertificado(lessons);
           userProgress.unsubscribe();
         });
     });
   }
 
-  getUserData() {
-    let user = this.userService.detailUser(this.stdId)
+  getUserData(): void {
+    const user = this.userService
+      .detailUser(this.stdId)
       .valueChanges()
-      .subscribe(u => {
+      .subscribe((u) => {
         this.LogguedUser = u;
-        //console.log(this.LogguedUser);
         user.unsubscribe();
-      })
+      });
   }
 
-  getCourseData() {
-    let course = this.courseService.detailCourse(this.courseId)
+  getCourseData(): void {
+    const course = this.courseService
+      .detailCourse(this.courseId)
       .valueChanges()
-      .subscribe(c => {
+      .subscribe((c) => {
         this.course = c;
         course.unsubscribe();
-      })
+      });
   }
 
   applyFilter(filterValue: string): void {
@@ -160,27 +174,36 @@ export class LessonsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   lessonActivated(element: any): boolean {
-    let index = this.dataSource.data.findIndex((lesson: any) => lesson.id === element.id);
+    const index = this.dataSource.data.findIndex(
+      (lesson: any) => lesson.id === element.id
+    );
     if (index === 0) {
       return true;
-    }
-    else {
-      let lesson: any = this.dataSource.data[index - 1];
+    } else {
+      const lesson: any = this.dataSource.data[index - 1];
       if (lesson.porcentaje === 100) {
         return true;
-      }
-      else {
+      } else {
         return false;
       }
     }
   }
 
-  goToCourseView(element: any) {
-    this.router.navigate([`dashboard/course-view/${this.courseId}/${element.id}/${this.stdId}`]);
+  goToCourseView(element: any): void {
+    this.router.navigate([
+      `dashboard/course-view/${this.courseId}/${element.id}/${this.stdId}`,
+    ]);
   }
 
-  goBack() {
-    this.router.navigate([`cursos/index/${this.courseId}/${this.stdId}`]);
+  goBack(): void {
+    if (!this.careerId) {
+      this.router.navigate([`cursos/index/${this.courseId}/${this.stdId}`]);
+    } else {
+      this.router.navigate([
+        `cursos-carrera/index/${this.courseId}/${this.stdId}/${
+          this.careerId
+        }/${'std'}`,
+      ]);
+    }
   }
-
 }

@@ -13,7 +13,6 @@
                     type="text"
                     matInput
                     formControlName="name"
-                    [(ngModel)]="exerciseName"
                     #myinput/>
                     <mat-error *ngIf="nameField.touched && nameField.invalid">
                     <ng-container *ngIf="nameField.hasError('required')">El nombre es requerido</ng-container>

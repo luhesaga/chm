@@ -108,6 +108,7 @@ export class CourseHomeComponentRegistration implements OnInit, OnDestroy {
   }
 
   goBack() {
+    console.log('dfdfd');
     this.route.navigate(['dashboard/course-registration']);
   }
 

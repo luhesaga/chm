@@ -9,6 +9,7 @@ import { CarrerasService } from 'src/app/core/services/carreras/carreras.service
 import { MatDialog } from '@angular/material/dialog';
 import { AgregarCursoComponent } from './agregar-curso/agregar-curso.component';
 import { Subscription } from 'rxjs';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-add-curso',
@@ -144,7 +145,7 @@ export class AddCursoComponent implements OnInit, AfterViewInit, OnDestroy {
     idCurso: string,
     estudiantes: any[],
     noDesmatricular: any[]
-  ) {
+  ): Promise<void> {
     const cantidadEstudiantes = estudiantes.length - 1;
     const desmatricular = [];
     let error = false;
@@ -200,7 +201,7 @@ export class AddCursoComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  async recorrerArrayDesmatricula(desmatricular: any[], idCurso: string) {
+  async recorrerArrayDesmatricula(desmatricular: any[], idCurso: string): Promise<boolean> {
     let error = false;
     let i = 0;
     const cantidadEstudiantes = desmatricular.length;
@@ -223,7 +224,7 @@ export class AddCursoComponent implements OnInit, AfterViewInit, OnDestroy {
     return error;
   }
 
-  async recorrerArrayNoDesmatricular(noDesmatricular: any[]) {
+  async recorrerArrayNoDesmatricular(noDesmatricular: any[]): Promise<boolean> {
     let error = false;
     await noDesmatricular.forEach(async (datos) => {
       const estudiante = datos.estudiante;
@@ -239,7 +240,7 @@ export class AddCursoComponent implements OnInit, AfterViewInit, OnDestroy {
     return error;
   }
 
-  async actualizarMatriculaDeCurso(estudiante: any, index: number) {
+  async actualizarMatriculaDeCurso(estudiante: any, index: number): Promise<boolean> {
     let error = false;
     const matriculaIndividual = estudiante.matriculaIndividual[index];
     await this.courseService
@@ -255,7 +256,7 @@ export class AddCursoComponent implements OnInit, AfterViewInit, OnDestroy {
     return error;
   }
 
-  async actualizarCarreraMatriculaIndividual(estudiante: any) {
+  async actualizarCarreraMatriculaIndividual(estudiante: any): Promise<boolean> {
     let error = false;
     await this.carrerasService
       .actualizarMatriculaIndividual(estudiante, this.idCarreras)
@@ -266,7 +267,7 @@ export class AddCursoComponent implements OnInit, AfterViewInit, OnDestroy {
     return error;
   }
 
-  quitarCurso(id: string) {
+  quitarCurso(id: string): void {
     this.carrerasService.quitarCurso(id, this.idCarreras).then(
       () => {
         this.mensajeExito('Curso quitado exitosamente');
@@ -278,7 +279,7 @@ export class AddCursoComponent implements OnInit, AfterViewInit, OnDestroy {
     );
   }
 
-  openDialog() {
+  openDialog(): void {
     this.dialog.open(AgregarCursoComponent, {
       height: '90%',
       width: '90%',
@@ -286,7 +287,7 @@ export class AddCursoComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  mensajeExito(mensaje: string) {
+  mensajeExito(mensaje: string): void {
     Swal.fire({
       icon: 'success',
       text: mensaje,
@@ -294,7 +295,7 @@ export class AddCursoComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  validarQuitarCurso(id: string, nombre: string) {
+  validarQuitarCurso(curso): void {
     Swal.fire({
       icon: 'warning',
       text: '¿Seguro desa quitar el curso?',
@@ -303,13 +304,29 @@ export class AddCursoComponent implements OnInit, AfterViewInit, OnDestroy {
       cancelButtonText: 'No',
     }).then((result) => {
       if (result.value) {
-        this.obtenerCurso(id);
-        this.mensajeQuitandoCurso(nombre);
+        const pos = curso.posicion;
+        // actualizar posiciones
+        if (pos !== this.dataSource.data.length) {
+          for (let i = pos; i < this.dataSource.data.length; i++) {
+            const lesson: any = this.dataSource.data[i];
+            this.positionEdit(lesson.id, lesson.posicion - 1);
+          }
+        }
+        if (!curso.tipo) {
+          this.obtenerCurso(curso.id);
+          this.mensajeQuitandoCurso(curso.nombre);
+        } else {
+          Swal.fire({
+            icon: 'warning',
+            text: 'Este elemento es un ejercicio, para eliminarlo debe hacerlo desde el modulo de ejercicios de la carrera.',
+            confirmButtonText: 'Aceptar',
+          });
+        }
       }
     });
   }
 
-  mensajeQuitandoCurso(nombre: string) {
+  mensajeQuitandoCurso(nombre: string): void {
     Swal.fire({
       title: `Quitando curso de ${nombre}`,
       didOpen: () => {
@@ -319,15 +336,14 @@ export class AddCursoComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   levelUp(curso): void {
-    // console.log(curso);
     if (curso.posicion > 1) {
-      let actualCourse: any = this.dataSource.data[curso.posicion - 1];
-      let previousCourse: any = this.dataSource.data[curso.posicion - 2];
+      const actualCourse: any = this.dataSource.data[curso.posicion - 1];
+      const previousCourse: any = this.dataSource.data[curso.posicion - 2];
 
       // actualizar posicion elemento actual
       this.positionEdit(
         actualCourse.id,
-        actualCourse.posicion -1
+        actualCourse.posicion - 1
       );
       // actualizar posicion elemento previo
       this.positionEdit(
@@ -337,11 +353,10 @@ export class AddCursoComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  levelDown(curso) {
-    // console.log(data);
+  levelDown(curso): void {
     if (curso.posicion < this.dataSource.data.length) {
-      let actualLesson: any = this.dataSource.data[curso.posicion - 1];
-      let nextLesson: any = this.dataSource.data[curso.posicion];
+      const actualLesson: any = this.dataSource.data[curso.posicion - 1];
+      const nextLesson: any = this.dataSource.data[curso.posicion];
 
       // actualizar posicion elemento actual
       this.positionEdit(

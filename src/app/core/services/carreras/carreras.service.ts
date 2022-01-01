@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import firebase from 'firebase/app';
 import {
   AngularFirestore,
   AngularFirestoreCollection,
@@ -123,6 +122,62 @@ export class CarrerasService {
 
   quitarCurso(id: string, idCarreras: string): Promise<void> {
     return this.fireStore.doc(`carreras/${idCarreras}/cursos/${id}`).delete();
+  }
+
+  createExercise(data, careerId): Promise<void> {
+    const id = this.fireStore.createId();
+    return this.fireStore.doc(`carreras/${careerId}/cursos/${id}`)
+      .set({
+          id,
+          nombre: data.name,
+          fecha: data.fecha,
+          duracion: data.duration,
+          retroalimentacion: data.feedback * 1,
+          intentos: data.maxTries * 1,
+          barajar: data.mixAnswers * 1,
+          porcentaje: data.percentage,
+          seleccion: data.questionSelect * 1,
+          mostrarResultados: data.showResults * 1,
+          textoFinal: data.textEnd ? data.textEnd : '',
+          tipo: 'ejercicio',
+          posicion: data.posicion
+        });
+  }
+
+  editExercise(data, careerId: string, exercId: string): Promise<void> {
+    return this.fireStore.doc(`carreras/${careerId}/cursos/${exercId}`)
+      .update({
+        nombre: data.name,
+        fecha: data.fecha,
+        duracion: data.duration,
+        retroalimentacion: data.feedback * 1,
+        intentos: data.maxTries * 1,
+        barajar: data.mixAnswers * 1,
+        porcentaje: data.percentage,
+        seleccion: data.questionSelect * 1,
+        mostrarResultados: data.showResults * 1,
+        textoFinal: data.textEnd ? data.textEnd : '',
+      });
+  }
+
+  exerciseDetail(careerId: string, exercId: string): AngularFirestoreDocument {
+    return this.fireStore.doc(`carreras/${careerId}/cursos/${exercId}`);
+  }
+
+  deleteExercise(careerId: string, exercId: string): Promise<void> {
+    return this.fireStore
+      .doc(`carreras/${careerId}/cursos/${exercId}`)
+      .delete();
+  }
+
+  addQuestion(careerId: string, exercId: string, question): Promise<void> {
+    console.log(`carrera: ${careerId} ejercicio: ${exercId}`);
+    console.log(question);
+    return this.fireStore
+      .doc(`carreras/${careerId}/cursos/${exercId}`)
+      .update({
+        preguntas: question,
+      });
   }
 
   agregarEstrella(calificacionEstrellas: any[], idCarreras: string): Promise<void> {

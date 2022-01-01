@@ -72,6 +72,8 @@ import { AdmListCertificatesComponent } from './components/certificates/adm-list
 import { AdmEditCertificateComponent } from './components/certificates/adm-edit-certificate/adm-edit-certificate.component';
 import { AdmCreateCertificateComponent } from './components/certificates/adm-create-certificate/adm-create-certificate.component';
 import { CarrerasIndexComponent } from './components/carreras/carreras-index/carreras-index.component';
+import { CarrerasLeccionesComponent } from './components/carreras/carreras-lecciones/carreras-lecciones.component';
+import { CourseViewModule } from '../course-view/course-view.module';
 
 
 @NgModule({
@@ -140,6 +142,7 @@ import { CarrerasIndexComponent } from './components/carreras/carreras-index/car
     AdmEditCertificateComponent,
     AdmCreateCertificateComponent,
     CarrerasIndexComponent,
+    CarrerasLeccionesComponent,
     ],
   imports: [
     CommonModule,
@@ -150,6 +153,7 @@ import { CarrerasIndexComponent } from './components/carreras/carreras-index/car
     ReactiveFormsModule,
     FormsModule,
     StarRatingModule,
+    CourseViewModule,
     MatCarouselModule.forRoot(),
   ],
   exports: [

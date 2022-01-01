@@ -34,6 +34,10 @@ export class EvaluationsHomeComponent implements OnInit, AfterViewInit {
   data: any;
   modulos: any;
 
+  careerId: string;
+  careerView = false;
+  stdId: string;
+
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
@@ -44,6 +48,11 @@ export class EvaluationsHomeComponent implements OnInit, AfterViewInit {
     private foroService: ForumService
   ) {
     this.courseId = this.activatedRoute.snapshot.params.courseId;
+    this.careerId = this.activatedRoute.snapshot.params.careerId;
+    this.stdId = this.activatedRoute.snapshot.params.stdId;
+    if (this.careerId) {
+      this.careerView = true;
+    }
   }
 
   ngOnInit(): void {
@@ -60,8 +69,8 @@ export class EvaluationsHomeComponent implements OnInit, AfterViewInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  getCourseInfo() {
-    let curso = this.courseService
+  getCourseInfo(): void {
+    const curso = this.courseService
       .detailCourse(this.courseId)
       .valueChanges()
       .subscribe((c) => {
@@ -70,10 +79,10 @@ export class EvaluationsHomeComponent implements OnInit, AfterViewInit {
       });
   }
 
-  getCourseUsers() {
+  getCourseUsers(): void {
     this.data = [];
     this.modulos = [];
-    let courseUsers = this.courseService
+    const courseUsers = this.courseService
       .listRegisteredUsers(this.courseId)
       .valueChanges()
       .subscribe((users: any) => {
@@ -82,17 +91,15 @@ export class EvaluationsHomeComponent implements OnInit, AfterViewInit {
           this.getUserData(user, index);
         });
         this.dataSource.data = this.data;
-        // console.log(this.dataSource.data);
         courseUsers.unsubscribe();
       });
   }
 
-  getUserData(user, index) {
-    let detailUser = this.userService
+  getUserData(user, index): void {
+    const detailUser = this.userService
       .detailUser(user.id)
       .valueChanges()
       .subscribe((u: any) => {
-        //console.log(u);
         this.data[index].Estudiante = u.nombres + ' ' + u.apellidos;
         this.data[index].Correo = u.correo;
         this.getCourseLessons(index);
@@ -100,8 +107,8 @@ export class EvaluationsHomeComponent implements OnInit, AfterViewInit {
       });
   }
 
-  getCourseLessons(i) {
-    let lessonsList = this.lessonService
+  getCourseLessons(i): void {
+    const lessonsList = this.lessonService
       .listLessons(this.courseId)
       .valueChanges()
       .subscribe((lessons: any) => {
@@ -112,10 +119,10 @@ export class EvaluationsHomeComponent implements OnInit, AfterViewInit {
       });
   }
 
-  getlessonContent(lesson, index) {
+  getlessonContent(lesson, index): void {
     this.data[index].contenidos = [];
 
-    let contentList = this.lessonService
+    const contentList = this.lessonService
       .listCalificableLessons(this.courseId, lesson.id)
       .valueChanges()
       .subscribe((content) => {
@@ -125,14 +132,14 @@ export class EvaluationsHomeComponent implements OnInit, AfterViewInit {
               this.displayedColumns.push(c.titulo);
             }
             if (c.tipo === 'Agregar foro') {
-              let ejercicio: any = {
+              const ejercicio: any = {
                 idContenido: c.id,
                 tituloContenido: c.titulo,
                 idLeccion: lesson.id,
               };
               this.getForumResult(ejercicio, this.data[index].idUsuario, index);
             } else {
-              let ejercicio: any = {
+              const ejercicio: any = {
                 idContenido: c.ejercicio.id,
                 tituloContenido: c.ejercicio.nombre,
                 idLeccion: lesson.id,
@@ -145,15 +152,14 @@ export class EvaluationsHomeComponent implements OnInit, AfterViewInit {
       });
   }
 
-  getUSerResult(ejercicio, stdId, index) {
-    let userTest = this.exerciseService
+  getUSerResult(ejercicio, stdId, index): void {
+    const userTest = this.exerciseService
       .getUserAnswers(this.courseId, ejercicio.idContenido, stdId)
       .valueChanges()
       .subscribe((item: any) => {
         let valor = 0;
         let mayor = 0;
         if (item.length > 0) {
-          //console.log(item);
           item.forEach((prueba) => {
             valor = 0;
             if (prueba.respuestas.length > 0) {
@@ -167,7 +173,6 @@ export class EvaluationsHomeComponent implements OnInit, AfterViewInit {
               );
               if (valor > mayor) {
                 mayor = valor;
-                //console.log(mayor);
               }
             } else {
               valor = 0;
@@ -180,8 +185,8 @@ export class EvaluationsHomeComponent implements OnInit, AfterViewInit {
       });
   }
 
-  getForumResult(ejercicio, stdId, index) {
-    let forumResult = this.foroService
+  getForumResult(ejercicio, stdId, index): void {
+    const forumResult = this.foroService
       .getUserAnswers(
         this.courseId,
         ejercicio.idLeccion,
@@ -195,17 +200,16 @@ export class EvaluationsHomeComponent implements OnInit, AfterViewInit {
         } else {
           ejercicio.valor = 0;
         }
-        // console.log(ejercicio);
         this.data[index].contenidos.push(ejercicio);
         forumResult.unsubscribe();
       });
   }
 
-  setField(item, i, element) {
+  setField(item, i, element): any {
     if (this.displayedColumns.indexOf('Promedio') === -1) {
       this.displayedColumns.push('Promedio');
     }
-    let fieldValue: string = '';
+    let fieldValue = '';
     if (item !== 'Promedio') {
       if (element) {
         if (element[item]) {
@@ -235,8 +239,7 @@ export class EvaluationsHomeComponent implements OnInit, AfterViewInit {
     return fieldValue;
   }
 
-  exportAsExcel() {
-    // console.log(this.table);
+  exportAsExcel(): void {
     /* converts a DOM TABLE element to a worksheet */
     const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(
       this.table.nativeElement
@@ -248,7 +251,11 @@ export class EvaluationsHomeComponent implements OnInit, AfterViewInit {
     XLSX.writeFile(wb, `Evaluaciones curso ${this.courseName}.xlsx`);
   }
 
-  goBack() {
-    this.router.navigate([`cursos/index/${this.courseId}`]);
+  goBack(): void {
+    if (!this.careerView) {
+      this.router.navigate([`cursos/index/${this.courseId}`]);
+    } else {
+      this.router.navigate([`cursos-carrera/index/${this.courseId}/${this.stdId}/${this.careerId}`]);
+    }
   }
 }

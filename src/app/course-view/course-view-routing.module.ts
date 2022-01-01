@@ -15,7 +15,7 @@ import { LoginGuard } from '../home/components/auth/login/guards/login.guard';
 const routes: Routes = [
   {
     path: ':CId/:LId/:SId',
-    canActivate:[LoginGuard],
+    canActivate: [LoginGuard],
     component: NavigationComponent,
     children:
       [
@@ -56,6 +56,10 @@ const routes: Routes = [
   },
   {
     path: 'ver-evaluacion/:idCurso/:idLesson/:idContent/:exercId/:stdId',
+    component: EvaluationViewComponent
+  },
+  {
+    path: 'ver-evaluacion/:careerId/:idLesson/:exercId/:stdId',
     component: EvaluationViewComponent
   },
 

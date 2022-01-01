@@ -58,6 +58,9 @@ import { AdmEditCertificateComponent } from './components/certificates/adm-edit-
 import { AdmListCertificatesComponent } from './components/certificates/adm-list-certificates/adm-list-certificates.component';
 import { AdmCreateCertificateComponent } from './components/certificates/adm-create-certificate/adm-create-certificate.component';
 import { CarrerasIndexComponent } from './components/carreras/carreras-index/carreras-index.component';
+import { CarrerasLeccionesComponent } from './components/carreras/carreras-lecciones/carreras-lecciones.component';
+import { EvaluationHomeComponent } from '../course-view/components/evaluation/evaluation-home/evaluation-home.component';
+import { EvaluationFinishComponent } from '../course-view/components/evaluation/evaluation-finish/evaluation-finish.component';
 
 const routes: Routes = [
   {
@@ -114,11 +117,11 @@ const routes: Routes = [
         component: CourseHomeComponent,
       },
       {
-        path: 'cursos/index/:id/:stdId/:careerId',
+        path: 'cursos-carrera/index/:id/:stdId/:careerId',
         component: CourseHomeComponent,
       },
       {
-        path: 'cursos/index/:id/:stdId/:careerId/:std',
+        path: 'cursos-carrera/index/:id/:stdId/:careerId/:std',
         component: CourseHomeComponent,
       },
       {
@@ -160,7 +163,15 @@ const routes: Routes = [
         component: LeccionesComponent,
       },
       {
+        path: 'cursos/lecciones-carrera/:careerId/:stdId/:id',
+        component: LeccionesComponent,
+      },
+      {
         path: 'cursos/ejercicios/:courseId',
+        component: ExercisesListComponent,
+      },
+      {
+        path: 'cursos/ejercicios/:careerId/:career',
         component: ExercisesListComponent,
       },
       {
@@ -172,7 +183,15 @@ const routes: Routes = [
         component: ExercisesRevComponent,
       },
       {
+        path: 'cursos/ejercicios-carrera/revisar/:careerId/:exerciseId',
+        component: ExercisesRevComponent,
+      },
+      {
         path: 'cursos/ejercicios/revisar/detalle/:courseId/:exerciseId/:testId/:stdId',
+        component: ExercisesRevDetailComponent,
+      },
+      {
+        path: 'cursos/ejercicios-carrera/revisar/detalle/:careerId/:exerciseId/:testId/:stdId',
         component: ExercisesRevDetailComponent,
       },
       {
@@ -184,7 +203,15 @@ const routes: Routes = [
         component: QuestionsListComponent,
       },
       {
+        path: 'cursos/ejercicios-carrera/:careerId/questions/:exerciseId',
+        component: QuestionsListComponent,
+      },
+      {
         path: 'cursos/ejercicios/:courseId/preguntas/add/:exerciseId',
+        component: QuestionCreateComponent,
+      },
+      {
+        path: 'cursos/ejercicios-carrera/:careerId/preguntas/add/:exerciseId',
         component: QuestionCreateComponent,
       },
       {
@@ -192,8 +219,20 @@ const routes: Routes = [
         component: QuestionCreateComponent,
       },
       {
+        path: 'cursos/ejercicios-carrera/:careerId/preguntas/edit/:exerciseId/:questionPosition/:questionType/:answerTrue',
+        component: QuestionCreateComponent,
+      },
+      {
         path: 'cursos/evaluaciones/:courseId',
         component: EvaluationsHomeComponent,
+      },
+      {
+        path: 'cursos/evaluaciones-carrera/:careerId/:courseId/:stdId',
+        component: EvaluationsHomeComponent,
+      },
+      {
+        path: 'cursos/evaluaciones-carrera/:careerId/:courseId/:stdId',
+        component: StdEvaluationComponent,
       },
       {
         path: 'cursos/evaluaciones/estudiante/:courseId/:stdId',
@@ -260,15 +299,27 @@ const routes: Routes = [
         component: CourseRegistrationComponent,
       },
       {
-        path: 'mis-cursos/:stdId/:careerId',
+        path: 'mis-cursos-carrera/:stdId/:careerId',
         component: CourseRegistrationComponent,
       },
       {
-        path: 'mis-cursos/:stdId/:careerId/:std',
+        path: 'mis-cursos-carrera/:stdId/:careerId/:std',
         component: CourseRegistrationComponent,
+      },
+      {
+        path: 'mis-cursos-lecciones-carrera/:stdId/:careerId',
+        component: CarrerasLeccionesComponent,
+      },
+      {
+        path: 'mis-cursos-lecciones-carrera/:stdId/:careerId/:std',
+        component: CarrerasLeccionesComponent,
       },
       {
         path: 'mis-cursos/lecciones/:courseId/:stdId',
+        component: LessonsComponent,
+      },
+      {
+        path: 'mis-cursos/lecciones-carrera/:careerId/:courseId/:stdId',
         component: LessonsComponent,
       },
       {
@@ -278,6 +329,22 @@ const routes: Routes = [
       {
         path: 'mis-carreras/cursos/:careerId/:stdId',
         component: CareerCoursesComponent,
+      },
+      {
+        path: 'evaluacion/:idLesson/:stdId/:careerId',
+        component: EvaluationHomeComponent
+      },
+      {
+        path: 'evaluacion/:idLesson/:stdId/:careerId/:std',
+        component: EvaluationHomeComponent
+      },
+      {
+        path: 'final-evaluacion/:careerId/:stdId/:exercId/:testId',
+        component: EvaluationFinishComponent
+      },
+      {
+        path: 'final-evaluacion/:careerId/:stdId/:exercId/:testId/:consulta',
+        component: EvaluationFinishComponent
       },
       {
         path: 'mis-certificados/:stdId',

@@ -1,0 +1,71 @@
+.container {
+    width: 90%;
+    background: white;
+    margin: 36px auto;
+    padding: 24px;
+    box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+    border-radius: 4px;
+}
+
+.search {
+    margin-right: 48px;
+    margin-bottom: 24px;
+}
+
+table {
+    width: 80%;
+    margin: 0 auto;
+    text-align: left;
+}
+
+.mat-header-cell
+{
+    color: black;
+    text-align: center;
+}
+
+.mat-cell
+{
+    color:rgba(0,0,0,.54);
+    padding: 0;
+    margin: 0;
+}
+
+td.mat-cell:last-of-type
+{
+    padding: 0;
+}
+
+// .name
+// {
+//     cursor: pointer;
+// }
+
+.buttons
+{
+    text-align: center;
+}
+
+.buttons .mat-stroked-button
+{
+    margin-left: 5px;
+    min-width: 40px;
+}
+
+.leccionesHeader
+{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+
+.nombre-curso {
+    color: var(--main-color2);
+    font-weight: 400;
+}
+
+.nombre-ejercicio {
+    color: #3f51b5;
+    font-weight: 400;
+}

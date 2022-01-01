@@ -24,6 +24,8 @@ export class StdEvaluationComponent implements OnInit {
   certificado = false;
   cont = 0;
   hasCC = true;
+  careerId: string;
+  careerView = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -36,6 +38,10 @@ export class StdEvaluationComponent implements OnInit {
     private router: Router,
   ) {
     this.courseId = this.activatedRoute.snapshot.params.courseId;
+    this.careerId = this.activatedRoute.snapshot.params.careerId;
+    if (this.careerId) {
+      this.careerView = true;
+    }
     this.stdId = this.activatedRoute.snapshot.params.stdId;
   }
 
@@ -45,26 +51,26 @@ export class StdEvaluationComponent implements OnInit {
     this.getStudentInfo();
   }
 
-  getCourseInfo() {
-    let curso = this.courseService.detailCourse(this.courseId)
+  getCourseInfo(): void {
+    const curso = this.courseService.detailCourse(this.courseId)
       .valueChanges()
       .subscribe(course => {
         this.courseReceived = course;
         curso.unsubscribe();
-      })
+      });
   }
 
-  getStudentInfo() {
-    let std = this.userService.detailUser(this.stdId)
+  getStudentInfo(): void {
+    const std = this.userService.detailUser(this.stdId)
       .valueChanges()
       .subscribe(student => {
         this.stdReceived = student;
         std.unsubscribe();
-      })
+      });
   }
 
-  getCourseLessons() {
-    let lessonsList = this.lessonService.listLessons(this.courseId)
+  getCourseLessons(): void {
+    const lessonsList = this.lessonService.listLessons(this.courseId)
       .valueChanges()
       .subscribe((lessons: any) => {
         this.lessonsReceived = lessons;
@@ -76,27 +82,27 @@ export class StdEvaluationComponent implements OnInit {
       });
   }
 
-  getlessonContent(lesson, index) {
-    let contentList = this.lessonService.listCalificableLessons(this.courseId, lesson.id)
+  getlessonContent(lesson, index): void {
+    const contentList = this.lessonService.listCalificableLessons(this.courseId, lesson.id)
       .valueChanges()
       .subscribe((content: any) => {
-        let ejercicio = {
+        const ejercicio = {
           ejercicio: lesson.nombre,
-        }
+        };
         content.forEach((ctn) => {
           if (ctn.tipo === 'Agregar foro') {
             this.getForumResult(ctn, lesson.id, ejercicio, index);
           } else {
             this.getUSerResult(ctn, ejercicio, index);
           }
-        })
+        });
         contentList.unsubscribe();
-      })
+      });
   }
 
-  getUSerResult(contenido, ejercicio, index) {
+  getUSerResult(contenido, ejercicio, index): void {
     const ctnId = contenido.ejercicio.id;
-    let userTest = this.exerciseService.getUserAnswers(this.courseId, ctnId, this.stdId)
+    const userTest = this.exerciseService.getUserAnswers(this.courseId, ctnId, this.stdId)
       .valueChanges()
       .subscribe((item: any) => {
         let valor = 0;
@@ -115,7 +121,7 @@ export class StdEvaluationComponent implements OnInit {
             } else {
               valor = 0;
             }
-          })
+          });
           this.totalGrade += mayor;
         }
         contenido.valor = mayor;
@@ -126,8 +132,8 @@ export class StdEvaluationComponent implements OnInit {
       });
   }
 
-  getForumResult(contenido, lessonId, ejercicio, index) {
-    let forumResult = this.foroService.getUserAnswers(this.courseId, lessonId, contenido.id, this.stdId)
+  getForumResult(contenido, lessonId, ejercicio, index): void {
+    const forumResult = this.foroService.getUserAnswers(this.courseId, lessonId, contenido.id, this.stdId)
       .valueChanges()
       .subscribe((f: any) => {
         if (f.length > 0) {
@@ -140,14 +146,18 @@ export class StdEvaluationComponent implements OnInit {
         ejercicio.contenido = contenido;
         this.lessonsReceived[index].notasLecciones.push(ejercicio.contenido);
         forumResult.unsubscribe();
-      })
+      });
   }
 
-  goBack() {
-    this.router.navigate([`cursos/index/${this.courseId}/${this.stdId}`]);
+  goBack(): void {
+    if (!this.careerView) {
+      this.router.navigate([`cursos/index/${this.courseId}/${this.stdId}`]);
+    } else {
+      this.router.navigate([`cursos-carrera/index/${this.courseId}/${this.stdId}/${this.careerId}/${'std'}`]);
+    }
   }
 
-  getTotal(a, b) {
+  getTotal(a, b): number {
     return Math.ceil(a / b);
   }
 
@@ -161,8 +171,6 @@ export class StdEvaluationComponent implements OnInit {
       }
     }
     if (this.cont === 123 && certifiable) {
-      //console.log(this.cont);
-      //console.log(certifiable);
       const data = this.getCerticateData();
       if (data.cc) {
         this.hasCC = true;
@@ -190,14 +198,13 @@ export class StdEvaluationComponent implements OnInit {
     return check;
   }
 
-  downloadPDFCerticate() {
+  downloadPDFCerticate(): void {
 
     const data = this.getCerticateData();
     this.certificate.generateCerticate(data, true);
-
   }
 
-  goToProfile() {
+  goToProfile(): void {
     this.router.navigate([`/usuarios/perfil/${this.stdReceived.id}`])
   }
 
@@ -213,17 +220,17 @@ export class StdEvaluationComponent implements OnInit {
       siglaCurso: this.courseReceived.sigla,
       cc: this.stdReceived.identificacion,
       tipo: this.courseReceived.tipoCerticado,
-    }
+    };
 
     return data;
   }
 
   addCommas(nStr): string {
     nStr += '';
-    let x = nStr.split('.');
+    const x = nStr.split('.');
     let x1 = x[0];
-    let x2 = x.length > 1 ? '.' + x[1] : '';
-    let rgx = /(\d+)(\d{3})/;
+    const x2 = x.length > 1 ? '.' + x[1] : '';
+    const rgx = /(\d+)(\d{3})/;
     while (rgx.test(x1)) {
       x1 = x1.replace(rgx, '$1' + '.' + '$2');
     }

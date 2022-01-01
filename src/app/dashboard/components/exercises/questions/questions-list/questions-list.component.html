@@ -1,84 +1,90 @@
 <div class="container">
-    <h2>Preguntas</h2>
-    <mat-form-field appearance="legacy" class="search">
-        <mat-label>Buscar</mat-label>
-        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
-        <mat-icon matSuffix>search</mat-icon>
-        <mat-hint>puede buscar por cualquier campo</mat-hint>
-    </mat-form-field>
-    <button
-      mat-raised-button
-      (click)="createOrEditQuestion(null)"
-      style="background: var(--main-color2); color: white;">Crear nuevo</button>
-    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+  <h2>Preguntas</h2>
+  <mat-form-field appearance="legacy" class="search">
+    <mat-label>Buscar</mat-label>
+    <input
+      matInput
+      (keyup)="applyFilter($event.target.value)"
+      placeholder="Buscar"
+    />
+    <mat-icon matSuffix>search</mat-icon>
+    <mat-hint>puede buscar por cualquier campo</mat-hint>
+  </mat-form-field>
+  <button
+    mat-raised-button
+    (click)="createOrEditQuestion(null)"
+    style="background: var(--main-color2); color: white"
+  >
+    Crear nuevo
+  </button>
+  <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+    <!-- posicion -->
+    <ng-container matColumnDef="posicion">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header id="posicion">
+        No.
+      </th>
+      <td mat-cell *matCellDef="let element" class="position">
+        {{ element.position }}
+      </td>
+    </ng-container>
 
-       <!-- posicion -->
-       <ng-container matColumnDef="posicion">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header id="posicion">No.</th>
-        <td
-          mat-cell
-          *matCellDef="let element"
-          class="position">
-            {{ element.position }}
-        </td>
-      </ng-container>
-  
-      <!-- pregunta -->
-      <ng-container matColumnDef="nombre">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header id="nombre">Nombre</th>
-        <td
-          mat-cell
-          *matCellDef="let element"
-          class="name">
-            {{ parseHTML(element.question) }}
-        </td>
-      </ng-container>
-  
-      <!-- tipo de pregunta -->
-      <ng-container matColumnDef="tipo">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header id="tipo">Tipo de pregunta</th>
-        <td mat-cell *matCellDef="let element">{{ questionType(element.type) }}</td>
-      </ng-container>
-  
-      <!-- botones de acción -->
-      <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef id="acciones">Acciones</th>
-        <td mat-cell *matCellDef="let element" class="buttons">
-          <!-- Editar pregunta -->
-          <button
-            mat-stroked-button
-            color="primary"
-            matTooltip="Editar curso"
-            (click)="createOrEditQuestion(element)">
-            <mat-icon style="color: darkgoldenrod;">edit</mat-icon>
-          </button>
-          <!-- <button
-            mat-stroked-button
-            color="primary"
-            matTooltip="Agregar preguntas"
-            (click)="goToQuestionList(element.id)">
-            <mat-icon style="color: black;">build</mat-icon>
-          </button> -->
-          <!-- Eliminar pregunta -->
-          <button mat-stroked-button color="secondary" (click)="deleteQuestion(element)">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </td>
-      </ng-container>
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-    </table>
-  
-      <mat-paginator
-        [pageSizeOptions]="[10, 15, 20]"
-        showFirstLastButtons
-      ></mat-paginator>
-      <button
-        mat-stroked-button
-        color="primary"
-        (click)="goBack()"
-        style="background: var(--main-color2); color: white;">
-        << Regresar
-      </button>
-  </div>
-  
+    <!-- pregunta -->
+    <ng-container matColumnDef="nombre">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header id="nombre">
+        Nombre
+      </th>
+      <td mat-cell *matCellDef="let element" class="name">
+        {{ parseHTML(element.question) }}
+      </td>
+    </ng-container>
+
+    <!-- tipo de pregunta -->
+    <ng-container matColumnDef="tipo">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header id="tipo">
+        Tipo de pregunta
+      </th>
+      <td mat-cell *matCellDef="let element">
+        {{ questionType(element.type) }}
+      </td>
+    </ng-container>
+
+    <!-- botones de acción -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef id="acciones">Acciones</th>
+      <td mat-cell *matCellDef="let element" class="buttons">
+        <!-- Editar pregunta -->
+        <button
+          mat-stroked-button
+          color="primary"
+          matTooltip="Editar curso"
+          (click)="createOrEditQuestion(element)"
+        >
+          <mat-icon style="color: darkgoldenrod">edit</mat-icon>
+        </button>
+        <!-- Eliminar pregunta -->
+        <button
+          mat-stroked-button
+          color="secondary"
+          (click)="deleteQuestion(element)"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+
+  <mat-paginator
+    [pageSizeOptions]="[10, 15, 20]"
+    showFirstLastButtons
+  ></mat-paginator>
+  <button
+    mat-stroked-button
+    color="primary"
+    (click)="goBack()"
+    style="background: var(--main-color2); color: white"
+  >
+    << Regresar
+  </button>
+</div>

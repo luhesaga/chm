@@ -66,7 +66,7 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
     this.courseId = this.activatedRoute.snapshot.params.id;
     this.stdId = this.activatedRoute.snapshot.params.stdId;
     this.careerId = this.activatedRoute.snapshot.params.careerId;
-    console.log(this.stdId);
+    // console.log(`curso: ${this.courseId} carrera: ${this.careerId} estudiante: ${this.stdId}`);
 
     if (this.stdId) {
       this.admin = false;
@@ -164,9 +164,13 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
   }
 
   goToLessons(): void {
-    if (this.admin) {
+    if (this.admin && !this.carrera) {
       this.route.navigate([`cursos/lecciones/${this.courseId}`]);
-    } else {
+    } else if (!this.admin && this.carrera && !this.std) {
+      this.route.navigate([`cursos/lecciones-carrera/${this.careerId}/${this.stdId}/${this.courseId}`]);
+    } else if (this.carrera && this.std) {
+      this.route.navigate([`mis-cursos/lecciones-carrera/${this.careerId}/${this.courseId}/${this.stdId}`]);
+    }else {
       this.route.navigate([`mis-cursos/lecciones/${this.courseId}/${this.stdId}`]);
     }
   }
@@ -205,6 +209,15 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
     } else {
       this.route.navigate([`cursos/evaluaciones/estudiante/${this.courseId}/${this.stdId}`]);
     }
+    if (this.admin && !this.carrera) {
+      this.route.navigate([`cursos/evaluaciones/${this.courseId}`]);
+    } else if (!this.admin && this.carrera && !this.std) {
+      this.route.navigate([`cursos/evaluaciones-carrera/${this.careerId}/${this.courseId}/${this.stdId}`]);
+    } else if (this.carrera && this.std) {
+      this.route.navigate([`cursos/evaluaciones-carrera/${this.careerId}/${this.courseId}/${this.stdId}`]);
+    }else {
+      this.route.navigate([`cursos/evaluaciones/estudiante/${this.courseId}/${this.stdId}`]);
+    }
   }
 
   goToForum(): void {
@@ -216,13 +229,15 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
   }
 
   goBack(): void {
-
+    console.log(this.admin);
+    console.log(this.carrera);
+    console.log(this.std);
     if (this.admin) {
       this.route.navigate(['dashboard/cursos']);
     } else if (this.carrera && !this.std) {
-      this.route.navigate([`dashboard/mis-cursos/${this.stdId}/${this.careerId}`]);
+      this.route.navigate([`dashboard/mis-cursos-lecciones-carrera/${this.stdId}/${this.careerId}`]);
     } else if (this.carrera && this.std) {
-      this.route.navigate([`dashboard/mis-cursos/${this.stdId}/${this.careerId}/${'std'}`]);
+      this.route.navigate([`dashboard/mis-cursos-lecciones-carrera/${this.stdId}/${this.careerId}/${'std'}`]);
     }else {
       this.route.navigate([`dashboard/mis-cursos/${this.stdId}`]);
     }

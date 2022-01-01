@@ -1,0 +1,97 @@
+<div class="container">
+  <h2>Avance carrera</h2>
+  <div class="leccionesHeader">
+    <div>
+      <mat-form-field appearance="legacy" class="search">
+        <mat-label>Buscar</mat-label>
+        <input
+          matInput
+          (input)="applyFilter($event.target.value)"
+          placeholder="Buscar lección"
+        />
+        <!---->
+        <mat-icon matSuffix>search</mat-icon>
+        <mat-hint>Puede buscar por cualquier campo</mat-hint>
+      </mat-form-field>
+    </div>
+    <p style="color: var(--main-color2); font-size: 1.1rem; font-weight: 400">
+      Avance carrera:
+      <span style="color: black; font-weight: 500">{{
+        totalApproved + '%'
+      }}</span>
+    </p>
+  </div>
+
+  <table
+    aria-describedby="tabla cursos de la carrera"
+    mat-table
+    [dataSource]="dataSource"
+    matSort
+    class="mat-elevation-z8"
+  >
+    <ng-container matColumnDef="nombre">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header id="nombre">
+        Nombre
+      </th>
+
+      <td
+        mat-cell
+        *matCellDef="let element"
+        [matTooltip]="element.tipo ? 'ver ejercicio' : 'ver curso'"
+        [class]="element.tipo ? 'nombre-ejercicio' : 'nombre-curso'"
+        (click)="lessonActivated(element) ? goToCourseHome(element) : ''"
+      >
+        {{ element.tipo ? element.nombre : "Curso " + element.nombre }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="progreso">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header id="progreso">
+        Progreso
+      </th>
+
+      <td mat-cell *matCellDef="let element" matTooltip="Lección" class="name">
+        {{
+          !element.tipo
+            ? getTotal(element.totalGrade, element.totalLecciones) + "%"
+            : element.valor ? element.valor + '%' : '0%'
+        }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef id="acciones">Acciones</th>
+      <td mat-cell *matCellDef="let element" class="buttons">
+        <div *ngIf="lessonActivated(element)">
+          <button
+            mat-stroked-button
+            color="primary"
+            [matTooltip]="element.tipo ? 'ver ejercicio' : 'ver curso'"
+            (click)="goToCourseHome(element)"
+          >
+            <mat-icon style="color: darkcyan">visibility</mat-icon>
+          </button>
+        </div>
+        <div *ngIf="!lessonActivated(element)">
+          <button
+            mat-stroked-button
+            color="primary"
+            matTooltip="Debe completar el curso o ejercicio anterior."
+          >
+            <mat-icon style="color: darkcyan">visibility_off</mat-icon>
+          </button>
+        </div>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[10, 15, 20]" showFirstLastButtons>
+  </mat-paginator>
+  <button
+    mat-raised-button
+    (click)="goBack()"
+    style="background: var(--main-color2); color: white"
+  >
+    Regresar
+  </button>
+</div>

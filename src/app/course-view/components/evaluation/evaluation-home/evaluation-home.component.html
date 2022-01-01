@@ -1,100 +1,131 @@
 <main>
-    <section class="normal-test" *ngIf="tarea === 1">
+    <section
+        class="normal-test"
+        *ngIf="tarea === 1">
         <div class="exercise-img">
-            <img src="/assets/icons/examen.svg" alt="imagen evaluación">
+            <img
+                src="/assets/icons/examen.svg"
+                alt="imagen evaluación" />
         </div>
         <div class="exercise-info">
             <div class="info-header">
                 <h1>Excelente, Validaremos todo lo aprendido</h1>
-                <h2>Curso {{ course?.nombre }}</h2>
-                <h2>Lección {{ lesson?.posicion + '. ' + lesson?.nombre }}</h2>
+                <h2 *ngIf="!this.careerView">
+                    Curso {{ course?.nombre }}
+                </h2>
+                <h2 *ngIf="!this.careerView">
+                    Lección {{ lesson?.posicion + ". " + lesson?.nombre }}
+                </h2>
+                <h2
+                    *ngIf="this.careerView"
+                    style="color: var(--main-color2)">
+                        Carrera {{ careerReceived?.nombre }}
+                </h2>
             </div>
             <div class="options">
                 <h3>{{ evaluation?.titulo }}</h3>
                 <ul>
-                    <li>Puedes presentar el examen {{ exercises?.intentos === 1 ? exercises?.intentos + ' vez.' : exercises?.intentos + ' veces.' }}</li>
+                    <li>
+                        Puedes presentar el examen
+                        {{
+                        exercises?.intentos === 1
+                        ? exercises?.intentos + " vez."
+                        : exercises?.intentos + " veces."
+                        }}
+                    </li>
                     <li>El ejercicio consta de {{ questions?.length }} preguntas.</li>
                     <li>Tienes {{ exercises?.duracion }} minutos para presentarlo.</li>
-                    <li>Necesitas {{ getAnswersToPass() }} respuestas correctas para aprobar.</li>
+                    <li>
+                        Necesitas {{ getAnswersToPass() }} respuestas correctas para
+                        aprobar.
+                    </li>
                 </ul>
             </div>
             <div class="previous-test-info" *ngIf="previousTest?.length >= 1">
-                <p>has realizado {{ previousTest?.length}} intentos de {{ exercises?.intentos }} posibles. </p>
+                <p>
+                    has realizado {{ previousTest?.length }} intentos de
+                    {{ exercises?.intentos }} posibles.
+                </p>
                 <div class="previous-test-results" *ngFor="let item of previousTestAnswers; let i = index">
-                    <p>intento {{ (i + 1) + ': ' }}</p>
+                    <p>intento {{ i + 1 + ": " }}</p>
                     <p>{{ item.correctas }} respuestas correctas</p>
                     <p>{{ item.nota }}%</p>
                     <p><a (click)="goToTestResult(item.id)">ver</a></p>
                 </div>
             </div>
             <div class="btn">
-                <button mat-raised-button color="primary" (click)="startExam()">Empezar prueba</button>
+                <button mat-raised-button color="primary" (click)="startExam()">
+                    Empezar prueba
+                </button>
+                <button mat-raised-button *ngIf="careerView" (click)="goBack()">
+                    Regresar
+                </button>
             </div>
         </div>
     </section>
     <section class="tarea" *ngIf="tarea === 2 && !edit">
         <div class="tarea-info">
-            <h2>{{exercises?.nombre}}</h2>
+            <h2>{{ exercises?.nombre }}</h2>
         </div>
         <div class="question">
-            <div id="test-question">{{setQuestion()}}</div>
+            <div id="test-question">{{ setQuestion() }}</div>
         </div>
         <div class="question-editor">
             <h3>{{ setDocType() }}</h3>
             <div class="mat-form-field-wrapper" *ngIf="documentType !== 3">
                 <editor
-                apiKey="fa82nlmdggdzt2rwcpx7k706ohjcnf9wo3ioar2p06d10yyk"
-                class="mat-elevation-z1"
-                [(ngModel)]="userAnswer"
-                (onInit)="handleEditorInit($event)"
-                [init]="{
-                    icons: 'material',
-                    skin: 'borderless',
-                    plugins: ['wordcount', 'lists', 'image imagetools'],
-                    menubar: false,
-                    min_height: 350,
-                    width : '750',
-                    toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | image',
-                    media_live_embeds: true
-                }"
-                ></editor>
+                    apiKey="fa82nlmdggdzt2rwcpx7k706ohjcnf9wo3ioar2p06d10yyk"
+                    class="mat-elevation-z1"
+                    [(ngModel)]="userAnswer"
+                    (onInit)="handleEditorInit($event)"
+                    [init]="{
+                        icons: 'material',
+                        skin: 'borderless',
+                        plugins: ['wordcount', 'lists', 'image imagetools'],
+                        menubar: false,
+                        min_height: 350,
+                        width: '750',
+                        toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | image',
+                        media_live_embeds: true
+                    }">
+                </editor>
             </div>
             <!-- subir archivo -->
             <div *ngIf="documentType !== 2">
                 <div class="upload-image-main">
                     <div class="image-upload">
                         <label class="btn-upload">
-                            <button
-                                color="primary"
-                                class="up-btn"
-                                [disabled]="showProgressBar"
-                                type="button"
-                                mat-raised-button
-                                (click)="fileInput.click()"
-                                matTooltip="Cargar documento">
-                                    <mat-icon aria-hidden="false" aria-label="Carga de archivo">cloud_upload</mat-icon>
-                                    Cargar archivo
+                            <button color="primary" class="up-btn" [disabled]="showProgressBar" type="button"
+                                mat-raised-button (click)="fileInput.click()" matTooltip="Cargar documento">
+                                <mat-icon aria-hidden="false" aria-label="Carga de archivo">cloud_upload</mat-icon>
+                                Cargar archivo
                             </button>
-                            <input
-                                type="file"
+                            <input type="file"
                                 accept="application/pdf, .doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-                                #fileInput
-                                (change)="uploadPDF($event)" />
+                                #fileInput (change)="uploadPDF($event)" />
                         </label>
                     </div>
                     <div class="progress">
                         <mat-hint *ngIf="!archivo">Puede añadir un archivo Word ó PDF.</mat-hint>
-                        <mat-progress-bar *ngIf="showProgressBar" mode="determinate" [value]="percentageProgressBar"></mat-progress-bar>
-                        <p *ngIf="showProgressBar">{{ 'cargando ' + percentageProgressBar + '%' }}</p>
+                        <mat-progress-bar *ngIf="showProgressBar" mode="determinate" [value]="percentageProgressBar">
+                        </mat-progress-bar>
+                        <p *ngIf="showProgressBar">
+                            {{ "cargando " + percentageProgressBar + "%" }}
+                        </p>
                     </div>
                     <div class="fileUploaded" *ngIf="archivo">
-                        <a [href]="ruta" target="_blank">{{archivo}}</a>
+                        <a [href]="ruta" target="_blank">{{ archivo }}</a>
                     </div>
                 </div>
             </div>
         </div>
         <div class="button">
-            <button mat-raised-button color="primary" (click)="saveOrUpdateTest()">Enviar Tarea</button>
+            <button mat-raised-button color="primary" (click)="saveOrUpdateTest()">
+                Enviar Tarea
+            </button>
+            <button mat-raised-button *ngIf="careerView" (click)="goBack()">
+                Regresar
+            </button>
         </div>
     </section>
     <section class="revision-tarea" *ngIf="tarea === 2 && edit">
@@ -108,7 +139,12 @@
         <h4>Tu respuesta:</h4>
         <div class="repuesta-subida">
             <p *ngIf="userAnswer">{{ userAnswer }}</p>
-            <a *ngIf="archivo" [href]="ruta" target="_blank">{{archivo}}</a>
+            <a *ngIf="archivo" [href]="ruta" target="_blank">{{ archivo }}</a>
+        </div>
+        <div class="button">
+            <button mat-raised-button *ngIf="careerView" (click)="goBack()">
+                Regresar
+            </button>
         </div>
     </section>
 </main>

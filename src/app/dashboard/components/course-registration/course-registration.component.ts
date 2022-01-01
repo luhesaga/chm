@@ -184,9 +184,9 @@ export class CourseRegistrationComponent implements OnInit, OnDestroy {
     if (!this.careerView) {
       this.router.navigateByUrl(`cursos/index/${idCourse}/${this.userId}`);
     } else if (this.careerView && !this.std) {
-      this.router.navigateByUrl(`cursos/index/${idCourse}/${this.userId}/${this.careerId}`);
+      this.router.navigateByUrl(`cursos-carrera/index/${idCourse}/${this.userId}/${this.careerId}`);
     } else {
-      this.router.navigateByUrl(`cursos/index/${idCourse}/${this.userId}/${this.careerId}/${'std'}`);
+      this.router.navigateByUrl(`cursos-carrera/index/${idCourse}/${this.userId}/${this.careerId}/${'std'}`);
     }
   }
 

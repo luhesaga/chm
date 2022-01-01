@@ -87,9 +87,15 @@ export class CarrerasIndexComponent implements OnInit {
 
   goToCourses(): void {
     if (!this.std) {
-      this.router.navigate([`dashboard/mis-cursos/${this.logguedUser.id}/${this.careerId}`]);
+      this.router.navigate([`dashboard/mis-cursos-lecciones-carrera/${this.logguedUser.id}/${this.careerId}`]);
     } else {
-      this.router.navigate([`dashboard/mis-cursos/${this.logguedUser.id}/${this.careerId}/${'std'}`]);
+      this.router.navigate([`dashboard/mis-cursos-lecciones-carrera/${this.logguedUser.id}/${this.careerId}/${'std'}`]);
+    }
+  }
+
+  goToExercises(): void {
+    if (this.admin) {
+      this.router.navigate([`/dashboard/cursos/ejercicios/${this.careerId}/${'career'}`]);
     }
   }
 

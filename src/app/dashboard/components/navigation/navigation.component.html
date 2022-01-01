@@ -138,7 +138,7 @@
           </mat-panel-description>
         </mat-expansion-panel-header>
         <mat-list>
-          <mat-list-item class="secondary-list">
+          <mat-list-item class="secondary-list" *ngIf="logguedUser.perfil==='administrador' || logguedUser.perfil==='profesor'">
             <a mat-list-item (click)="goToMyCareers()">Mis carreras</a>
             <mat-divider></mat-divider>
           </mat-list-item>
