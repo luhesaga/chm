@@ -17,7 +17,193 @@
   >
     Crear nuevo
   </button>
-  <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="addExistingQuestion()"
+    style="margin-left: 10px;"
+  >
+    {{ showExistingQ ? 'Ver listado' : 'Agregar pregunta existente'}}
+  </button>
+  <section *ngIf="showExistingQ">
+    <div *ngFor="let c of existingQuestions">
+      <mat-accordion>
+        <mat-expansion-panel style="margin: 1rem;" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <h3>Preguntas de curso {{c.curso}}</h3>
+            </mat-panel-title>  
+          </mat-expansion-panel-header>
+          <!-- selección única -->
+          <mat-expansion-panel
+            *ngIf="c.q1.length > 0"
+            (opened)="panelOpenState = true" 
+            (closed)="panelOpenState = false">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <p
+                    style="font-weight: 500; color: var(--main-color2);">
+                      Preguntas de selección única
+                  </p>
+                </mat-panel-title>  
+              </mat-expansion-panel-header>
+              <mat-radio-group
+                aria-labelledby="example-radio-group-label"
+                class="example-radio-group"
+                [(ngModel)]="selectedQuestion"
+                (change)="selectionChange($event)">
+                <div class="question-opt">
+                  <mat-radio-button class="example-radio-button" *ngFor="let q of c.q1" [value]="q">
+                    {{parseHTML(q.question)}}
+                  </mat-radio-button>
+                </div>
+              </mat-radio-group>
+          </mat-expansion-panel>
+          <!-- selección multiple -->
+          <mat-expansion-panel
+            *ngIf="c.q2.length > 0"
+            (opened)="panelOpenState = true" 
+            (closed)="panelOpenState = false">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <p
+                    style="font-weight: 500; color: var(--main-color2);">
+                      Preguntas de selección multiple
+                  </p>
+                </mat-panel-title>  
+              </mat-expansion-panel-header>
+              <mat-radio-group
+                aria-labelledby="example-radio-group-label"
+                class="example-radio-group"
+                [(ngModel)]="selectedQuestion"
+                (change)="selectionChange($event)">
+                <div class="question-opt">
+                  <mat-radio-button class="example-radio-button" *ngFor="let q of c.q2" [value]="q">
+                    {{parseHTML(q.question)}}
+                  </mat-radio-button>
+                </div>
+              </mat-radio-group>
+          </mat-expansion-panel>
+          <!-- Rellenar blancos -->
+          <mat-expansion-panel
+            *ngIf="c.q3.length > 0"
+            (opened)="panelOpenState = true" 
+            (closed)="panelOpenState = false">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <p
+                    style="font-weight: 500; color: var(--main-color2);">
+                      Preguntas de Rellenar blancos
+                  </p>
+                </mat-panel-title>  
+              </mat-expansion-panel-header>
+              <mat-radio-group
+                aria-labelledby="example-radio-group-label"
+                class="example-radio-group"
+                [(ngModel)]="selectedQuestion"
+                (change)="selectionChange($event)">
+                <div class="question-opt">
+                  <mat-radio-button class="example-radio-button" *ngFor="let q of c.q3" [value]="q">
+                    {{parseHTML(q.question)}}
+                  </mat-radio-button>
+                </div>
+              </mat-radio-group>
+          </mat-expansion-panel>
+          <!-- Relacionar -->
+          <mat-expansion-panel
+            *ngIf="c.q4.length > 0"
+            (opened)="panelOpenState = true" 
+            (closed)="panelOpenState = false">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <p
+                    style="font-weight: 500; color: var(--main-color2);">
+                      Preguntas de Relacionar
+                  </p>
+                </mat-panel-title>  
+              </mat-expansion-panel-header>
+              <mat-radio-group
+                aria-labelledby="example-radio-group-label"
+                class="example-radio-group"
+                [(ngModel)]="selectedQuestion"
+                (change)="selectionChange($event)">
+                <div class="question-opt">
+                  <mat-radio-button class="example-radio-button" *ngFor="let q of c.q4" [value]="q">
+                    {{parseHTML(q.question)}}
+                  </mat-radio-button>
+                </div>
+              </mat-radio-group>
+          </mat-expansion-panel>
+          <!-- Respuesta libre -->
+          <mat-expansion-panel
+            *ngIf="c.q5.length > 0"
+            (opened)="panelOpenState = true" 
+            (closed)="panelOpenState = false">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <p
+                    style="font-weight: 500; color: var(--main-color2);">
+                      Preguntas de Respuesta libre
+                  </p>
+                </mat-panel-title>  
+              </mat-expansion-panel-header>
+              <mat-radio-group
+                aria-labelledby="example-radio-group-label"
+                class="example-radio-group"
+                [(ngModel)]="selectedQuestion"
+                (change)="selectionChange($event)">
+                <div class="question-opt">
+                  <mat-radio-button class="example-radio-button" *ngFor="let q of c.q5" [value]="q">
+                    {{parseHTML(q.question)}}
+                  </mat-radio-button>
+                </div>
+              </mat-radio-group>
+          </mat-expansion-panel>
+          <!-- Tarea -->
+          <mat-expansion-panel
+            *ngIf="c.q6.length > 0"
+            (opened)="panelOpenState = true" 
+            (closed)="panelOpenState = false">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <p
+                    style="font-weight: 500; color: var(--main-color2);">
+                    Tareas
+                  </p>
+                </mat-panel-title>  
+              </mat-expansion-panel-header>
+              <mat-radio-group
+                aria-labelledby="example-radio-group-label"
+                class="example-radio-group"
+                [(ngModel)]="selectedQuestion"
+                (change)="selectionChange($event)">
+                <div class="question-opt">
+                  <mat-radio-button class="example-radio-button" *ngFor="let q of c.q6" [value]="q">
+                    {{parseHTML(q.question)}}
+                  </mat-radio-button>
+                </div>
+              </mat-radio-group>
+          </mat-expansion-panel>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="saveQuestion()"
+      style="margin: 1rem 1rem 2rem 1rem;"
+    >
+      Agregar pregunta seleccionada
+    </button>
+    
+  </section>
+
+  <table
+    *ngIf="!showExistingQ"
+    mat-table
+    [dataSource]="dataSource"
+    matSort class="mat-elevation-z8"
+    aria-describedby="Preguntas del ejercicio">
     <!-- posicion -->
     <ng-container matColumnDef="posicion">
       <th mat-header-cell *matHeaderCellDef mat-sort-header id="posicion">
@@ -76,6 +262,7 @@
   </table>
 
   <mat-paginator
+    *ngIf="!showExistingQ"
     [pageSizeOptions]="[10, 15, 20]"
     showFirstLastButtons
   ></mat-paginator>

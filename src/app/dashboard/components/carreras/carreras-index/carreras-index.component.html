@@ -34,15 +34,15 @@
       </div>
     </div>
 
-    <div class="card" *ngIf="admin || (!admin && evaluationsOpt)">
+    <!-- <div class="card" *ngIf="admin || (!admin && evaluationsOpt)">
       <div class="img"><img src="/assets/icons/evaluaciones.svg" alt="" /></div>
 
       <div class="options">
         <a (click)="goToEvaluations()">Indicadores</a>
       </div>
-    </div>
+    </div> -->
 
-    <div class="card" *ngIf="admin || (!admin && adsOpt)">
+    <div class="card" *ngIf="admin || std">
       <div class="img"><img src="/assets/icons/anuncio.svg" alt="" /></div>
 
       <div class="options">

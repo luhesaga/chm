@@ -20,6 +20,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MainComponent } from './components/main/main.component';
 import { DashboardModule } from '../dashboard/dashboard.module';
 import { CertValidationComponent } from './components/certificates/cert-validation/cert-validation.component';
+import { CareersComponent } from './components/careers/careers.component';
 
 
 
@@ -38,7 +39,8 @@ import { CertValidationComponent } from './components/certificates/cert-validati
     CourseInfoComponent,
     CourseDetailComponent,
     MainComponent,
-    CertValidationComponent
+    CertValidationComponent,
+    CareersComponent
   ],
   imports: [
     CommonModule,

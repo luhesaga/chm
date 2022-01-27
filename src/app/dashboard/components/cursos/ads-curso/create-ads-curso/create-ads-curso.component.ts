@@ -6,14 +6,14 @@ import Swal from 'sweetalert2';
 import { UsersService } from 'src/app/core/services/users/users.service';
 import { MailService } from 'src/app/core/services/mail/mail.service';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
+import { CarrerasService } from '../../../../../core/services/carreras/carreras.service';
 
 @Component({
   selector: 'app-create-ads-curso',
   templateUrl: './create-ads-curso.component.html',
-  styleUrls: ['./create-ads-curso.component.scss']
+  styleUrls: ['./create-ads-curso.component.scss'],
 })
 export class CreateAdsCursoComponent implements OnInit {
-
   contenido: any;
   opciones: any;
   idCurso: string;
@@ -22,74 +22,110 @@ export class CreateAdsCursoComponent implements OnInit {
   usuarioEnSeccion: any;
   courseName: string;
 
+  careerId: string;
+  careerView = false;
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private courseService: CourseService,
+    private careerService: CarrerasService,
     private fireStore: AngularFirestore,
     private userService: UsersService,
     private mailService: MailService,
     private auth: AuthService,
     private route: Router
   ) {
-
     this.estudiantesSeleccionados = [];
     this.matriculados = [];
     this.idCurso = this.activatedRoute.snapshot.params.idCurso;
+    this.careerId = this.activatedRoute.snapshot.params.careerId;
+    if (this.careerId) {
+      this.careerView = true;
+    }
     this.contenido = {
       descripcion: '',
-      titulo: ''
-    }
+      titulo: '',
+    };
     this.opciones = {
       todoCurso: false,
       estudiantesSeleccionados: false,
-      miCopia: false
+      miCopia: false,
+    };
+  }
+
+  getlogguedUser(): void {
+    this.auth.user$.subscribe(
+      (usuario) => (this.usuarioEnSeccion = usuario),
+      () => this.mensajeErrorIdMatriculados()
+    );
+  }
+
+  obtenerIdMatriculados(): void {
+    if (!this.careerView) {
+      this.courseService
+      .getRegisteredUSers(this.idCurso)
+      .valueChanges()
+      .subscribe((matriculados) => {
+        this.matriculados = matriculados;
+      },
+        () => this.mensajeErrorIdMatriculados()
+      );
+    } else {
+      this.careerService.matriculadosObtener(this.careerId)
+        .valueChanges()
+        .subscribe((matriculados) => {
+          this.matriculados = matriculados;
+        },
+          () => this.mensajeErrorIdMatriculados()
+        );
     }
   }
 
-  obtenerUsuarioEnSeccion() {
-    this.auth.user$.subscribe(usuario => this.usuarioEnSeccion = usuario,
-      () => this.mensajeErrorIdMatriculados());
-  }
-
-  obtenerIdMatriculados() {
-    this.courseService.getRegisteredUSers(this.idCurso)
-      .valueChanges()
-      .subscribe(matriculados => this.matriculados = matriculados,
-        () => this.mensajeErrorIdMatriculados());
-  }
-
-  mensajeErrorIdMatriculados() {
+  mensajeErrorIdMatriculados(): void {
     Swal.fire({
       icon: 'error',
       title: 'Hay un error de conexión',
-      text: 'Por favor recargue la página'
-    })
+      text: 'Por favor recargue la página',
+    });
   }
 
   ngOnInit(): void {
-    this.obtenerUsuarioEnSeccion();
+    this.getlogguedUser();
     this.obtenerIdMatriculados();
     this.getCourse();
   }
 
-  getCourse() {
-    let course = this.courseService.detailCourse(this.idCurso)
+  getCourse(): void {
+    if (!this.careerView) {
+      const course = this.courseService
+      .detailCourse(this.idCurso)
       .valueChanges()
-      .subscribe(c => {
+      .subscribe((c) => {
         this.courseName = c.nombre;
         course.unsubscribe();
-      })
+      });
+    } else {
+      const career = this.careerService.obtenerCarrera(this.careerId)
+        .valueChanges()
+        .subscribe((c: any) => {
+          this.courseName = c.nombre;
+          career.unsubscribe();
+        });
+    }
   }
 
-  crearAnuncio() {
+  crearAnuncio(): void {
+    const id = this.careerView ? this.careerId : this.idCurso;
     const idAnuncio = this.fireStore.createId();
-    this.courseService.createAnuncio(this.contenido, this.idCurso, idAnuncio).then(
-      () => this.opcionesElegidas(idAnuncio),
-      () => this.mensajeErrorCrearAnuncio()
-    )
+    this.courseService
+      .createAnuncio(this.contenido, id, idAnuncio)
+      .then(
+        () => this.opcionesElegidas(idAnuncio),
+        () => this.mensajeErrorCrearAnuncio()
+      );
   }
 
-  async opcionesElegidas(idAnuncio: string) {
+  async opcionesElegidas(idAnuncio: string): Promise<void> {
     if (this.opciones.todoCurso) {
       await this.obtenerUsuariosMatriculados(idAnuncio);
       this.enviarEmailEstudiantes(this.matriculados);
@@ -103,96 +139,106 @@ export class CreateAdsCursoComponent implements OnInit {
     this.mensajeAnuncioCreado();
   }
 
-  enviarmeEmail() {
+  enviarmeEmail(): void {
     const data = {
       to: this.usuarioEnSeccion.correo,
       titulo: this.contenido.titulo,
       contenido: this.contenido.descripcion,
-      curso: this.courseName
-    }
-    //console.log(data);
-    const unsubscribe = this.mailService.sendEmailAnuncioCurso(data)
-      .subscribe(() => unsubscribe.unsubscribe(),
-        e => {
-          console.log(e);
-        });
+      curso: this.courseName,
+    };
+    // console.log(data);
+    const unsubscribe = this.mailService.sendEmailAnuncioCurso(data).subscribe(
+      () => unsubscribe.unsubscribe(),
+      (e) => {
+        console.log(e);
+      }
+    );
   }
 
-  async obtenerUsuariosMatriculados(idAnuncio: string) {
+  async obtenerUsuariosMatriculados(idAnuncio: string): Promise<void> {
     if (this.matriculados) {
       const data = {
         titulo: this.contenido.titulo,
-        idAnuncios: idAnuncio
-      }
+        idAnuncios: idAnuncio,
+      };
       for (let i = 0; this.matriculados.length > i; ++i) {
-        await this.userService.agregarAnuncios(data, this.matriculados[i].id, idAnuncio)
+        await this.userService
+          .agregarAnuncios(data, this.matriculados[i].id, idAnuncio)
           .then(() => '');
       }
     }
   }
 
-  async obtenerUsuarioSeleccionados(idAnuncio: string) {
+  async obtenerUsuarioSeleccionados(idAnuncio: string): Promise<void> {
     if (this.estudiantesSeleccionados.length > 0) {
       const data = {
         titulo: this.contenido.titulo,
-        idAnuncios: idAnuncio
-      }
+        idAnuncios: idAnuncio,
+      };
       for (let i = 0; this.estudiantesSeleccionados.length > i; ++i) {
-        await this.userService.agregarAnuncios(data, this.estudiantesSeleccionados[i].id, idAnuncio)
+        await this.userService
+          .agregarAnuncios(data, this.estudiantesSeleccionados[i].id, idAnuncio)
           .then(() => '');
       }
     }
   }
 
-  enviarEmailEstudiantes(estudiantes: any[]) {
-    estudiantes.forEach(estudiante => {
-      const unsuscribeUser = this.userService.detailUser(estudiante.id).valueChanges()
+  enviarEmailEstudiantes(estudiantes: any[]): void {
+    estudiantes.forEach((estudiante) => {
+      const unsuscribeUser = this.userService
+        .detailUser(estudiante.id)
+        .valueChanges()
         .subscribe((estudianteMail: any) => {
           const data = {
             to: estudianteMail.correo,
             titulo: this.contenido.titulo,
             contenido: this.contenido.descripcion,
-            curso: this.courseName
-          }
-          //console.log(data);
-          const unsubscribe = this.mailService.sendEmailAnuncioCurso(data)
-            .subscribe(() => unsubscribe.unsubscribe(),
-              e => {
+            curso: this.courseName,
+          };
+          // console.log(data);
+          const unsubscribe = this.mailService
+            .sendEmailAnuncioCurso(data)
+            .subscribe(
+              () => unsubscribe.unsubscribe(),
+              (e) => {
                 console.log(e);
-              });
+              }
+            );
           unsuscribeUser.unsubscribe();
         });
     });
   }
 
-  mensajeAnuncioCreado() {
+  mensajeAnuncioCreado(): void {
     Swal.fire({
       title: 'Anuncio creado exitosamente',
-      icon: 'success'
+      icon: 'success',
     }).then(() => this.volverAListaAnuncio());
   }
 
-  mensajeErrorCrearAnuncio() {
+  mensajeErrorCrearAnuncio(): void {
     Swal.fire({
       title: 'Anuncio no pude ser creado',
       icon: 'error',
       confirmButtonText: 'Cerrar',
-      confirmButtonColor: 'red'
-    })
+      confirmButtonColor: 'red',
+    });
   }
 
-  validarContenidoAnuncio() {
+  validarContenidoAnuncio(): void {
     const titulo: string = this.contenido.titulo;
     const descripcion: string = this.contenido.descripcion;
-    if (this.validarTituloAnuncio(titulo) &&
-      this.validarDescripcionAnuncio(descripcion)) {
+    if (
+      this.validarTituloAnuncio(titulo) &&
+      this.validarDescripcionAnuncio(descripcion)
+    ) {
       Swal.fire({
         confirmButtonColor: '#005691',
         title: 'Creando el anuncio',
         didOpen: () => {
-          Swal.showLoading()
-        }
-      })
+          Swal.showLoading();
+        },
+      });
       this.crearAnuncio();
     }
   }
@@ -203,7 +249,7 @@ export class CreateAdsCursoComponent implements OnInit {
         title: 'Titulo del anuncio',
         text: 'El titulo del anuncio debe tener mas de 3 caracteres',
         icon: 'info',
-        confirmButtonText: 'Aceptar'
+        confirmButtonText: 'Aceptar',
       });
       return false;
     } else {
@@ -211,13 +257,13 @@ export class CreateAdsCursoComponent implements OnInit {
     }
   }
 
-  validarDescripcionAnuncio(descripcion: string) {
+  validarDescripcionAnuncio(descripcion: string): boolean {
     if (descripcion === '') {
       Swal.fire({
         title: 'Descripción del anuncio',
         text: 'La descripción del anuncio no debe estar vacío',
         icon: 'info',
-        confirmButtonText: 'Aceptar'
+        confirmButtonText: 'Aceptar',
       });
       return false;
     } else {
@@ -225,20 +271,22 @@ export class CreateAdsCursoComponent implements OnInit {
     }
   }
 
-  seleccionarEstudiantes(matriculado: any, elegido: boolean) {
+  seleccionarEstudiantes(matriculado: any, elegido: boolean): void {
     if (elegido) {
       this.estudiantesSeleccionados.push(matriculado);
-    }
-    else {
+    } else {
       const posicion = this.estudiantesSeleccionados.findIndex(
-        estudiante => estudiante.id === matriculado.id
+        (estudiante) => estudiante.id === matriculado.id
       );
       this.estudiantesSeleccionados.splice(posicion, 1);
     }
   }
 
-  volverAListaAnuncio() {
-    this.route.navigate([`/cursos/anuncios/${this.idCurso}`]);
+  volverAListaAnuncio(): void {
+    if (!this.careerView) {
+      this.route.navigate([`/cursos/anuncios/${this.idCurso}`]);
+    } else {
+      this.route.navigate([`/carreras/anuncios/${this.careerId}`]);
+    }
   }
-
 }

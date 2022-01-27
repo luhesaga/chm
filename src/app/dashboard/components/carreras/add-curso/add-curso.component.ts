@@ -1,4 +1,10 @@
-import { Component, OnInit, AfterViewInit, ViewChild, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  AfterViewInit,
+  ViewChild,
+  OnDestroy,
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CourseService } from 'src/app/core/services/courses/course.service';
 import Swal from 'sweetalert2';
@@ -117,6 +123,7 @@ export class AddCursoComponent implements OnInit, AfterViewInit, OnDestroy {
     const desmatricular = [];
     const noDesmatricular = [];
     const cantidadEstudiantesMatriculados = this.estudiantesMatriculados.length;
+
     let i = 0;
     while (i < cantidadEstudiantesMatriculados) {
       const estudiante = this.estudiantesMatriculados[i];
@@ -201,7 +208,10 @@ export class AddCursoComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  async recorrerArrayDesmatricula(desmatricular: any[], idCurso: string): Promise<boolean> {
+  async recorrerArrayDesmatricula(
+    desmatricular: any[],
+    idCurso: string
+  ): Promise<boolean> {
     let error = false;
     let i = 0;
     const cantidadEstudiantes = desmatricular.length;
@@ -215,7 +225,10 @@ export class AddCursoComponent implements OnInit, AfterViewInit, OnDestroy {
     return error;
   }
 
-  async desmatricularEstudianteCurso(idCurso: string, idEstudiante: string): Promise<boolean> {
+  async desmatricularEstudianteCurso(
+    idCurso: string,
+    idEstudiante: string
+  ): Promise<boolean> {
     let error = false;
     await this.courseService.deleteUserFromCourse(idCurso, idEstudiante).then(
       () => {},
@@ -240,7 +253,10 @@ export class AddCursoComponent implements OnInit, AfterViewInit, OnDestroy {
     return error;
   }
 
-  async actualizarMatriculaDeCurso(estudiante: any, index: number): Promise<boolean> {
+  async actualizarMatriculaDeCurso(
+    estudiante: any,
+    index: number
+  ): Promise<boolean> {
     let error = false;
     const matriculaIndividual = estudiante.matriculaIndividual[index];
     await this.courseService
@@ -256,7 +272,9 @@ export class AddCursoComponent implements OnInit, AfterViewInit, OnDestroy {
     return error;
   }
 
-  async actualizarCarreraMatriculaIndividual(estudiante: any): Promise<boolean> {
+  async actualizarCarreraMatriculaIndividual(
+    estudiante: any
+  ): Promise<boolean> {
     let error = false;
     await this.carrerasService
       .actualizarMatriculaIndividual(estudiante, this.idCarreras)
@@ -341,15 +359,9 @@ export class AddCursoComponent implements OnInit, AfterViewInit, OnDestroy {
       const previousCourse: any = this.dataSource.data[curso.posicion - 2];
 
       // actualizar posicion elemento actual
-      this.positionEdit(
-        actualCourse.id,
-        actualCourse.posicion - 1
-      );
+      this.positionEdit(actualCourse.id, actualCourse.posicion - 1);
       // actualizar posicion elemento previo
-      this.positionEdit(
-        previousCourse.id,
-        previousCourse.posicion + 1
-      );
+      this.positionEdit(previousCourse.id, previousCourse.posicion + 1);
     }
   }
 
@@ -359,15 +371,9 @@ export class AddCursoComponent implements OnInit, AfterViewInit, OnDestroy {
       const nextLesson: any = this.dataSource.data[curso.posicion];
 
       // actualizar posicion elemento actual
-      this.positionEdit(
-        actualLesson.id,
-        actualLesson.posicion + 1
-      );
+      this.positionEdit(actualLesson.id, actualLesson.posicion + 1);
       // actualizar posicion elemento siguiente
-      this.positionEdit(
-        nextLesson.id,
-        nextLesson.posicion - 1
-      );
+      this.positionEdit(nextLesson.id, nextLesson.posicion - 1);
     }
   }
 
@@ -378,7 +384,8 @@ export class AddCursoComponent implements OnInit, AfterViewInit, OnDestroy {
         id: cid,
         idCarrera: this.idCarreras,
       };
-      this.carrerasService.setCoursePosition(data)
+      this.carrerasService
+        .setCoursePosition(data)
         .catch((error) => console.error(error));
     }
   }

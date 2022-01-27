@@ -61,3 +61,12 @@ td.mat-cell:last-of-type {
   min-width: 40px;
 }
 
+.question-opt {
+  display: flex;
+  flex-direction: column;
+
+    .mat-radio-button {
+      margin: 8px;
+    }
+}
+

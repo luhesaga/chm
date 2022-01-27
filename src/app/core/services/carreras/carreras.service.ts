@@ -171,8 +171,8 @@ export class CarrerasService {
   }
 
   addQuestion(careerId: string, exercId: string, question): Promise<void> {
-    console.log(`carrera: ${careerId} ejercicio: ${exercId}`);
-    console.log(question);
+    // console.log(`carrera: ${careerId} ejercicio: ${exercId}`);
+    // console.log(question);
     return this.fireStore
       .doc(`carreras/${careerId}/cursos/${exercId}`)
       .update({

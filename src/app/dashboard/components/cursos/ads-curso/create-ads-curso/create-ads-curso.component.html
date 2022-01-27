@@ -1,7 +1,7 @@
 <main>
     <div class="title">
         <mat-icon>volume_up</mat-icon>
-        <h2>Crear anuncio del curso</h2>
+        <h2>Crear anuncio {{careerView ? 'para carrera' : 'del curso' }}</h2>
     </div>
 
     <div class="anuncio">
@@ -31,7 +31,7 @@
             </div>
             <section class="opciones">
                 <mat-checkbox [(ngModel)]="this.opciones.miCopia">Enviarme una copia por e-mail</mat-checkbox>
-                <mat-checkbox [(ngModel)]="this.opciones.todoCurso">Enviar a todos los usuarios de este curso</mat-checkbox>
+                <mat-checkbox [(ngModel)]="this.opciones.todoCurso">Enviar a todos los usuarios de {{ careerView ? 'la carrera' : 'este curso' }}</mat-checkbox>
                 <mat-checkbox [(ngModel)]="this.opciones.estudiantesSeleccionados">Enviar solamente a los usuarios seleccionados</mat-checkbox>
                 <div class="contenedorMatriculados" *ngIf="this.opciones.estudiantesSeleccionados">
                     <section class="matriculados">

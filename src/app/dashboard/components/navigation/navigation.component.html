@@ -54,7 +54,7 @@
       </mat-expansion-panel>
       <!-- // cursos ofrecidos -->
       <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
-        <mat-expansion-panel-header *ngIf="logguedUser.perfil==='administrador' || logguedUser.perfil==='profesor'" class="admin-header">
+        <mat-expansion-panel-header class="admin-header">
           <mat-panel-title class="admin">
             <mat-list>
               <mat-list-item>
@@ -138,7 +138,7 @@
           </mat-panel-description>
         </mat-expansion-panel-header>
         <mat-list>
-          <mat-list-item class="secondary-list" *ngIf="logguedUser.perfil==='administrador' || logguedUser.perfil==='profesor'">
+          <mat-list-item class="secondary-list">
             <a mat-list-item (click)="goToMyCareers()">Mis carreras</a>
             <mat-divider></mat-divider>
           </mat-list-item>

@@ -147,6 +147,24 @@ const routes: Routes = [
         component: EditAdsCursoComponent,
       },
       {
+        path: 'carreras/anuncios/:careerId',
+        component: AdsCursoComponent,
+      },
+      {
+        path: 'carreras/anuncios/estudiante/:careerId/:stdId',
+        component: AdsCursoComponent,
+        pathMatch: 'full',
+      },
+      {
+        path: 'carreras/anuncios/crear/:careerId',
+        component: CreateAdsCursoComponent,
+        pathMatch: 'full',
+      },
+      {
+        path: 'carreras/anuncios/editar/:careerId/:idAnuncio',
+        component: EditAdsCursoComponent,
+      },
+      {
         path: 'cursos/lecciones/create',
         component: LessonCreateComponent,
       },

@@ -12,6 +12,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ExercisesService } from '../../../../../core/services/exercises/exercises.service';
 import Swal, { SweetAlertResult } from 'sweetalert2';
 import { CarrerasService } from '../../../../../core/services/carreras/carreras.service';
+import { CourseService } from '../../../../../core/services/courses/course.service';
+import { MatRadioChange } from '@angular/material/radio';
 
 @Component({
   selector: 'app-questions-list',
@@ -27,6 +29,8 @@ export class QuestionsListComponent
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
+  panelOpenState = false;
+
   courseId: string;
   careerId: string;
   careerView = false;
@@ -35,10 +39,15 @@ export class QuestionsListComponent
   exercise;
   exerciseReceived;
 
+  existingQuestions: any;
+  selectedQuestion: any;
+  showExistingQ = false;
+
   questions = [];
 
   constructor(
     private activatedRoute: ActivatedRoute,
+    private courseService: CourseService,
     private exercService: ExercisesService,
     private careerService: CarrerasService,
     private router: Router
@@ -57,6 +66,8 @@ export class QuestionsListComponent
     } else {
       this.getCareerExerciseDetail();
     }
+    this.existingQuestions = this.getExistingQuestions();
+    // console.log(this.existingQuestions);
   }
 
   ngAfterViewInit(): void {
@@ -274,5 +285,173 @@ export class QuestionsListComponent
     t.innerHTML = html;
     // console.log(t.content.firstChild.textContent);
     return t.content.firstChild.textContent;
+  }
+
+  getExistingQuestions(): any {
+    const preguntas = [];
+    this.courseQuestions(preguntas);
+    // this.careerQuestions(preguntas);
+    // console.log(preguntas);
+    return preguntas;
+  }
+
+  courseQuestions(preguntas): void {
+    const courses = this.courseService
+      .listCourses()
+      .valueChanges()
+      .subscribe((c) => {
+        c.forEach((curso, index) => {
+          preguntas.push({
+            curso: curso.nombre,
+            q1: [],
+            q2: [],
+            q3: [],
+            q4: [],
+            q5: [],
+            q6: [],
+          });
+          this.getQuestions(curso, index, preguntas);
+        });
+        courses.unsubscribe();
+      });
+  }
+
+  careerQuestions(preguntas): void {
+    this.careerService.obtenerCarreras()
+    .valueChanges()
+    .subscribe(c => {
+      c.forEach((carrera) => {
+        preguntas.push({
+          curso: carrera.nombre,
+          q1: [],
+          q2: [],
+          q3: [],
+          q4: [],
+          q5: [],
+          q6: [],
+        });
+        console.log(preguntas);
+        this.getQuestions(carrera, preguntas.length, preguntas);
+      });
+    });
+  }
+
+  getQuestions(course, i, preguntas): void {
+    const exerc = this.exercService
+      .listExercises(course.id)
+      .valueChanges()
+      .subscribe((exercises: any) => {
+        // console.log(exercises);
+        exercises.forEach((ex) => {
+          ex.preguntas.forEach((q) => {
+            switch (q.type) {
+              case 1:
+                preguntas[i].q1.push(q);
+                break;
+              case 2:
+                preguntas[i].q2.push(q);
+                break;
+              case 3:
+                preguntas[i].q3.push(q);
+                break;
+              case 4:
+                preguntas[i].q4.push(q);
+                break;
+              case 5:
+                preguntas[i].q5.push(q);
+                break;
+              case 6:
+                preguntas[i].q6.push(q);
+                break;
+            }
+          });
+        });
+        exerc.unsubscribe();
+      });
+  }
+
+  selectionChange(event: MatRadioChange): void {
+    this.panelOpenState = false;
+  }
+
+  addExistingQuestion(): void {
+    if (this.showExistingQ) {
+      this.showExistingQ = false;
+    } else {
+      this.showExistingQ = true;
+    }
+  }
+
+  saveQuestion(): void {
+    const q = this.selectedQuestion;
+    const pos = this.questions.length + 1;
+    if (this.selectedQuestion) {
+      this.questions.push({
+        question: q.question,
+        type: q.type,
+        answers: q.answers,
+        position: pos,
+        tarea: q.tarea,
+      });
+      // console.log(this.questions);
+      this.dataSource.data = this.questions;
+      if (!this.careerView) {
+        this.saveCourseQuestion();
+      } else {
+        this.saveCareerQuestion();
+      }
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'error',
+        text: 'Debe seleccionar una pregunta.',
+        confirmButtonText: 'cerrar',
+      });
+    }
+
+  }
+
+  saveCourseQuestion(): void {
+    this.exercService
+      .addQuestion(this.courseId, this.exerciseId, this.questions)
+      .then(() => {
+        this.successMessage('create');
+        this.showExistingQ = false;
+      })
+      .catch((error) => {
+        this.errorMessage(error);
+      });
+  }
+
+  saveCareerQuestion(): void {
+    this.careerService
+      .addQuestion(this.careerId, this.exerciseId, this.questions)
+      .then(() => {
+        this.successMessage('create');
+        this.showExistingQ = false;
+      })
+      .catch((error) => {
+        this.errorMessage(error);
+      });
+  }
+
+  successMessage(action: string): void {
+    Swal.fire({
+      icon: 'success',
+      title: 'Exito!',
+      text: `pregunta ${
+        action === 'create' ? 'agregada' : 'actualizada'
+      } exitosamente`,
+      confirmButtonText: 'cerrar',
+    });
+  }
+
+  errorMessage(error: string): void {
+    Swal.fire({
+      icon: 'error',
+      title: 'error',
+      text: 'Ocurrió un error' + error,
+      confirmButtonText: 'cerrar',
+    });
   }
 }

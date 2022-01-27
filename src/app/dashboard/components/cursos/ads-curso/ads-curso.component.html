@@ -1,8 +1,8 @@
 <div class="container">
-    <h2>{{admin ? 'Gestión de ' : ''}}Anuncios del Curso</h2>
+    <h2>{{admin ? 'Gestión de ' : ''}}Anuncios {{ careerView ? 'carrera' : 'del Curso' }}</h2>
     <mat-form-field appearance="legacy" class="search">
         <mat-label>Buscar</mat-label>
-        <input matInput (input)="applyFilter($event.target.value)" placeholder="Buscar anuncio"> <!--(input)="applyFilter($event.target.value)"-->
+        <input matInput (input)="applyFilter($event.target.value)" placeholder="Buscar anuncio">
         <mat-icon matSuffix>search</mat-icon>
         <mat-hint>puede buscar por cualquier campo</mat-hint>
     </mat-form-field>
@@ -10,7 +10,7 @@
     <button
     *ngIf="admin"
     mat-raised-button
-    [routerLink]="['/cursos/anuncios/crear/'+this.idCurso]"
+    (click)="goToCreate()"
     class="buttonCreateAds">
     Crear nuevo
     </button>
@@ -76,7 +76,7 @@
                     <button
                     *ngIf="admin"
                     (click)="obtenerIdAnuncioEliminar(element.id)"
-                    matTooltip="Borrar anuncio" mat-stroked-button color="secondary"><!--(click)="deleteUser(element)"-->
+                    matTooltip="Borrar anuncio" mat-stroked-button color="secondary">
                         <mat-icon>delete</mat-icon>
                     </button>
                 </td>
@@ -90,6 +90,6 @@
     </mat-paginator>
 
     <section class="buttonVolver">
-        <button mat-button (click)="goBack()" ><< Volver al curso</button>
+        <button mat-button (click)="goBack()" >{{ careerView ? 'volver a la carrera' : '<< Volver al curso' }}</button>
     </section>
 </div>

@@ -29,28 +29,30 @@ export class StdCerticatesComponent implements OnInit {
     this.getCourses();
   }
 
-  getCourses() {
-    let courses = this.cursos.listCourses()
+  getCourses(): void {
+    const courses = this.cursos.listCourses()
       .valueChanges()
       .subscribe(c => {
         this.coursesList = c;
         this.getUserData(c);
         courses.unsubscribe();
-      })
+      });
   }
 
-  getUserData(cursos) {
-    let userData = this.std.detailUser(this.stdId)
+  getUserData(cursos): void {
+    const userData = this.std.detailUser(this.stdId)
       .valueChanges()
       .subscribe(user => {
         this.getUserCourses(cursos, user);
         userData.unsubscribe();
-      })
+      });
   }
 
-  getUserCourses(cursos, user) {
+  getUserCourses(cursos, user): void {
+    console.log(cursos);
+    console.log(user);
     cursos.forEach(c => {
-      let userCourses = this.cursos.registeredUSerDetail(c.id, this.stdId)
+      const userCourses = this.cursos.registeredUSerDetail(c.id, this.stdId)
         .valueChanges()
         .subscribe(registeredCourse => {
           if (registeredCourse) {
@@ -58,35 +60,38 @@ export class StdCerticatesComponent implements OnInit {
               courseId: c.id,
               stdId: this.stdId,
               courseImg: c.imagen,
-              cc: user.identificacion
-            }
+              cc: user.identificacion ? user.identificacion : '1111'
+            };
             this.isCertified(data);
           }
           userCourses.unsubscribe();
-        })
-    })
+        });
+    });
   }
 
-  isCertified(data) {
-    let certificate = this.certificados.isCertified(data)
+  isCertified(data): void {
+    const certificate = this.certificados.isCertified(data)
       .valueChanges()
       .subscribe((cert: any) => {
         if (cert.length > 0) {
+          console.log('hola');
           cert[0].fechaFinalizacion = this.formatDate(cert[0].fechaFin);
           cert[0].fechaExpiracion = cert[0].fechaExp ? this.formatDate(cert[0].fechaExp) : '';
           cert[0].imagen = data.courseImg;
           this.certificatesList.push(cert[0]);
           this.hasCertificates = true;
+        } else {
+          this.hasCertificates = false;
         }
         certificate.unsubscribe();
-      })
+      });
   }
 
-  downloadPDF(data) {
+  downloadPDF(data): void {
     this.certificados.downloadPDF(data);
   }
 
-  formatDate(date) {
+  formatDate(date): string {
     const fecha = new Date(date.seconds * 1000).toLocaleDateString();
     return fecha;
   }

@@ -99,4 +99,12 @@ export class CarrerasIndexComponent implements OnInit {
     }
   }
 
+  goToAdsCurso(): void {
+    if (this.admin) {
+      this.router.navigate([`/dashboard/carreras/anuncios/${this.careerId}`]);
+    } else {
+      this.router.navigate([`/dashboard/carreras/anuncios/estudiante/${this.careerId}/${this.logguedUser.id}`]);
+    }
+  }
+
 }
