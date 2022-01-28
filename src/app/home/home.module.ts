@@ -40,7 +40,7 @@ import { CareersComponent } from './components/careers/careers.component';
     CourseDetailComponent,
     MainComponent,
     CertValidationComponent,
-    CareersComponent
+    CareersComponent,
   ],
   imports: [
     CommonModule,

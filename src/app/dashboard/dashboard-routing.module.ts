@@ -425,7 +425,7 @@ const routes: Routes = [
         component: CatalogoCarrerasComponent,
       },
       {
-        path: 'carreras/detail/:idCarreras/:idUser',
+        path: 'carreras/detail/dash/:idCarreras/:idUser',
         component: CarrerasDetailComponent,
       },
       {

@@ -38,20 +38,20 @@ export class CoursesComponent implements OnInit, OnDestroy {
     this.coursesReceived.unsubscribe();
   }
 
-  getCourses() {
+  getCourses(): void {
     this.coursesReceived = this.courseService
       .listCourses()
       .valueChanges()
       .subscribe((courses) => {
         this.getCourseCategory(courses);
-        //this.cursos = this.estrellasCourses(courses);
+        // this.cursos = this.estrellasCourses(courses);
         this.getUsersRating(courses);
       });
   }
 
-  getCourseCategory(courses) {
+  getCourseCategory(courses): void {
     courses.forEach((c) => {
-      let category = this.catService
+      const category = this.catService
         .detailCategory(c.categoria)
         .valueChanges()
         .subscribe((cat) => {
@@ -61,14 +61,15 @@ export class CoursesComponent implements OnInit, OnDestroy {
     });
   }
 
-  getUsersRating(courses) {
+  getUsersRating(courses): void {
     courses.forEach((c) => {
       c.promedio = c.estrellas
         ? Number.parseFloat((c.estrellas / c.votos).toString()).toFixed(1)
         : '0';
-      let userRating = this.courseService.getUserStars(this.userId, c.id)
+      const userRating = this.courseService
+        .getUserStars(this.userId, c.id)
         .valueChanges()
-        .subscribe(u => {
+        .subscribe((u) => {
           if (u) {
             c.haVotado = true;
           } else {
@@ -94,7 +95,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
     });
   }
 
-  goToCourseDetail(courseId) {
+  goToCourseDetail(courseId): void {
     if (this.dashboard) {
       this.route.navigate([
         `/dashboard/cursos/detalle/${courseId}/${this.userId}`,
@@ -104,7 +105,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
     }
   }
 
-  agregarEstrella(calificacion: number, item: any) {
+  agregarEstrella(calificacion: number, item: any): void {
     const data = {
       idCurso: item.id,
       calificacion,
@@ -114,8 +115,6 @@ export class CoursesComponent implements OnInit, OnDestroy {
         : calificacion,
       votosAcum: item.votos ? item.votos + 1 : 1,
     };
-    //console.log(item);
-    //console.log(data);
     this.courseService
       .setStarsAndVotes(data)
       .then(() => {
@@ -131,26 +130,26 @@ export class CoursesComponent implements OnInit, OnDestroy {
               ''
             );
           }
-        }),
-          (e) => {
-            this.errorsSwal(
-              'No se pudo calificar el curso.',
-              'Por favor intentelo mas tarde'
-            );
-            console.log(e);
-          };
+        })
+        .catch((e) => {
+          this.errorsSwal(
+            'No se pudo calificar el curso.',
+            'Por favor intentelo mas tarde'
+          );
+          console.log(e);
+        });
       })
       .catch((err) => console.log(err));
   }
 
-  bloquearVotoAlCurso(item: any) {
+  bloquearVotoAlCurso(item: any): void {
     const indexCurso: number = this.cursos.findIndex(
       (curso) => curso.id === item.id
     );
     this.cursos[indexCurso].haVotado = true;
   }
 
-  successSwal(title: string, message: string) {
+  successSwal(title: string, message: string): void {
     Swal.fire({
       icon: 'success',
       title,
@@ -159,7 +158,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
     });
   }
 
-  errorsSwal(title: string, message: string) {
+  errorsSwal(title: string, message: string): void {
     Swal.fire({
       icon: 'error',
       title,

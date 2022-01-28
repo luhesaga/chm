@@ -6,14 +6,14 @@ import { CourseService } from 'src/app/core/services/courses/course.service';
 import Swal from 'sweetalert2';
 import { CourseInfoComponent } from '../courses/course-info/course-info.component';
 import { CarrerasService } from '../../../core/services/carreras/carreras.service';
+import { CarrerasInfoComponent } from 'src/app/dashboard/components/carreras/catalogo-carreras/carreras-info/carreras-info.component';
 
 @Component({
   selector: 'app-careers',
   templateUrl: './careers.component.html',
-  styleUrls: ['./careers.component.scss']
+  styleUrls: ['./careers.component.scss'],
 })
 export class CareersComponent implements OnInit, OnDestroy {
-
   carreras;
   userId;
   dashboard = false;
@@ -43,64 +43,61 @@ export class CareersComponent implements OnInit, OnDestroy {
     }
   }
 
-  getCareers() {
+  getCareers(): void {
     this.careersReceived = this.careerService
       .obtenerCarreras()
       .valueChanges()
       .subscribe((careers) => {
-        console.log(careers);
-        this.getCourseCategory(careers);
-        //this.cursos = this.estrellasCourses(courses);
-        this.getUsersRating(careers);
+        this.carreras = this.getUsersRating(careers);
       });
   }
 
-  getCourseCategory(courses) {
-    courses.forEach((c) => {
-      let category = this.catService
-        .detailCategory(c.categoria)
-        .valueChanges()
-        .subscribe((cat) => {
-          c.categoria = cat.nombre;
-          category.unsubscribe();
-        });
+  getUsersRating(careers): void {
+    careers.forEach((carrera) => {
+      const estrellas: any[] = carrera.calificacionEstrellas;
+      carrera.nroVotos = estrellas.length;
+      this.haVotadoElUsuario(carrera);
     });
+    return careers;
   }
 
-  getUsersRating(courses) {
-    courses.forEach((c) => {
-      c.promedio = c.estrellas
-        ? Number.parseFloat((c.estrellas / c.votos).toString()).toFixed(1)
-        : '0';
-      let userRating = this.courseService.getUserStars(this.userId, c.id)
-        .valueChanges()
-        .subscribe(u => {
-          if (u) {
-            c.haVotado = true;
-          } else {
-            c.haVotado = false;
-          }
-          userRating.unsubscribe();
-        });
+  haVotadoElUsuario(carrera: any): void {
+    const estrellas: any[] = carrera.calificacionEstrellas;
+    const encontrado = estrellas.findIndex(
+      (calificacion) => calificacion.idUsuario === this.userId
+    );
+    if (encontrado === -1) {
+      carrera.haVotado = false;
+    } else {
+      carrera.haVotado = true;
+    }
+    this.promedioVotos(carrera);
+  }
+
+  promedioVotos(carrera: any): void {
+    let promedio = 0;
+    const estrellas: any[] = carrera.calificacionEstrellas;
+    estrellas.forEach((calificacion) => {
+      promedio += calificacion.calificacion;
     });
-    this.carreras = courses;
+    if (estrellas.length > 0) {
+      promedio = Number.parseFloat((promedio / estrellas.length).toString());
+    }
+    carrera.promedio = promedio.toFixed(1);
   }
 
   openDialog(data): void {
     const config = {
       data: {
-        message: 'informacion del curso',
+        message: 'informacion de la carrera',
         content: data,
       },
     };
 
-    const dialogRef = this.dialog.open(CourseInfoComponent, config);
-    dialogRef.afterClosed().subscribe((result) => {
-      // console.log(`Dialog result ${result}`);
-    });
+    const dialogRef = this.dialog.open(CarrerasInfoComponent, config);
   }
 
-  goToCourseDetail(courseId) {
+  goToCourseDetail(courseId): void {
     if (this.dashboard) {
       this.route.navigate([
         `/dashboard/cursos/detalle/${courseId}/${this.userId}`,
@@ -110,53 +107,45 @@ export class CareersComponent implements OnInit, OnDestroy {
     }
   }
 
-  agregarEstrella(calificacion: number, item: any) {
+  agregarEstrella(calificacion: number, item: any): void {
     const data = {
-      idCurso: item.id,
       calificacion,
       idUsuario: this.userId,
-      estrellasAcum: item.estrellas
-        ? item.estrellas + calificacion
-        : calificacion,
-      votosAcum: item.votos ? item.votos + 1 : 1,
     };
-    //console.log(item);
-    //console.log(data);
-    this.courseService
-      .setStarsAndVotes(data)
-      .then(() => {
-        this.courseService.agregarEstrella(data).then(() => {
-          if (calificacion > 1) {
-            this.successSwal(
-              `Gracias por su calificación de ${calificacion} estrellas`,
-              ''
-            );
-          } else {
-            this.successSwal(
-              `Gracias por su calificación de ${calificacion} estrella`,
-              ''
-            );
-          }
-        }),
-          (e) => {
-            this.errorsSwal(
-              'No se pudo calificar el curso.',
-              'Por favor intentelo mas tarde'
-            );
-            console.log(e);
-          };
-      })
-      .catch((err) => console.log(err));
+    const estrellas: any[] = item.calificacionEstrellas;
+    estrellas.push(data);
+    this.careerService.agregarEstrella(estrellas, item.id).then(
+      () => {
+        if (calificacion > 1) {
+          this.successSwal(
+            `Gracias por su calificación de ${calificacion} estrellas`,
+            ''
+          );
+        } else {
+          this.successSwal(
+            `Gracias por su calificación de ${calificacion} estrella`,
+            ''
+          );
+        }
+      },
+      (e) => {
+        this.errorsSwal(
+          'No se pudo calificar la carrera.',
+          'Por favor intentelo mas tarde'
+        );
+        console.log(e);
+      }
+    );
   }
 
-  bloquearVotoAlCurso(item: any) {
+  bloquearVotoAlCurso(item: any): void {
     const indexCurso: number = this.carreras.findIndex(
       (curso) => curso.id === item.id
     );
     this.carreras[indexCurso].haVotado = true;
   }
 
-  successSwal(title: string, message: string) {
+  successSwal(title: string, message: string): void {
     Swal.fire({
       icon: 'success',
       title,
@@ -165,7 +154,7 @@ export class CareersComponent implements OnInit, OnDestroy {
     });
   }
 
-  errorsSwal(title: string, message: string) {
+  errorsSwal(title: string, message: string): void {
     Swal.fire({
       icon: 'error',
       title,
@@ -173,5 +162,4 @@ export class CareersComponent implements OnInit, OnDestroy {
       confirmButtonText: 'Cerrar',
     });
   }
-
 }

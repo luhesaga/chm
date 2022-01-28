@@ -14,7 +14,7 @@ export class StdCerticatesComponent implements OnInit {
   stdId;
   coursesList;
   certificatesList: any = [];
-  hasCertificates = true;
+  hasCertificates = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -80,8 +80,6 @@ export class StdCerticatesComponent implements OnInit {
           cert[0].imagen = data.courseImg;
           this.certificatesList.push(cert[0]);
           this.hasCertificates = true;
-        } else {
-          this.hasCertificates = false;
         }
         certificate.unsubscribe();
       });

@@ -33,7 +33,6 @@ export class CarrerasIndexComponent implements OnInit {
     } else if (this.userType === 'std') {
       this.std = true;
     }
-    // console.log(`id Carrera: ${this.careerId} admin: ${this.admin}`);
   }
 
   ngOnInit(): void {

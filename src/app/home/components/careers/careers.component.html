@@ -1,24 +1,28 @@
 <section class="main-container">
-    <h2>nuestras carreras</h2>
+    <h2>nuestras carresas</h2>
     <div class="courses-container">
         <div class="single-course" *ngFor="let item of carreras">
             <div class="course-image">
-                <img src="{{ item.image }}" alt="" loading="lazy">
-                
-                
+                <img src="{{ item.image }}" alt="" loading="lazy" />
                 <div class="course-info">
-                    <span (click)="openDialog(item)" class="material-icons">info</span>
+                    <span
+                    (click)="openDialog(item)"
+                    class="material-icons">info</span>
                 </div>
             </div>
             <div class="course-detail">
-                <h3><a (click)="goToCourseDetail(item.id)">{{ item.nombre }}</a></h3>
+                <h3
+                [routerLink]="'/carreras/detail/'+item.id+'/home'"
+                ><a>{{ item.nombre }}</a></h3>
                 <div class="ranking">
-                    <star-rating [starType]="'svg'"
+                    <star-rating 
                     (starClickChange)="agregarEstrella($event.rating, item)"
+                    [starType]="'svg'"
+                    [speed]="'slow'"
                     [disabled]="item.haVotado || !dashboard"
                     [rating]="item.promedio"
                     [staticColor]="'ok'" [step]="0.5" [showHalfStars]="true"></star-rating>
-                    <p>{{item.promedio}} {{item.promedio<2 ? 'estrella':'estrellas'}} | {{item.votos}} votos</p>
+                    <p>{{item.promedio}} {{item.promedio<2 ? 'estrella':'estrellas'}} | {{item.nroVotos}} votos</p>
                 </div>
             </div>
         </div>

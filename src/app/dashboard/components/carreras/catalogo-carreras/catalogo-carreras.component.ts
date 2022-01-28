@@ -9,131 +9,129 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-catalogo-carreras',
   templateUrl: './catalogo-carreras.component.html',
-  styleUrls: ['./catalogo-carreras.component.scss']
+  styleUrls: ['./catalogo-carreras.component.scss'],
 })
-export class CatalogoCarrerasComponent implements OnInit,OnDestroy {
-
-  carreras:any[];
-  userId:string;
+export class CatalogoCarrerasComponent implements OnInit, OnDestroy {
+  carreras: any[];
+  userId: string;
   unsubscribe: Subscription;
 
   constructor(
     public dialog: MatDialog,
     private activatedRoute: ActivatedRoute,
     private carrerasService: CarrerasService
-  )
-  {
+  ) {
     this.userId = this.activatedRoute.snapshot.params.idUser;
     this.carreras = [];
     this.obtenerCarreras();
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
-  ngOnDestroy(){
+  ngOnDestroy(): void {
     this.unsubscribe.unsubscribe();
   }
 
-  obtenerCarreras()
-  {
-    this.unsubscribe= this.carrerasService.obtenerCarreras()
-    .valueChanges()
-    .subscribe(carreras => {
-      this.carreras = this.estrellasCarreras(carreras);
-    });
+  obtenerCarreras(): void {
+    this.unsubscribe = this.carrerasService
+      .obtenerCarreras()
+      .valueChanges()
+      .subscribe((carreras) => {
+        this.carreras = this.estrellasCarreras(carreras);
+      });
   }
 
-  estrellasCarreras(carreras:any[])
-  {
-    carreras.forEach(carrera => {
-      const estrellas:any[] = carrera.calificacionEstrellas;
+  estrellasCarreras(carreras: any[]): any {
+    carreras.forEach((carrera) => {
+      const estrellas: any[] = carrera.calificacionEstrellas;
       carrera.nroVotos = estrellas.length;
       this.haVotadoElUsuario(carrera);
     });
     return carreras;
   }
 
-  haVotadoElUsuario(carrera:any)
-  {
-    const estrellas:any[] = carrera.calificacionEstrellas;
-    const encontrado = estrellas.findIndex(calificacion => calificacion.idUsuario == this.userId);
-    if(encontrado === -1)
-    {
-      carrera.haVotado= false;
-    }
-    else
-    {
-      carrera.haVotado= true;
+  haVotadoElUsuario(carrera: any): void {
+    const estrellas: any[] = carrera.calificacionEstrellas;
+    const encontrado = estrellas.findIndex(
+      (calificacion) => calificacion.idUsuario === this.userId
+    );
+    if (encontrado === -1) {
+      carrera.haVotado = false;
+    } else {
+      carrera.haVotado = true;
     }
     this.promedioVotos(carrera);
-    console.log(carrera);
   }
 
-  promedioVotos(carrera:any)
-  {
-    let promedio =0;
-    const estrellas:any[] = carrera.calificacionEstrellas;
-    estrellas.forEach(calificacion => {promedio +=calificacion.calificacion});
-    if(estrellas.length>0)
-    {
-      promedio = Number.parseFloat(((promedio/estrellas.length).toString()));
+  promedioVotos(carrera: any): void {
+    let promedio = 0;
+    const estrellas: any[] = carrera.calificacionEstrellas;
+    estrellas.forEach((calificacion) => {
+      promedio += calificacion.calificacion;
+    });
+    if (estrellas.length > 0) {
+      promedio = Number.parseFloat((promedio / estrellas.length).toString());
     }
-    carrera.promedio= promedio.toFixed(1);
+    carrera.promedio = promedio.toFixed(1);
   }
 
   openDialog(dataCarrera): void {
     const config = {
       data: {
         message: 'informacion de la carrera',
-        content: dataCarrera
-      }
+        content: dataCarrera,
+      },
     };
 
     const dialogRef = this.dialog.open(CarrerasInfoComponent, config);
   }
 
-  agregarEstrella(calificacion:number, item:any)
-  {
-    const data={
+  agregarEstrella(calificacion: number, item: any): void {
+    const data = {
       calificacion,
-      idUsuario: this.userId
+      idUsuario: this.userId,
     };
-    const estrellas:any[] = item.calificacionEstrellas;
+    const estrellas: any[] = item.calificacionEstrellas;
     estrellas.push(data);
-    this.carrerasService.agregarEstrella(estrellas, item.id)
-    .then(()=>{
-      if(calificacion>1)
-      {
-        this.successSwal(`Gracias por su calificación de ${calificacion} estrellas`,'')
-      }else
-      {
-        this.successSwal(`Gracias por su calificación de ${calificacion} estrella`,'')
-      }
+    this.carrerasService.agregarEstrella(estrellas, item.id).then(
+      () => {
+        if (calificacion > 1) {
+          this.successSwal(
+            `Gracias por su calificación de ${calificacion} estrellas`,
+            ''
+          );
+        } else {
+          this.successSwal(
+            `Gracias por su calificación de ${calificacion} estrella`,
+            ''
+          );
+        }
       },
-      (e)=>{
-        this.errorsSwal('No se pudo calificar la carrera.','Por favor intentelo mas tarde')
-        console.log(e)});
+      (e) => {
+        this.errorsSwal(
+          'No se pudo calificar la carrera.',
+          'Por favor intentelo mas tarde'
+        );
+        console.log(e);
+      }
+    );
   }
 
-  successSwal(title:string, message:string)
-  {
+  successSwal(title: string, message: string): void {
     Swal.fire({
-      icon:'success',
+      icon: 'success',
       title,
-      text:message,
-      confirmButtonText:'Aceptar',
+      text: message,
+      confirmButtonText: 'Aceptar',
     });
   }
 
-  errorsSwal(title:string, message:string)
-  {
+  errorsSwal(title: string, message: string): void {
     Swal.fire({
-      icon:'error',
+      icon: 'error',
       title,
-      text:message,
-      confirmButtonText:'Cerrar',
+      text: message,
+      confirmButtonText: 'Cerrar',
     });
   }
-
 }

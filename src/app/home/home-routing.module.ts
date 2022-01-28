@@ -11,6 +11,7 @@ import { CourseInfoComponent } from './components/courses/course-info/course-inf
 import { CourseDetailComponent } from './components/courses/course-detail/course-detail.component';
 import { MainComponent } from './components/main/main.component';
 import { CertValidationComponent } from './components/certificates/cert-validation/cert-validation.component';
+import { CarrerasDetailComponent } from '../dashboard/components/carreras/carreras-detail/carreras-detail.component';
 
 const routes: Routes = [
   {
@@ -44,6 +45,10 @@ const routes: Routes = [
       {
         path: ':tag',
         component: MainComponent
+      },
+      {
+        path: 'carreras/detail/:idCarreras/:home',
+        component: CarrerasDetailComponent,
       },
     ]
   },
