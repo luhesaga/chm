@@ -77,6 +77,7 @@ export class CarrerasIndexComponent implements OnInit {
     const config = {
       data: {
         id: this.careerId,
+        userType: this.userType
       },
       height: '40rem',
       width: '50rem',

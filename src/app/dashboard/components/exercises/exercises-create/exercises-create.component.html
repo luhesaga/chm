@@ -89,6 +89,21 @@
                                     </mat-radio-group>
                                 </div> -->
 
+                                <p>Número de preguntas del examen</p>
+                                <div class="options">
+                                    <mat-form-field appearance="fill">
+                                        <mat-label>preguntas</mat-label>
+                                        <input
+                                            formControlName="questionsNumber"
+                                            [(ngModel)]="questions"
+                                            matInput
+                                            placeholder="0"
+                                            type="number">
+                                        <mat-error *ngIf="questionsNumber.touched && questionsNumber.invalid">
+                                            <ng-container *ngIf="questionsNumber.hasError('required')">debe definir las preguntas.</ng-container>
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
                                 <p>Número máximo de intentos</p>
                                 <div class="options">
                                     <mat-form-field appearance="fill">
@@ -106,7 +121,6 @@
                                         </select>
                                     </mat-form-field>
                                 </div>
-
                                 <p>Duración del ejercicio (en minutos)</p>
                                 <div class="options">
                                     <mat-form-field appearance="fill">
@@ -115,7 +129,6 @@
                                             formControlName="duration"
                                             [(ngModel)]="duracion"
                                             matInput
-                                            placeholder="30"
                                             type="number">
                                         <mat-error *ngIf="duration.touched && duration.invalid">
                                             <ng-container *ngIf="duration.hasError('required')">debe definir la duración.</ng-container>

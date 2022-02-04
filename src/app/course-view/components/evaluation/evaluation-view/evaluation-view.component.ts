@@ -115,15 +115,15 @@ export class EvaluationViewComponent implements OnInit, OnDestroy {
     if (this.careerId) {
       this.careerView = true;
     }
-    console.log(this.careerView);
+    // console.log(this.careerView);
     // console.log(
     //   `curso: ${this.idCurso} leccion: ${this.idLesson} carrera: ${this.careerId}`
     // );
     // console.log(
     //   `contenido: ${this.idContent} ejercicio: ${this.exercId} usuario: ${this.stdId}`
     // );
-    this.noBackButton(true);
-    window.addEventListener('beforeunload', this.getCloseEvent);
+    // this.noBackButton(true);
+    // window.addEventListener('beforeunload', this.getCloseEvent);
   }
 
   ngOnInit(): void {
@@ -178,10 +178,16 @@ export class EvaluationViewComponent implements OnInit, OnDestroy {
               const questionsReceived = ex.preguntas;
               if (ex.seleccion === 2) {
                 this.questions = this.sortArray(questionsReceived);
+                if (ex.questionsNumber) {
+                  this.questions.length = ex.questionsNumber;
+                }
                 this.sortRelationQuestions();
                 this.setTotalAnswers();
               } else {
                 this.questions = questionsReceived;
+                if (ex.questionsNumber) {
+                  this.questions.length = ex.questionsNumber;
+                }
                 this.sortRelationQuestions();
                 this.setTotalAnswers();
               }
@@ -220,10 +226,16 @@ export class EvaluationViewComponent implements OnInit, OnDestroy {
               const questionsReceived = ex.preguntas;
               if (ex.seleccion === 2) {
                 this.questions = this.sortArray(questionsReceived);
+                if (ex.questionsNumber) {
+                  this.questions.length = ex.questionsNumber;
+                }
                 this.sortRelationQuestions();
                 this.setTotalAnswers();
               } else {
                 this.questions = questionsReceived;
+                if (ex.questionsNumber) {
+                  this.questions.length = ex.questionsNumber;
+                }
                 this.sortRelationQuestions();
                 this.setTotalAnswers();
               }

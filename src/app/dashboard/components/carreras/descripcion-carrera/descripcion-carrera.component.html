@@ -18,8 +18,8 @@
                         <div id="descripcion-carrera"></div>
                     </mat-card-content>
                     <mat-card-actions>
-                        <button mat-button (click)="descriptionEdit('descripción')">Editar</button>
-                        <button mat-button (click)="descriptionDelete('descripción')">Eliminar</button>
+                        <button mat-button (click)="descriptionEdit('descripción')" *ngIf="userType === 'admin'">Editar</button>
+                        <button mat-button (click)="descriptionDelete('descripción')" *ngIf="userType === 'admin'">Eliminar</button>
                     </mat-card-actions>
                 </mat-card>
             </div>
@@ -34,8 +34,8 @@
                         <div id="introduccion"></div>
                     </mat-card-content>
                     <mat-card-actions>
-                        <button mat-button (click)="descriptionEdit('introducción')">Editar</button>
-                        <button mat-button (click)="descriptionDelete('introducción')">Eliminar</button>
+                        <button mat-button (click)="descriptionEdit('introducción')" *ngIf="userType === 'admin'">Editar</button>
+                        <button mat-button (click)="descriptionDelete('introducción')" *ngIf="userType === 'admin'">Eliminar</button>
                     </mat-card-actions>
                 </mat-card>
             </div>
@@ -50,8 +50,8 @@
                         <div id="contenido"></div>
                     </mat-card-content>
                     <mat-card-actions>
-                        <button mat-button (click)="descriptionEdit('contenido')">Editar</button>
-                        <button mat-button (click)="descriptionDelete('contenido')">Eliminar</button>
+                        <button mat-button (click)="descriptionEdit('contenido')" *ngIf="userType === 'admin'">Editar</button>
+                        <button mat-button (click)="descriptionDelete('contenido')" *ngIf="userType === 'admin'">Eliminar</button>
                     </mat-card-actions>
                 </mat-card>
             </div>
@@ -66,8 +66,8 @@
                         <div id="objetivo"></div>
                     </mat-card-content>
                     <mat-card-actions>
-                        <button mat-button (click)="descriptionEdit('Objetivos')">Editar</button>
-                        <button mat-button (click)="descriptionDelete('Objetivos')">Eliminar</button>
+                        <button mat-button (click)="descriptionEdit('Objetivos')" *ngIf="userType === 'admin'">Editar</button>
+                        <button mat-button (click)="descriptionDelete('Objetivos')" *ngIf="userType === 'admin'">Eliminar</button>
                     </mat-card-actions>
                 </mat-card>
             </div>
@@ -82,8 +82,8 @@
                         <div id="duracion"></div>
                     </mat-card-content>
                     <mat-card-actions>
-                        <button mat-button (click)="descriptionEdit('duración')">Editar</button>
-                        <button mat-button (click)="descriptionDelete('duración')">Eliminar</button>
+                        <button mat-button (click)="descriptionEdit('duración')" *ngIf="userType === 'admin'">Editar</button>
+                        <button mat-button (click)="descriptionDelete('duración')" *ngIf="userType === 'admin'">Eliminar</button>
                     </mat-card-actions>
                 </mat-card>
             </div>
@@ -98,8 +98,8 @@
                         <div id="requisitosPrevios"></div>
                     </mat-card-content>
                     <mat-card-actions>
-                    <button mat-button (click)="descriptionEdit('requisitos previos')">Editar</button>
-                    <button mat-button (click)="descriptionDelete('requisitos previos')">Eliminar</button>
+                    <button mat-button (click)="descriptionEdit('requisitos previos')" *ngIf="userType === 'admin'">Editar</button>
+                    <button mat-button (click)="descriptionDelete('requisitos previos')" *ngIf="userType === 'admin'">Eliminar</button>
                     </mat-card-actions>
                 </mat-card>
             </div>
@@ -114,8 +114,8 @@
                         <div id="dirigido"></div>
                     </mat-card-content>
                     <mat-card-actions>
-                    <button mat-button (click)="descriptionEdit('dirigido a')">Editar</button>
-                    <button mat-button (click)="descriptionDelete('dirigido a')">Eliminar</button>
+                    <button mat-button (click)="descriptionEdit('dirigido a')" *ngIf="userType === 'admin'">Editar</button>
+                    <button mat-button (click)="descriptionDelete('dirigido a')" *ngIf="userType === 'admin'">Eliminar</button>
                     </mat-card-actions>
                 </mat-card>
             </div>
@@ -130,8 +130,8 @@
                         <div id="evaluacion"></div>
                     </mat-card-content>
                     <mat-card-actions>
-                    <button mat-button (click)="descriptionEdit('evaluación de aprendizaje')">Editar</button>
-                    <button mat-button (click)="descriptionDelete('evaluación de aprendizaje')">Eliminar</button>
+                    <button mat-button (click)="descriptionEdit('evaluación de aprendizaje')" *ngIf="userType === 'admin'">Editar</button>
+                    <button mat-button (click)="descriptionDelete('evaluación de aprendizaje')" *ngIf="userType === 'admin'">Eliminar</button>
                     </mat-card-actions>
                 </mat-card>
             </div>
@@ -146,8 +146,8 @@
                         <div id="requisitosCalificacion"></div>
                     </mat-card-content>
                     <mat-card-actions>
-                    <button mat-button (click)="descriptionEdit('requisitos para calificación')">Editar</button>
-                    <button mat-button (click)="descriptionDelete('requisitos para calificación')">Eliminar</button>
+                    <button mat-button (click)="descriptionEdit('requisitos para calificación')" *ngIf="userType === 'admin'">Editar</button>
+                    <button mat-button (click)="descriptionDelete('requisitos para calificación')" *ngIf="userType === 'admin'">Eliminar</button>
                     </mat-card-actions>
                 </mat-card>
             </div>

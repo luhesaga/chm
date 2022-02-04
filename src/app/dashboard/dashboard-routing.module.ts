@@ -61,6 +61,7 @@ import { CarrerasIndexComponent } from './components/carreras/carreras-index/car
 import { CarrerasLeccionesComponent } from './components/carreras/carreras-lecciones/carreras-lecciones.component';
 import { EvaluationHomeComponent } from '../course-view/components/evaluation/evaluation-home/evaluation-home.component';
 import { EvaluationFinishComponent } from '../course-view/components/evaluation/evaluation-finish/evaluation-finish.component';
+import { CertValidationComponent } from '../home/components/certificates/cert-validation/cert-validation.component';
 
 const routes: Routes = [
   {
@@ -436,6 +437,10 @@ const routes: Routes = [
         path: 'carreras/index/:careerId/:type',
         component: CarrerasIndexComponent,
       },
+      {
+        path: 'consulta-certificados',
+        component: CertValidationComponent
+      }
     ],
   },
   {

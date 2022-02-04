@@ -87,11 +87,6 @@ export class EvaluationHomeComponent implements OnInit, OnDestroy, DoCheck {
     if (stdView) {
       this.std = true;
     }
-    // console.log(this.careerView);
-    // console.log(`curso: ${this.idCurso} leccion: ${this.idLesson}`);
-    // console.log(
-    //   `contenido: ${this.idContent} usuario: ${this.stdId} carrera: ${this.careerId}`
-    // );
   }
 
   ngOnInit(): void {
@@ -132,7 +127,6 @@ export class EvaluationHomeComponent implements OnInit, OnDestroy, DoCheck {
       .valueChanges()
       .subscribe((course) => {
         this.course = course;
-        console.log(this.course);
       });
   }
 
@@ -142,7 +136,6 @@ export class EvaluationHomeComponent implements OnInit, OnDestroy, DoCheck {
       .valueChanges()
       .subscribe((lesson) => {
         this.lesson = lesson;
-        console.log(this.lesson);
         lessonReceived.unsubscribe();
       });
   }
@@ -154,8 +147,6 @@ export class EvaluationHomeComponent implements OnInit, OnDestroy, DoCheck {
       .subscribe((content: any) => {
         this.evaluation = content;
         this.getPreviousTries(content);
-        // gfgfgf
-        console.log(this.evaluation);
         evaluationReceived.unsubscribe();
       });
   }
@@ -182,7 +173,6 @@ export class EvaluationHomeComponent implements OnInit, OnDestroy, DoCheck {
         .exerciseDetail(this.idCurso, content.ejercicio.id)
         .valueChanges()
         .subscribe((exerc: any) => {
-          console.log(exerc);
           this.setExercise(exerc);
           this.getPreviousTestAnswers(content);
           // console.log(`puede ver la prueba: ${this.canViewTest}`);
@@ -194,9 +184,10 @@ export class EvaluationHomeComponent implements OnInit, OnDestroy, DoCheck {
   }
 
   setExercise(content): void {
+    // console.log(content);
     this.exercises = content;
     if (content.preguntas[0]?.type === 6) {
-      const exerId = this.careerView ? content.id : content.ejercicio.id;
+      const exerId = !this.careerView ? content.id : content.id;
       this.prepareTest(content, exerId);
     } else {
       this.tarea = 1;
@@ -293,8 +284,6 @@ export class EvaluationHomeComponent implements OnInit, OnDestroy, DoCheck {
         .subscribe((pta) => {
           let cont = 0;
           let valor = 0;
-          // const fecha = new Date(pta.fecha);
-          // console.log(fecha.toLocaleDateString());
           pta.respuestas.forEach((r) => {
             if (r.valor) {
               valor += r.valor;
@@ -303,11 +292,9 @@ export class EvaluationHomeComponent implements OnInit, OnDestroy, DoCheck {
               }
             }
           });
-          // console.log(valor);
           pta.nota = Math.ceil(((valor / pta.respuestas.length) * 100) / 100);
           pta.correctas = cont;
           this.previousTestAnswers.push(pta);
-          // console.log(this.previousTestAnswers);
           prTsAn.unsubscribe();
         });
     });
@@ -316,7 +303,9 @@ export class EvaluationHomeComponent implements OnInit, OnDestroy, DoCheck {
   getAnswersToPass(): number {
     let intentos = 0;
     if (this.questions && this.exercises) {
-      const q = this.questions.length;
+      const q = this.exercises.questionsNumber
+        ? this.exercises.questionsNumber
+        : this.questions.length;
       const p = this.exercises.porcentaje;
 
       intentos = Math.ceil(q * (p / 100));
@@ -400,7 +389,9 @@ export class EvaluationHomeComponent implements OnInit, OnDestroy, DoCheck {
       ]);
     } else {
       this.router.navigate([
-        `dashboard/mis-cursos-lecciones-carrera/${this.stdId}/${this.careerId}/${'std'}`,
+        `dashboard/mis-cursos-lecciones-carrera/${this.stdId}/${
+          this.careerId
+        }/${'std'}`,
       ]);
     }
   }
@@ -588,9 +579,9 @@ export class EvaluationHomeComponent implements OnInit, OnDestroy, DoCheck {
       .subscribe((exerc: any) => {
         this.exercises = exerc;
         this.tarea = 1;
-        this.tarea = 1;
         this.questions = exerc.preguntas;
         this.getPreviousTries(exerc);
+        ex.unsubscribe();
       });
   }
 }

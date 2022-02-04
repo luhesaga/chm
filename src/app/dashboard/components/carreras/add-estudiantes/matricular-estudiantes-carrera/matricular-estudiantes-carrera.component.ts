@@ -15,6 +15,7 @@ import { CourseService } from 'src/app/core/services/courses/course.service';
 import { UsersService } from 'src/app/core/services/users/users.service';
 import Swal from 'sweetalert2';
 import { Subscription } from 'rxjs';
+import { MailService } from 'src/app/core/services/mail/mail.service';
 
 @Component({
   selector: 'app-matricular-estudiantes-carrera',
@@ -35,6 +36,7 @@ export class MatricularEstudiantesCarreraComponent
     'actions',
   ];
   dataSource = new MatTableDataSource();
+  career: any;
 
   users: any[];
   cursosCarrera: any[];
@@ -45,17 +47,29 @@ export class MatricularEstudiantesCarreraComponent
     @Inject(MAT_DIALOG_DATA) public dataReceived: any,
     public carrerasService: CarrerasService,
     public userService: UsersService,
-    public courseService: CourseService
+    public courseService: CourseService,
+    private mailService: MailService
   ) {
     this.unsubscribe = [];
-    this.obtenerCursosCarrera();
-    this.obtenerUsuarios();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.obtenerCursosCarrera();
+    this.obtenerUsuarios();
+    this.getCareerInfo();
+  }
 
   ngOnDestroy(): void {
     this.unsubscribe.forEach((subscription) => subscription.unsubscribe());
+  }
+
+  getCareerInfo(): void {
+    const unsubscribe = this.carrerasService.obtenerCarrera(this.dataReceived.idCarrera)
+      .valueChanges()
+      .subscribe(c => {
+        this.career = c;
+        this.unsubscribe.push(unsubscribe);
+      });
   }
 
   obtenerCursosCarrera(): void {
@@ -314,6 +328,7 @@ export class MatricularEstudiantesCarreraComponent
       }
       if (ultimoCurso === index || ultimoCurso === -1) {
         this.mensajeExito(`${element.stdName} matriculado exitosamente`);
+        this.sendEmailMassive(element);
       }
     });
   }
@@ -354,5 +369,33 @@ export class MatricularEstudiantesCarreraComponent
         Swal.showLoading();
       },
     });
+  }
+
+  async sendEmailMassive(estudiante): Promise<void> {
+    const data = {
+      nombre: estudiante.nombres,
+      correo: estudiante.correo,
+      curso: this.career.nombre,
+    };
+    /*convertir el array en objeto, poner los datos en la constante data
+    y todo hacerlo un objeto tipo JSON*/
+    JSON.stringify(Object.assign(data));
+    await this.mailService
+      .careerRegistration(data)
+      .toPromise()
+      .then(
+        () => {
+          console.log(`registrado ${estudiante.nombres}`);
+        },
+        (e) => {
+          console.log(e);
+          Swal.fire({
+            icon: 'error',
+            title: 'Correo no enviado',
+            text: `El correo de confirmación no pudo ser enviado a usuario ${estudiante.nombres}.`,
+            confirmButtonText: 'cerrar',
+          });
+        }
+      );
   }
 }

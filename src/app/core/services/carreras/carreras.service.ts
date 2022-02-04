@@ -140,7 +140,8 @@ export class CarrerasService {
           mostrarResultados: data.showResults * 1,
           textoFinal: data.textEnd ? data.textEnd : '',
           tipo: 'ejercicio',
-          posicion: data.posicion
+          posicion: data.posicion,
+          questionsNumber: data.questionsNumber * 1
         });
   }
 
@@ -157,6 +158,7 @@ export class CarrerasService {
         seleccion: data.questionSelect * 1,
         mostrarResultados: data.showResults * 1,
         textoFinal: data.textEnd ? data.textEnd : '',
+        questionsNumber: data.questionsNumber * 1
       });
   }
 
@@ -171,8 +173,6 @@ export class CarrerasService {
   }
 
   addQuestion(careerId: string, exercId: string, question): Promise<void> {
-    // console.log(`carrera: ${careerId} ejercicio: ${exercId}`);
-    // console.log(question);
     return this.fireStore
       .doc(`carreras/${careerId}/cursos/${exercId}`)
       .update({

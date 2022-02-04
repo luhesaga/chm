@@ -286,7 +286,7 @@ export class EvaluationFinishComponent implements OnInit, OnDestroy {
 
         if (cont > 0 && !respuestas.revisado) {
           const data = {
-            to: 'admin@chym-elearning.com',
+            to: 'tutoria@chym-ndt.com',
             // to: 'luhesaga@gmail.com',
             asunto: `revision pendiente ${this.stdInfo.nombres} ${this.stdInfo.apellidos}`,
             curso: this.courseInfo.nombre,

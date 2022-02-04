@@ -66,6 +66,7 @@ export class LoginComponent implements OnInit {
             if (!us.fechaCreacion) {
               this.userServ.updateCreateDate(us.id, u.metadata.creationTime);
             }
+            localStorage.setItem('correoCursos', 'no');
             user.unsubscribe();
           });
           getDate.unsubscribe();

@@ -68,7 +68,7 @@ export class ExercisesRevDetailComponent implements OnInit {
     if (this.careerId) {
       this.careerView = true;
     }
-    console.log(this.careerView);
+    // console.log(this.careerView);
   }
 
   ngOnInit(): void {

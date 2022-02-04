@@ -67,7 +67,6 @@ export class QuestionsListComponent
       this.getCareerExerciseDetail();
     }
     this.existingQuestions = this.getExistingQuestions();
-    // console.log(this.existingQuestions);
   }
 
   ngAfterViewInit(): void {
@@ -92,7 +91,7 @@ export class QuestionsListComponent
       .subscribe((ex: any) => {
         if (ex) {
           this.exerciseReceived = ex;
-          this.questions = ex.preguntas;
+          this.questions = ex.preguntas ? ex.preguntas : [];
           this.dataSource.data = this.questions;
         } else {
           this.dataSource.data = [];
@@ -283,19 +282,17 @@ export class QuestionsListComponent
   parseHTML(html): string {
     const t = document.createElement('template');
     t.innerHTML = html;
-    // console.log(t.content.firstChild.textContent);
     return t.content.firstChild.textContent;
   }
 
   getExistingQuestions(): any {
     const preguntas = [];
-    this.courseQuestions(preguntas);
-    // this.careerQuestions(preguntas);
+    this.getCourseQuestions(preguntas);
     // console.log(preguntas);
     return preguntas;
   }
 
-  courseQuestions(preguntas): void {
+  getCourseQuestions(preguntas): void {
     const courses = this.courseService
       .listCourses()
       .valueChanges()
@@ -303,12 +300,7 @@ export class QuestionsListComponent
         c.forEach((curso, index) => {
           preguntas.push({
             curso: curso.nombre,
-            q1: [],
-            q2: [],
-            q3: [],
-            q4: [],
-            q5: [],
-            q6: [],
+            evaluation: [],
           });
           this.getQuestions(curso, index, preguntas);
         });
@@ -316,56 +308,49 @@ export class QuestionsListComponent
       });
   }
 
-  careerQuestions(preguntas): void {
-    this.careerService.obtenerCarreras()
-    .valueChanges()
-    .subscribe(c => {
-      c.forEach((carrera) => {
-        preguntas.push({
-          curso: carrera.nombre,
-          q1: [],
-          q2: [],
-          q3: [],
-          q4: [],
-          q5: [],
-          q6: [],
-        });
-        console.log(preguntas);
-        this.getQuestions(carrera, preguntas.length, preguntas);
-      });
-    });
-  }
-
   getQuestions(course, i, preguntas): void {
     const exerc = this.exercService
-      .listExercises(course.id)
+      .listExercisesByName(course.id)
       .valueChanges()
       .subscribe((exercises: any) => {
         // console.log(exercises);
-        exercises.forEach((ex) => {
-          ex.preguntas.forEach((q) => {
-            switch (q.type) {
-              case 1:
-                preguntas[i].q1.push(q);
-                break;
-              case 2:
-                preguntas[i].q2.push(q);
-                break;
-              case 3:
-                preguntas[i].q3.push(q);
-                break;
-              case 4:
-                preguntas[i].q4.push(q);
-                break;
-              case 5:
-                preguntas[i].q5.push(q);
-                break;
-              case 6:
-                preguntas[i].q6.push(q);
-                break;
+        if (exercises.length > 0) {
+          exercises.forEach((ex, index) => {
+            if (ex.preguntas) {
+              preguntas[i].evaluation.push({
+                evaluation: ex.nombre,
+                q1: [],
+                q2: [],
+                q3: [],
+                q4: [],
+                q5: [],
+                q6: [],
+              });
+              ex.preguntas.forEach((q) => {
+                switch (q.type) {
+                  case 1:
+                    preguntas[i].evaluation[index].q1.push(q);
+                    break;
+                  case 2:
+                    preguntas[i].evaluation[index].q2.push(q);
+                    break;
+                  case 3:
+                    preguntas[i].evaluation[index].q3.push(q);
+                    break;
+                  case 4:
+                    preguntas[i].evaluation[index].q4.push(q);
+                    break;
+                  case 5:
+                    preguntas[i].evaluation[index].q5.push(q);
+                    break;
+                  case 6:
+                    preguntas[i].evaluation[index].q6.push(q);
+                    break;
+                }
+              });
             }
           });
-        });
+        }
         exerc.unsubscribe();
       });
   }
@@ -383,17 +368,23 @@ export class QuestionsListComponent
   }
 
   saveQuestion(): void {
+    let pos: number;
+    if (!this.questions) {
+      this.questions = [];
+      pos = 1;
+    } else {
+      pos = this.questions.length + 1;
+    }
     const q = this.selectedQuestion;
-    const pos = this.questions.length + 1;
+
     if (this.selectedQuestion) {
       this.questions.push({
         question: q.question,
         type: q.type,
         answers: q.answers,
         position: pos,
-        tarea: q.tarea,
+        tarea: q.tarea ? q.tarea : '',
       });
-      // console.log(this.questions);
       this.dataSource.data = this.questions;
       if (!this.careerView) {
         this.saveCourseQuestion();
@@ -408,7 +399,6 @@ export class QuestionsListComponent
         confirmButtonText: 'cerrar',
       });
     }
-
   }
 
   saveCourseQuestion(): void {

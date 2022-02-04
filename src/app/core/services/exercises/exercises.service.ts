@@ -18,6 +18,13 @@ export class ExercisesService {
     );
   }
 
+  listExercisesByName(courseId: string): AngularFirestoreCollection {
+    return this.fireStore.collection(
+      `ejercicios/${courseId}/ejercicios`,
+      (ref) => ref.orderBy('nombre', 'asc')
+    );
+  }
+
   exerciseDetail(courseId: string, exercId: string): AngularFirestoreDocument {
     return this.fireStore.doc(`ejercicios/${courseId}/ejercicios/${exercId}`);
   }
@@ -36,6 +43,7 @@ export class ExercisesService {
       seleccion: data.questionSelect * 1,
       mostrarResultados: data.showResults * 1,
       textoFinal: data.textEnd ? data.textEnd : '',
+      questionsNumber: data.questionsNumber * 1
     });
   }
 
@@ -53,6 +61,7 @@ export class ExercisesService {
         seleccion: data.questionSelect * 1,
         mostrarResultados: data.showResults * 1,
         textoFinal: data.textEnd ? data.textEnd : '',
+        questionsNumber: data.questionsNumber * 1
       });
   }
 

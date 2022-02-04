@@ -153,7 +153,7 @@ export class ExercisesRevComponent implements OnInit, AfterViewInit {
     const exerc = this.exerciseService.exerciseDetail(cid, this.exerciseId)
       .valueChanges()
       .subscribe(ex => {
-        console.log(ex);
+        // console.log(ex);
         this.exercise = ex;
         exerc.unsubscribe();
       });

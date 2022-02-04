@@ -27,163 +27,107 @@
   </button>
   <section *ngIf="showExistingQ">
     <div *ngFor="let c of existingQuestions">
-      <mat-accordion>
+      <mat-accordion *ngIf="c.evaluation.length > 0">
         <mat-expansion-panel style="margin: 1rem;" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
           <mat-expansion-panel-header>
             <mat-panel-title>
               <h3>Preguntas de curso {{c.curso}}</h3>
             </mat-panel-title>  
           </mat-expansion-panel-header>
-          <!-- selección única -->
-          <mat-expansion-panel
-            *ngIf="c.q1.length > 0"
-            (opened)="panelOpenState = true" 
-            (closed)="panelOpenState = false">
-              <mat-expansion-panel-header>
-                <mat-panel-title>
-                  <p
-                    style="font-weight: 500; color: var(--main-color2);">
-                      Preguntas de selección única
-                  </p>
-                </mat-panel-title>  
-              </mat-expansion-panel-header>
-              <mat-radio-group
-                aria-labelledby="example-radio-group-label"
-                class="example-radio-group"
-                [(ngModel)]="selectedQuestion"
-                (change)="selectionChange($event)">
-                <div class="question-opt">
-                  <mat-radio-button class="example-radio-button" *ngFor="let q of c.q1" [value]="q">
-                    {{parseHTML(q.question)}}
-                  </mat-radio-button>
-                </div>
-              </mat-radio-group>
-          </mat-expansion-panel>
-          <!-- selección multiple -->
-          <mat-expansion-panel
-            *ngIf="c.q2.length > 0"
-            (opened)="panelOpenState = true" 
-            (closed)="panelOpenState = false">
-              <mat-expansion-panel-header>
-                <mat-panel-title>
-                  <p
-                    style="font-weight: 500; color: var(--main-color2);">
-                      Preguntas de selección multiple
-                  </p>
-                </mat-panel-title>  
-              </mat-expansion-panel-header>
-              <mat-radio-group
-                aria-labelledby="example-radio-group-label"
-                class="example-radio-group"
-                [(ngModel)]="selectedQuestion"
-                (change)="selectionChange($event)">
-                <div class="question-opt">
-                  <mat-radio-button class="example-radio-button" *ngFor="let q of c.q2" [value]="q">
-                    {{parseHTML(q.question)}}
-                  </mat-radio-button>
-                </div>
-              </mat-radio-group>
-          </mat-expansion-panel>
-          <!-- Rellenar blancos -->
-          <mat-expansion-panel
-            *ngIf="c.q3.length > 0"
-            (opened)="panelOpenState = true" 
-            (closed)="panelOpenState = false">
-              <mat-expansion-panel-header>
-                <mat-panel-title>
-                  <p
-                    style="font-weight: 500; color: var(--main-color2);">
-                      Preguntas de Rellenar blancos
-                  </p>
-                </mat-panel-title>  
-              </mat-expansion-panel-header>
-              <mat-radio-group
-                aria-labelledby="example-radio-group-label"
-                class="example-radio-group"
-                [(ngModel)]="selectedQuestion"
-                (change)="selectionChange($event)">
-                <div class="question-opt">
-                  <mat-radio-button class="example-radio-button" *ngFor="let q of c.q3" [value]="q">
-                    {{parseHTML(q.question)}}
-                  </mat-radio-button>
-                </div>
-              </mat-radio-group>
-          </mat-expansion-panel>
-          <!-- Relacionar -->
-          <mat-expansion-panel
-            *ngIf="c.q4.length > 0"
-            (opened)="panelOpenState = true" 
-            (closed)="panelOpenState = false">
-              <mat-expansion-panel-header>
-                <mat-panel-title>
-                  <p
-                    style="font-weight: 500; color: var(--main-color2);">
-                      Preguntas de Relacionar
-                  </p>
-                </mat-panel-title>  
-              </mat-expansion-panel-header>
-              <mat-radio-group
-                aria-labelledby="example-radio-group-label"
-                class="example-radio-group"
-                [(ngModel)]="selectedQuestion"
-                (change)="selectionChange($event)">
-                <div class="question-opt">
-                  <mat-radio-button class="example-radio-button" *ngFor="let q of c.q4" [value]="q">
-                    {{parseHTML(q.question)}}
-                  </mat-radio-button>
-                </div>
-              </mat-radio-group>
-          </mat-expansion-panel>
-          <!-- Respuesta libre -->
-          <mat-expansion-panel
-            *ngIf="c.q5.length > 0"
-            (opened)="panelOpenState = true" 
-            (closed)="panelOpenState = false">
-              <mat-expansion-panel-header>
-                <mat-panel-title>
-                  <p
-                    style="font-weight: 500; color: var(--main-color2);">
-                      Preguntas de Respuesta libre
-                  </p>
-                </mat-panel-title>  
-              </mat-expansion-panel-header>
-              <mat-radio-group
-                aria-labelledby="example-radio-group-label"
-                class="example-radio-group"
-                [(ngModel)]="selectedQuestion"
-                (change)="selectionChange($event)">
-                <div class="question-opt">
-                  <mat-radio-button class="example-radio-button" *ngFor="let q of c.q5" [value]="q">
-                    {{parseHTML(q.question)}}
-                  </mat-radio-button>
-                </div>
-              </mat-radio-group>
-          </mat-expansion-panel>
-          <!-- Tarea -->
-          <mat-expansion-panel
-            *ngIf="c.q6.length > 0"
-            (opened)="panelOpenState = true" 
-            (closed)="panelOpenState = false">
-              <mat-expansion-panel-header>
-                <mat-panel-title>
-                  <p
-                    style="font-weight: 500; color: var(--main-color2);">
-                    Tareas
-                  </p>
-                </mat-panel-title>  
-              </mat-expansion-panel-header>
-              <mat-radio-group
-                aria-labelledby="example-radio-group-label"
-                class="example-radio-group"
-                [(ngModel)]="selectedQuestion"
-                (change)="selectionChange($event)">
-                <div class="question-opt">
-                  <mat-radio-button class="example-radio-button" *ngFor="let q of c.q6" [value]="q">
-                    {{parseHTML(q.question)}}
-                  </mat-radio-button>
-                </div>
-              </mat-radio-group>
-          </mat-expansion-panel>
+          <div *ngFor="let ex of c.evaluation">
+            <mat-expansion-panel
+              *ngIf="c.evaluation.length > 0"
+              (opened)="panelOpenState = true" 
+              (closed)="panelOpenState = false">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    <p
+                      style="font-weight: 500; color: var(--main-color2);">
+                        {{ex.evaluation}}
+                    </p>
+                  </mat-panel-title>  
+                </mat-expansion-panel-header>
+                <mat-radio-group
+                  aria-labelledby="example-radio-group-label"
+                  class="example-radio-group"
+                  *ngIf="ex.q1.length > 0"
+                  [(ngModel)]="selectedQuestion"
+                  (change)="selectionChange($event)">
+                  <div class="question-opt">
+                    <h4 style="font-weight: 600;">Preguntas de selección única</h4>
+                    <mat-radio-button class="example-radio-button" *ngFor="let q of ex.q1" [value]="q">
+                      {{parseHTML(q.question)}}
+                    </mat-radio-button>
+                  </div>
+                </mat-radio-group>
+                <mat-radio-group
+                  aria-labelledby="example-radio-group-label"
+                  class="example-radio-group"
+                  *ngIf="ex.q2.length > 0"
+                  [(ngModel)]="selectedQuestion"
+                  (change)="selectionChange($event)">
+                  <div class="question-opt">
+                    <h4 style="font-weight: 600;">Preguntas de selección multiple</h4>
+                    <mat-radio-button class="example-radio-button" *ngFor="let q of ex.q2" [value]="q">
+                      {{parseHTML(q.question)}}
+                    </mat-radio-button>
+                  </div>
+                </mat-radio-group>
+                <mat-radio-group
+                  aria-labelledby="example-radio-group-label"
+                  class="example-radio-group"
+                  *ngIf="ex.q3.length > 0"
+                  [(ngModel)]="selectedQuestion"
+                  (change)="selectionChange($event)">
+                  <div class="question-opt">
+                    <h4 style="font-weight: 600;">Preguntas de Rellenar blancos</h4>
+                    <mat-radio-button class="example-radio-button" *ngFor="let q of ex.q3" [value]="q">
+                      {{parseHTML(q.question)}}
+                    </mat-radio-button>
+                  </div>
+                </mat-radio-group>
+                <mat-radio-group
+                  aria-labelledby="example-radio-group-label"
+                  class="example-radio-group"
+                  *ngIf="ex.q4.length > 0"
+                  [(ngModel)]="selectedQuestion"
+                  (change)="selectionChange($event)">
+                  <div class="question-opt">
+                    <h4 style="font-weight: 600;">Preguntas de Relacionar</h4>
+                    <mat-radio-button class="example-radio-button" *ngFor="let q of ex.q4" [value]="q">
+                      {{parseHTML(q.question)}}
+                    </mat-radio-button>
+                  </div>
+                </mat-radio-group>
+                <mat-radio-group
+                  aria-labelledby="example-radio-group-label"
+                  class="example-radio-group"
+                  *ngIf="ex.q5.length > 0"
+                  [(ngModel)]="selectedQuestion"
+                  (change)="selectionChange($event)">
+                  <div class="question-opt">
+                    <h4 style="font-weight: 600;">Preguntas de Respuesta libre</h4>
+                    <mat-radio-button class="example-radio-button" *ngFor="let q of ex.q5" [value]="q">
+                      {{parseHTML(q.question)}}
+                    </mat-radio-button>
+                  </div>
+                </mat-radio-group>
+                <mat-radio-group
+                  aria-labelledby="example-radio-group-label"
+                  class="example-radio-group"
+                  *ngIf="ex.q6.length > 0"
+                  [(ngModel)]="selectedQuestion"
+                  (change)="selectionChange($event)">
+                  <div class="question-opt">
+                    <h4 style="font-weight: 600;">Tareas</h4>
+                    <mat-radio-button class="example-radio-button" *ngFor="let q of ex.q6" [value]="q">
+                      {{parseHTML(q.question)}}
+                    </mat-radio-button>
+                  </div>
+                </mat-radio-group>
+            </mat-expansion-panel>
+          </div>
+          
         </mat-expansion-panel>
       </mat-accordion>
     </div>

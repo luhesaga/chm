@@ -33,7 +33,7 @@
                         : exercises?.intentos + " veces."
                         }}
                     </li>
-                    <li>El ejercicio consta de {{ questions?.length }} preguntas.</li>
+                    <li>El ejercicio consta de {{ exercises.questionsNumber ? exercises.questionsNumber : questions?.length }} preguntas.</li>
                     <li>Tienes {{ exercises?.duracion }} minutos para presentarlo.</li>
                     <li>
                         Necesitas {{ getAnswersToPass() }} respuestas correctas para

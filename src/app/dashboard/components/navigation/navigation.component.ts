@@ -64,6 +64,10 @@ export class NavigationComponent {
     this.route.navigate(['dashboard/certificados']);
   }
 
+  goToCetificates(): void {
+    this.route.navigate([`dashboard/consulta-certificados`]);
+  }
+
   logout(): void {
     this.auth.logout();
     this.route.navigate(['/home']);

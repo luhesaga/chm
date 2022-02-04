@@ -234,15 +234,22 @@ export class CourseRegistrationComponent implements OnInit, OnDestroy {
   }
 
   sendEmail(data): void {
-    data.to = this.student.correo;
-    data.asunto = `${data.nombreEstudiante}, queremos saber de ti`;
-    const unsubscribe = this.mailService.daysValidationEmail(data).subscribe(
-      () => unsubscribe.unsubscribe(),
-      (e) => {
-        console.log(e);
-      }
-    );
-    console.log('correo enviado.');
+    const validate = localStorage.getItem('correoCursos');
+    console.log(validate);
+    if (validate === 'no') {
+      data.to = this.student.correo;
+      data.asunto = `${data.nombreEstudiante}, queremos saber de ti`;
+      const unsubscribe = this.mailService.daysValidationEmail(data).subscribe(
+        () => unsubscribe.unsubscribe(),
+        (e) => {
+          console.log(e);
+        }
+      );
+      console.log('correo enviado.');
+      localStorage.setItem('correoCursos', 'si');
+    } else {
+      console.log('correo enviado previamente');
+    }
   }
 
   goBack(): void {

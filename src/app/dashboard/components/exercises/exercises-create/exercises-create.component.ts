@@ -1,5 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import {
   MatDialog,
   MatDialogRef,
@@ -33,6 +38,7 @@ export class ExercisesCreateComponent implements OnInit {
   intentos = 1;
   duracion = 30;
   porcentaje = 60;
+  questions = 0;
   textEndExercise: string;
   careerExercisePosition = 0;
 
@@ -60,9 +66,9 @@ export class ExercisesCreateComponent implements OnInit {
       this.seleccion = this.data.content.seleccion
         ? this.data.content.seleccion.toString()
         : this.seleccion;
-      // this.barajar = this.data.content.barajar ?
-      //                 this.data.content.barajar.toString() :
-      //                 this.barajar;
+      this.questions = this.data.content.questionsNumber
+        ? this.data.content.questionsNumber
+        : this.questions;
       this.intentos = this.data.content.intentos
         ? this.data.content.intentos
         : this.intentos;
@@ -101,6 +107,7 @@ export class ExercisesCreateComponent implements OnInit {
       // mixAnswers: ['', Validators.required],
       maxTries: ['', Validators.required],
       duration: ['', Validators.required],
+      questionsNumber: ['', Validators.required],
       percentage: ['', Validators.required],
       textEnd: [''],
     });
@@ -122,9 +129,9 @@ export class ExercisesCreateComponent implements OnInit {
     return this.form.get('questionSelect');
   }
 
-  // get mixAnswers() {
-  //   return this.form.get('mixAnswers');
-  // }
+  get questionsNumber(): AbstractControl {
+    return this.form.get('questionsNumber');
+  }
 
   get maxTries(): AbstractControl {
     return this.form.get('maxTries');

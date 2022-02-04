@@ -17,6 +17,7 @@ import Swal from 'sweetalert2';
 export class DescripcionCarreraComponent implements OnInit, OnDestroy {
   carrera: any;
   unsubscribeCarrera: Subscription;
+  userType;
 
   constructor(
     public dialog: MatDialogRef<DescripcionCarreraComponent>,
@@ -25,6 +26,7 @@ export class DescripcionCarreraComponent implements OnInit, OnDestroy {
     private carrerasService: CarrerasService
   ) {
     this.carrera = {};
+    this.userType = data.userType;
   }
 
   ngOnDestroy() {
