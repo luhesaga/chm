@@ -127,6 +127,7 @@ export class AuthService {
 
   logout(): void {
     localStorage.removeItem('correoCursos');
+    localStorage.removeItem('carreraCurso');
     this.af.signOut();
   }
 

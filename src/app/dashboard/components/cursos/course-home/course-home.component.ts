@@ -7,14 +7,14 @@ import { MatDialog } from '@angular/material/dialog';
 import { CourseInfoComponent } from 'src/app/home/components/courses/course-info/course-info.component';
 import Swal from 'sweetalert2';
 import { LogsService } from 'src/app/core/services/logs/logs.service';
+import { CarrerasService } from '../../../../core/services/carreras/carreras.service';
 
 @Component({
   selector: 'app-course-home',
   templateUrl: './course-home.component.html',
-  styleUrls: ['./course-home.component.scss']
+  styleUrls: ['./course-home.component.scss'],
 })
 export class CourseHomeComponent implements OnInit, OnDestroy {
-
   courseId: string;
   ReceivedCourse;
 
@@ -58,6 +58,7 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private courseService: CourseService,
     private catService: CategoryService,
+    private careerService: CarrerasService,
     private logs: LogsService,
     private breakpointObserver: BreakpointObserver,
     public dialog: MatDialog,
@@ -80,37 +81,39 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
       }
     }
 
-    this.breakpointObserver.observe([
-      Breakpoints.Large,
-      Breakpoints.Medium,
-      Breakpoints.Small,
-      Breakpoints.XLarge,
-    ]).subscribe(result => {
-      if (!result.matches) {
-        this.isMobile = true;
-        // tamaño mobile de video o img
-        if (this.videoIframe) {
-          this.videoIframe.style.width = '280px';
-          this.videoIframe.style.height = '140px';
-          console.log(this.videoIframe.style.height);
-        }
-        if (this.imgFrame) {
-          this.setImgSizeToMobile(this.imgFrame);
-        }
-      } else {
-        // tamaño normal del video o img
-        this.isMobile = false;
-        if (this.videoIframe) {
-          this.videoIframe.style.width = this.videoWidth;
-          this.videoIframe.style.height = this.videoHeight;
-          // console.log(this.videoIframe.style.height)
-        }
+    this.breakpointObserver
+      .observe([
+        Breakpoints.Large,
+        Breakpoints.Medium,
+        Breakpoints.Small,
+        Breakpoints.XLarge,
+      ])
+      .subscribe((result) => {
+        if (!result.matches) {
+          this.isMobile = true;
+          // tamaño mobile de video o img
+          if (this.videoIframe) {
+            this.videoIframe.style.width = '280px';
+            this.videoIframe.style.height = '140px';
+            console.log(this.videoIframe.style.height);
+          }
+          if (this.imgFrame) {
+            this.setImgSizeToMobile(this.imgFrame);
+          }
+        } else {
+          // tamaño normal del video o img
+          this.isMobile = false;
+          if (this.videoIframe) {
+            this.videoIframe.style.width = this.videoWidth;
+            this.videoIframe.style.height = this.videoHeight;
+            // console.log(this.videoIframe.style.height)
+          }
 
-        if (this.imgFrame) {
-          this.setImgSizeToNormal(this.imgFrame);
+          if (this.imgFrame) {
+            this.setImgSizeToNormal(this.imgFrame);
+          }
         }
-      }
-    });
+      });
   }
 
   ngOnInit(): void {
@@ -120,27 +123,86 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     // cerrar subscribe
-    this.ReceivedCourse.unsubscribe();
+    if (this.ReceivedCourse) {
+      this.ReceivedCourse.unsubscribe();
+    }
   }
 
   setCourseLog(): void {
     const data = {
       curso: this.courseId,
       estudiante: this.stdId,
-      fechaIngreso: new Date()
+      fechaIngreso: new Date(),
     };
     this.logs.courseInLog(data);
   }
 
   getCourse(): void {
-    this.ReceivedCourse = this.courseService.detailCourse(this.courseId).valueChanges()
-      .subscribe(curso => {
-        this.catService.detailCategory(curso.categoria).valueChanges()
-          .subscribe(cat => {
+    this.ReceivedCourse = this.courseService
+      .detailCourse(this.courseId)
+      .valueChanges()
+      .subscribe((curso) => {
+        if (!this.careerId) {
+          this.validateCareerCourse(curso);
+        }
+        this.catService
+          .detailCategory(curso.categoria)
+          .valueChanges()
+          .subscribe((cat) => {
             this.loadData(curso, cat);
             this.curso = curso;
             this.getCourseOptions(curso);
           });
+      });
+  }
+
+  validateCareerCourse(course: any): void {
+    const careerList = this.careerService
+      .obtenerCarreras()
+      .valueChanges()
+      .subscribe((careers) => {
+        careers.forEach((career) => {
+          this.courseValidation(course, career);
+        });
+        careerList.unsubscribe();
+      });
+  }
+
+  courseValidation(course, career): void {
+    const careerCourse = this.careerService
+      .validateCareerCourse(career.id, course.id)
+      .valueChanges()
+      .subscribe((courses) => {
+        if (courses.length > 0) {
+          this.userValidation(career);
+        }
+        careerCourse.unsubscribe();
+      });
+  }
+
+  userValidation(career): void {
+    const validation = localStorage.getItem('carreraCurso');
+    const registeredUser = this.careerService
+      .getRegisteredUser(career.id, this.stdId)
+      .valueChanges()
+      .subscribe((user) => {
+        if (user) {
+          if (validation === 'no') {
+            Swal.fire({
+              icon: 'warning',
+              title: 'Curso de carrera',
+              text: `Este curso hace parte de la carrera 
+                    ${career.nombre} en la que estas inscrito, 
+                    para la mejor experiencia de aprendizaje 
+                    te recomendamos seguir el orden de los cursos.`,
+              confirmButtonText: 'Entendido',
+            });
+            localStorage.setItem('carreraCurso', 'si');
+          } else {
+            console.log('mensaje ya mostrado.');
+          }
+        }
+        registeredUser.unsubscribe();
       });
   }
 
@@ -160,18 +222,23 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
       this.meetOpt = opt.videoconferencia ? opt.videoconferencia : opt.meet;
       this.forumOpt = opt.foros ? opt.foros : false;
     }
-
   }
 
   goToLessons(): void {
     if (this.admin && !this.carrera) {
       this.route.navigate([`cursos/lecciones/${this.courseId}`]);
     } else if (!this.admin && this.carrera && !this.std) {
-      this.route.navigate([`cursos/lecciones-carrera/${this.careerId}/${this.stdId}/${this.courseId}`]);
+      this.route.navigate([
+        `cursos/lecciones-carrera/${this.careerId}/${this.stdId}/${this.courseId}`,
+      ]);
     } else if (this.carrera && this.std) {
-      this.route.navigate([`mis-cursos/lecciones-carrera/${this.careerId}/${this.courseId}/${this.stdId}`]);
-    }else {
-      this.route.navigate([`mis-cursos/lecciones/${this.courseId}/${this.stdId}`]);
+      this.route.navigate([
+        `mis-cursos/lecciones-carrera/${this.careerId}/${this.courseId}/${this.stdId}`,
+      ]);
+    } else {
+      this.route.navigate([
+        `mis-cursos/lecciones/${this.courseId}/${this.stdId}`,
+      ]);
     }
   }
 
@@ -207,16 +274,24 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
     if (this.admin) {
       this.route.navigate([`cursos/evaluaciones/${this.courseId}`]);
     } else {
-      this.route.navigate([`cursos/evaluaciones/estudiante/${this.courseId}/${this.stdId}`]);
+      this.route.navigate([
+        `cursos/evaluaciones/estudiante/${this.courseId}/${this.stdId}`,
+      ]);
     }
     if (this.admin && !this.carrera) {
       this.route.navigate([`cursos/evaluaciones/${this.courseId}`]);
     } else if (!this.admin && this.carrera && !this.std) {
-      this.route.navigate([`cursos/evaluaciones-carrera/${this.careerId}/${this.courseId}/${this.stdId}`]);
+      this.route.navigate([
+        `cursos/evaluaciones-carrera/${this.careerId}/${this.courseId}/${this.stdId}`,
+      ]);
     } else if (this.carrera && this.std) {
-      this.route.navigate([`cursos/evaluaciones-carrera/${this.careerId}/${this.courseId}/${this.stdId}`]);
-    }else {
-      this.route.navigate([`cursos/evaluaciones/estudiante/${this.courseId}/${this.stdId}`]);
+      this.route.navigate([
+        `cursos/evaluaciones-carrera/${this.careerId}/${this.courseId}/${this.stdId}`,
+      ]);
+    } else {
+      this.route.navigate([
+        `cursos/evaluaciones/estudiante/${this.courseId}/${this.stdId}`,
+      ]);
     }
   }
 
@@ -235,10 +310,16 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
     if (this.admin) {
       this.route.navigate(['dashboard/cursos']);
     } else if (this.carrera && !this.std) {
-      this.route.navigate([`dashboard/mis-cursos-lecciones-carrera/${this.stdId}/${this.careerId}`]);
+      this.route.navigate([
+        `dashboard/mis-cursos-lecciones-carrera/${this.stdId}/${this.careerId}`,
+      ]);
     } else if (this.carrera && this.std) {
-      this.route.navigate([`dashboard/mis-cursos-lecciones-carrera/${this.stdId}/${this.careerId}/${'std'}`]);
-    }else {
+      this.route.navigate([
+        `dashboard/mis-cursos-lecciones-carrera/${this.stdId}/${
+          this.careerId
+        }/${'std'}`,
+      ]);
+    } else {
       this.route.navigate([`dashboard/mis-cursos/${this.stdId}`]);
     }
   }
@@ -247,12 +328,12 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
     const config = {
       data: {
         message: 'informacion del curso',
-        content: this.curso
-      }
+        content: this.curso,
+      },
     };
 
     const dialogRef = this.dialog.open(CourseInfoComponent, config);
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       // console.log(`Dialog result ${result}`);
     });
   }
@@ -288,7 +369,6 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
     if (this.imgFrame) {
       this.setImgSizeToMobile(this.imgFrame);
     }
-
   }
 
   setImgSizeToMobile(img): void {
@@ -313,7 +393,10 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
   setFontSize(): void {
     const parrafo = document.querySelector('p span');
     if (parrafo) {
-      parrafo.setAttribute('style', 'font-size: 1.2rem; text-align: justify; color: #333333');
+      parrafo.setAttribute(
+        'style',
+        'font-size: 1.2rem; text-align: justify; color: #333333'
+      );
       parrafo.parentElement.setAttribute('style', 'text-align: left');
     }
   }
@@ -329,10 +412,11 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
       biblioteca: this.libraryOpt,
       glosario: this.glossaryOpt,
       videoconferencia: this.meetOpt,
-      foros: this.forumOpt
+      foros: this.forumOpt,
     };
 
-    this.courseService.editCourseOptions(this.courseId, opt)
+    this.courseService
+      .editCourseOptions(this.courseId, opt)
       .then(() => {
         Swal.fire({
           icon: 'success',
@@ -355,8 +439,9 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
     if (this.admin) {
       this.route.navigate([`cursos/anuncios/${this.courseId}`]);
     } else {
-      this.route.navigate([`cursos/anuncios/estudiante/${this.courseId}/${this.stdId}`]);
+      this.route.navigate([
+        `cursos/anuncios/estudiante/${this.courseId}/${this.stdId}`,
+      ]);
     }
   }
-
 }

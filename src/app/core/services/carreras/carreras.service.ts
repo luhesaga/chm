@@ -99,6 +99,12 @@ export class CarrerasService {
     );
   }
 
+  validateCareerCourse(id: string, courseId: string): AngularFirestoreCollection {
+    return this.fireStore.collection(`carreras/${id}/cursos`, (ref) =>
+      ref.where('id', '==', courseId)
+    );
+  }
+
   getCareerCourseData(careerId: string, courseId: string): AngularFirestoreDocument {
     return this.fireStore.doc(`carreras/${careerId}/cursos/${courseId}`);
   }
