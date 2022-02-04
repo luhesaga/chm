@@ -187,7 +187,7 @@ export class AdmCreateCertificateComponent implements OnInit {
     const tecnica = this.siglaTecnicaSelected ? this.siglaTecnicaSelected: '';
     const fecha = this.setDate();
     const cons = this.consStr ? this.consStr : '';
-    this.certificadoField.setValue(`${tipo}-${tecnica}-${fecha}-${cons}`);
+    this.certificadoField.setValue(`${tipo}-${fecha}-${cons}-${tecnica}`);
   }
 
   setDate(): string {
@@ -195,7 +195,7 @@ export class AdmCreateCertificateComponent implements OnInit {
     const year = fecha ? fecha.getFullYear().toString().substring(2) : '';
     const months = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
     const month = fecha ? months[fecha.getMonth()] : '';
-    return fecha ? `${month}${year}` : '';
+    return fecha ? `${year}${month}` : '';
   }
 
   userSelected(event) {
