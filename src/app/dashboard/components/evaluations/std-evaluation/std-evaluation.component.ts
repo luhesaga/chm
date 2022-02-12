@@ -209,7 +209,7 @@ export class StdEvaluationComponent implements OnInit {
   }
 
   getCerticateData(): any {
-    const data = {
+    return {
       horas: this.courseReceived.duracionCurso,
       estudiante: `${this.stdReceived.nombres} ${this.stdReceived.apellidos}`,
       documento: 'Con documento de identidad ' + this.addCommas(this.stdReceived.identificacion),
@@ -222,7 +222,6 @@ export class StdEvaluationComponent implements OnInit {
       tipo: this.courseReceived.tipoCerticado,
     };
 
-    return data;
   }
 
   addCommas(nStr): string {

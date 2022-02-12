@@ -250,7 +250,7 @@ const routes: Routes = [
         component: EvaluationsHomeComponent,
       },
       {
-        path: 'cursos/evaluaciones-carrera/:careerId/:courseId/:stdId',
+        path: 'cursos/evaluaciones-carrera-std/:careerId/:courseId/:stdId',
         component: StdEvaluationComponent,
       },
       {

@@ -8,6 +8,8 @@ import { ExercisesService } from 'src/app/core/services/exercises/exercises.serv
 import { ForumService } from 'src/app/core/services/forums/forum.service';
 import { LessonsService } from 'src/app/core/services/lessons/lessons.service';
 import { CarrerasService } from '../../../../core/services/carreras/carreras.service';
+import { UsersService } from '../../../../core/services/users/users.service';
+import { CareerCertService } from '../../../../core/services/career-certificate/career-cert.service';
 
 @Component({
   selector: 'app-carreras-lecciones',
@@ -23,11 +25,14 @@ export class CarrerasLeccionesComponent implements OnInit, AfterViewInit, OnDest
   dataSource = new MatTableDataSource();
 
   careerId: string;
+  careerReceived: any;
   stdId: string;
   std = false;
+  stdReceived: any;
   totalApproved = 0;
   cont = 0;
   CareerCourses: any;
+  hasCC = true;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -36,7 +41,9 @@ export class CarrerasLeccionesComponent implements OnInit, AfterViewInit, OnDest
     private foroService: ForumService,
     private exerciseService: ExercisesService,
     private lessonService: LessonsService,
+    private userService: UsersService,
     private router: Router,
+    private certificado: CareerCertService
   ) {
     this.careerId = this.activatedRoute.snapshot.params.careerId;
     this.stdId = this.activatedRoute.snapshot.params.stdId;
@@ -47,6 +54,8 @@ export class CarrerasLeccionesComponent implements OnInit, AfterViewInit, OnDest
   }
 
   ngOnInit(): void {
+    this.getStdInfo();
+    this.getCareerInfo();
     this.getCareerCourses();
   }
 
@@ -63,6 +72,29 @@ export class CarrerasLeccionesComponent implements OnInit, AfterViewInit, OnDest
 
   applyFilter(filterValue: string): void {
     this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  getStdInfo(): void {
+    const userInfo = this.userService.detailUser(this.stdId)
+      .valueChanges()
+      .subscribe((user: any) => {
+        if (!user.identificacion) {
+          this.hasCC = false;
+        }
+        this.stdReceived = user;
+        // console.log(this.stdReceived);
+        userInfo.unsubscribe();
+      });
+  }
+
+  getCareerInfo(): void {
+    const careerInfo = this.careerService.obtenerCarrera(this.careerId)
+      .valueChanges()
+      .subscribe(career => {
+        this.careerReceived = career;
+        // console.log(this.careerReceived);
+        careerInfo.unsubscribe();
+      })
   }
 
   getCareerCourses(): void {
@@ -312,12 +344,56 @@ export class CarrerasLeccionesComponent implements OnInit, AfterViewInit, OnDest
     }
   }
 
+  goToProfile(): void {
+    this.router.navigate([`/usuarios/perfil/${this.stdReceived.id}`])
+  }
+
   goBack(): void {
     if (!this.std) {
       this.router.navigate([`carreras/index/${this.careerId}/${'admin'}`]);
     } else {
       this.router.navigate([`carreras/index/${this.careerId}/${'std'}`]);
     }
+  }
+
+  downloadPDFCerticate(): void {
+    const data = this.getCerticateData();
+    // console.log(data);
+    this.certificado.generateCerticate(data, true);
+  }
+
+  getCerticateData(): any {
+    return {
+      horas: this.parseHTML(this.careerReceived.duracion),
+      estudiante: `${this.stdReceived.nombres} ${this.stdReceived.apellidos}`,
+      documento: 'Con documento de identidad ' + this.addCommas(this.stdReceived.identificacion),
+      // profesor: `${this.courseReceived.profesor}`,
+      career: `${this.careerReceived.nombre}`,
+      stdId: this.stdId,
+      careerId: this.careerId,
+      siglaCarrera: this.careerReceived.siglaCarrera,
+      cc: this.stdReceived.identificacion,
+      // tipo: this.courseReceived.tipoCerticado,
+    };
+
+  }
+
+  addCommas(nStr): string {
+    nStr += '';
+    const x = nStr.split('.');
+    let x1 = x[0];
+    const x2 = x.length > 1 ? '.' + x[1] : '';
+    const rgx = /(\d+)(\d{3})/;
+    while (rgx.test(x1)) {
+      x1 = x1.replace(rgx, '$1' + '.' + '$2');
+    }
+    return x1 + x2;
+  }
+
+  parseHTML(html): string {
+    const option = document.createElement('div');
+    option.innerHTML = html;
+    return option.textContent;
   }
 
 }

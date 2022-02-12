@@ -8,21 +8,26 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-adm-list-certificates',
   templateUrl: './adm-list-certificates.component.html',
-  styleUrls: ['./adm-list-certificates.component.scss']
+  styleUrls: ['./adm-list-certificates.component.scss'],
 })
 export class AdmListCertificatesComponent implements OnInit, AfterViewInit {
-
-  displayedColumns: string[] =
-    ['no', 'certificado', 'fechaI', 'fechaE', 'tecnica', 'cliente', 'tipo', 'observacion', 'actions'];
+  displayedColumns: string[] = [
+    'no',
+    'certificado',
+    'fechaI',
+    'fechaE',
+    'tecnica',
+    'cliente',
+    'tipo',
+    'observacion',
+    'actions',
+  ];
   dataSource = new MatTableDataSource();
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(
-    private certificados: CerticateService,
-    private router: Router,
-  ) { }
+  constructor(private certificados: CerticateService, private router: Router) {}
 
   ngOnInit(): void {
     this.getCertificates();
@@ -37,28 +42,28 @@ export class AdmListCertificatesComponent implements OnInit, AfterViewInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  getCertificates() {
-    let cert = this.certificados.certificatesList()
+  getCertificates(): void {
+    const cert = this.certificados
+      .certificatesList()
       .valueChanges()
       .subscribe((c: any) => {
-        c.forEach(ce => {
+        c.forEach((ce) => {
           ce.fechaFin = ce.fechaFin ? this.formatDate(ce.fechaFin) : null;
           ce.fechaExp = ce.fechaExp ? this.formatDate(ce.fechaExp) : 'n/a';
         });
         this.dataSource.data = c;
         cert.unsubscribe();
-      })
+      });
   }
 
-  goToHome() {}
+  goToHome(): void {}
 
-  goToEdit(data) {
+  goToEdit(data): void {
     this.router.navigate([`dashboard/editar-certificado/${data.certificado}`]);
   }
 
-  formatDate(date) {
+  formatDate(date): string {
     const fecha = new Date(date.seconds * 1000).toLocaleDateString();
     return fecha;
   }
-
 }

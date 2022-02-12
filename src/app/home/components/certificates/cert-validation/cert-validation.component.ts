@@ -49,7 +49,7 @@ export class CertValidationComponent implements OnInit {
           cert.forEach(c => {
             c.fechaFin = this.formatDate(c.fechaFin);
             c.fechaExp = c.fechaExp ? this.formatDate(c.fechaExp) : '';
-            c.tipo = this.tipos.filter(x => x.sigla === c.tipo)[0].nombre;
+            c.tipo = c.tipo ? this.tipos.filter(x => x.sigla === c.tipo)[0].nombre : 'Carrera';
           });
           this.certReceived = cert;
           this.show = true;
@@ -70,7 +70,7 @@ export class CertValidationComponent implements OnInit {
           cert.forEach(c => {
             c.fechaFin = this.formatDate(c.fechaFin);
             c.fechaExp = c.fechaExp ? this.formatDate(c.fechaExp) : '';
-            c.tipo = this.tipos.filter(x => x.sigla === c.tipo)[0].nombre;
+            c.tipo = c.tipo ? this.tipos.filter(x => x.sigla === c.tipo)[0].nombre : 'Carrera';
           });
           this.certReceived = cert;
           this.show = true;

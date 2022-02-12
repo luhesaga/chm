@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { AngularFirestore } from '@angular/fire/firestore';
 import Swal from 'sweetalert2';
@@ -9,12 +9,11 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-create-carreras',
   templateUrl: './create-carreras.component.html',
-  styleUrls: ['./create-carreras.component.scss']
+  styleUrls: ['./create-carreras.component.scss'],
 })
 export class CreateCarrerasComponent implements OnInit {
-
   formCarreras: FormGroup;
-  showImage:any;
+  showImage: any;
 
   constructor(
     private fireStore: AngularFirestore,
@@ -24,123 +23,120 @@ export class CreateCarrerasComponent implements OnInit {
     private router: Router
   ) {
     this.buildForm();
-    this.showImage={src:''};
+    this.showImage = { src: '' };
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   private buildForm(): void {
     this.formCarreras = this.formBuilder.group({
-      nombre: ['', Validators.required,],
-      image: ['', Validators.required]
-    })
+      nombre: ['', Validators.required],
+      image: ['', Validators.required],
+      sigla: ['', Validators.required],
+    });
   }
 
-  obtenerImagen(event:any)
-  {
-    if(event.target.value)
-    {
+  obtenerImagen(event: any) {
+    if (event.target.value) {
       this.showImage = event.target.files[0];
       this.formCarreras.get('image').setValue(this.showImage);
       this.imageURL();
     }
   }
 
-  imageURL():void
-  {
+  imageURL(): void {
     const reader = new FileReader();
-    reader.onload = (event) =>
-    {
+    reader.onload = (event) => {
       this.showImage.src = event.target.result;
-    }
+    };
     reader.readAsDataURL(this.showImage);
   }
 
-  validarFormulario()
-  {
-    if(this.formCarreras.invalid)
-    {
-      this.mensajeFormularioInvalido()
-    }
-    else
-    {
+  validarFormulario() {
+    if (this.formCarreras.invalid) {
+      this.mensajeFormularioInvalido();
+    } else {
       this.subiendoDatos();
       this.uploadNewImage();
     }
   }
 
-  subiendoDatos()
-  {
+  subiendoDatos() {
     Swal.fire({
       title: 'Creando la carrera, un momento por favor',
-      confirmButtonColor:'#007279',
-      didOpen:()=>{
+      confirmButtonColor: '#007279',
+      didOpen: () => {
         Swal.showLoading();
-      }
+      },
     });
   }
 
-  mensajeFormularioInvalido()
-  {
+  mensajeFormularioInvalido() {
     Swal.fire({
-      icon:'info',
+      icon: 'info',
       title: 'Campos invalidos',
-      text:'El campo nombre de carrera y la imagen son requeridas',
-      confirmButtonText:'Aceptar'
+      text: 'El campo nombre de carrera y la imagen son requeridas',
+      confirmButtonText: 'Aceptar',
     });
   }
 
-  uploadNewImage()
-  {
+  uploadNewImage() {
     const id = this.fireStore.createId();
     const nameImage = this.imageField.value.name;
     const fileRef = this.fireStorage.ref(`carreras/${id}/${nameImage}`);
-    this.fireStorage.upload(`carreras/${id}/${nameImage}`,this.imageField.value)
-    .then(()=>{
-      const unsubscribeFile =fileRef.getDownloadURL()
-      .subscribe(url =>
-        {
-        this.imageField.setValue(url);
-        this.createCarreras(id);
-        unsubscribeFile.unsubscribe();
-      }, ()=> this.mensajeDeError());
-    }, ()=> this.mensajeDeError());
+    this.fireStorage
+      .upload(`carreras/${id}/${nameImage}`, this.imageField.value)
+      .then(
+        () => {
+          const unsubscribeFile = fileRef.getDownloadURL().subscribe(
+            (url) => {
+              this.imageField.setValue(url);
+              this.createCarreras(id);
+              unsubscribeFile.unsubscribe();
+            },
+            () => this.mensajeDeError()
+          );
+        },
+        () => this.mensajeDeError()
+      );
   }
 
-  createCarreras(id:string)
-  {
-    this.carrerasService.crearCarreras(this.formCarreras.value, id)
-    .then(()=> this.mensajeExito(),
-    ()=> this.mensajeDeError());
+  createCarreras(id: string) {
+    this.carrerasService.crearCarreras(this.formCarreras.value, id).then(
+      () => this.mensajeExito(),
+      () => this.mensajeDeError()
+    );
   }
 
-  get imageField()
-  {
+  get imageField() {
     return this.formCarreras.get('image');
   }
 
-  mensajeDeError()
-  {
+  get nombreField() {
+    return this.formCarreras.get('nombre');
+  }
+
+  get siglaField() {
+    return this.formCarreras.get('sigla');
+  }
+
+  mensajeDeError() {
     Swal.fire({
       icon: 'error',
-      title:'No se pudo crear la carrera, por favor intente otra vez',
-      confirmButtonText: 'Cerrar'
-    })
+      title: 'No se pudo crear la carrera, por favor intente otra vez',
+      confirmButtonText: 'Cerrar',
+    });
   }
 
-  mensajeExito()
-  {
+  mensajeExito() {
     Swal.fire({
       icon: 'success',
-      title:'Carrera creada exitosamente',
-      confirmButtonText: 'Aceptar'
-    }).then(()=> this.volverAListaCarreras())
+      title: 'Carrera creada exitosamente',
+      confirmButtonText: 'Aceptar',
+    }).then(() => this.volverAListaCarreras());
   }
 
-  volverAListaCarreras()
-  {
+  volverAListaCarreras() {
     this.router.navigate(['dashboard/carreras']);
   }
-
 }

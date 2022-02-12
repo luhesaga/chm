@@ -35,11 +35,19 @@
                 matInput
                 tabIndex=1/>
             </mat-form-field>
+            <mat-form-field>
+                <mat-label>Sigla para certificados</mat-label>
+                <input
+                formControlName="sigla"
+                type="text"
+                matInput
+                tabIndex=2/>
+            </mat-form-field>
         </div>
         <div class="buttons">
             <button
                 type="submit"
-                tabIndex=4
+                tabIndex=3
                 mat-raised-button
                 >Editar carrera</button>
                 <a mat-raised-button (click)="volverAListaCarreras()" tabIndex=5>Cancelar</a>

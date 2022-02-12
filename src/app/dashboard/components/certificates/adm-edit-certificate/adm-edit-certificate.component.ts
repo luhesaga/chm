@@ -25,7 +25,7 @@ export class AdmEditCertificateComponent implements OnInit {
   profesor;
   cid;
 
-  types: string [] = ['Certificacion', 'Asistencia', 'Aprobacion'];
+  types: string [] = ['Certificacion', 'Asistencia', 'Aprobacion', 'Carrera'];
   selectedType;
 
   constructor(
@@ -38,14 +38,14 @@ export class AdmEditCertificateComponent implements OnInit {
     if (this.certId) {
       this.edit = true;
     }
-    this.buildForm()
+    this.buildForm();
   }
 
   ngOnInit(): void {
     this.getCertificate();
   }
 
-  goBack() {
+  goBack(): void {
     this.route.navigate(['dashboard/certificados']);
   }
 
@@ -59,83 +59,87 @@ export class AdmEditCertificateComponent implements OnInit {
       identificacion: ['', Validators.required],
       tipo: ['', Validators.required],
       observacion: [''],
-    })
+    });
   }
 
-  getCertificate() {
+  getCertificate(): void {
     if (this.certId) {
-      let cert = this.certificate.certificateByCertId(this.certId)
+      const cert = this.certificate.certificateByCertId(this.certId)
         .valueChanges({idField: 'certId'})
         .subscribe((c: any) => {
-          console.log(c);
-          let tipo = this.certificate.tipoCert.filter(x => x.sigla === c[0].tipo)[0].nombre;
+          if (!c[0].careerCert) {
+            const tipo = this.certificate.tipoCert
+              .filter(x => x.sigla === c[0].tipo)[0].nombre;
+            this.tipoField.setValue(tipo);
+          } else {
+            this.tipoField.setValue('Carrera');
+          }
           this.certificadoField.setValue(c[0].certificado);
           this.fechaFinField.setValue(c[0].fechaFin ? this.formatDate(c[0].fechaFin) : null);
           this.fechaExpField.setValue(c[0].fechaExp ? this.formatDate(c[0].fechaExp) : null);
-          this.tecnicaField.setValue(c[0].tecnica);
+          this.tecnicaField.setValue(c[0].tecnica ? c[0].tecnica : c[0].carrera);
           this.estudianteField.setValue(c[0].estudiante);
           this.identificacionField.setValue(c[0].cc);
-          this.tipoField.setValue(tipo);
           this.observacionField.setValue(c[0].observacion);
           this.cid = c[0].certId;
           cert.unsubscribe();
-        })
+        });
     }
   }
 
-  get certificadoField() {
+  get certificadoField(): any {
     return this.form.get('certificado');
   }
 
-  get fechaFinField() {
+  get fechaFinField(): any {
     return this.form.get('fechaFin');
   }
 
-  get fechaExpField() {
+  get fechaExpField(): any {
     return this.form.get('fechaExp');
   }
 
-  get tecnicaField() {
+  get tecnicaField(): any {
     return this.form.get('tecnica');
   }
 
-  get estudianteField() {
+  get estudianteField(): any {
     return this.form.get('estudiante');
   }
 
-  get identificacionField() {
+  get identificacionField(): any {
     return this.form.get('identificacion');
   }
 
-  get tipoField() {
+  get tipoField(): any {
     return this.form.get('tipo');
   }
 
-  get observacionField() {
+  get observacionField(): any {
     return this.form.get('observacion');
   }
 
-  saveOrEditCert(event: Event) {
+  saveOrEditCert(event: Event): void {
     event.preventDefault();
     this.form.markAllAsTouched();
     if (this.form.valid) {
       this.form.disable();
       if (!this.certId) {
-        this.saveCert()
+        this.saveCert();
       } else {
-        this.editCert()
+        this.editCert();
       }
     }
   }
 
-  saveCert() {
+  saveCert(): void {
     const formData = this.form.value;
     const data = this.getCerticateData(formData);
     this.certificate.generateCerticate(data, true);
     this.route.navigate(['dashboard/certificados']);
   }
 
-  editCert() {
+  editCert(): void {
     this.form.value.certId = this.cid;
     const data = this.form.value;
 
@@ -161,7 +165,7 @@ export class AdmEditCertificateComponent implements OnInit {
 
   }
 
-  getCerticateData (form): any {
+  getCerticateData(form): any {
     const data = {
       horas: form.horas,
       estudiante: `${form.estudiante}`,
@@ -173,30 +177,30 @@ export class AdmEditCertificateComponent implements OnInit {
       siglaCurso: form.siglaCurso,
       cc: form.cedula,
       tipo: form.tipo
-    }
+    };
 
     return data;
   }
 
   addCommas(nStr): string {
     nStr += '';
-    let x = nStr.split('.');
+    const x = nStr.split('.');
     let x1 = x[0];
-    let x2 = x.length > 1 ? '.' + x[1] : '';
-    let rgx = /(\d+)(\d{3})/;
+    const x2 = x.length > 1 ? '.' + x[1] : '';
+    const rgx = /(\d+)(\d{3})/;
     while (rgx.test(x1)) {
       x1 = x1.replace(rgx, '$1' + '.' + '$2');
     }
     return x1 + x2;
   }
 
-  formatDate(date) {
+  formatDate(date): Date {
     const f = new Date(date.seconds * 1000);
 
     return f;
   }
 
-  typeChanged(event) {
+  typeChanged(event): void {
     console.log(event.value);
   }
 

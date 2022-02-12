@@ -9,132 +9,14 @@ import {
 @Injectable({
   providedIn: 'root',
 })
-export class CerticateService {
-  public tipoCert = [
-    {
-      nombre: 'Certificacion',
-      sigla: 'CE',
-    },
-    {
-      nombre: 'Asistencia',
-      sigla: 'AS',
-    },
-    {
-      nombre: 'Aprobacion',
-      sigla: 'AP',
-    },
-  ];
-
-  public tecnicas = [
-    {
-      tipo: 'ASME IX',
-      sigla: 'AIX',
-    },
-    {
-      tipo: 'Corrientes de Eddie I',
-      sigla: 'ETI',
-    },
-    {
-      tipo: 'Corrientes de Eddie II',
-      sigla: 'ETII',
-    },
-    {
-      tipo: 'Emisión Acústica I',
-      sigla: 'AEI',
-    },
-    {
-      tipo: 'Emisión Acústica II',
-      sigla: 'AEII',
-    },
-    {
-      tipo: 'Espesor Película Seca',
-      sigla: 'EPS',
-    },
-    {
-      tipo: 'Inspección Visual I',
-      sigla: 'VTI',
-    },
-    {
-      tipo: 'Inspección Visual II',
-      sigla: 'VTII',
-    },
-    {
-      tipo: 'Intro a los END',
-      sigla: 'IEND',
-    },
-    {
-      tipo: 'Metalurgia del Acero',
-      sigla: 'MET',
-    },
-    {
-      tipo: 'Partículas Magnéticas I',
-      sigla: 'MTI',
-    },
-    {
-      tipo: 'Partículas Magnéticas II',
-      sigla: 'MTII',
-    },
-    {
-      tipo: 'Prueba de Adherencia',
-      sigla: 'PAP',
-    },
-    {
-      tipo: 'Prueba de Fuga I',
-      sigla: 'LTI',
-    },
-    {
-      tipo: 'Prueba de Fuga II',
-      sigla: 'LTII',
-    },
-    {
-      tipo: 'Prueba de Holiday',
-      sigla: 'PCH',
-    },
-    {
-      tipo: 'QA/QC Soldadura',
-      sigla: 'QAC',
-    },
-    {
-      tipo: 'Radiografía I',
-      sigla: 'RTI',
-    },
-    {
-      tipo: 'Radiografía II',
-      sigla: 'RTII',
-    },
-    {
-      tipo: 'Termografia I',
-      sigla: 'IRI',
-    },
-    {
-      tipo: 'Termografia II',
-      sigla: 'IRII',
-    },
-    {
-      tipo: 'Tintas Penetrantes I',
-      sigla: 'PTI',
-    },
-    {
-      tipo: 'Tintas Penetrantes II',
-      sigla: 'PTII',
-    },
-    {
-      tipo: 'Ultrasonido I',
-      sigla: 'UTI',
-    },
-    {
-      tipo: 'Ultrasonido II',
-      sigla: 'UTII',
-    },
-  ];
-
+export class CareerCertService {
   consecutivo: string;
 
   constructor(public fireStore: AngularFirestore) {}
 
   generateCerticate(data, consulta): any {
     // console.log(data);
-    console.log(consulta);
+    // console.log(consulta);
     const isCertified = this.isCertified(data)
       .valueChanges()
       .subscribe((c: any) => {
@@ -144,6 +26,7 @@ export class CerticateService {
         } else {
           data.fecha = c[0].fechaFin;
           data.certificado = c[0].certificado;
+          // console.log(c);
         }
         if (consulta) {
           this.downloadPDF(data);
@@ -152,41 +35,14 @@ export class CerticateService {
       });
   }
 
-  isCertified2(data): AngularFirestoreDocument {
-    return this.fireStore.doc(
-      `certificados/${data.courseId}/estudiantes/${data.stdId}`
-    );
-  }
-
   isCertified(data): AngularFirestoreCollection {
     return this.fireStore.collection(`certificados`, (ref) =>
-      ref.where('cc', '==', data.cc).where('courseId', '==', data.courseId)
-    );
-  }
-
-  certificateByCertId(certId: string): AngularFirestoreCollection {
-    return this.fireStore.collection(`certificados`, (ref) =>
-      ref.where('certificado', '==', certId)
-    );
-  }
-
-  certificateByStdId(stdId: string): AngularFirestoreCollection {
-    return this.fireStore.collection(`certificados`, (ref) =>
-      ref.where('cc', '==', stdId)
-    );
-  }
-
-  certificatesList(): AngularFirestoreCollection {
-    return this.fireStore.collection(`certificados`, (ref) =>
-      ref.orderBy('id')
+      ref.where('cc', '==', data.cc).where('courseId', '==', data.careerId)
     );
   }
 
   markAsCertified(data): void {
     // console.log(data);
-    const tipo = this.tipoCert.filter((x) => x.nombre === data.tipo)[0].sigla;
-    const tecnica = this.tecnicas.filter((x) => x.sigla === data.siglaCurso)[0]
-      .tipo;
     const fecha = this.setDates(data);
     const consec = this.getConsecutive()
       .valueChanges()
@@ -198,7 +54,8 @@ export class CerticateService {
         } else {
           this.consecutivo = `${c.valor}`;
         }
-        this.consecutivo = `${tipo}-${data.siglaCurso}-${fecha[0].fecha}-${this.consecutivo}`;
+        this.consecutivo = `CAR-${data.siglaCarrera}-${fecha[0].fecha}-${this.consecutivo}`;
+        console.log(this.consecutivo);
         this.setConsecutive(c.valor + 1)
           .then(() => {
             return this.fireStore.doc(`certificados/${this.consecutivo}`).set({
@@ -206,61 +63,20 @@ export class CerticateService {
               stdId: data.stdId,
               estudiante: data.estudiante,
               fechaFin: data.fechaNew,
-              fechaExp: data.tipo !== 'certificacion' ? fecha[1].fecha : null,
+              fechaExp: fecha[1].fecha,
               horas: data.horas,
               cc: data.cc,
               documento: data.documento,
-              profesor: data.profesor,
-              curso: data.curso,
-              courseId: data.courseId,
+              // profesor: data.profesor,
+              carrera: data.career,
+              courseId: data.careerId,
               certificado: this.consecutivo,
-              tipo,
-              tecnica,
+              careerCert: true,
             });
           })
           .catch((err) => console.log(err));
         consec.unsubscribe();
       });
-  }
-
-  saveNewCert(data): Promise<void> {
-    const tipo = this.tipoCert.filter((x) => x.nombre === data.tipo)[0].sigla;
-    return this.fireStore.doc(`certificados/${data.certificado}`).set({
-      id: data.id,
-      cc: data.identificacion,
-      certificado: data.certificado,
-      fechaFin: data.fechaFin,
-      fechaExp:
-        data.tipo !== 'Certificacion' && data.fechaExp
-          ? new Date(data.fechaExp)
-          : null,
-      tecnica: data.tecnica.tipo,
-      estudiante: data.estudiante,
-      tipo,
-      observacion: data.observacion,
-    });
-  }
-
-  updateCert(data): Promise<void> {
-    let tipo: string;
-    if (!data.tipo) {
-      tipo = this.tipoCert.filter((x) => x.nombre === data.tipo)[0].sigla;
-    } else {
-      tipo = data.tipo;
-    }
-    return this.fireStore.doc(`certificados/${data.certId}`).update({
-      certificado: data.certificado,
-      cc: data.identificacion,
-      fechaFin: data.fechaFin,
-      fechaExp:
-        data.tipo !== 'certificacion' && data.fechaExp
-          ? new Date(data.fechaExp)
-          : null,
-      tecnica: data.tecnica,
-      estudiante: data.estudiante,
-      tipo,
-      observacion: data.observacion,
-    });
   }
 
   setDates(data): any {
@@ -279,10 +95,9 @@ export class CerticateService {
       '11',
       '12',
     ];
-    const fecha = `${meses[fechaCons.getMonth()]}${fechaCons
-      .getFullYear()
-      .toString()
-      .substring(2, 4)}`;
+    const fecha = `${fechaCons.getFullYear().toString().substring(2, 4)}${
+      meses[fechaCons.getMonth()]
+    }`;
     const fechaExp = new Date(fechaCons.setDate(fechaCons.getDate() + 1095));
     return [{ fecha }, { fecha: fechaExp }];
   }
@@ -318,6 +133,7 @@ export class CerticateService {
     const text4 = `ASNT NDT LEVEL II`;
     const text5 = `Director General`;
     const cert = `puede validar este certificado en: https://chym-e-learning.web.app con el código ${data.certificado}`;
+    const carrera = data.career ? data.career : data.carrera;
     const doc = new jsPDF({
       orientation: 'l',
       format: 'letter',
@@ -362,7 +178,7 @@ export class CerticateService {
     doc.text(text2, centerText(text2), 200);
     doc.setFontSize(28);
     doc.setTextColor(55, 71, 79);
-    doc.text(data.curso, centerText(data.curso), 235);
+    doc.text(carrera, centerText(carrera), 235);
     doc.setFontSize(14);
     doc.setTextColor(0, 114, 121);
     doc.text(`Realizado:`, 100, 295);
@@ -371,14 +187,14 @@ export class CerticateService {
     doc.setTextColor(0, 114, 121);
     doc.text(`Duracion:`, 380, 295);
     doc.setTextColor(55, 71, 79);
-    doc.text(`${data.horas} HORAS`, 440, 295);
+    doc.text(`${data.horas.toUpperCase()}`, 440, 295);
     doc.setTextColor(0, 114, 121);
     doc.text(`Lugar:`, 380, 315);
     doc.setTextColor(55, 71, 79);
     doc.text(`Barranquilla - Colombia`, 430, 315);
     doc.setFontSize(18);
     doc.setFont('times', 'bold');
-    doc.text(data.profesor, centerText(data.profesor), 380);
+    doc.text('Geovanny Alvarez G.', centerText('Geovanny Alvarez G.'), 380);
     doc.setFontSize(14);
     doc.setTextColor(0, 114, 121);
     doc.setFont('times', 'normal');

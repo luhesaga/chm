@@ -12,7 +12,11 @@
         style="background: var(--main-color2); color: white;">
             Crear nuevo
     </button>
-    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+    <table
+        mat-table
+        [dataSource]="dataSource"
+        matSort class="mat-elevation-z8"
+        aria-describedby="certificados">
 
         <!-- consecutivo -->
         <ng-container matColumnDef="no">
@@ -56,7 +60,7 @@
                 mat-cell
                 *matCellDef="let element"
                 class="tecnica">
-                {{ element.tecnica }}
+                {{ element.tecnica ? element.tecnica : element.carrera }}
             </td>
         </ng-container>
 
@@ -78,7 +82,7 @@
                 mat-cell
                 *matCellDef="let element"
                 class="tipo">
-                {{ element.tipo }}
+                {{ element.tipo ? element.tipo : 'CAR' }}
             </td>
         </ng-container>
 

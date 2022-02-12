@@ -44,7 +44,7 @@
             <div class="cert-data">
                 <p>{{ item.certificado }}</p>
                 <p>{{ item.estudiante }}</p>
-                <p>{{ item.tecnica }}</p>
+                <p>{{ item.tecnica ? item.tecnica : item.carrera }}</p>
                 <p>{{ item.fechaFin }}</p>
                 <p>{{ item.fechaExp ? item.fechaExp : 'n/a' }}</p>
                 <p>{{ item.tipo }}</p>

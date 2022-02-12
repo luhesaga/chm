@@ -1,26 +1,53 @@
 <div class="container">
-  <h2>Avance carrera</h2>
-  <div class="leccionesHeader">
-    <div>
-      <mat-form-field appearance="legacy" class="search">
-        <mat-label>Buscar</mat-label>
-        <input
-          matInput
-          (input)="applyFilter($event.target.value)"
-          placeholder="Buscar lección"
-        />
-        <!---->
-        <mat-icon matSuffix>search</mat-icon>
-        <mat-hint>Puede buscar por cualquier campo</mat-hint>
-      </mat-form-field>
+  <section class="header">
+    <h2>Avance carrera</h2>
+    <div class="leccionesHeader">
+      <div>
+        <mat-form-field appearance="legacy" class="search">
+          <mat-label>Buscar</mat-label>
+          <input
+            matInput
+            (input)="applyFilter($event.target.value)"
+            placeholder="Buscar lección"
+          />
+          <!---->
+          <mat-icon matSuffix>search</mat-icon>
+          <mat-hint>Puede buscar por cualquier campo</mat-hint>
+        </mat-form-field>
+      </div>
+      <p style="color: var(--main-color2); font-size: 1.1rem; font-weight: 400">
+        Avance carrera:
+        <span style="color: black; font-weight: 500">{{
+          totalApproved + '%'
+        }}</span>
+      </p>
     </div>
-    <p style="color: var(--main-color2); font-size: 1.1rem; font-weight: 400">
-      Avance carrera:
-      <span style="color: black; font-weight: 500">{{
-        totalApproved + '%'
-      }}</span>
-    </p>
-  </div>
+  </section>
+
+  <section class="congrats" *ngIf="totalApproved === 100">
+    <h3>¡Felicidades! has aprobado la carrera.</h3>
+    <button
+        *ngIf="hasCC"
+        mat-raised-button
+        style="background: var(--main-color2); color: white;"
+        (click)="downloadPDFCerticate()">
+            <mat-icon>school</mat-icon>
+            Generar certificado
+    </button>
+    <div class="update-data" *ngIf="!hasCC">
+        <mat-label>
+            <mat-icon>feedback</mat-icon>
+            <p>No tenemos registrada tu cédula, por favor actualiza tus datos para generar tu certificado.</p>
+        </mat-label>
+        <button
+        mat-raised-button
+        style="background: var(--main-color2); color: white;"
+        (click)="goToProfile()">
+            <mat-icon>find_replace</mat-icon>
+            Actualizar datos
+    </button>
+    </div>
+  </section>  
 
   <table
     aria-describedby="tabla cursos de la carrera"
@@ -47,7 +74,7 @@
 
     <ng-container matColumnDef="progreso">
       <th mat-header-cell *matHeaderCellDef mat-sort-header id="progreso">
-        Progreso
+        Promedio
       </th>
 
       <td mat-cell *matCellDef="let element" matTooltip="Lección" class="name">
@@ -85,7 +112,7 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
-  <mat-paginator [pageSizeOptions]="[10, 15, 20]" showFirstLastButtons>
+  <mat-paginator [pageSizeOptions]="[15, 20, 25]" showFirstLastButtons>
   </mat-paginator>
   <button
     mat-raised-button

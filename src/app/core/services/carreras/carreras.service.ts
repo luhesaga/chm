@@ -26,6 +26,7 @@ export class CarrerasService {
       evaluacion: '',
       requisitosCalificacion: '',
       calificacionEstrellas: [],
+      siglaCarrera: data.sigla
     });
   }
 
@@ -41,6 +42,7 @@ export class CarrerasService {
     return this.fireStore.doc(`carreras/${id}`).update({
       nombre: data.nombre,
       image: data.image,
+      siglaCarrera: data.sigla
     });
   }
 

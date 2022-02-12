@@ -285,8 +285,11 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
         `cursos/evaluaciones-carrera/${this.careerId}/${this.courseId}/${this.stdId}`,
       ]);
     } else if (this.carrera && this.std) {
+      console.log(this.admin);
+      console.log(this.carrera);
+      console.log(this.std);
       this.route.navigate([
-        `cursos/evaluaciones-carrera/${this.careerId}/${this.courseId}/${this.stdId}`,
+        `cursos/evaluaciones-carrera-std/${this.careerId}/${this.courseId}/${this.stdId}`,
       ]);
     } else {
       this.route.navigate([

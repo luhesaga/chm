@@ -5,11 +5,96 @@
     padding: 24px;
     box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
     border-radius: 4px;
-}
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 
-.search {
-    margin-right: 48px;
-    margin-bottom: 24px;
+    .header {
+        width: 90%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    
+        h2 {
+            justify-self: center;
+        }
+    
+        .leccionesHeader {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+            width: 100%;
+    
+            .search {
+                margin-right: 48px;
+                margin-bottom: 24px;
+            }
+        }
+    }
+
+    .congrats {
+        width: 80%;
+        background: #f5f5f5;
+        border: 1px solid #4fc3f7;
+        border-radius: 5px;
+        box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+        margin-bottom: 24px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    
+        h3 {
+            color: var(--main-color2);
+            margin-top: 16px;
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+    
+        button {
+            margin-bottom: 8px;
+        }
+    
+        .update-data {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+    
+            mat-label {
+                display: flex;
+    
+                mat-icon {
+                    color: orangered;
+                }
+    
+                p {
+                    font-size: 1rem;
+                    margin-left: 8px;
+                }
+            }
+    
+            button {
+                margin: 1rem 0;
+            }
+        }
+    }
+
+    mat-paginator {
+        margin: 1rem 0;
+    }
+
+    .buttons {
+        text-align: center;
+    }
+
+    .buttons .mat-stroked-button {
+        margin-left: 5px;
+        min-width: 40px;
+    }
 }
 
 table {
@@ -36,36 +121,15 @@ td.mat-cell:last-of-type
     padding: 0;
 }
 
-// .name
-// {
-//     cursor: pointer;
-// }
-
-.buttons
-{
-    text-align: center;
-}
-
-.buttons .mat-stroked-button
-{
-    margin-left: 5px;
-    min-width: 40px;
-}
-
-.leccionesHeader
-{
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    margin-bottom: 1rem;
-}
-
 .nombre-curso {
     color: var(--main-color2);
     font-weight: 400;
+    cursor: pointer;
 }
 
 .nombre-ejercicio {
     color: #3f51b5;
     font-weight: 400;
+    cursor: pointer;
 }
+
