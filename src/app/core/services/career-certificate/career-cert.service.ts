@@ -15,8 +15,6 @@ export class CareerCertService {
   constructor(public fireStore: AngularFirestore) {}
 
   generateCerticate(data, consulta): any {
-    // console.log(data);
-    // console.log(consulta);
     const isCertified = this.isCertified(data)
       .valueChanges()
       .subscribe((c: any) => {
@@ -26,7 +24,6 @@ export class CareerCertService {
         } else {
           data.fecha = c[0].fechaFin;
           data.certificado = c[0].certificado;
-          // console.log(c);
         }
         if (consulta) {
           this.downloadPDF(data);
@@ -42,7 +39,6 @@ export class CareerCertService {
   }
 
   markAsCertified(data): void {
-    // console.log(data);
     const fecha = this.setDates(data);
     const consec = this.getConsecutive()
       .valueChanges()
@@ -103,7 +99,6 @@ export class CareerCertService {
   }
 
   downloadPDF(data): void {
-    // console.log(data);
     let f: any;
     if (data.fecha) {
       f = new Date(data.fecha.seconds * 1000);

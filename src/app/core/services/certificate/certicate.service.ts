@@ -133,8 +133,6 @@ export class CerticateService {
   constructor(public fireStore: AngularFirestore) {}
 
   generateCerticate(data, consulta): any {
-    // console.log(data);
-    console.log(consulta);
     const isCertified = this.isCertified(data)
       .valueChanges()
       .subscribe((c: any) => {
@@ -183,7 +181,6 @@ export class CerticateService {
   }
 
   markAsCertified(data): void {
-    // console.log(data);
     const tipo = this.tipoCert.filter((x) => x.nombre === data.tipo)[0].sigla;
     const tecnica = this.tecnicas.filter((x) => x.sigla === data.siglaCurso)[0]
       .tipo;
@@ -288,7 +285,6 @@ export class CerticateService {
   }
 
   downloadPDF(data): void {
-    // console.log(data);
     let f: any;
     if (data.fecha) {
       f = new Date(data.fecha.seconds * 1000);
