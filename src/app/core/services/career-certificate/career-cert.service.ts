@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import jsPDF from 'jspdf';
+import { CertificateDesignService } from '../certificate-design/certificate-design.service';
 import {
   AngularFirestore,
   AngularFirestoreCollection,
   AngularFirestoreDocument,
 } from '@angular/fire/firestore';
+import html2canvas from 'html2canvas';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +14,10 @@ import {
 export class CareerCertService {
   consecutivo: string;
 
-  constructor(public fireStore: AngularFirestore) {}
+  constructor(
+    public fireStore: AngularFirestore,
+    private certDesign: CertificateDesignService
+  ) {}
 
   generateCerticate(data, consulta): any {
     const isCertified = this.isCertified(data)
@@ -24,9 +29,15 @@ export class CareerCertService {
         } else {
           data.fecha = c[0].fechaFin;
           data.certificado = c[0].certificado;
+          data.fFin = c[0].fechaFin;
+          data.fExp = c[0].fechaExp;
         }
         if (consulta) {
-          this.downloadPDF(data);
+          if (data.plantilla === 'default') {
+            this.downloadPDF(data);
+          } else {
+            this.getCertDesign(data);
+          }
         }
         isCertified.unsubscribe();
       });
@@ -76,7 +87,7 @@ export class CareerCertService {
   }
 
   setDates(data): any {
-    const fechaCons = new Date(data.fechaNew);
+    const fechaCons = data.fechaNew ? new Date(data.fechaNew) : new Date(data * 1000);
     const meses = [
       '01',
       '02',
@@ -124,7 +135,7 @@ export class CareerCertService {
     const fecha =
       f.getDate() + ' de ' + meses[f.getMonth()] + ' de ' + f.getFullYear();
     const text1 = 'Hace constar que';
-    const text2 = `Cursó y aprobó satisfactoriamente la acción de formación`;
+    const text2 = `Cursó y aprobó satisfactoriamente la carrera`;
     const text4 = `ASNT NDT LEVEL II`;
     const text5 = `Director General`;
     const cert = `puede validar este certificado en: https://chym-e-learning.web.app con el código ${data.certificado}`;
@@ -182,7 +193,7 @@ export class CareerCertService {
     doc.setTextColor(0, 114, 121);
     doc.text(`Duracion:`, 380, 295);
     doc.setTextColor(55, 71, 79);
-    doc.text(`${data.horas.toUpperCase()}`, 440, 295);
+    doc.text(`${data.horas}`, 440, 295);
     doc.setTextColor(0, 114, 121);
     doc.text(`Lugar:`, 380, 315);
     doc.setTextColor(55, 71, 79);
@@ -198,6 +209,66 @@ export class CareerCertService {
     doc.setTextColor(55, 71, 79);
     doc.text(cert, centerText(cert), 430);
     doc.save(`certificado.pdf`);
+  }
+
+  getCertDesign(data): void {
+    const design = this.certDesign.getUniqueDesign(data.plantilla)
+      .valueChanges()
+      .subscribe(d => {
+        this.prepareCert(data, d);
+        design.unsubscribe();
+      });
+  }
+
+  prepareCert(data, cert): void {
+    // console.log(cert);
+    // console.log(data);
+    const contenido = cert[0].contenido
+      .replace('##STD_NAME##', `${data.estudiante}`)
+      .replace('##STD_ID##', `${data.documento2 ? data.document2 : this.addCommas(data.cc)}`)
+      .replace('##CAREER_NAME##', data.career ? data.career : data.carrera)
+      .replace('##INI_DATE##', this.formatDate(data.fFin ? data.fFin : data.fechaFin))
+      .replace('##END_DATE##', this.formatDate(data.fExp ? data.fExp : data.fechaExp))
+      .replace('##HOURS##', data.horas);
+    const elemento = document.getElementById('element');
+    elemento.innerHTML = contenido;
+    elemento.style.display = 'block';
+    this.downloadDesignCert(elemento);
+    elemento.style.display = 'none';
+
+  }
+
+  formatDate(date): string {
+    const fecha = new Date(date.seconds * 1000).toLocaleDateString();
+    return fecha;
+  }
+
+  addCommas(nStr): string {
+    nStr += '';
+    const x = nStr.split('.');
+    let x1 = x[0];
+    const x2 = x.length > 1 ? '.' + x[1] : '';
+    const rgx = /(\d+)(\d{3})/;
+    while (rgx.test(x1)) {
+      x1 = x1.replace(rgx, '$1' + '.' + '$2');
+    }
+    return x1 + x2;
+  }
+
+  downloadDesignCert(elemento): void {
+    html2canvas(elemento, { allowTaint: true, useCORS: true }).then(canvas => {
+      // Few necessary setting options
+      const imgWidth = 280;
+      // const pageHeight = 295;
+      const imgHeight = canvas.height * imgWidth / canvas.width;
+      // const heightLeft = imgHeight;
+
+      const contentDataURL = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('l', 'mm', 'letter');
+      const position = 0;
+      pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
+      pdf.save('certificado.pdf'); // Generated PDF
+    });
   }
 
   getConsecutive(): AngularFirestoreDocument {

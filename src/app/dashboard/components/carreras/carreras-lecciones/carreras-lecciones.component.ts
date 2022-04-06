@@ -94,7 +94,7 @@ export class CarrerasLeccionesComponent implements OnInit, AfterViewInit, OnDest
         this.careerReceived = career;
         // console.log(this.careerReceived);
         careerInfo.unsubscribe();
-      })
+      });
   }
 
   getCareerCourses(): void {
@@ -358,21 +358,22 @@ export class CarrerasLeccionesComponent implements OnInit, AfterViewInit, OnDest
 
   downloadPDFCerticate(): void {
     const data = this.getCerticateData();
-    // console.log(data);
     this.certificado.generateCerticate(data, true);
   }
 
   getCerticateData(): any {
     return {
-      horas: this.parseHTML(this.careerReceived.duracion),
+      horas: `${this.careerReceived.duracionCarrera} HORAS`,
       estudiante: `${this.stdReceived.nombres} ${this.stdReceived.apellidos}`,
       documento: 'Con documento de identidad ' + this.addCommas(this.stdReceived.identificacion),
+      documento2: this.addCommas(this.stdReceived.identificacion),
       // profesor: `${this.courseReceived.profesor}`,
       career: `${this.careerReceived.nombre}`,
       stdId: this.stdId,
       careerId: this.careerId,
       siglaCarrera: this.careerReceived.siglaCarrera,
       cc: this.stdReceived.identificacion,
+      plantilla: this.careerReceived.plantilla,
       // tipo: this.courseReceived.tipoCerticado,
     };
 

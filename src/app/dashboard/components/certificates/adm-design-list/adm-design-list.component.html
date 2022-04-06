@@ -1,0 +1,86 @@
+<main>
+    <h2>Plantillas Certificados</h2>
+    <mat-form-field appearance="legacy" class="search">
+        <mat-label>Buscar</mat-label>
+        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Placeholder">
+        <mat-icon matSuffix>search</mat-icon>
+        <mat-hint>puede buscar por cualquier campo</mat-hint>
+    </mat-form-field>
+    <button
+        mat-raised-button
+        routerLink="../disenar-certificado"
+        style="background: var(--main-color2); color: white;">
+            Crear nueva plantilla
+    </button>
+    
+    <table
+        mat-table
+        [dataSource]="dataSource"
+        matSort class="mat-elevation-z8"
+        aria-describedby="certificados">
+
+        <!-- consecutivo -->
+        <ng-container matColumnDef="no">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header id="no">No.</th>
+            <td
+                mat-cell
+                *matCellDef="let element"
+                matTooltip="Número"
+                class="no">
+                {{ element.no }}
+            </td>
+            </ng-container>
+        <!-- nombre -->
+        <ng-container matColumnDef="nombre">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header id="nombre">Nombre</th>
+        <td
+            mat-cell
+            *matCellDef="let element"
+            class="nombre">
+            {{ element.titulo }}
+        </td>
+        </ng-container>
+
+        <!-- botones de acción -->
+        <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef id="acciones">Acciones</th>
+        <td mat-cell *matCellDef="let element" class="buttons">
+            <button
+                (click)="openModalVista(element)"
+                mat-stroked-button
+                color="primary"
+                matTooltip="ver diseño de certificado">
+                    <mat-icon style="color: rgba(0, 114, 121, 0.95);">visibility</mat-icon>
+            </button>
+            <button
+                mat-stroked-button
+                color="primary"
+                matTooltip="Editar diseño de certificado"
+                (click)="goToEdit(element)">
+                    <mat-icon style="color: darkgoldenrod;">edit</mat-icon>
+            </button>
+            <button
+                mat-stroked-button
+                color="primary"
+                matTooltip="Eliminar diseño de certificado"
+                (click)="deleteDesign(element)">
+                    <mat-icon style="color: gray;">delete</mat-icon>
+            </button>
+        </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+
+    <mat-paginator
+        [pageSizeOptions]="[10, 15, 20]"
+        showFirstLastButtons
+    ></mat-paginator>
+    <button
+        mat-stroked-button
+        color="primary"
+        routerLink="../certificados"
+        style="background: var(--main-color2); color: white; margin: 0 2rem;">
+            Regresar
+    </button>
+</main>

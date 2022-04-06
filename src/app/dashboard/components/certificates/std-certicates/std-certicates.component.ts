@@ -59,6 +59,8 @@ export class StdCerticatesComponent implements OnInit {
                 cert.imagen = c.image;
                 cert.profesor = 'Geovanny Alvarez G.';
                 cert.cc = user.identificacion ? user.identificacion : '1111';
+                cert.horas = `${c.duracionCarrera} HORAS`;
+                cert.plantilla = c.plantilla;
                 this.certificatesList.unshift(cert);
                 careerInfo.unsubscribe();
               });
@@ -136,10 +138,15 @@ export class StdCerticatesComponent implements OnInit {
   // }
 
   downloadPDF(data): void {
+    // console.log(data);
     if (!data.careerCert) {
       this.certificados.downloadPDF(data);
     } else {
-      this.careerCert.downloadPDF(data);
+      if (data.plantilla === 'default') {
+        this.careerCert.downloadPDF(data);
+      } else {
+        this.careerCert.getCertDesign(data);
+      }
     }
   }
 

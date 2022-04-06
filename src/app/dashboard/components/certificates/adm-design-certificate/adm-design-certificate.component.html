@@ -1,0 +1,51 @@
+<main>
+    <header>
+        <h1>{{ edit ? 'Editar' : 'Crear' }} Plantilla de Certificado</h1>
+    </header>
+    <section class="cert-title">
+        <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Titulo</mat-label>
+            <input
+                matInput
+                placeholder="Titulo del certificado"
+                #tituloRef>
+        </mat-form-field>
+    </section>
+
+    <section class="design-editor">
+        <div class="mat-form-field-wrapper">
+            <editor
+            apiKey="fa82nlmdggdzt2rwcpx7k706ohjcnf9wo3ioar2p06d10yyk"
+            class="mat-elevation-z1"
+            [(ngModel)]="certificado"
+            (onInit)="handleEditorInit($event)"
+            [init]="{
+                icons: 'material',
+                skin: 'oxide',
+                plugins: ['print', 'preview', 'textcolor', 'wordcount', 'lists', 'image imagetools', 
+                        'media', 'table', 'code'],
+                menubar: ['file', 'edit', 'view', 'insert', 'format','table'],
+                min_height: 1024,
+                width : '1024',
+                toolbar: 'forecolor backcolor | undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | image | media | table tabledelete | tableprops tablerowprops tablecellprops | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol | code',
+                media_live_embeds: true
+            }"
+            ></editor>
+        </div>
+    </section>
+
+    <section class="buttons">
+        <button class="save-btn" mat-raised-button (click)="saveOrEditDesign()">Guardar</button>
+        <button mat-raised-button color="warn" (click)="goBack()">Cancelar</button>
+    </section>
+
+    <section class="instructions">
+        <h3>Etiquetas para certificados:</h3>
+        <p>##STD_NAME## <span>Nombre estudiante</span></p>
+        <p>##STD_ID## <span>Identificación estudiante</span></p>
+        <p>##CAREER_NAME## <span>Nombre formación</span></p>
+        <p>##INI_DATE## <span>Fecha inicio</span></p>
+        <p>##END_DATE## <span>Fecha expiración</span></p>
+        <p>##HOURS## <span>Duración formación</span></p>
+    </section>
+</main>

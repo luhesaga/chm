@@ -13,7 +13,7 @@ import { CategoriesComponent } from './components/categories/categories.componen
 import { CategoryCreateComponent } from './components/categories/category-create/category-create.component';
 import { UserEditComponent } from './components/users/user-edit/user-edit.component';
 import { CourseEditComponent } from './components/cursos/course-edit/course-edit.component';
-import { EditorModule } from "@tinymce/tinymce-angular";
+import { EditorModule } from '@tinymce/tinymce-angular';
 import { CourseDescriptionComponent } from './components/cursos/course-description/course-description.component';
 import { CourseHomeComponent } from './components/cursos/course-home/course-home.component';
 import { LeccionesComponent } from './components/lessons/lecciones/lecciones.component';
@@ -74,7 +74,9 @@ import { AdmCreateCertificateComponent } from './components/certificates/adm-cre
 import { CarrerasIndexComponent } from './components/carreras/carreras-index/carreras-index.component';
 import { CarrerasLeccionesComponent } from './components/carreras/carreras-lecciones/carreras-lecciones.component';
 import { CourseViewModule } from '../course-view/course-view.module';
-
+import { AdmDesignCertificateComponent } from './components/certificates/adm-design-certificate/adm-design-certificate.component';
+import { AdmDesignListComponent } from './components/certificates/adm-design-list/adm-design-list.component';
+import { AdmDesignViewComponent } from './components/certificates/adm-design-view/adm-design-view.component';
 
 @NgModule({
   declarations: [
@@ -143,7 +145,10 @@ import { CourseViewModule } from '../course-view/course-view.module';
     AdmCreateCertificateComponent,
     CarrerasIndexComponent,
     CarrerasLeccionesComponent,
-    ],
+    AdmDesignCertificateComponent,
+    AdmDesignListComponent,
+    AdmDesignViewComponent,
+  ],
   imports: [
     CommonModule,
     DashboardRoutingModule,
@@ -156,8 +161,6 @@ import { CourseViewModule } from '../course-view/course-view.module';
     CourseViewModule,
     MatCarouselModule.forRoot(),
   ],
-  exports: [
-    CarouselComponent,
-  ]
+  exports: [CarouselComponent],
 })
-export class DashboardModule { }
+export class DashboardModule {}

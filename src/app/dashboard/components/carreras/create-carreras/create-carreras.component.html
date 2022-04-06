@@ -43,14 +43,36 @@
                 matInput
                 tabIndex=2/>
             </mat-form-field>
+            <mat-form-field>
+                <mat-label>Duración total de la carrera (horas)</mat-label>
+                <input
+                    type="number"
+                    matInput
+                    formControlName="duracionCarrera"
+                    tabIndex=3/>
+                <mat-error *ngIf="duracionCarreraField.touched && duracionCarreraField.invalid">
+                  <ng-container *ngIf="duracionCarreraField.hasError('required')">Este campo es requerido</ng-container>
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Plantilla certificado</mat-label>
+                <mat-select formControlName="plantilla" tabIndex="4">
+                    <mat-option *ngFor="let item of certs" [value]="item.id">
+                        {{ item.titulo }}
+                    </mat-option>
+                    <mat-error *ngIf="plantillaField.touched && plantillaField.invalid">
+                        <ng-container *ngIf="plantillaField.hasError('required')">Este campo es requerido</ng-container>
+                    </mat-error>
+                </mat-select>
+            </mat-form-field>
         </div>
         <div class="buttons">
             <button
                 type="submit"
-                tabIndex=4
+                tabIndex=5
                 mat-raised-button
                 >Crear carrera</button>
-                <a mat-raised-button (click)="volverAListaCarreras()" tabIndex=5>Cancelar</a>
+                <a mat-raised-button (click)="volverAListaCarreras()" tabIndex=6    >Cancelar</a>
         </div>
     </form>
 </main>

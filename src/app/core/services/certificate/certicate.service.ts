@@ -240,10 +240,10 @@ export class CerticateService {
 
   updateCert(data): Promise<void> {
     let tipo: string;
-    if (!data.tipo) {
+    if (data.tipo !== 'Carrera') {
       tipo = this.tipoCert.filter((x) => x.nombre === data.tipo)[0].sigla;
     } else {
-      tipo = data.tipo;
+      tipo = 'CAR';
     }
     return this.fireStore.doc(`certificados/${data.certId}`).update({
       certificado: data.certificado,
@@ -256,7 +256,7 @@ export class CerticateService {
       tecnica: data.tecnica,
       estudiante: data.estudiante,
       tipo,
-      observacion: data.observacion,
+      observacion: data.observacion ? data.observacion : '',
     });
   }
 

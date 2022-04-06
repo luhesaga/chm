@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AngularFireStorage } from '@angular/fire/storage';
 import Swal from 'sweetalert2';
 import { CarrerasService } from 'src/app/core/services/carreras/carreras.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { CertificateDesignService } from 'src/app/core/services/certificate-design/certificate-design.service';
 
 @Component({
   selector: 'app-edit-carreras',
@@ -14,13 +15,15 @@ export class EditCarrerasComponent implements OnInit {
   formCarreras: FormGroup;
   showImage: any;
   idCarreras: string;
+  certs: any;
 
   constructor(
     private fireStorage: AngularFireStorage,
     private formBuilder: FormBuilder,
     private carrerasService: CarrerasService,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private cert: CertificateDesignService
   ) {
     this.idCarreras = this.activatedRoute.snapshot.params.idCarreras;
     this.showImage = { src: '' };
@@ -28,13 +31,31 @@ export class EditCarrerasComponent implements OnInit {
     this.obtenerCarrera();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getCertsDesigns();
+  }
+
+  getCertsDesigns(): void {
+    const certsList = this.cert.listCertsDesigns()
+      .valueChanges()
+      .subscribe(c => {
+        c.unshift({
+          titulo: 'default',
+          id: 'default',
+          contenido: 'default'
+        });
+        this.certs = c;
+        certsList.unsubscribe();
+      });
+  }
 
   private buildForm(): void {
     this.formCarreras = this.formBuilder.group({
       nombre: ['', Validators.required],
       image: ['', Validators.required],
-      sigla: ['', Validators.required]
+      sigla: ['', Validators.required],
+      duracionCarrera: [0, Validators.required],
+      plantilla: ['', Validators.required]
     });
   }
 
@@ -46,7 +67,10 @@ export class EditCarrerasComponent implements OnInit {
         this.nombreField.setValue(carrera.nombre);
         this.imageField.setValue(carrera.image);
         this.siglaField.setValue(carrera.siglaCarrera);
+        this.duracionCarreraField.setValue(carrera.duracionCarrera);
         this.showImage.src = carrera.image;
+        this.plantillaField.setValue(carrera.plantilla);
+        console.log(this.plantillaField.value);
         unsubscribeCarrera.unsubscribe();
       });
   }
@@ -65,6 +89,14 @@ export class EditCarrerasComponent implements OnInit {
 
   get siglaField() {
     return this.formCarreras.get('sigla');
+  }
+
+  get duracionCarreraField() {
+    return this.formCarreras.get('duracionCarrera');
+  }
+
+  get plantillaField(): AbstractControl {
+    return this.formCarreras.get('plantilla');
   }
 
   obtenerImagen(event: any) {

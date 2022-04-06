@@ -62,6 +62,8 @@ import { CarrerasLeccionesComponent } from './components/carreras/carreras-lecci
 import { EvaluationHomeComponent } from '../course-view/components/evaluation/evaluation-home/evaluation-home.component';
 import { EvaluationFinishComponent } from '../course-view/components/evaluation/evaluation-finish/evaluation-finish.component';
 import { CertValidationComponent } from '../home/components/certificates/cert-validation/cert-validation.component';
+import { AdmDesignCertificateComponent } from './components/certificates/adm-design-certificate/adm-design-certificate.component';
+import { AdmDesignListComponent } from './components/certificates/adm-design-list/adm-design-list.component';
 
 const routes: Routes = [
   {
@@ -376,6 +378,18 @@ const routes: Routes = [
       {
         path: 'editar-certificado/:certificado',
         component: AdmEditCertificateComponent,
+      },
+      {
+        path: 'disenar-certificado',
+        component: AdmDesignCertificateComponent,
+      },
+      {
+        path: 'editar-diseno/:designId',
+        component: AdmDesignCertificateComponent
+      },
+      {
+        path: 'disenos-certificados',
+        component: AdmDesignListComponent,
       },
       {
         path: 'certificados',
