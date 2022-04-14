@@ -106,7 +106,8 @@ export class CareerCertService {
       meses[fechaCons.getMonth()]
     }`;
     const fechaExp = new Date(fechaCons.setDate(fechaCons.getDate() + 1095));
-    return [{ fecha }, { fecha: fechaExp }];
+    const ultimoDia = new Date(fechaExp.getFullYear(), fechaExp.getMonth() + 1, 0);
+    return [{ fecha }, { fecha: ultimoDia }];
   }
 
   downloadPDF(data): void {
@@ -136,7 +137,7 @@ export class CareerCertService {
       f.getDate() + ' de ' + meses[f.getMonth()] + ' de ' + f.getFullYear();
     const text1 = 'Hace constar que';
     const text2 = `Cursó y aprobó satisfactoriamente la carrera`;
-    const text4 = `ASNT NDT LEVEL II`;
+    // const text4 = `ASNT NDT LEVEL II`;
     const text5 = `Director General`;
     const cert = `puede validar este certificado en: https://chym-e-learning.web.app con el código ${data.certificado}`;
     const carrera = data.career ? data.career : data.carrera;
@@ -225,7 +226,7 @@ export class CareerCertService {
     // console.log(data);
     const contenido = cert[0].contenido
       .replace('##STD_NAME##', `${data.estudiante}`)
-      .replace('##STD_ID##', `${data.documento2 ? data.document2 : this.addCommas(data.cc)}`)
+      .replace('##STD_ID##', `${data.documento2 ? data.documento2 : this.addCommas(data.cc)}`)
       .replace('##CAREER_NAME##', data.career ? data.career : data.carrera)
       .replace('##INI_DATE##', this.formatDate(data.fFin ? data.fFin : data.fechaFin))
       .replace('##END_DATE##', this.formatDate(data.fExp ? data.fExp : data.fechaExp))

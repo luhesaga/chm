@@ -2,6 +2,8 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CerticateService } from 'src/app/core/services/certificate/certicate.service';
 import Swal from 'sweetalert2';
+import { CourseService } from '../../../../core/services/courses/course.service';
+import { CarrerasService } from '../../../../core/services/carreras/carreras.service';
 
 @Component({
   selector: 'app-cert-validation',
@@ -17,7 +19,9 @@ export class CertValidationComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private certificados: CerticateService
+    private certificados: CerticateService,
+    private courseService: CourseService,
+    private careerService: CarrerasService
   ) {
     this.buildForm();
   }
@@ -47,11 +51,35 @@ export class CertValidationComponent implements OnInit {
       .subscribe((cert: any) => {
         if (cert.length > 0) {
           cert.forEach((c) => {
-            c.fechaFin = this.formatDate(c.fechaFin);
-            c.fechaExp = c.fechaExp ? this.formatDate(c.fechaExp) : '';
-            c.tipo = !c.careerCert
-              ? this.tipos.filter((x) => x.sigla === c.tipo)[0].nombre
-              : 'Carrera';
+            const courseInfo = this.courseService.detailCourse(c.courseId)
+              .valueChanges()
+              .subscribe(curso => {
+                if (curso) {
+                  c.fechaFin = this.formatDate(c.fechaFin);
+                  c.fechaExp = c.fechaExp ? this.formatDate(c.fechaExp) : '';
+                  c.vence = curso.vence;
+                  c.vencimiento = curso.vencimiento;
+                  c.tipo = !c.careerCert
+                    ? this.tipos.filter((x) => x.sigla === c.tipo)[0].nombre
+                    : 'Carrera';
+                } else {
+                  const careerInfo = this.careerService.obtenerCarrera(c.courseId)
+                    .valueChanges()
+                    .subscribe(carrera => {
+                      if (carrera) {
+                        c.fechaFin = this.formatDate(c.fechaFin);
+                        c.fechaExp = c.fechaExp ? this.formatDate(c.fechaExp) : '';
+                        c.vence = carrera.vence;
+                        c.vencimiento = carrera.vencimiento;
+                        c.tipo = !c.careerCert
+                          ? this.tipos.filter((x) => x.sigla === c.tipo)[0].nombre
+                          : 'Carrera';
+                      }
+                      careerInfo.unsubscribe();
+                    });
+                }
+                courseInfo.unsubscribe();
+              });
           });
           this.certReceived = cert;
           this.show = true;
@@ -71,11 +99,35 @@ export class CertValidationComponent implements OnInit {
       .subscribe((cert: any) => {
         if (cert.length > 0) {
           cert.forEach((c) => {
-            c.fechaFin = this.formatDate(c.fechaFin);
-            c.fechaExp = c.fechaExp ? this.formatDate(c.fechaExp) : '';
-            c.tipo = !c.careerCert
-              ? this.tipos.filter((x) => x.sigla === c.tipo)[0].nombre
-              : 'Carrera';
+            const courseInfo = this.courseService.detailCourse(c.courseId)
+              .valueChanges()
+              .subscribe(curso => {
+                if (curso) {
+                  c.fechaFin = this.formatDate(c.fechaFin);
+                  c.fechaExp = c.fechaExp ? this.formatDate(c.fechaExp) : '';
+                  c.vence = curso.vence;
+                  c.vencimiento = curso.vencimiento;
+                  c.tipo = !c.careerCert
+                    ? this.tipos.filter((x) => x.sigla === c.tipo)[0].nombre
+                    : 'Carrera';
+                } else {
+                  const careerInfo = this.careerService.obtenerCarrera(c.courseId)
+                    .valueChanges()
+                    .subscribe(carrera => {
+                      if (carrera) {
+                        c.fechaFin = this.formatDate(c.fechaFin);
+                        c.fechaExp = c.fechaExp ? this.formatDate(c.fechaExp) : '';
+                        c.vence = carrera.vence;
+                        c.vencimiento = carrera.vencimiento;
+                        c.tipo = !c.careerCert
+                          ? this.tipos.filter((x) => x.sigla === c.tipo)[0].nombre
+                          : 'Carrera';
+                      }
+                      careerInfo.unsubscribe();
+                    });
+                }
+                courseInfo.unsubscribe();
+              });
           });
           this.certReceived = cert;
           this.show = true;

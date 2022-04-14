@@ -112,6 +112,19 @@
             <ng-container *ngIf="percentageField.hasError('required')">Este campo es requerido</ng-container>
           </mat-error>
         </mat-form-field>
+        <!-- Vencimiento certificado -->
+        <mat-checkbox class="example-margin" formControlName="vence" [(ngModel)]="vence">Certificado vence?</mat-checkbox>
+        <mat-form-field *ngIf="vence">
+          <mat-label>Vencimiento certificado (años)</mat-label>
+          <input
+            type="number"
+            matInput
+            formControlName="vencimiento"
+            tabIndex=7/>
+          <mat-error *ngIf="vencimientoField.touched && vencimientoField.invalid">
+            <ng-container *ngIf="vencimientoField.hasError('required')">Este campo es requerido</ng-container>
+          </mat-error>
+        </mat-form-field>
       </div>
       <div class="buttons">
         <button

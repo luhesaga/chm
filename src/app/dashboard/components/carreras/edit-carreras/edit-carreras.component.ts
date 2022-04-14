@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { AngularFireStorage } from '@angular/fire/storage';
 import Swal from 'sweetalert2';
 import { CarrerasService } from 'src/app/core/services/carreras/carreras.service';
@@ -16,6 +21,7 @@ export class EditCarrerasComponent implements OnInit {
   showImage: any;
   idCarreras: string;
   certs: any;
+  vence = false;
 
   constructor(
     private fireStorage: AngularFireStorage,
@@ -36,13 +42,14 @@ export class EditCarrerasComponent implements OnInit {
   }
 
   getCertsDesigns(): void {
-    const certsList = this.cert.listCertsDesigns()
+    const certsList = this.cert
+      .listCertsDesigns()
       .valueChanges()
-      .subscribe(c => {
+      .subscribe((c) => {
         c.unshift({
           titulo: 'default',
           id: 'default',
-          contenido: 'default'
+          contenido: 'default',
         });
         this.certs = c;
         certsList.unsubscribe();
@@ -55,11 +62,13 @@ export class EditCarrerasComponent implements OnInit {
       image: ['', Validators.required],
       sigla: ['', Validators.required],
       duracionCarrera: [0, Validators.required],
-      plantilla: ['', Validators.required]
+      plantilla: ['', Validators.required],
+      vencimiento: [0],
+      vence: [false, Validators.required],
     });
   }
 
-  obtenerCarrera() {
+  obtenerCarrera(): void {
     const unsubscribeCarrera = this.carrerasService
       .obtenerCarrera(this.idCarreras)
       .valueChanges()
@@ -70,28 +79,29 @@ export class EditCarrerasComponent implements OnInit {
         this.duracionCarreraField.setValue(carrera.duracionCarrera);
         this.showImage.src = carrera.image;
         this.plantillaField.setValue(carrera.plantilla);
-        console.log(this.plantillaField.value);
+        this.venceField.setValue(carrera.vence);
+        this.vencimientoField.setValue(carrera.vencimiento);
         unsubscribeCarrera.unsubscribe();
       });
   }
 
-  volverAListaCarreras() {
+  volverAListaCarreras(): void {
     this.router.navigate(['dashboard/carreras']);
   }
 
-  get nombreField() {
+  get nombreField(): AbstractControl {
     return this.formCarreras.get('nombre');
   }
 
-  get imageField() {
+  get imageField(): AbstractControl {
     return this.formCarreras.get('image');
   }
 
-  get siglaField() {
+  get siglaField(): AbstractControl {
     return this.formCarreras.get('sigla');
   }
 
-  get duracionCarreraField() {
+  get duracionCarreraField(): AbstractControl {
     return this.formCarreras.get('duracionCarrera');
   }
 
@@ -99,7 +109,15 @@ export class EditCarrerasComponent implements OnInit {
     return this.formCarreras.get('plantilla');
   }
 
-  obtenerImagen(event: any) {
+  get vencimientoField(): AbstractControl {
+    return this.formCarreras.get('vencimiento');
+  }
+
+  get venceField(): AbstractControl {
+    return this.formCarreras.get('vence');
+  }
+
+  obtenerImagen(event: any): void {
     if (event.target.value) {
       this.showImage = event.target.files[0];
       this.formCarreras.get('image').setValue(this.showImage);
@@ -115,7 +133,7 @@ export class EditCarrerasComponent implements OnInit {
     reader.readAsDataURL(this.showImage);
   }
 
-  validarFormulario() {
+  validarFormulario(): void {
     if (this.formCarreras.invalid) {
       this.mensajeFormularioInvalido();
     } else {
@@ -128,7 +146,7 @@ export class EditCarrerasComponent implements OnInit {
     }
   }
 
-  uploadNewImage() {
+  uploadNewImage(): void {
     const nameImage = this.imageField.value.name;
     const fileRef = this.fireStorage.ref(
       `carreras/${this.idCarreras}/${nameImage}`
@@ -150,14 +168,14 @@ export class EditCarrerasComponent implements OnInit {
       );
   }
 
-  actualiazarCarrera(id: string) {
+  actualiazarCarrera(id: string): void {
     this.carrerasService.actualizarCarreras(this.formCarreras.value, id).then(
       () => this.mensajeExito(),
       () => this.mensajeDeError()
     );
   }
 
-  mensajeFormularioInvalido() {
+  mensajeFormularioInvalido(): void {
     Swal.fire({
       icon: 'info',
       title: 'Campos invalidos',
@@ -166,7 +184,7 @@ export class EditCarrerasComponent implements OnInit {
     });
   }
 
-  editandoDatos() {
+  editandoDatos(): void {
     Swal.fire({
       title: 'Editando la carrera, un momento por favor',
       confirmButtonColor: '#007279',
@@ -176,7 +194,7 @@ export class EditCarrerasComponent implements OnInit {
     });
   }
 
-  mensajeDeError() {
+  mensajeDeError(): void {
     Swal.fire({
       icon: 'error',
       title: 'No se pudo editar la carrera, por favor intente otra vez',
@@ -184,7 +202,7 @@ export class EditCarrerasComponent implements OnInit {
     });
   }
 
-  mensajeExito() {
+  mensajeExito(): void {
     Swal.fire({
       icon: 'success',
       title: 'Carrera editada exitosamente',

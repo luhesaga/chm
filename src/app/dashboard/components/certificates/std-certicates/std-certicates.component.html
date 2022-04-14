@@ -21,8 +21,8 @@
                 <p>{{ item.profesor }}</p>
                 <p>Fecha de expedición:</p>
                 <p>{{ item.fechaFinalizacion }}</p>
-                <p>Fecha de expiración:</p>
-                <p>{{ item.fechaExpiracion ? item.fechaExpiracion : 'n/a' }}</p>
+                <p *ngIf="item.vence">Fecha de expiración:</p>
+                <p *ngIf="item.vence">{{ item.fechaExpiracion ? item.fechaExpiracion : 'n/a' }}</p>
             </div>
         </div>
         <div id="element" style="display: none; max-width: 1024px;"></div>

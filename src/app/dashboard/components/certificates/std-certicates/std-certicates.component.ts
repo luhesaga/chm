@@ -61,6 +61,8 @@ export class StdCerticatesComponent implements OnInit {
                 cert.cc = user.identificacion ? user.identificacion : '1111';
                 cert.horas = `${c.duracionCarrera} HORAS`;
                 cert.plantilla = c.plantilla;
+                cert.vence = c.vence;
+                cert.vencimiento = c.vencimiento;
                 this.certificatesList.unshift(cert);
                 careerInfo.unsubscribe();
               });
@@ -72,6 +74,8 @@ export class StdCerticatesComponent implements OnInit {
                 cert.fechaExpiracion = cert.fechaExp ? this.formatDate(cert.fechaExp) : '';
                 cert.imagen = c.imagen;
                 cert.cc = user.identificacion ? user.identificacion : '1111';
+                cert.vence = c.vence;
+                cert.vencimiento = c.vencimiento;
                 this.certificatesList.push(cert);
                 courseInfo.unsubscribe();
               });

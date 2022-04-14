@@ -28,7 +28,9 @@ export class CarrerasService {
       calificacionEstrellas: [],
       siglaCarrera: data.sigla,
       duracionCarrera: data.duracionCarrera,
-      plantilla: data.plantilla
+      plantilla: data.plantilla,
+      vence: data.vence,
+      vencimiento: data.vencimiento
     });
   }
 
@@ -36,7 +38,7 @@ export class CarrerasService {
     return this.fireStore.collection('carreras');
   }
 
-  obtenerCarrera(id: string): AngularFirestoreDocument<void> {
+  obtenerCarrera(id: string): AngularFirestoreDocument {
     return this.fireStore.doc(`carreras/${id}`);
   }
 
@@ -46,7 +48,9 @@ export class CarrerasService {
       image: data.image,
       siglaCarrera: data.sigla,
       duracionCarrera: data.duracionCarrera,
-      plantilla: data.plantilla
+      plantilla: data.plantilla,
+      vence: data.vence,
+      vencimiento: data.vencimiento
     });
   }
 

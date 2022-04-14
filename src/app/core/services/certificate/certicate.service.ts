@@ -195,7 +195,7 @@ export class CerticateService {
         } else {
           this.consecutivo = `${c.valor}`;
         }
-        this.consecutivo = `${tipo}-${data.siglaCurso}-${fecha[0].fecha}-${this.consecutivo}`;
+        this.consecutivo = `${tipo}-${fecha[0].fecha}-${this.consecutivo}-${data.siglaCurso}`;
         this.setConsecutive(c.valor + 1)
           .then(() => {
             return this.fireStore.doc(`certificados/${this.consecutivo}`).set({
@@ -276,12 +276,12 @@ export class CerticateService {
       '11',
       '12',
     ];
-    const fecha = `${meses[fechaCons.getMonth()]}${fechaCons
-      .getFullYear()
-      .toString()
-      .substring(2, 4)}`;
+    const fecha = `${fechaCons.getFullYear().toString().substring(2, 4)}${
+      meses[fechaCons.getMonth()]
+    }`;
     const fechaExp = new Date(fechaCons.setDate(fechaCons.getDate() + 1095));
-    return [{ fecha }, { fecha: fechaExp }];
+    const ultimoDia = new Date(fechaExp.getFullYear(), fechaExp.getMonth() + 1, 0);
+    return [{ fecha }, { fecha: ultimoDia }];
   }
 
   downloadPDF(data): void {

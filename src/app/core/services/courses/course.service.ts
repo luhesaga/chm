@@ -51,6 +51,8 @@ export class CourseService {
       duracionCurso: data.duration,
       porcentaje: data.percentage,
       calificacionEstrellas: [],
+      vence: data.vence,
+      vencimiento: data.vencimiento
     });
   }
 
@@ -65,6 +67,8 @@ export class CourseService {
       tipoCerticado: data.tipoCert,
       duracionCurso: data.duration,
       porcentaje: data.percentage,
+      vence: data.vence,
+      vencimiento: data.vencimiento
     });
   }
 
@@ -87,7 +91,7 @@ export class CourseService {
     });
   }
 
-  deleteCategory(id) {
+  deleteCategory(id): Promise<void> {
     return this.fireStore.doc(`cursos/${id}`).update({
       categoria: firebase.firestore.FieldValue.delete(),
     });
@@ -121,11 +125,11 @@ export class CourseService {
       });
   }
 
-  registeredUSerDetail(courseId: string, stdId: string) {
+  registeredUSerDetail(courseId: string, stdId: string): AngularFirestoreDocument {
     return this.fireStore.doc(`cursos/${courseId}/matriculados/${stdId}`);
   }
 
-  courseFinish(courseId: string, stdId: string) {
+  courseFinish(courseId: string, stdId: string): Promise<void> {
     const fecha = new Date();
     return this.fireStore
       .doc(`cursos/${courseId}/matriculados/${stdId}`)
@@ -135,7 +139,7 @@ export class CourseService {
       });
   }
 
-  deleteUserFromCourse(idCurso: string, idEstudiante: string) {
+  deleteUserFromCourse(idCurso: string, idEstudiante: string): Promise<void> {
     return this.fireStore
       .doc(`cursos/${idCurso}/matriculados/${idEstudiante}`)
       .delete();
@@ -146,7 +150,7 @@ export class CourseService {
   }
 
   createAnuncio(data: any, courseId: string, idAnuncio: string): Promise<void> {
-    let fecha = new Date();
+    const fecha = new Date();
     return this.fireStore.doc(`cursos/${courseId}/anuncios/${idAnuncio}`).set({
       id: idAnuncio,
       titulo: data.titulo,
@@ -215,7 +219,7 @@ export class CourseService {
       .delete();
   }
 
-  agregarEstrella(data) {
+  agregarEstrella(data): Promise<void> {
     return this.fireStore.doc(`cursos/${data.idCurso}/estrellas/${data.idUsuario}`)
       .set({
         calificacion: data.calificacion,
@@ -224,7 +228,7 @@ export class CourseService {
       });
   }
 
-  setStarsAndVotes(data) {
+  setStarsAndVotes(data): Promise<void> {
     return this.fireStore.doc(`cursos/${data.idCurso}`)
       .update({
         estrellas: data.estrellasAcum,
@@ -232,7 +236,7 @@ export class CourseService {
       });
   }
 
-  getUserStars(userdId: string, courseId: string) {
+  getUserStars(userdId: string, courseId: string): AngularFirestoreDocument {
     return this.fireStore.doc(`cursos/${courseId}/estrellas/${userdId}`);
   }
 }

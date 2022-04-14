@@ -8,7 +8,12 @@ import {
 import { CourseService } from '../../../../core/services/courses/course.service';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { finalize, map } from 'rxjs/operators';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AngularFirestore } from '@angular/fire/firestore';
 import Swal from 'sweetalert2';
@@ -32,11 +37,12 @@ export class CreateComponent implements OnInit, AfterViewInit {
   types: string[] = ['Certificacion', 'Asistencia', 'Aprobacion'];
   teachers: any = [];
 
-  //datos para editar curso
+  // datos para editar curso
   imageName: string;
   imgUrl;
   confirmDelImg;
   changeImg = false;
+  vence = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -60,14 +66,14 @@ export class CreateComponent implements OnInit, AfterViewInit {
     this.listTeachers();
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     setTimeout(() => {
       this.myInputField.nativeElement.focus();
     }, 100);
   }
 
-  getCourse() {
-    let cursos = this.courseService
+  getCourse(): void {
+    const cursos = this.courseService
       .detailCourse(this.id)
       .valueChanges()
       .subscribe((curso) => {
@@ -83,13 +89,15 @@ export class CreateComponent implements OnInit, AfterViewInit {
         this.profesorField.setValue(curso.profesor);
         this.durationField.setValue(curso.duracionCurso);
         this.percentageField.setValue(curso.porcentaje);
+        this.venceField.setValue(curso.vence);
+        this.vencimientoField.setValue(curso.vencimiento);
         cursos.unsubscribe();
       });
     // console.log(this.selectedCategory);
   }
 
-  listCategories() {
-    let categorias = this.catService
+  listCategories(): void {
+    const categorias = this.catService
       .listCategories()
       .valueChanges()
       .subscribe((cat: any) => {
@@ -108,8 +116,8 @@ export class CreateComponent implements OnInit, AfterViewInit {
       });
   }
 
-  listTeachers() {
-    let profesores = this.userService
+  listTeachers(): void {
+    const profesores = this.userService
       .listTeachers()
       .valueChanges()
       .subscribe((teachers: any) => {
@@ -135,42 +143,52 @@ export class CreateComponent implements OnInit, AfterViewInit {
       profesor: [''],
       duration: [0, Validators.required],
       percentage: [0, Validators.required],
+      vencimiento: [0],
+      vence: [false, Validators.required],
     });
   }
 
-  get nameField() {
+  get nameField(): AbstractControl {
     return this.form.get('name');
   }
 
-  get initialsField() {
+  get initialsField(): AbstractControl {
     return this.form.get('initials');
   }
 
-  get tipoCertField() {
+  get tipoCertField(): AbstractControl {
     return this.form.get('tipoCert');
   }
 
-  get imageField() {
+  get imageField(): AbstractControl {
     return this.form.get('image');
   }
 
-  get categoriaField() {
+  get categoriaField(): AbstractControl {
     return this.form.get('categoria');
   }
 
-  get profesorField() {
+  get profesorField(): AbstractControl {
     return this.form.get('profesor');
   }
 
-  get durationField() {
+  get durationField(): AbstractControl {
     return this.form.get('duration');
   }
 
-  get percentageField() {
+  get percentageField(): AbstractControl {
     return this.form.get('percentage');
   }
 
-  cancel() {
+  get vencimientoField(): AbstractControl {
+    return this.form.get('vencimiento');
+  }
+
+  get venceField(): AbstractControl {
+    return this.form.get('vence');
+  }
+
+  cancel(): void {
     if (this.changeImg) {
       // borrar imagen cargada si cancela
       this.fs.ref(`cursos/${this.fsId}/${this.imageName}`).delete();
@@ -182,7 +200,7 @@ export class CreateComponent implements OnInit, AfterViewInit {
     this.route.navigate(['dashboard/cursos']);
   }
 
-  saveOrEditCourse(event: Event) {
+  saveOrEditCourse(event: Event): void {
     event.preventDefault();
     this.form.markAllAsTouched();
     if (this.form.valid) {
@@ -195,7 +213,7 @@ export class CreateComponent implements OnInit, AfterViewInit {
     }
   }
 
-  editCourse() {
+  editCourse(): void {
     const data = this.form.value;
     const imageName = this.imageName;
     this.deleteImage(imageName);
@@ -220,7 +238,7 @@ export class CreateComponent implements OnInit, AfterViewInit {
       });
   }
 
-  saveCourse() {
+  saveCourse(): void {
     const data = this.form.value;
     const imageName = this.images[0];
     this.courseService
@@ -244,7 +262,7 @@ export class CreateComponent implements OnInit, AfterViewInit {
       });
   }
 
-  uploadImage(event) {
+  uploadImage(event): void {
     if (this.id) {
       this.editImage(event);
     } else {
@@ -252,7 +270,7 @@ export class CreateComponent implements OnInit, AfterViewInit {
     }
   }
 
-  uploadNewImage(event) {
+  uploadNewImage(event): void {
     this.fsId = this.fireStore.createId();
     this.showProgressBar = true;
     const image = event.target.files[0] as File;
@@ -282,11 +300,11 @@ export class CreateComponent implements OnInit, AfterViewInit {
       )
       .subscribe((per) => {
         this.percentageProgressBar = per;
-        //console.log(per);
+        // console.log(per);
       });
   }
 
-  editImage(event) {
+  editImage(event): void {
     this.showProgressBar = true;
     const image = event.target.files[0] as File;
     const name = image.name;
@@ -310,11 +328,11 @@ export class CreateComponent implements OnInit, AfterViewInit {
       )
       .subscribe((per) => {
         this.percentageProgressBar = per;
-        //console.log(per);
+        // console.log(per);
       });
   }
 
-  deleteImage(imgName) {
+  deleteImage(imgName): void {
     let url;
     if (this.id) {
       if (this.confirmDelImg !== imgName) {

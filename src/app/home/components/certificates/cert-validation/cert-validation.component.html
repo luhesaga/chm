@@ -38,7 +38,7 @@
                 <p>Nombre</p>
                 <p>Curso/Técnica</p>
                 <p>Expedición</p>
-                <p>Expiración</p>
+                <p *ngIf="item.vence">Expiración</p>
                 <p>Tipo</p>
             </div>
             <div class="cert-data">
@@ -46,7 +46,7 @@
                 <p>{{ item.estudiante }}</p>
                 <p>{{ item.tecnica ? item.tecnica : item.carrera }}</p>
                 <p>{{ item.fechaFin }}</p>
-                <p>{{ item.fechaExp ? item.fechaExp : 'n/a' }}</p>
+                <p *ngIf="item.vence">{{ item.fechaExp ? item.fechaExp : 'n/a' }}</p>
                 <p>{{ item.tipo }}</p>
             </div>
         </div>

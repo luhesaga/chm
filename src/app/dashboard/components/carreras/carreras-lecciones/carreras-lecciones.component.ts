@@ -199,9 +199,11 @@ export class CarrerasLeccionesComponent implements OnInit, AfterViewInit, OnDest
         if (item.length > 0) {
           item.forEach(prueba => {
             valor = 0;
-            prueba.respuestas.forEach(r => {
-              valor += r.valor;
-            });
+            if (prueba.respuestas.length) {
+              prueba.respuestas.forEach(r => {
+                valor += r.valor;
+              });
+            }
             if (valor > 0) {
               valor = Math.ceil((valor / (prueba.respuestas.length * 100)) * 100);
               if (valor > mayor) {
@@ -345,7 +347,7 @@ export class CarrerasLeccionesComponent implements OnInit, AfterViewInit, OnDest
   }
 
   goToProfile(): void {
-    this.router.navigate([`/usuarios/perfil/${this.stdReceived.id}`])
+    this.router.navigate([`/usuarios/perfil/${this.stdReceived.id}`]);
   }
 
   goBack(): void {

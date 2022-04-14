@@ -16,6 +16,7 @@ export class CreateCarrerasComponent implements OnInit {
   formCarreras: FormGroup;
   showImage: any;
   certs: any;
+  vence = false;
 
   constructor(
     private fireStore: AngularFirestore,
@@ -53,7 +54,9 @@ export class CreateCarrerasComponent implements OnInit {
       image: ['', Validators.required],
       sigla: ['', Validators.required],
       duracionCarrera: [0, Validators.required],
-      plantilla: ['', Validators.required]
+      plantilla: ['', Validators.required],
+      vencimiento: [0],
+      vence: [false, Validators.required],
     });
   }
 
@@ -147,6 +150,14 @@ export class CreateCarrerasComponent implements OnInit {
 
   get plantillaField(): AbstractControl {
     return this.formCarreras.get('plantilla');
+  }
+
+  get vencimientoField(): AbstractControl {
+    return this.formCarreras.get('vencimiento');
+  }
+
+  get venceField(): AbstractControl {
+    return this.formCarreras.get('vence');
   }
 
   mensajeDeError(): void {
