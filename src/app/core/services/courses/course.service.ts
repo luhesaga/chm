@@ -51,8 +51,9 @@ export class CourseService {
       duracionCurso: data.duration,
       porcentaje: data.percentage,
       calificacionEstrellas: [],
+      plantilla: data.plantilla,
       vence: data.vence,
-      vencimiento: data.vencimiento
+      vencimiento: data.vencimiento,
     });
   }
 
@@ -67,8 +68,9 @@ export class CourseService {
       tipoCerticado: data.tipoCert,
       duracionCurso: data.duration,
       porcentaje: data.percentage,
+      plantilla: data.plantilla,
       vence: data.vence,
-      vencimiento: data.vencimiento
+      vencimiento: data.vencimiento,
     });
   }
 
@@ -125,7 +127,10 @@ export class CourseService {
       });
   }
 
-  registeredUSerDetail(courseId: string, stdId: string): AngularFirestoreDocument {
+  registeredUSerDetail(
+    courseId: string,
+    stdId: string
+  ): AngularFirestoreDocument {
     return this.fireStore.doc(`cursos/${courseId}/matriculados/${stdId}`);
   }
 
@@ -220,7 +225,8 @@ export class CourseService {
   }
 
   agregarEstrella(data): Promise<void> {
-    return this.fireStore.doc(`cursos/${data.idCurso}/estrellas/${data.idUsuario}`)
+    return this.fireStore
+      .doc(`cursos/${data.idCurso}/estrellas/${data.idUsuario}`)
       .set({
         calificacion: data.calificacion,
         idCurso: data.idCurso,
@@ -229,11 +235,10 @@ export class CourseService {
   }
 
   setStarsAndVotes(data): Promise<void> {
-    return this.fireStore.doc(`cursos/${data.idCurso}`)
-      .update({
-        estrellas: data.estrellasAcum,
-        votos: data.votosAcum
-      });
+    return this.fireStore.doc(`cursos/${data.idCurso}`).update({
+      estrellas: data.estrellasAcum,
+      votos: data.votosAcum,
+    });
   }
 
   getUserStars(userdId: string, courseId: string): AngularFirestoreDocument {

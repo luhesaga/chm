@@ -10,6 +10,7 @@ import Swal from 'sweetalert2';
 import { CarrerasService } from 'src/app/core/services/carreras/carreras.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CertificateDesignService } from 'src/app/core/services/certificate-design/certificate-design.service';
+import { cursorTo } from 'readline';
 
 @Component({
   selector: 'app-edit-carreras',
@@ -79,8 +80,8 @@ export class EditCarrerasComponent implements OnInit {
         this.duracionCarreraField.setValue(carrera.duracionCarrera);
         this.showImage.src = carrera.image;
         this.plantillaField.setValue(carrera.plantilla);
-        this.venceField.setValue(carrera.vence);
-        this.vencimientoField.setValue(carrera.vencimiento);
+        this.venceField.setValue(carrera.vence ? true : false);
+        this.vencimientoField.setValue(carrera.vencimiento ? carrera.vencimiento : 0);
         unsubscribeCarrera.unsubscribe();
       });
   }

@@ -112,6 +112,18 @@
             <ng-container *ngIf="percentageField.hasError('required')">Este campo es requerido</ng-container>
           </mat-error>
         </mat-form-field>
+        <!-- Plantilla certificado -->
+        <mat-form-field appearance="fill">
+          <mat-label>Plantilla certificado</mat-label>
+          <mat-select formControlName="plantilla" tabIndex="4">
+              <mat-option *ngFor="let item of certs" [value]="item.id">
+                  {{ item.titulo }}
+              </mat-option>
+              <mat-error *ngIf="plantillaField.touched && plantillaField.invalid">
+                  <ng-container *ngIf="plantillaField.hasError('required')">Este campo es requerido</ng-container>
+              </mat-error>
+          </mat-select>
+      </mat-form-field>
         <!-- Vencimiento certificado -->
         <mat-checkbox class="example-margin" formControlName="vence" [(ngModel)]="vence">Certificado vence?</mat-checkbox>
         <mat-form-field *ngIf="vence">

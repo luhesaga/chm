@@ -205,7 +205,7 @@ export class StdEvaluationComponent implements OnInit {
   }
 
   goToProfile(): void {
-    this.router.navigate([`/usuarios/perfil/${this.stdReceived.id}`])
+    this.router.navigate([`/usuarios/perfil/${this.stdReceived.id}`]);
   }
 
   getCerticateData(): any {
@@ -213,6 +213,7 @@ export class StdEvaluationComponent implements OnInit {
       horas: this.courseReceived.duracionCurso,
       estudiante: `${this.stdReceived.nombres} ${this.stdReceived.apellidos}`,
       documento: 'Con documento de identidad ' + this.addCommas(this.stdReceived.identificacion),
+      documento2: this.addCommas(this.stdReceived.identificacion),
       profesor: `${this.courseReceived.profesor}`,
       curso: `${this.courseReceived.nombre}`,
       stdId: this.stdId,
@@ -220,6 +221,7 @@ export class StdEvaluationComponent implements OnInit {
       siglaCurso: this.courseReceived.sigla,
       cc: this.stdReceived.identificacion,
       tipo: this.courseReceived.tipoCerticado,
+      plantilla: this.courseReceived.plantilla,
     };
 
   }

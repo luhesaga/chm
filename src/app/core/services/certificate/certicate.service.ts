@@ -5,6 +5,8 @@ import {
   AngularFirestoreCollection,
   AngularFirestoreDocument,
 } from '@angular/fire/firestore';
+import html2canvas from 'html2canvas';
+import { CertificateDesignService } from '../certificate-design/certificate-design.service';
 
 @Injectable({
   providedIn: 'root',
@@ -130,21 +132,30 @@ export class CerticateService {
 
   consecutivo: string;
 
-  constructor(public fireStore: AngularFirestore) {}
+  constructor(
+    public fireStore: AngularFirestore,
+    private certDesign: CertificateDesignService,
+  ) {}
 
   generateCerticate(data, consulta): any {
     const isCertified = this.isCertified(data)
       .valueChanges()
       .subscribe((c: any) => {
+        // console.log(c);
         if (c.length === 0) {
           data.fechaNew = new Date();
           this.markAsCertified(data);
         } else {
           data.fecha = c[0].fechaFin;
+          data.fechaExp = c[0].fechaExp;
           data.certificado = c[0].certificado;
         }
         if (consulta) {
-          this.downloadPDF(data);
+          if (data.plantilla === 'default') {
+            this.downloadPDF(data);
+          } else {
+            this.getCertDesign(data);
+          }
         }
         isCertified.unsubscribe();
       });
@@ -383,6 +394,66 @@ export class CerticateService {
     doc.setTextColor(55, 71, 79);
     doc.text(cert, centerText(cert), 430);
     doc.save(`certificado.pdf`);
+  }
+
+  getCertDesign(data): void {
+    const design = this.certDesign.getUniqueDesign(data.plantilla)
+      .valueChanges()
+      .subscribe(d => {
+        this.prepareCert(data, d);
+        design.unsubscribe();
+      });
+  }
+
+  prepareCert(data, cert): void {
+    // console.log(cert);
+    // console.log(data);
+    const contenido = cert[0].contenido
+      .replace('##STD_NAME##', `${data.estudiante}`)
+      .replace('##STD_ID##', `${data.documento2 ? data.documento2 : this.addCommas(data.cc)}`)
+      .replace('##CAREER_NAME##', data.curso)
+      .replace('##INI_DATE##', this.formatDate(data.fecha))
+      .replace('##END_DATE##', this.formatDate(data.fechaExp))
+      .replace('##HOURS##', data.horas + ' Horas');
+    const elemento = document.getElementById('element');
+    elemento.innerHTML = contenido;
+    elemento.style.display = 'block';
+    this.downloadDesignCert(elemento);
+    elemento.style.display = 'none';
+
+  }
+
+  formatDate(date): string {
+    const fecha = new Date(date.seconds * 1000).toLocaleDateString();
+    return fecha;
+  }
+
+  addCommas(nStr): string {
+    nStr += '';
+    const x = nStr.split('.');
+    let x1 = x[0];
+    const x2 = x.length > 1 ? '.' + x[1] : '';
+    const rgx = /(\d+)(\d{3})/;
+    while (rgx.test(x1)) {
+      x1 = x1.replace(rgx, '$1' + '.' + '$2');
+    }
+    return x1 + x2;
+  }
+
+  downloadDesignCert(elemento): void {
+    html2canvas(elemento, { allowTaint: true, useCORS: true }).then(canvas => {
+      // Few necessary setting options
+      const imgWidth = 280;
+      // const pageHeight = 295;
+      const imgHeight = canvas.height * imgWidth / canvas.width;
+      // const heightLeft = imgHeight;
+
+      const contentDataURL = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('l', 'mm', 'letter');
+      const position = 0;
+      pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
+      pdf.save('certificado.pdf'); // Generated PDF
+    });
   }
 
   getConsecutive(): AngularFirestoreDocument {

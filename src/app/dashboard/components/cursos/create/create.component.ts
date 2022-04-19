@@ -19,6 +19,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import Swal from 'sweetalert2';
 import { CategoryService } from '../../../../core/services/categories/category.service';
 import { UsersService } from '../../../../core/services/users/users.service';
+import { CertificateDesignService } from 'src/app/core/services/certificate-design/certificate-design.service';
 @Component({
   selector: 'app-create',
   templateUrl: './create.component.html',
@@ -42,6 +43,7 @@ export class CreateComponent implements OnInit, AfterViewInit {
   imgUrl;
   confirmDelImg;
   changeImg = false;
+  certs: any;
   vence = false;
 
   constructor(
@@ -52,7 +54,8 @@ export class CreateComponent implements OnInit, AfterViewInit {
     private fs: AngularFireStorage,
     private activatedRoute: ActivatedRoute,
     private fireStore: AngularFirestore,
-    private route: Router
+    private route: Router,
+    private cert: CertificateDesignService
   ) {
     this.id = this.activatedRoute.snapshot.params.id;
     this.buildForm();
@@ -64,6 +67,7 @@ export class CreateComponent implements OnInit, AfterViewInit {
     }
     this.listCategories();
     this.listTeachers();
+    this.getCertsDesigns();
   }
 
   ngAfterViewInit(): void {
@@ -72,12 +76,26 @@ export class CreateComponent implements OnInit, AfterViewInit {
     }, 100);
   }
 
+  getCertsDesigns(): void {
+    const certsList = this.cert.listCertsDesigns()
+      .valueChanges()
+      .subscribe(c => {
+        c.unshift({
+          titulo: 'default',
+          id: 'default',
+          contenido: 'default'
+        });
+        this.certs = c;
+        certsList.unsubscribe();
+      });
+  }
+
   getCourse(): void {
     const cursos = this.courseService
       .detailCourse(this.id)
       .valueChanges()
       .subscribe((curso) => {
-        console.log(curso);
+        // console.log(curso);
         this.fsId = this.id;
         this.confirmDelImg = curso.nombreImg;
         this.imageField.setValue(curso.imagen);
@@ -89,8 +107,9 @@ export class CreateComponent implements OnInit, AfterViewInit {
         this.profesorField.setValue(curso.profesor);
         this.durationField.setValue(curso.duracionCurso);
         this.percentageField.setValue(curso.porcentaje);
-        this.venceField.setValue(curso.vence);
-        this.vencimientoField.setValue(curso.vencimiento);
+        this.plantillaField.setValue(curso.plantilla);
+        this.venceField.setValue(curso.vence ? true : false);
+        this.vencimientoField.setValue(curso.vencimiento ? curso.vencimiento : 0);
         cursos.unsubscribe();
       });
     // console.log(this.selectedCategory);
@@ -143,6 +162,7 @@ export class CreateComponent implements OnInit, AfterViewInit {
       profesor: [''],
       duration: [0, Validators.required],
       percentage: [0, Validators.required],
+      plantilla: ['', Validators.required],
       vencimiento: [0],
       vence: [false, Validators.required],
     });
@@ -178,6 +198,10 @@ export class CreateComponent implements OnInit, AfterViewInit {
 
   get percentageField(): AbstractControl {
     return this.form.get('percentage');
+  }
+
+  get plantillaField(): AbstractControl {
+    return this.form.get('plantilla');
   }
 
   get vencimientoField(): AbstractControl {
