@@ -33,6 +33,7 @@ export class CarrerasLeccionesComponent implements OnInit, AfterViewInit, OnDest
   cont = 0;
   CareerCourses: any;
   hasCC = true;
+  ejerciciosCarrera = [];
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -98,7 +99,7 @@ export class CarrerasLeccionesComponent implements OnInit, AfterViewInit, OnDest
   }
 
   getCareerCourses(): void {
-    this.CareerCourses = this.careerService.getCareerCourses(this.careerId)
+    const cursosCarrera = this.careerService.getCareerCourses(this.careerId)
       .valueChanges()
       .subscribe(cc => {
         cc.forEach(curso => {
@@ -111,11 +112,13 @@ export class CarrerasLeccionesComponent implements OnInit, AfterViewInit, OnDest
           }
         });
         this.dataSource.data = cc;
+        cursosCarrera.unsubscribe();
       });
   }
 
   getTestAnswers(curso): void {
-    this.exerciseService.getUserAnswers(this.careerId, curso.id, this.stdId)
+    const ejercicio = {nombre: curso.nombre, valor: 0 };
+    const respuestasEjerc = this.exerciseService.getUserAnswers(this.careerId, curso.id, this.stdId)
       .valueChanges()
       .subscribe((ex: any) => {
         let mayor = 0;
@@ -138,15 +141,20 @@ export class CarrerasLeccionesComponent implements OnInit, AfterViewInit, OnDest
                 }
               }
               curso.valor = Math.ceil(((mayor / resp) * 100) / 100);
+              ejercicio.valor = curso.valor;
             } else {
               if (!exe.respuestas[0].valor) {
                 curso.valor = 0;
+                ejercicio.valor = curso.valor;
               } else {
                 curso.valor = exe.respuestas[0].valor;
+                ejercicio.valor = curso.valor;
               }
             }
           });
+          this.ejerciciosCarrera.push(ejercicio);
         }
+        respuestasEjerc.unsubscribe();
       });
   }
 
@@ -376,6 +384,7 @@ export class CarrerasLeccionesComponent implements OnInit, AfterViewInit, OnDest
       siglaCarrera: this.careerReceived.siglaCarrera,
       cc: this.stdReceived.identificacion,
       plantilla: this.careerReceived.plantilla,
+      ejercicios: this.ejerciciosCarrera,
       // tipo: this.courseReceived.tipoCerticado,
     };
 

@@ -20,9 +20,11 @@ export class CareerCertService {
   ) {}
 
   generateCerticate(data, consulta): any {
+    // console.log(data);
     const isCertified = this.isCertified(data)
       .valueChanges()
       .subscribe((c: any) => {
+        // console.log(c);
         if (c.length === 0) {
           data.fechaNew = new Date();
           this.markAsCertified(data);
@@ -50,6 +52,7 @@ export class CareerCertService {
   }
 
   markAsCertified(data): void {
+    // console.log(data);
     const fecha = this.setDates(data);
     const consec = this.getConsecutive()
       .valueChanges()
@@ -62,7 +65,7 @@ export class CareerCertService {
           this.consecutivo = `${c.valor}`;
         }
         this.consecutivo = `CAR-${data.siglaCarrera}-${fecha[0].fecha}-${this.consecutivo}`;
-        console.log(this.consecutivo);
+        // console.log(this.consecutivo);
         this.setConsecutive(c.valor + 1)
           .then(() => {
             return this.fireStore.doc(`certificados/${this.consecutivo}`).set({
@@ -79,6 +82,7 @@ export class CareerCertService {
               courseId: data.careerId,
               certificado: this.consecutivo,
               careerCert: true,
+              ejercicios: data.ejercicios ? data.ejercicios : 'ninguno',
             });
           })
           .catch((err) => console.log(err));
@@ -87,7 +91,9 @@ export class CareerCertService {
   }
 
   setDates(data): any {
-    const fechaCons = data.fechaNew ? new Date(data.fechaNew) : new Date(data * 1000);
+    const fechaCons = data.fechaNew
+      ? new Date(data.fechaNew)
+      : new Date(data * 1000);
     const meses = [
       '01',
       '02',
@@ -106,7 +112,11 @@ export class CareerCertService {
       meses[fechaCons.getMonth()]
     }`;
     const fechaExp = new Date(fechaCons.setDate(fechaCons.getDate() + 1095));
-    const ultimoDia = new Date(fechaExp.getFullYear(), fechaExp.getMonth() + 1, 0);
+    const ultimoDia = new Date(
+      fechaExp.getFullYear(),
+      fechaExp.getMonth() + 1,
+      0
+    );
     return [{ fecha }, { fecha: ultimoDia }];
   }
 
@@ -213,9 +223,10 @@ export class CareerCertService {
   }
 
   getCertDesign(data): void {
-    const design = this.certDesign.getUniqueDesign(data.plantilla)
+    const design = this.certDesign
+      .getUniqueDesign(data.plantilla)
       .valueChanges()
-      .subscribe(d => {
+      .subscribe((d) => {
         this.prepareCert(data, d);
         design.unsubscribe();
       });
@@ -224,19 +235,57 @@ export class CareerCertService {
   prepareCert(data, cert): void {
     // console.log(cert);
     // console.log(data);
-    const contenido = cert[0].contenido
+    let contenido = cert[0].contenido
       .replace('##STD_NAME##', `${data.estudiante}`)
-      .replace('##STD_ID##', `${data.documento2 ? data.documento2 : this.addCommas(data.cc)}`)
-      .replace('##CAREER_NAME##', data.career ? data.career : data.carrera)
-      .replace('##INI_DATE##', this.formatDate(data.fFin ? data.fFin : data.fechaFin))
-      .replace('##END_DATE##', this.formatDate(data.fExp ? data.fExp : data.fechaExp))
+      .replace(
+        '##STD_ID##',
+        `${data.documento2 ? data.documento2 : this.addCommas(data.cc)}`
+      )
+      .replace('##CAREER_NAME##', data.career ? data.career : data.carrera);
+
+    let fechaFinalizacion;
+    if (data.fechanew) {
+      fechaFinalizacion = data.fechaNew.toLocaleDateString();
+    } else if (data.fFin) {
+      fechaFinalizacion = this.formatDate(data.fFin);
+    } else {
+      fechaFinalizacion = this.formatDate(data.fechaFin);
+    }
+
+    let fechaExpiracion;
+    if (data.fExp) {
+      fechaExpiracion = this.formatDate(data.fExp);
+    } else if (data.fechaExp) {
+      fechaExpiracion = this.formatDate(data.fechaExp);
+    } else {
+      fechaExpiracion = this.formatDate(
+        new Date(data.fechaNew.getFullYear(), data.fechaNew.getMonth() + 1, 0)
+      );
+    }
+
+    contenido = contenido
+      .replace('##INI_DATE##', `${fechaFinalizacion}`)
+      .replace('##END_DATE##', `${fechaExpiracion}`)
       .replace('##HOURS##', data.horas);
+
+    if (data.ejercicios?.length === 3) {
+      const final =
+        (data.ejercicios[0].valor +
+          data.ejercicios[1].valor +
+          data.ejercicios[2].valor) /
+        3;
+      contenido = contenido
+        .replace('##GENERAL##', `${data.ejercicios[0].valor}%`)
+        .replace('##ESPECIFICO##', `${data.ejercicios[1].valor}%`)
+        .replace('##PRACTICO##', `${data.ejercicios[2].valor}%`)
+        .replace('##FINAL##', `${Math.ceil(final)}%`);
+    }
+
     const elemento = document.getElementById('element');
     elemento.innerHTML = contenido;
     elemento.style.display = 'block';
     this.downloadDesignCert(elemento);
     elemento.style.display = 'none';
-
   }
 
   formatDate(date): string {
@@ -257,19 +306,21 @@ export class CareerCertService {
   }
 
   downloadDesignCert(elemento): void {
-    html2canvas(elemento, { allowTaint: true, useCORS: true }).then(canvas => {
-      // Few necessary setting options
-      const imgWidth = 280;
-      // const pageHeight = 295;
-      const imgHeight = canvas.height * imgWidth / canvas.width;
-      // const heightLeft = imgHeight;
+    html2canvas(elemento, { allowTaint: true, useCORS: true }).then(
+      (canvas) => {
+        // Few necessary setting options
+        const imgWidth = 280;
+        // const pageHeight = 295;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+        // const heightLeft = imgHeight;
 
-      const contentDataURL = canvas.toDataURL('image/png');
-      const pdf = new jsPDF('l', 'mm', 'letter');
-      const position = 0;
-      pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
-      pdf.save('certificado.pdf'); // Generated PDF
-    });
+        const contentDataURL = canvas.toDataURL('image/png');
+        const pdf = new jsPDF('l', 'mm', 'letter');
+        const position = 0;
+        pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
+        pdf.save('certificado.pdf'); // Generated PDF
+      }
+    );
   }
 
   getConsecutive(): AngularFirestoreDocument {
