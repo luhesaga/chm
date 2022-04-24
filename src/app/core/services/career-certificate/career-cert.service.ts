@@ -223,6 +223,7 @@ export class CareerCertService {
   }
 
   getCertDesign(data): void {
+    // console.log(data);
     const design = this.certDesign
       .getUniqueDesign(data.plantilla)
       .valueChanges()
@@ -241,7 +242,8 @@ export class CareerCertService {
         '##STD_ID##',
         `${data.documento2 ? data.documento2 : this.addCommas(data.cc)}`
       )
-      .replace('##CAREER_NAME##', data.career ? data.career : data.carrera);
+      .replace('##CAREER_NAME##', data.career ? data.career : data.carrera)
+      .replace('##CERTIFICATE##', data.certificado);
 
     let fechaFinalizacion;
     if (data.fechanew) {
