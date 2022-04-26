@@ -110,6 +110,9 @@ export class CreateComponent implements OnInit, AfterViewInit {
         this.plantillaField.setValue(curso.plantilla);
         this.venceField.setValue(curso.vence ? true : false);
         this.vencimientoField.setValue(curso.vencimiento ? curso.vencimiento : 0);
+        this.copField.setValue(curso.precioCOP ? curso.precioCOP : 0);
+        this.usdField.setValue(curso.precioUSD ? curso.precioUSD : 0);
+        console.log(this.usdField.value);
         cursos.unsubscribe();
       });
     // console.log(this.selectedCategory);
@@ -165,6 +168,8 @@ export class CreateComponent implements OnInit, AfterViewInit {
       plantilla: ['', Validators.required],
       vencimiento: [0],
       vence: [false, Validators.required],
+      cop: [0, Validators.required],
+      usd: [0, Validators.required],
     });
   }
 
@@ -210,6 +215,14 @@ export class CreateComponent implements OnInit, AfterViewInit {
 
   get venceField(): AbstractControl {
     return this.form.get('vence');
+  }
+
+  get copField(): AbstractControl {
+    return this.form.get('cop');
+  }
+
+  get usdField(): AbstractControl {
+    return this.form.get('usd');
   }
 
   cancel(): void {

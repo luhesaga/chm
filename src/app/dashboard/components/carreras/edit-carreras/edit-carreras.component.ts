@@ -66,6 +66,8 @@ export class EditCarrerasComponent implements OnInit {
       plantilla: ['', Validators.required],
       vencimiento: [0],
       vence: [false, Validators.required],
+      cop: [0, Validators.required],
+      usd: [0, Validators.required],
     });
   }
 
@@ -82,6 +84,8 @@ export class EditCarrerasComponent implements OnInit {
         this.plantillaField.setValue(carrera.plantilla);
         this.venceField.setValue(carrera.vence ? true : false);
         this.vencimientoField.setValue(carrera.vencimiento ? carrera.vencimiento : 0);
+        this.copField.setValue(carrera.precioCOP ? carrera.precioCOP : 0);
+        this.usdField.setValue(carrera.precioUSD ? carrera.precioUSD : 0);
         unsubscribeCarrera.unsubscribe();
       });
   }
@@ -116,6 +120,14 @@ export class EditCarrerasComponent implements OnInit {
 
   get venceField(): AbstractControl {
     return this.formCarreras.get('vence');
+  }
+
+  get copField(): AbstractControl {
+    return this.formCarreras.get('cop');
+  }
+
+  get usdField(): AbstractControl {
+    return this.formCarreras.get('usd');
   }
 
   obtenerImagen(event: any): void {

@@ -49,14 +49,38 @@
                     type="number"
                     matInput
                     formControlName="duracionCarrera"
-                    tabIndex=6/>
+                    tabIndex=3/>
                 <mat-error *ngIf="duracionCarreraField.touched && duracionCarreraField.invalid">
                   <ng-container *ngIf="duracionCarreraField.hasError('required')">Este campo es requerido</ng-container>
                 </mat-error>
             </mat-form-field>
+            <!-- precio cop -->
+            <mat-form-field>
+                <mat-label>Precio del curso (COP)</mat-label>
+                <input
+                    type="number"
+                    matInput
+                    formControlName="cop"
+                    tabIndex=4/>
+                <mat-error *ngIf="copField.touched && copField.invalid">
+                <ng-container *ngIf="copField.hasError('required')">Este campo es requerido</ng-container>
+                </mat-error>
+            </mat-form-field>
+            <!-- precio usd -->
+            <mat-form-field>
+                <mat-label>Precio del curso (USD)</mat-label>
+                <input
+                    type="number"
+                    matInput
+                    formControlName="usd"
+                    tabIndex=5/>
+                <mat-error *ngIf="usdField.touched && usdField.invalid">
+                    <ng-container *ngIf="usdField.hasError('required')">Este campo es requerido</ng-container>
+                </mat-error>
+            </mat-form-field>
             <mat-form-field appearance="fill">
                 <mat-label>Plantilla certificado</mat-label>
-                <mat-select formControlName="plantilla" tabIndex="4">
+                <mat-select formControlName="plantilla" tabIndex="6">
                     <mat-option *ngFor="let item of certs" [value]="item.id">
                         {{ item.titulo }}
                     </mat-option>
@@ -66,14 +90,14 @@
                 </mat-select>
             </mat-form-field>
             <!-- Vencimiento certificado -->
-            <mat-checkbox class="example-margin" formControlName="vence" [(ngModel)]="vence">Certificado vence?</mat-checkbox>
+            <mat-checkbox class="example-margin" tabIndex="7" formControlName="vence" [(ngModel)]="vence">Certificado vence?</mat-checkbox>
             <mat-form-field *ngIf="vence">
             <mat-label>Vencimiento certificado (años)</mat-label>
             <input
                 type="number"
                 matInput
                 formControlName="vencimiento"
-                tabIndex=7/>
+                tabIndex=8/>
             <mat-error *ngIf="vencimientoField.touched && vencimientoField.invalid">
                 <ng-container *ngIf="vencimientoField.hasError('required')">Este campo es requerido</ng-container>
             </mat-error>
@@ -82,10 +106,10 @@
         <div class="buttons">
             <button
                 type="submit"
-                tabIndex=3
+                tabIndex=9
                 mat-raised-button
                 >Editar carrera</button>
-                <a mat-raised-button (click)="volverAListaCarreras()" tabIndex=5>Cancelar</a>
+                <a mat-raised-button (click)="volverAListaCarreras()" tabIndex=10>Cancelar</a>
         </div>
     </form>
 </main>

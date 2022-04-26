@@ -57,6 +57,8 @@ export class CreateCarrerasComponent implements OnInit {
       plantilla: ['', Validators.required],
       vencimiento: [0],
       vence: [false, Validators.required],
+      cop: [0, Validators.required],
+      usd: [0, Validators.required],
     });
   }
 
@@ -158,6 +160,14 @@ export class CreateCarrerasComponent implements OnInit {
 
   get venceField(): AbstractControl {
     return this.formCarreras.get('vence');
+  }
+
+  get copField(): AbstractControl {
+    return this.formCarreras.get('cop');
+  }
+
+  get usdField(): AbstractControl {
+    return this.formCarreras.get('usd');
   }
 
   mensajeDeError(): void {

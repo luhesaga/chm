@@ -30,7 +30,9 @@ export class CarrerasService {
       duracionCarrera: data.duracionCarrera,
       plantilla: data.plantilla,
       vence: data.vence,
-      vencimiento: data.vencimiento
+      vencimiento: data.vencimiento,
+      precioCOP: data.cop,
+      precioUSD: data.usd,
     });
   }
 
@@ -50,7 +52,9 @@ export class CarrerasService {
       duracionCarrera: data.duracionCarrera,
       plantilla: data.plantilla,
       vence: data.vence,
-      vencimiento: data.vencimiento
+      vencimiento: data.vencimiento,
+      precioCOP: data.cop,
+      precioUSD: data.usd,
     });
   }
 
