@@ -63,6 +63,9 @@ export class CoursesComponent implements OnInit, OnDestroy {
 
   getUsersRating(courses): void {
     courses.forEach((c) => {
+      c.precioAMostrar = c.precioCOP ? c.precioCOP : 0;
+      c.moneda = 'COP';
+      c.mensajeMoneda = 'Ver precio en USD.';
       c.promedio = c.estrellas
         ? Number.parseFloat((c.estrellas / c.votos).toString()).toFixed(1)
         : '0';
@@ -165,5 +168,19 @@ export class CoursesComponent implements OnInit, OnDestroy {
       text: message,
       confirmButtonText: 'Cerrar',
     });
+  }
+
+  changePriceToShow(course): void {
+    if (course.precioAMostrar) {
+      if (course.precioAMostrar === course.precioCOP) {
+        course.precioAMostrar = course.precioUSD;
+        course.moneda = 'USD';
+        course.mensajeMoneda = 'Ver precio en COP.';
+      } else {
+        course.precioAMostrar = course.precioCOP;
+        course.moneda = 'COP';
+        course.mensajeMoneda = 'Ver precio en USD.';
+      }
+    }
   }
 }
