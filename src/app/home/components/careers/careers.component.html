@@ -11,9 +11,24 @@
                 </div>
             </div>
             <div class="course-detail">
-                <h3
-                [routerLink]="'/carreras/detail/'+item.id+'/home'"
-                ><a>{{ item.nombre }}</a></h3>
+                <div class="title">
+                    <h3
+                        [routerLink]="'/carreras/detail/'+item.id+'/home'">
+                            <a>{{ item.nombre }}</a>
+                    </h3>
+                </div>
+                <div class="price">
+                    <h3>{{ item.moneda }} {{ item.precioAMostrar | currency }}</h3>
+                    <div class="price-info">
+                        <span
+                            (click)="changePriceToShow(item)"
+                            class="material-icons"
+                            style="max-width: 24px;"
+                            matTooltip={{item.mensajeMoneda}}>
+                            paid
+                        </span>
+                    </div>
+                </div>
                 <div class="ranking">
                     <star-rating 
                     (starClickChange)="agregarEstrella($event.rating, item)"

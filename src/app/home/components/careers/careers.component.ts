@@ -54,6 +54,9 @@ export class CareersComponent implements OnInit, OnDestroy {
 
   getUsersRating(careers): void {
     careers.forEach((carrera) => {
+      carrera.precioAMostrar = carrera.precioCOP ? carrera.precioCOP : 0;
+      carrera.moneda = 'COP';
+      carrera.mensajeMoneda = 'Ver precio en USD.';
       const estrellas: any[] = carrera.calificacionEstrellas;
       carrera.nroVotos = estrellas.length;
       this.haVotadoElUsuario(carrera);
@@ -161,5 +164,19 @@ export class CareersComponent implements OnInit, OnDestroy {
       text: message,
       confirmButtonText: 'Cerrar',
     });
+  }
+
+  changePriceToShow(course): void {
+    if (course.precioAMostrar) {
+      if (course.precioAMostrar === course.precioCOP) {
+        course.precioAMostrar = course.precioUSD;
+        course.moneda = 'USD';
+        course.mensajeMoneda = 'Ver precio en COP.';
+      } else {
+        course.precioAMostrar = course.precioCOP;
+        course.moneda = 'COP';
+        course.mensajeMoneda = 'Ver precio en USD.';
+      }
+    }
   }
 }

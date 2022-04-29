@@ -10,17 +10,21 @@
                     <span (click)="openDialog(item)" class="material-icons">info</span>
                 </div>
             </div>
-        
-            <div class="course-detail">
+            <div class="course-title">
                 <h3><a (click)="goToCourseDetail(item.id)">{{ item.nombre }}</a></h3>
+            </div>
+            <div class="course-detail">
                 <div class="price">
                     <h3>{{ item.moneda }} {{ item.precioAMostrar | currency }}</h3>
-                    <span
-                        matTooltip={{item.mensajeMoneda}}
-                        (click)="changePriceToShow(item)"
-                        class="material-icons">
-                            currency_exchange
-                    </span>
+                    <div class="price-info">
+                        <span
+                            (click)="changePriceToShow(item)"
+                            class="material-icons"
+                            style="max-width: 24px;"
+                            matTooltip={{item.mensajeMoneda}}>
+                            paid
+                        </span>
+                    </div>
                 </div>
                 <div class="ranking">
                     <star-rating [starType]="'svg'"
