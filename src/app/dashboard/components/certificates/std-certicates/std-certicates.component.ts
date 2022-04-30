@@ -76,6 +76,7 @@ export class StdCerticatesComponent implements OnInit {
                 cert.cc = user.identificacion ? user.identificacion : '1111';
                 cert.vence = c.vence;
                 cert.vencimiento = c.vencimiento;
+                cert.plantilla = c.plantilla;
                 this.certificatesList.push(cert);
                 courseInfo.unsubscribe();
               });
@@ -144,7 +145,11 @@ export class StdCerticatesComponent implements OnInit {
   downloadPDF(data): void {
     // console.log(data);
     if (!data.careerCert) {
-      this.certificados.downloadPDF(data);
+      if (data.plantilla === 'default') {
+        this.certificados.downloadPDF(data);
+      } else {
+        this.certificados.getCertDesign(data);
+      }
     } else {
       if (data.plantilla === 'default') {
         this.careerCert.downloadPDF(data);

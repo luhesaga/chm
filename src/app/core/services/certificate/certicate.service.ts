@@ -65,6 +65,10 @@ export class CerticateService {
       sigla: 'IEND',
     },
     {
+      tipo: 'Liquidos Penetrantes',
+      sigla: 'PT'
+    },
+    {
       tipo: 'Metalurgia del Acero',
       sigla: 'MET',
     },
@@ -138,6 +142,7 @@ export class CerticateService {
   ) {}
 
   generateCerticate(data, consulta): any {
+    // console.log(data);
     const isCertified = this.isCertified(data)
       .valueChanges()
       .subscribe((c: any) => {
@@ -192,9 +197,11 @@ export class CerticateService {
   }
 
   markAsCertified(data): void {
+    console.log(data);
     const tipo = this.tipoCert.filter((x) => x.nombre === data.tipo)[0].sigla;
-    const tecnica = this.tecnicas.filter((x) => x.sigla === data.siglaCurso)[0]
-      .tipo;
+    // const tecnica = this.tecnicas
+    //   .filter((x) => x.sigla === data.siglaCurso)[0].tipo;
+    const tecnica = data.curso;
     const fecha = this.setDates(data);
     const consec = this.getConsecutive()
       .valueChanges()
@@ -412,9 +419,10 @@ export class CerticateService {
       .replace('##STD_NAME##', `${data.estudiante}`)
       .replace('##STD_ID##', `${data.documento2 ? data.documento2 : this.addCommas(data.cc)}`)
       .replace('##CAREER_NAME##', data.curso)
-      .replace('##INI_DATE##', this.formatDate(data.fecha))
+      .replace('##INI_DATE##', this.formatDate(data.fecha ? data.fecha : data.fechaFin))
       .replace('##END_DATE##', this.formatDate(data.fechaExp))
-      .replace('##HOURS##', data.horas + ' Horas');
+      .replace('##HOURS##', data.horas + ' Horas')
+      .replace('##CERTIFICATE##', data.certificado);
     const elemento = document.getElementById('element');
     elemento.innerHTML = contenido;
     elemento.style.display = 'block';
