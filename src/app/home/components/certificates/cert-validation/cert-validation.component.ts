@@ -4,6 +4,7 @@ import { CerticateService } from 'src/app/core/services/certificate/certicate.se
 import Swal from 'sweetalert2';
 import { CourseService } from '../../../../core/services/courses/course.service';
 import { CarrerasService } from '../../../../core/services/carreras/carreras.service';
+import { Console } from 'console';
 
 @Component({
   selector: 'app-cert-validation',
@@ -51,10 +52,12 @@ export class CertValidationComponent implements OnInit {
       .subscribe((cert: any) => {
         if (cert.length > 0) {
           cert.forEach((c) => {
+            let val = 0;
             const courseInfo = this.courseService.detailCourse(c.courseId)
               .valueChanges()
               .subscribe(curso => {
                 if (curso) {
+                  val = 1;
                   c.fechaFin = this.formatDate(c.fechaFin);
                   c.fechaExp = c.fechaExp ? this.formatDate(c.fechaExp) : '';
                   c.vence = curso.vence;
@@ -67,6 +70,7 @@ export class CertValidationComponent implements OnInit {
                     .valueChanges()
                     .subscribe(carrera => {
                       if (carrera) {
+                        val = 1;
                         c.fechaFin = this.formatDate(c.fechaFin);
                         c.fechaExp = c.fechaExp ? this.formatDate(c.fechaExp) : '';
                         c.vence = carrera.vence;
@@ -77,6 +81,14 @@ export class CertValidationComponent implements OnInit {
                       }
                       careerInfo.unsubscribe();
                     });
+                }
+                if (val === 0) {
+                  c.fechaFin = this.formatDate(c.fechaFin);
+                  c.fechaExp = c.fechaExp ? this.formatDate(c.fechaExp) : '';
+                  c.vence = true;
+                  c.tipo = !c.careerCert
+                    ? this.tipos.filter((x) => x.sigla === c.tipo)[0].nombre
+                    : 'Carrera';
                 }
                 courseInfo.unsubscribe();
               });
@@ -99,10 +111,13 @@ export class CertValidationComponent implements OnInit {
       .subscribe((cert: any) => {
         if (cert.length > 0) {
           cert.forEach((c) => {
+            console.log(c);
+            let val = 0;
             const courseInfo = this.courseService.detailCourse(c.courseId)
               .valueChanges()
               .subscribe(curso => {
                 if (curso) {
+                  val = 1;
                   c.fechaFin = this.formatDate(c.fechaFin);
                   c.fechaExp = c.fechaExp ? this.formatDate(c.fechaExp) : '';
                   c.vence = curso.vence;
@@ -115,6 +130,7 @@ export class CertValidationComponent implements OnInit {
                     .valueChanges()
                     .subscribe(carrera => {
                       if (carrera) {
+                        val = 1;
                         c.fechaFin = this.formatDate(c.fechaFin);
                         c.fechaExp = c.fechaExp ? this.formatDate(c.fechaExp) : '';
                         c.vence = carrera.vence;
@@ -125,6 +141,14 @@ export class CertValidationComponent implements OnInit {
                       }
                       careerInfo.unsubscribe();
                     });
+                }
+                if (val === 0) {
+                  c.fechaFin = this.formatDate(c.fechaFin);
+                  c.fechaExp = c.fechaExp ? this.formatDate(c.fechaExp) : '';
+                  c.vence = true;
+                  c.tipo = !c.careerCert
+                    ? this.tipos.filter((x) => x.sigla === c.tipo)[0].nombre
+                    : 'Carrera';
                 }
                 courseInfo.unsubscribe();
               });
