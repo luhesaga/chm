@@ -55,7 +55,13 @@ export class StdCerticatesComponent implements OnInit {
               .valueChanges()
               .subscribe((c: any) => {
                 cert.fechaFinalizacion = this.formatDate(cert.fechaFin);
-                cert.fechaExpiracion = cert.fechaExp ? this.formatDate(cert.fechaExp) : '';
+                let dias;
+                if (c.vence) {
+                  dias = 365 * c.vencimiento;
+                } else {
+                  dias = 365 * 5;
+                }
+                cert.fechaExpiracion = cert.fechaExp ? this.fixDates(cert.fechaFin, dias) : '';
                 cert.imagen = c.image;
                 cert.profesor = 'Geovanny Alvarez G.';
                 cert.cc = user.identificacion ? user.identificacion : '1111';
@@ -71,7 +77,13 @@ export class StdCerticatesComponent implements OnInit {
               .valueChanges()
               .subscribe(c => {
                 cert.fechaFinalizacion = this.formatDate(cert.fechaFin);
-                cert.fechaExpiracion = cert.fechaExp ? this.formatDate(cert.fechaExp) : '';
+                let dias;
+                if (c.vence) {
+                  dias = 365 * c.vencimiento;
+                } else {
+                  dias = 365 * 5;
+                }
+                cert.fechaExpiracion = cert.fechaExp ? this.fixDates(cert.fechaFin, dias) : '';
                 cert.imagen = c.imagen;
                 cert.cc = user.identificacion ? user.identificacion : '1111';
                 cert.vence = c.vence;
@@ -162,6 +174,17 @@ export class StdCerticatesComponent implements OnInit {
   formatDate(date): string {
     const fecha = new Date(date.seconds * 1000).toLocaleDateString();
     return fecha;
+  }
+
+  fixDates(fecha, dias): any {
+    const fechaCons = new Date(fecha.seconds * 1000);
+    const fechaExp = new Date(fechaCons.setDate(fechaCons.getDate() + dias));
+    const ultimoDia = new Date(
+      fechaExp.getFullYear(),
+      fechaExp.getMonth() + 1,
+      0
+    );
+    return ultimoDia.toLocaleDateString();
   }
 
 }

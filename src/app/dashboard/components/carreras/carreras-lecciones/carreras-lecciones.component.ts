@@ -372,6 +372,7 @@ export class CarrerasLeccionesComponent implements OnInit, AfterViewInit, OnDest
   }
 
   getCerticateData(): any {
+    // console.log(this.careerReceived);
     return {
       horas: `${this.careerReceived.duracionCarrera} HORAS`,
       estudiante: `${this.stdReceived.nombres} ${this.stdReceived.apellidos}`,
@@ -386,6 +387,8 @@ export class CarrerasLeccionesComponent implements OnInit, AfterViewInit, OnDest
       plantilla: this.careerReceived.plantilla,
       ejercicios: this.ejerciciosCarrera,
       // tipo: this.courseReceived.tipoCerticado,
+      vence: this.careerReceived.vence,
+      vencimiento: this.careerReceived.vencimiento
     };
 
   }

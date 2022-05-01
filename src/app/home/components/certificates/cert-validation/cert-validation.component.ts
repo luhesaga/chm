@@ -4,7 +4,6 @@ import { CerticateService } from 'src/app/core/services/certificate/certicate.se
 import Swal from 'sweetalert2';
 import { CourseService } from '../../../../core/services/courses/course.service';
 import { CarrerasService } from '../../../../core/services/carreras/carreras.service';
-import { Console } from 'console';
 
 @Component({
   selector: 'app-cert-validation',
@@ -58,8 +57,18 @@ export class CertValidationComponent implements OnInit {
               .subscribe(curso => {
                 if (curso) {
                   val = 1;
+                  let dias;
+                  if (curso.vence) {
+                    dias = curso.vencimiento * 365;
+                  } else {
+                    dias = 365 * 5;
+                  }
+                  if (this.fixDates(c.fechaFin, dias)) {
+                    c.fechaExp = this.fixDates(c.fechaFin, dias);
+                  } else {
+                    c.fechaExp = c.fechaExp ? this.formatDate(c.fechaExp) : '';
+                  }
                   c.fechaFin = this.formatDate(c.fechaFin);
-                  c.fechaExp = c.fechaExp ? this.formatDate(c.fechaExp) : '';
                   c.vence = curso.vence;
                   c.vencimiento = curso.vencimiento;
                   c.tipo = !c.careerCert
@@ -71,8 +80,18 @@ export class CertValidationComponent implements OnInit {
                     .subscribe(carrera => {
                       if (carrera) {
                         val = 1;
+                        let dias;
+                        if (curso.vence) {
+                          dias = curso.vencimiento * 365;
+                        } else {
+                          dias = 365 * 5;
+                        }
+                        if (this.fixDates(c.fechaFin, dias)) {
+                          c.fechaExp = this.fixDates(c.fechaFin, dias);
+                        } else {
+                          c.fechaExp = c.fechaExp ? this.formatDate(c.fechaExp) : '';
+                        }
                         c.fechaFin = this.formatDate(c.fechaFin);
-                        c.fechaExp = c.fechaExp ? this.formatDate(c.fechaExp) : '';
                         c.vence = carrera.vence;
                         c.vencimiento = carrera.vencimiento;
                         c.tipo = !c.careerCert
@@ -111,15 +130,24 @@ export class CertValidationComponent implements OnInit {
       .subscribe((cert: any) => {
         if (cert.length > 0) {
           cert.forEach((c) => {
-            console.log(c);
             let val = 0;
             const courseInfo = this.courseService.detailCourse(c.courseId)
               .valueChanges()
               .subscribe(curso => {
                 if (curso) {
                   val = 1;
+                  let dias;
+                  if (curso.vence) {
+                    dias = curso.vencimiento * 365;
+                  } else {
+                    dias = 365 * 5;
+                  }
+                  if (this.fixDates(c.fechaFin, dias)) {
+                    c.fechaExp = this.fixDates(c.fechaFin, dias);
+                  } else {
+                    c.fechaExp = c.fechaExp ? this.formatDate(c.fechaExp) : '';
+                  }
                   c.fechaFin = this.formatDate(c.fechaFin);
-                  c.fechaExp = c.fechaExp ? this.formatDate(c.fechaExp) : '';
                   c.vence = curso.vence;
                   c.vencimiento = curso.vencimiento;
                   c.tipo = !c.careerCert
@@ -129,10 +157,21 @@ export class CertValidationComponent implements OnInit {
                   const careerInfo = this.careerService.obtenerCarrera(c.courseId)
                     .valueChanges()
                     .subscribe(carrera => {
+                      // console.log(carrera);
                       if (carrera) {
                         val = 1;
+                        let dias;
+                        if (carrera.vence) {
+                          dias = carrera.vencimiento * 365;
+                        } else {
+                          dias = 365 * 5;
+                        }
+                        if (this.fixDates(c.fechaFin, dias)) {
+                          c.fechaExp = this.fixDates(c.fechaFin, dias);
+                        } else {
+                          c.fechaExp = c.fechaExp ? this.formatDate(c.fechaExp) : '';
+                        }
                         c.fechaFin = this.formatDate(c.fechaFin);
-                        c.fechaExp = c.fechaExp ? this.formatDate(c.fechaExp) : '';
                         c.vence = carrera.vence;
                         c.vencimiento = carrera.vencimiento;
                         c.tipo = !c.careerCert
@@ -175,6 +214,17 @@ export class CertValidationComponent implements OnInit {
 
   formatDate(date): string {
     const f = new Date(date.seconds * 1000).toLocaleDateString();
-    return f;
+    return date.seconds ? f : date;
+  }
+
+  fixDates(fecha, dias): any {
+    const fechaCons = new Date(fecha.seconds * 1000);
+    const fechaExp = new Date(fechaCons.setDate(fechaCons.getDate() + dias));
+    const ultimoDia = new Date(
+      fechaExp.getFullYear(),
+      fechaExp.getMonth() + 1,
+      0
+    );
+    return fecha.seconds ? ultimoDia.toLocaleDateString() : '';
   }
 }

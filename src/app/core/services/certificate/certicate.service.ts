@@ -197,7 +197,7 @@ export class CerticateService {
   }
 
   markAsCertified(data): void {
-    console.log(data);
+    // console.log(data);
     const tipo = this.tipoCert.filter((x) => x.nombre === data.tipo)[0].sigla;
     // const tecnica = this.tecnicas
     //   .filter((x) => x.sigla === data.siglaCurso)[0].tipo;
@@ -297,7 +297,13 @@ export class CerticateService {
     const fecha = `${fechaCons.getFullYear().toString().substring(2, 4)}${
       meses[fechaCons.getMonth()]
     }`;
-    const fechaExp = new Date(fechaCons.setDate(fechaCons.getDate() + 1095));
+    let dias;
+    if (data.vence) {
+      dias = 365 * data.vencimiento;
+    } else {
+      dias = 365 * 5;
+    }
+    const fechaExp = new Date(fechaCons.setDate(fechaCons.getDate() + dias));
     const ultimoDia = new Date(fechaExp.getFullYear(), fechaExp.getMonth() + 1, 0);
     return [{ fecha }, { fecha: ultimoDia }];
   }
@@ -404,6 +410,7 @@ export class CerticateService {
   }
 
   getCertDesign(data): void {
+    // console.log(data);
     const design = this.certDesign.getUniqueDesign(data.plantilla)
       .valueChanges()
       .subscribe(d => {
@@ -415,12 +422,18 @@ export class CerticateService {
   prepareCert(data, cert): void {
     // console.log(cert);
     // console.log(data);
+    let dias;
+    if (data.vence) {
+      dias = data.vencimiento * 365;
+    } else {
+      dias = 365 * 5;
+    }
     const contenido = cert[0].contenido
       .replace('##STD_NAME##', `${data.estudiante}`)
       .replace('##STD_ID##', `${data.documento2 ? data.documento2 : this.addCommas(data.cc)}`)
       .replace('##CAREER_NAME##', data.curso)
       .replace('##INI_DATE##', this.formatDate(data.fecha ? data.fecha : data.fechaFin))
-      .replace('##END_DATE##', this.formatDate(data.fechaExp))
+      .replace('##END_DATE##', this.fixDates(data.fechaExp, dias))
       .replace('##HOURS##', data.horas + ' Horas')
       .replace('##CERTIFICATE##', data.certificado);
     const elemento = document.getElementById('element');
@@ -472,5 +485,16 @@ export class CerticateService {
     return this.fireStore.doc('consecutivo/contador').update({
       valor: val,
     });
+  }
+
+  fixDates(fecha, dias): any {
+    const fechaCons = new Date(fecha.seconds * 1000);
+    const fechaExp = new Date(fechaCons.setDate(fechaCons.getDate() + dias));
+    const ultimoDia = new Date(
+      fechaExp.getFullYear(),
+      fechaExp.getMonth() + 1,
+      0
+    );
+    return ultimoDia.toLocaleDateString();
   }
 }

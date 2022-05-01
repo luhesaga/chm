@@ -222,6 +222,8 @@ export class StdEvaluationComponent implements OnInit {
       cc: this.stdReceived.identificacion,
       tipo: this.courseReceived.tipoCerticado,
       plantilla: this.courseReceived.plantilla,
+      vence: this.courseReceived.vence,
+      vencimiento: this.courseReceived.vencimiento
     };
 
   }

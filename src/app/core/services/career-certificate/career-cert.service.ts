@@ -111,7 +111,13 @@ export class CareerCertService {
     const fecha = `${fechaCons.getFullYear().toString().substring(2, 4)}${
       meses[fechaCons.getMonth()]
     }`;
-    const fechaExp = new Date(fechaCons.setDate(fechaCons.getDate() + 1095));
+    let dias;
+    if (data.vence) {
+      dias = 365 * data.vencimiento
+    } else {
+      dias = 365 * 5;
+    }
+    const fechaExp = new Date(fechaCons.setDate(fechaCons.getDate() + dias));
     const ultimoDia = new Date(
       fechaExp.getFullYear(),
       fechaExp.getMonth() + 1,
@@ -223,7 +229,6 @@ export class CareerCertService {
   }
 
   getCertDesign(data): void {
-    // console.log(data);
     const design = this.certDesign
       .getUniqueDesign(data.plantilla)
       .valueChanges()
@@ -236,6 +241,12 @@ export class CareerCertService {
   prepareCert(data, cert): void {
     // console.log(cert);
     // console.log(data);
+    let dias;
+    if (data.vence) {
+      dias = data.vencimiento * 365;
+    } else {
+      dias = 365 * 5;
+    }
     let contenido = cert[0].contenido
       .replace('##STD_NAME##', `${data.estudiante}`)
       .replace(
@@ -246,24 +257,19 @@ export class CareerCertService {
       .replace('##CERTIFICATE##', data.certificado);
 
     let fechaFinalizacion;
+    let fechaExp;
     if (data.fechanew) {
       fechaFinalizacion = data.fechaNew.toLocaleDateString();
+      fechaExp = data.fechanew;
     } else if (data.fFin) {
       fechaFinalizacion = this.formatDate(data.fFin);
+      fechaExp = data.fFin;
     } else {
       fechaFinalizacion = this.formatDate(data.fechaFin);
+      fechaExp = data.fechaFin;
     }
 
-    let fechaExpiracion;
-    if (data.fExp) {
-      fechaExpiracion = this.formatDate(data.fExp);
-    } else if (data.fechaExp) {
-      fechaExpiracion = this.formatDate(data.fechaExp);
-    } else {
-      fechaExpiracion = this.formatDate(
-        new Date(data.fechaNew.getFullYear(), data.fechaNew.getMonth() + 1, 0)
-      );
-    }
+    const fechaExpiracion = this.fixDates(fechaExp, dias);
 
     contenido = contenido
       .replace('##INI_DATE##', `${fechaFinalizacion}`)
@@ -333,5 +339,16 @@ export class CareerCertService {
     return this.fireStore.doc('consecutivo/contador').update({
       valor: val,
     });
+  }
+
+  fixDates(fecha, dias): any {
+    const fechaCons = new Date(fecha.seconds * 1000);
+    const fechaExp = new Date(fechaCons.setDate(fechaCons.getDate() + dias));
+    const ultimoDia = new Date(
+      fechaExp.getFullYear(),
+      fechaExp.getMonth() + 1,
+      0
+    );
+    return ultimoDia.toLocaleDateString();
   }
 }
