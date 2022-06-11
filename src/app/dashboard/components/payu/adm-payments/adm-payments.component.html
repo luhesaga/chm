@@ -1,0 +1,220 @@
+<div class="container">
+    <h2>Gestión de pagos Payu</h2>
+    <mat-form-field appearance="legacy" class="search">
+        <mat-label>Buscar</mat-label>
+        <input matInput (input)="applyFilter($event.target.value)" placeholder="Buscar anuncio"> <!---->
+        <mat-icon matSuffix>search</mat-icon>
+        <mat-hint>puede buscar por cualquier campo</mat-hint>
+    </mat-form-field>
+
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" aria-describedby="Listado de cupones">
+        <!-- referencia -->
+        <ng-container matColumnDef="referencia">
+            <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            id="referencia">
+                Referencia de pago
+            </th>
+            <td
+                mat-cell
+                *matCellDef="let element"
+                matTooltip="Referencia de pago"
+                class="referencia">
+                {{ element.referenceCode }}
+            </td>
+        </ng-container>
+        <!-- moneda -->
+        <ng-container matColumnDef="moneda">
+            <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            id="moneda">
+                Moneda
+            </th>
+            <td
+                mat-cell
+                *matCellDef="let element"
+                matTooltip="Moneda de pago"
+                class="moneda">
+                {{ element.moneda }}
+            </td>
+        </ng-container>
+        <!-- valor -->
+        <ng-container matColumnDef="valor">
+            <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            id="valor">
+                Valor
+            </th>
+            <td
+                mat-cell
+                *matCellDef="let element"
+                matTooltip="valor del pago"
+                class="valor">
+                {{ element.totalAPagar | currency }}
+            </td>
+        </ng-container>
+        <!-- metodo -->
+        <ng-container matColumnDef="metodo">
+            <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            id="metodo">
+                Método de pago
+            </th>
+            <td
+                mat-cell
+                *matCellDef="let element"
+                matTooltip="método de pago"
+                class="metodo">
+                {{ element.metodoPago }}
+            </td>
+        </ng-container>
+        <!-- estudiante -->
+        <ng-container matColumnDef="estudiante">
+            <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            id="estudiante">
+                Estudiante
+            </th>
+            <td
+                mat-cell
+                *matCellDef="let element"
+                matTooltip="Nombre estudiante"
+                class="estudiante">
+                {{ element.usuario }}
+            </td>
+        </ng-container>
+        <!-- cedula -->
+        <ng-container matColumnDef="cedula">
+            <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            id="cedula">
+                Cédula
+            </th>
+            <td
+                mat-cell
+                *matCellDef="let element"
+                matTooltip="Cédula estudiante"
+                class="cedula">
+                {{ element.usuarioCC }}
+            </td>
+        </ng-container>
+        <!-- tipo -->
+        <ng-container matColumnDef="tipo">
+            <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            id="tipo">
+                Tipo
+            </th>
+            <td
+                mat-cell
+                *matCellDef="let element"
+                matTooltip="Tipo de formación"
+                class="tipo">
+                {{ element.tipo }}
+            </td>
+        </ng-container>
+        <!-- curso -->
+        <!-- <ng-container matColumnDef="curso">
+            <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            id="curso">
+                Formación
+            </th>
+            <td
+                mat-cell
+                *matCellDef="let element"
+                matTooltip="Formación"
+                class="curso">
+                {{ element.course }}
+            </td>
+        </ng-container> -->
+        <!-- fecha -->
+        <ng-container matColumnDef="fecha">
+            <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            id="fecha">
+                Fecha de pago
+            </th>
+            <td
+                mat-cell
+                *matCellDef="let element"
+                matTooltip="Fecha de pago"
+                class="fecha">
+                {{ element.fechaPago }}
+            </td>
+        </ng-container>
+        <!-- estado -->
+        <ng-container matColumnDef="estado">
+            <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            id="estado">
+                Estado del pago
+            </th>
+            <td
+                mat-cell
+                *matCellDef="let element"
+                matTooltip="Estado del pago"
+                class="estado">
+                {{ element.estado }}
+            </td>
+        </ng-container>
+
+        <!-- botones de acción -->
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef id="acciones">Acciones</th>
+            <td mat-cell *matCellDef="let element" class="buttons">
+                <button
+                    *ngIf="element.estado != 'Transacción aprobada'"
+                    mat-stroked-button
+                    color="primary"
+                    matTooltip="Aprobar el pago"
+                    (click)="checkPayment(element)"
+                    >
+                    <mat-icon style="color: greenyellow;">done_all</mat-icon>
+                </button>
+                <button
+                    *ngIf="element.estado === 'Transacción aprobada'"
+                    mat-stroked-button
+                    color="primary"
+                    matTooltip="Cancelar el pago"
+                    (click)="reversePayment(element)"
+                    >
+                    <mat-icon style="color: rgba(220, 48, 48, 0.895);">remove_done</mat-icon>
+                </button>
+                <button
+                    (click)="paymentDelete(element)"
+                    matTooltip="Eliminar pago"
+                    mat-stroked-button color="secondary">
+                        <mat-icon>delete</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+    <mat-paginator
+        [pageSizeOptions]="[10, 15, 20]"
+        showFirstLastButtons>
+    </mat-paginator>
+</div>
+

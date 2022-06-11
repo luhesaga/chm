@@ -86,7 +86,7 @@ export class CarrerasService {
       .set({
         id: data.id,
         matriculaIndividual: data.matriculaIndividual,
-        nombre: `${data.nombres} ${data.apellidos}`,
+        nombre: data.nombres ? `${data.nombres} ${data.apellidos}` : data.stdName,
         fechaMatricula: data.fechaMatricula,
         fechaFinalizacionMatricula: data.fechaFinalizacionMatricula,
         tipoMatricula: data.tipoMatricula,

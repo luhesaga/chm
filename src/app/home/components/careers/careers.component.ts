@@ -1,12 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CategoryService } from 'src/app/core/services/categories/category.service';
 import { CourseService } from 'src/app/core/services/courses/course.service';
 import Swal from 'sweetalert2';
-import { CourseInfoComponent } from '../courses/course-info/course-info.component';
 import { CarrerasService } from '../../../core/services/carreras/carreras.service';
 import { CarrerasInfoComponent } from 'src/app/dashboard/components/carreras/catalogo-carreras/carreras-info/carreras-info.component';
+import { AuthService } from 'src/app/core/services/auth/auth.service';
+import { CheckoutComponent } from 'src/app/dashboard/components/payu/checkout/checkout.component';
 
 @Component({
   selector: 'app-careers',
@@ -18,16 +18,17 @@ export class CareersComponent implements OnInit, OnDestroy {
   userId;
   dashboard = false;
   careersReceived;
+  user;
 
   constructor(
     public dialog: MatDialog,
     public courseService: CourseService,
     private careerService: CarrerasService,
-    private catService: CategoryService,
     private activatedRoute: ActivatedRoute,
-    private route: Router
+    private route: Router,
+    private auth: AuthService
   ) {
-    this.userId = this.activatedRoute.snapshot.params.userId;
+    this.userId = this.activatedRoute.snapshot.params.idUser;
     if (this.userId) {
       this.dashboard = true;
     }
@@ -35,6 +36,10 @@ export class CareersComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getCareers();
+    const getUser = this.auth.user$.subscribe((u) => {
+      this.user = u;
+      getUser.unsubscribe();
+    });
   }
 
   ngOnDestroy(): void {
@@ -97,16 +102,16 @@ export class CareersComponent implements OnInit, OnDestroy {
       },
     };
 
-    const dialogRef = this.dialog.open(CarrerasInfoComponent, config);
+    this.dialog.open(CarrerasInfoComponent, config);
   }
 
   goToCourseDetail(courseId): void {
     if (this.dashboard) {
       this.route.navigate([
-        `/dashboard/cursos/detalle/${courseId}/${this.userId}`,
+        `dashboard/carreras/detail/dash/${courseId}/${this.userId}`,
       ]);
     } else {
-      this.route.navigate([`/home/detalle-curso/${courseId}`]);
+      this.route.navigate([`/carreras/detail/${courseId}/${'home'}`]);
     }
   }
 
@@ -178,5 +183,56 @@ export class CareersComponent implements OnInit, OnDestroy {
         course.mensajeMoneda = 'Ver precio en USD.';
       }
     }
+  }
+
+  goToBuy(item: any): void {
+    if (!this.dashboard) {
+      Swal.fire({
+        title: 'Comprar curso',
+        text: 'Para adquirir nuestros cursos debes estar registrado, ¿deseas registrarte?',
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, deseo registrarme!',
+      })
+        .then((result) => {
+          if (result.value) {
+            this.route.navigate(['home/register']);
+          }
+        })
+        .catch((error) => console.log(error));
+    } else {
+      const registerCheck = this.careerService
+        .getRegisteredUser(item.id, this.user.id)
+        .valueChanges()
+        .subscribe((user) => {
+          if (user) {
+            Swal.fire({
+              title: `${item.nombre}`,
+              text: 'Ya estas inscrito en esta carrera.',
+              icon: 'info',
+            });
+          } else {
+            this.openCheckout(item);
+          }
+          registerCheck.unsubscribe();
+        });
+    }
+  }
+
+  openCheckout(item: any): void {
+    const config = {
+      data: {
+        message: 'carrera',
+        user: this.user,
+        course: item,
+      },
+    };
+
+    const dialogRef = this.dialog.open(CheckoutComponent, config);
+    dialogRef.afterClosed().subscribe((result) => {
+      // console.log(`Dialog result ${result}`);
+    });
   }
 }

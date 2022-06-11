@@ -68,6 +68,18 @@ export class NavigationComponent {
     this.route.navigate([`dashboard/consulta-certificados`]);
   }
 
+  goToCoupons(): void {
+    this.route.navigate([`dashboard/cupones`]);
+  }
+
+  goToPayments(): void {
+    this.route.navigate([`dashboard/adm-pagos`]);
+  }
+
+  goToMyPayments(): void {
+    this.route.navigate([`dashboard/mis-pagos/${this.logguedUser.id}`]);
+  }
+
   logout(): void {
     this.auth.logout();
     this.route.navigate(['/home']);

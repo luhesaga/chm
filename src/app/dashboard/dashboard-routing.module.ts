@@ -1,4 +1,4 @@
-import { NgModule, Component } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CursosComponent } from './components/cursos/cursos.component';
 import { MainComponent } from './components/main/main.component';
@@ -10,7 +10,6 @@ import { CategoriesComponent } from './components/categories/categories.componen
 import { CategoryCreateComponent } from './components/categories/category-create/category-create.component';
 import { UserEditComponent } from './components/users/user-edit/user-edit.component';
 import { CourseEditComponent } from './components/cursos/course-edit/course-edit.component';
-import { CourseDescriptionComponent } from './components/cursos/course-description/course-description.component';
 import { CourseHomeComponent } from './components/cursos/course-home/course-home.component';
 import { LeccionesComponent } from './components/lessons/lecciones/lecciones.component';
 import { LessonCreateComponent } from './components/lessons/lesson-create/lesson-create.component';
@@ -49,7 +48,6 @@ import { EditCarrerasComponent } from './components/carreras/edit-carreras/edit-
 import { AddEstudiantesComponent } from './components/carreras/add-estudiantes/add-estudiantes.component';
 import { AddCursoComponent } from './components/carreras/add-curso/add-curso.component';
 import { CarrerasDetailComponent } from './components/carreras/carreras-detail/carreras-detail.component';
-import { CatalogoCarrerasComponent } from './components/carreras/catalogo-carreras/catalogo-carreras.component';
 import { MycareersComponent } from './components/mycareers/mycareers.component';
 import { CareerCoursesComponent } from './components/mycareers/career-courses/career-courses.component';
 import { StdEvaluationComponent } from './components/evaluations/std-evaluation/std-evaluation.component';
@@ -64,6 +62,12 @@ import { EvaluationFinishComponent } from '../course-view/components/evaluation/
 import { CertValidationComponent } from '../home/components/certificates/cert-validation/cert-validation.component';
 import { AdmDesignCertificateComponent } from './components/certificates/adm-design-certificate/adm-design-certificate.component';
 import { AdmDesignListComponent } from './components/certificates/adm-design-list/adm-design-list.component';
+import { CuponsComponent } from './components/payu/cupons/cupons.component';
+import { CouponsCreateComponent } from './components/payu/coupons-create/coupons-create.component';
+import { CareersComponent } from '../home/components/careers/careers.component';
+import { PayuConfirmationComponent } from './components/payu/payu-confirmation/payu-confirmation.component';
+import { AdmPaymentsComponent } from './components/payu/adm-payments/adm-payments.component';
+import { StdPaymentsComponent } from './components/payu/std-payments/std-payments.component';
 
 const routes: Routes = [
   {
@@ -437,7 +441,7 @@ const routes: Routes = [
       },
       {
         path: 'carreras/catalogo/:idUser',
-        component: CatalogoCarrerasComponent,
+        component: CareersComponent,
       },
       {
         path: 'carreras/detail/dash/:idCarreras/:idUser',
@@ -454,6 +458,30 @@ const routes: Routes = [
       {
         path: 'consulta-certificados',
         component: CertValidationComponent
+      },
+      {
+        path: 'cupones',
+        component: CuponsComponent
+      },
+      {
+        path: 'crear-cupon',
+        component: CouponsCreateComponent
+      },
+      {
+        path: 'editar-cupon/:couponId',
+        component: CouponsCreateComponent
+      },
+      {
+        path: 'respuesta-pago',
+        component: PayuConfirmationComponent
+      },
+      {
+        path: 'adm-pagos',
+        component: AdmPaymentsComponent
+      },
+      {
+        path: 'mis-pagos/:stdId',
+        component: StdPaymentsComponent
       }
     ],
   },

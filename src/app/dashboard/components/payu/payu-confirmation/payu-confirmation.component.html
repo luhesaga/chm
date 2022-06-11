@@ -1,0 +1,68 @@
+<main>
+    <div
+        *ngIf="transactionState === 'Transacción aprobada'"
+        class="estado-transaccion">
+            <mat-icon style="color: green;">
+                check
+            </mat-icon>
+            <h1>Transacción exitosa!</h1>
+    </div>
+
+    <div
+        *ngIf="transactionState === 'Error'
+            || transactionState === 'Transacción rechazada'"
+        class="estado-transaccion">
+            <mat-icon style="color: rgb(240, 52, 52);">
+                error
+            </mat-icon>
+            <h1>Transacción rechazada</h1>
+    </div>
+
+    <div
+        *ngIf="transactionState === 'Pago pendiente'"
+        class="estado-transaccion">
+            <mat-icon style="color: rgb(206, 108, 43);">
+                error
+            </mat-icon>
+            <h1>Transacción pendiente</h1>
+    </div>
+
+    <div class="datos-pago">
+        <p class="label">Estudiante:</p>
+        <p>{{ paymentData?.usuario }}</p>
+        <p class="label">Curso o carrera:</p>
+        <p>{{ paymentData?.course }}</p>
+        <p class="label">Referencia de pago:</p>
+        <p>{{ paymentData?.referenceCode }}</p>
+        <p class="label">Valor:</p>
+        <p>{{ payuResponse?.TX_VALUE | currency }}</p>
+        <p class="label">Moneda:</p>
+        <p>{{ payuResponse.currency === 'COP' ? 'Peso Colombiano COP' : 'Dolar Americano USD' }}</p>
+        <p class="label">Fecha de pago:</p>
+        <p>{{ payuResponse.processingDate }}</p>
+        <p class="label">Método de Pago:</p>
+        <p>{{ PaymentMethod }}</p>
+
+    </div>
+
+    <div
+        *ngIf="transactionState === 'Transacción aprobada'"
+        class="saludo">
+            <h4>Gracias por preferirnos, ya puedes empezar tu formacion en {{ paymentData?.course }}.</h4>
+    </div>
+
+    <div
+        *ngIf="transactionState === 'Error'
+            || transactionState === 'Transacción rechazada'"
+        class="saludo">
+            <h4>Parece que el pago no fue procesado exitosamente.</h4>
+            <h4>A veces puede tardar un tiempo en procesarse, consulta la opción mis pagos para seguir el estado del pago.</h4>
+    </div>
+
+    <div
+        *ngIf="transactionState === 'Pago pendiente'"
+        class="saludo">
+        <h4>A veces puede tardar un tiempo en procesarse, consulta la opción mis pagos para seguir el estado del pago.</h4>
+    </div>
+    
+</main>

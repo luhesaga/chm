@@ -30,6 +30,7 @@
     "html2canvas": "^1.4.1",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.5.15",
+    "md5-typescript": "^1.0.5",
     "ngx-extended-pdf-viewer": "*",
     "ngx-spinner": "^11.0.1",
     "rxjs": "~6.6.0",

@@ -1,0 +1,52 @@
+<main>
+    <form [formGroup]="form" (ngSubmit)="saveOrEditCoupon($event)">
+        <div class="title">
+            <mat-icon>card_giftcard</mat-icon>
+            <h2>{{ !edit ? 'Crear nuevo' : 'Editar' }} cupón de descuento</h2>
+        </div>
+        <div class="form-inputs">
+            <!-- cupon -->
+            <mat-form-field>
+                <mat-label>Codigo de cupón</mat-label>
+                <input
+                    type="text"
+                    matInput
+                    formControlName="cupon"
+                    tabIndex=1/>
+                <mat-error *ngIf="cuponField.touched && cuponField.invalid">
+                    <ng-container *ngIf="cuponField.hasError('required')">campo requerido</ng-container>
+                </mat-error>
+            </mat-form-field>
+            <!-- porcentaje -->
+            <mat-form-field>
+                <mat-label>Porcentaje de descuento (1-100)</mat-label>
+                <input
+                    type="number"
+                    matInput
+                    formControlName="porcentaje"
+                    tabIndex=2/>
+                <mat-error *ngIf="porcentajeField.touched && porcentajeField.invalid">
+                    <ng-container *ngIf="porcentajeField.hasError('required')">campo requerido</ng-container>
+                </mat-error>
+            </mat-form-field>
+            <!-- activo -->
+            <mat-checkbox
+                class="example-margin"
+                formControlName="activo"
+                tabIndex=3
+                color="primary">
+                Activar cupón?
+            </mat-checkbox>
+        </div>
+        <div class="buttons">
+            <button
+                type="submit"
+                tabIndex=4
+                mat-raised-button
+                [disabled]="form.invalid">
+                    Guardar cambios
+            </button>
+            <a mat-raised-button (click)="goBack();" tabIndex=5>Cancelar</a>
+        </div>
+    </form>
+</main>

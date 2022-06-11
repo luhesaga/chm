@@ -10,10 +10,9 @@ import { AngularFireStorage } from '@angular/fire/storage';
 @Component({
   selector: 'app-ads-list',
   templateUrl: './ads-list.component.html',
-  styleUrls: ['./ads-list.component.scss']
+  styleUrls: ['./ads-list.component.scss'],
 })
 export class AdsListComponent implements OnInit, AfterViewInit {
-
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
@@ -24,7 +23,7 @@ export class AdsListComponent implements OnInit, AfterViewInit {
     private fireStorage: AngularFireStorage,
     private adsService: AdsService,
     private router: Router
-  ) { }
+  ) {}
 
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
@@ -35,27 +34,24 @@ export class AdsListComponent implements OnInit, AfterViewInit {
     this.listAds();
   }
 
-  listAds():void{
+  listAds(): void {
     this.adsService
-    .listAds()
-    .valueChanges()
-    .subscribe(ads =>
-      {
+      .listAds()
+      .valueChanges()
+      .subscribe((ads) => {
         this.dataSource.data = ads;
-      })
+      });
   }
 
   applyFilter(filterValue: string): void {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  goToEdit(element:any):void
-  {
-    this.router.navigateByUrl('dashboard/ads/ads-edit/'+element.id);
+  goToEdit(element: any): void {
+    this.router.navigateByUrl('dashboard/ads/ads-edit/' + element.id);
   }
 
-  getAdsToDelete(element:any):void
-  {
+  getAdsToDelete(element: any): void {
     Swal.fire({
       title: '¿Quieres eliminar el anuncio?',
       icon: 'warning',
@@ -68,24 +64,20 @@ export class AdsListComponent implements OnInit, AfterViewInit {
       if (result.isConfirmed) {
         this.deleteAds(element);
       }
-    })
+    });
   }
-  deleteAds(element:any)
-  {
+  deleteAds(element: any): void {
     this.deleteImage(element.id, element.nombreImg);
     this.deleteCollectionAds(element.id);
   }
 
-  deleteCollectionAds(id:string):void
-  {
-    this.adsService.deleteAds(id).then(()=>
-    {
-      Swal.fire('Anuncio eliminado', '', 'success')
+  deleteCollectionAds(id: string): void {
+    this.adsService.deleteAds(id).then(() => {
+      Swal.fire('Anuncio eliminado', '', 'success');
     });
   }
 
-  deleteImage(id:string, nameImage:string):void
-  {
+  deleteImage(id: string, nameImage: string): void {
     const imageLocation = `ads/${id}/${nameImage}`;
     this.fireStorage.ref(imageLocation).delete();
   }

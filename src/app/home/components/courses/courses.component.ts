@@ -5,6 +5,8 @@ import { CourseService } from '../../../core/services/courses/course.service';
 import { CategoryService } from '../../../core/services/categories/category.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { AuthService } from 'src/app/core/services/auth/auth.service';
+import { CheckoutComponent } from 'src/app/dashboard/components/payu/checkout/checkout.component';
 
 @Component({
   selector: 'app-courses',
@@ -16,13 +18,15 @@ export class CoursesComponent implements OnInit, OnDestroy {
   userId;
   dashboard = false;
   coursesReceived;
+  user;
 
   constructor(
     public dialog: MatDialog,
     public courseService: CourseService,
     private catService: CategoryService,
     private activatedRoute: ActivatedRoute,
-    private route: Router
+    private route: Router,
+    private auth: AuthService,
   ) {
     this.userId = this.activatedRoute.snapshot.params.userId;
     if (this.userId) {
@@ -32,10 +36,16 @@ export class CoursesComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getCourses();
+    const getUser = this.auth.user$.subscribe(u => {
+      this.user = u;
+      getUser.unsubscribe();
+    });
   }
 
   ngOnDestroy(): void {
-    this.coursesReceived.unsubscribe();
+    if (this.coursesReceived) {
+      this.coursesReceived.unsubscribe();
+    }
   }
 
   getCourses(): void {
@@ -44,7 +54,6 @@ export class CoursesComponent implements OnInit, OnDestroy {
       .valueChanges()
       .subscribe((courses) => {
         this.getCourseCategory(courses);
-        // this.cursos = this.estrellasCourses(courses);
         this.getUsersRating(courses);
       });
   }
@@ -182,5 +191,56 @@ export class CoursesComponent implements OnInit, OnDestroy {
         course.mensajeMoneda = 'Ver precio en USD.';
       }
     }
+  }
+
+  goToBuy(item: any): void {
+    console.log(item);
+    if (!this.dashboard) {
+      Swal.fire({
+        title: 'Comprar curso',
+        text: 'Para adquirir nuestros cursos debes estar registrado, ¿deseas registrarte?',
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, deseo registrarme!'
+      })
+        .then((result) => {
+          if (result.value) {
+            this.route.navigate(['home/register']);
+          }
+        })
+        .catch(error => console.log(error));
+    } else {
+      const registerCheck = this.courseService.registeredUSerDetail(item.id, this.user.id)
+        .valueChanges()
+        .subscribe(user => {
+          if (user) {
+            Swal.fire({
+              title: `${item.nombre}`,
+              text: 'Ya estas inscrito en este curso.',
+              icon: 'info',
+            });
+          } else {
+            this.openCheckout(item);
+          }
+          registerCheck.unsubscribe();
+        });
+    }
+  }
+
+  openCheckout(item: any): void {
+    const config = {
+      data: {
+        message: 'curso',
+        user: this.user,
+        course: item
+      },
+    };
+
+    const dialogRef = this.dialog.open(CheckoutComponent, config);
+    dialogRef.afterClosed().subscribe((result) => {
+      // console.log(`Dialog result ${result}`);
+    });
   }
 }

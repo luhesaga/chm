@@ -77,6 +77,12 @@ import { CourseViewModule } from '../course-view/course-view.module';
 import { AdmDesignCertificateComponent } from './components/certificates/adm-design-certificate/adm-design-certificate.component';
 import { AdmDesignListComponent } from './components/certificates/adm-design-list/adm-design-list.component';
 import { AdmDesignViewComponent } from './components/certificates/adm-design-view/adm-design-view.component';
+import { CheckoutComponent } from './components/payu/checkout/checkout.component';
+import { CuponsComponent } from './components/payu/cupons/cupons.component';
+import { CouponsCreateComponent } from './components/payu/coupons-create/coupons-create.component';
+import { PayuConfirmationComponent } from './components/payu/payu-confirmation/payu-confirmation.component';
+import { AdmPaymentsComponent } from './components/payu/adm-payments/adm-payments.component';
+import { StdPaymentsComponent } from './components/payu/std-payments/std-payments.component';
 
 @NgModule({
   declarations: [
@@ -148,6 +154,12 @@ import { AdmDesignViewComponent } from './components/certificates/adm-design-vie
     AdmDesignCertificateComponent,
     AdmDesignListComponent,
     AdmDesignViewComponent,
+    CheckoutComponent,
+    CuponsComponent,
+    CouponsCreateComponent,
+    PayuConfirmationComponent,
+    AdmPaymentsComponent,
+    StdPaymentsComponent,
   ],
   imports: [
     CommonModule,

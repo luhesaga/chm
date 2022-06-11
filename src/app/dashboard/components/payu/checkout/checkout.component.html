@@ -1,0 +1,74 @@
+<div class="dialog-header-close">
+    <h1>Confirmar compra</h1>
+    <mat-icon mat-dialog-close>close</mat-icon>
+</div>
+
+<main>
+    <h2>Resumen de la compra</h2>
+    <div class="course-info container">
+        <div class="course-img">
+            <img [src]="courseToBuy.imagen ? courseToBuy.imagen : courseToBuy.image " alt="portada del curso">
+        </div>
+        <div class="course-detail">
+            <div class="course-name">
+                <p>Curso o carrera: <span>{{ courseToBuy.nombre }}</span></p>
+            </div>
+            <div class="course-total">
+                <p>Subtotal: </p>
+                <p>{{ precio.totalCompra | currency }}</p>
+                <p>Descuento:</p>
+                <p>{{ precio.descuento | currency }}</p>
+                <p class="total">Total a pagar: </p>
+                <p class="total">{{ moneda }} {{ precio.totalAPagar | currency }}</p>
+            </div>
+            <div class="chg-currency">
+                <button mat-raised-button (click)="changeCurrency()">
+                    <mat-icon>paid</mat-icon> ver precio en {{ labelMoneda }}
+                </button>
+                <p>* El pago se hará en la moneda elegida.</p>
+            </div>
+        </div>
+    </div>
+    <div class="check-coupon container">
+        <p>Si tiene un código de cupón, ingreselo para aplicarlo.</p>
+        <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Código de cupón</mat-label>
+            <input matInput placeholder="Cupón de descuento" #cupon>
+        </mat-form-field>
+        <button mat-raised-button (click)="checkCoupon()" [disabled]="couponApplied">
+            <mat-icon>check_circle</mat-icon> Aplicar cupón
+        </button>
+    </div>
+    <div class="payment-info container">
+        <div class="payu-pay">
+            <div class="payu-logo">
+                <img src="/assets/img/payu.png" alt="logo Payu">
+            </div>
+            <!-- <div id="payu-form"></div> -->
+            <form (ngSubmit)="onSubmit($event)" method="post" [action]="precio.action">
+                <input name="merchantId"      type="hidden"  [value]="precio.merchantId"   >
+                <input name="accountId"       type="hidden"  [value]="precio.accountId" >
+                <input name="description"     type="hidden"  [value]="'Compra curso ' + courseToBuy.nombre"  >
+                <input name="referenceCode"   type="hidden"  [value]="precio.referenceCode" >
+                <input name="amount"          type="hidden"  [value]="precio.totalAPagar"   >
+                <input name="tax"             type="hidden"  [value]="precio.iva"  >
+                <input name="taxReturnBase"   type="hidden"  [value]="precio.valorBase" >
+                <input name="currency"        type="hidden"  [value]="moneda" >
+                <input name="signature"       type="hidden"  [value]="precio.signature"  >
+                <input name="test"            type="hidden"  [value]="precio.test" >
+                <input name="buyerEmail"      type="hidden"  [value]="user.correo" >
+                <input name="responseUrl"     type="hidden"  [value]="precio.responseUrl" >
+                <input name="confirmationUrl" type="hidden"  [value]="precio.confirmationUrl" >
+                <input name="buyerFullName"   type="hidden"  [value]="user.nombres + ' ' + user.apellidos" >
+                <button mat-raised-button type="submit" class="btn btn-primary" >
+                    <mat-icon>payment</mat-icon> Pagar
+                </button>
+            </form>
+        </div>
+        <div class="checkout-detail">
+            <p>Al dar click en pagar, será redirigido a la plataforma de pagos Payu, podra realizar el pago con tarjetas de crédito, transferencias bancarias, efectivo y más.</p>
+            <p>Si estas fuera de Colombia el pago debera ser realizado con tarjeta de credito.</p>
+            <p>Al confirmar el pago será inscrito al curso o carrera elegido y podrá iniciar la formación.</p>
+        </div>
+    </div>
+</main>

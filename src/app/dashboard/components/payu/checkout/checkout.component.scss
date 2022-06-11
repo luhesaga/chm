@@ -1,0 +1,174 @@
+* {
+    box-sizing: border-box;
+}
+
+.dialog-header-close {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 16px;
+    background: black;
+}
+
+.dialog-header-close h1 {
+    font-weight: 600;
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+    color: rgba($color: #fff, $alpha: 0.9);
+    margin: 0 1rem;
+}
+
+.container {
+    width: 100%;
+    border-radius: 5px;
+    -webkit-box-shadow: 0px 5px 10px 3px rgba(76,76,76,0.94);
+    box-shadow: 2px 2px 10px #999;
+    padding: 0.5rem;
+}
+
+main {
+    max-width: 600px;
+    margin: 20px 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+
+    h2 {
+        margin: 0 0 0.5rem 0;
+    }
+
+    .course-info {
+        display: grid;
+        grid-template-columns: 0.3fr 1fr;
+        column-gap: 1rem;
+        padding: 0.5rem;
+
+        .course-img {
+            width: 90%;
+            display: flex;
+            align-items: center;
+
+            img {
+                width: 100%;
+                margin: 0 auto;
+            }
+        }
+
+        .course-detail {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            .course-name p {
+                span {
+                    font-weight: 600;
+                    margin-left: 2rem;
+                }
+            }
+
+            .course-total {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                column-gap: 4rem;
+                background: rgba($color: #999, $alpha: 0.3);
+                padding: 0.5rem;
+
+                p {
+                    margin: 0;
+                }
+
+                .total {
+                    margin-top: 0.5rem;
+                    font-weight: 600;
+                    font-size: 1.1rem;
+                }
+            }
+
+            .chg-currency {
+                margin-top: 0.5rem;
+                display: flex;
+                align-items: center;
+
+                button {
+                    background: black;
+                    color: white;
+                }
+
+                p {
+                    font-weight: 600;
+                    font-size: 12px;
+                    margin: 0 1rem;
+                }
+            }
+        }
+    }
+
+    .check-coupon {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin-top: 1rem;
+
+        p {
+            margin: 1rem;
+        }
+
+        mat-form-field {
+            margin: 0 1rem;
+        }
+
+        button {
+            margin: 0 1rem;
+            background: black;
+            color: white;
+        }
+    }
+
+    .payment-info {
+        margin: 1rem 0;
+        display: grid;
+        grid-template-rows: 0.5fr 1fr;
+        row-gap: 1rem;
+
+        .payu-pay {
+            display: flex;
+            align-items: center;
+
+            .payu-logo {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                
+                img {
+                    width: 50%;
+                }
+            }
+
+            #payu-form {
+                margin: 1rem 0;
+                align-self: center;
+                justify-self: center;
+            }
+
+            form button {
+                background: #a6c307;
+                padding: 0 2.5rem;
+                // border: 1px solid gray;
+                // border-radius: 5px;
+                cursor: pointer;
+            }
+
+        }        
+
+        .checkout-detail {
+            display: flex;
+            flex-direction: column;
+
+            p {
+                padding: 0 1rem;
+                margin: 0;
+            }
+        }
+    }
+}
+

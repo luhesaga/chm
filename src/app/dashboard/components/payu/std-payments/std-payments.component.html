@@ -1,0 +1,142 @@
+<div *ngIf="!payments" class="container no-data">
+    <h2>No tiene pagos registrados</h2>
+</div>
+<div *ngIf="payments" class="container">
+    
+    <mat-form-field appearance="legacy" class="search">
+        <mat-label>Buscar</mat-label>
+        <input matInput (input)="applyFilter($event.target.value)" placeholder="Buscar anuncio"> <!---->
+        <mat-icon matSuffix>search</mat-icon>
+        <mat-hint>puede buscar por cualquier campo</mat-hint>
+    </mat-form-field>
+
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" aria-describedby="Listado de cupones">
+        <!-- referencia -->
+        <ng-container matColumnDef="referencia">
+            <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            id="referencia">
+                Referencia de pago
+            </th>
+            <td
+                mat-cell
+                *matCellDef="let element"
+                matTooltip="Referencia de pago"
+                class="referencia">
+                {{ element.referenceCode }}
+            </td>
+        </ng-container>
+        <!-- moneda -->
+        <ng-container matColumnDef="moneda">
+            <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            id="moneda">
+                Moneda
+            </th>
+            <td
+                mat-cell
+                *matCellDef="let element"
+                matTooltip="Moneda de pago"
+                class="moneda">
+                {{ element.moneda }}
+            </td>
+        </ng-container>
+        <!-- valor -->
+        <ng-container matColumnDef="valor">
+            <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            id="valor">
+                Valor
+            </th>
+            <td
+                mat-cell
+                *matCellDef="let element"
+                matTooltip="valor del pago"
+                class="valor">
+                {{ element.totalAPagar | currency }}
+            </td>
+        </ng-container>
+        <!-- metodo -->
+        <ng-container matColumnDef="metodo">
+            <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            id="metodo">
+                Método de pago
+            </th>
+            <td
+                mat-cell
+                *matCellDef="let element"
+                matTooltip="método de pago"
+                class="metodo">
+                {{ element.metodoPago }}
+            </td>
+        </ng-container>
+        <!-- tipo -->
+        <ng-container matColumnDef="tipo">
+            <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            id="tipo">
+                Tipo
+            </th>
+            <td
+                mat-cell
+                *matCellDef="let element"
+                matTooltip="Tipo de formación"
+                class="tipo">
+                {{ element.tipo }}
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="fecha">
+            <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            id="fecha">
+                Fecha de pago
+            </th>
+            <td
+                mat-cell
+                *matCellDef="let element"
+                matTooltip="Fecha de pago"
+                class="fecha">
+                {{ element.fechaPago }}
+            </td>
+        </ng-container>
+        <!-- estado -->
+        <ng-container matColumnDef="estado">
+            <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            id="estado">
+                Estado del pago
+            </th>
+            <td
+                mat-cell
+                *matCellDef="let element"
+                matTooltip="Estado del pago"
+                class="estado">
+                {{ element.estado }}
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+    <mat-paginator
+        [pageSizeOptions]="[10, 15, 20]"
+        showFirstLastButtons>
+    </mat-paginator>
+    <p>Cualquier inconsistencia en sus pagos, por favor reportar a comercial@chym-ndt.com, se respondera lo más pronto posible.</p>
+</div>
+

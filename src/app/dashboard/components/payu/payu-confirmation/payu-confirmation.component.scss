@@ -1,0 +1,53 @@
+* {
+    box-sizing: border-box;
+}
+
+main {
+    width: 90%;
+    background: white;
+    margin: 36px auto;
+    padding: 24px;
+    box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .estado-transaccion {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+
+        h1 {
+            margin: 0 1rem;
+        }
+    }
+
+    .datos-pago {
+        margin: 2rem 1rem;
+        padding: 1.5rem;
+        border: 1px solid gray;
+        border-radius: 15px;
+        box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+        display: grid;
+        grid-template-columns: 0.7fr 1fr;
+        gap: 1rem 1rem;
+        background: rgba(130, 130, 130, 0.2);
+
+        .label {
+            font-weight: 600;
+        }
+    }
+
+    .saludo {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        h4 {
+            font-size: 1.2rem;
+        }
+    }
+}
