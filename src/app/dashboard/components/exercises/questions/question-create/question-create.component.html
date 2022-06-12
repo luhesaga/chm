@@ -45,12 +45,13 @@
                             (onInit)="handleEditorInit($event)"
                             [init]="{
                                 icons: 'material',
-                                skin: 'borderless',
-                                plugins: ['wordcount', 'lists', 'image imagetools', 'media'],
-                                menubar: false,
+                                skin: 'oxide',
+                                plugins: ['print', 'preview', 'textcolor', 'wordcount', 'lists', 'image imagetools', 
+                                        'media', 'table', 'code', 'link'],
+                                menubar: ['file', 'edit', 'view', 'insert', 'format','table'],
                                 min_height: 350,
                                 width : '750',
-                                toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | image | media',
+                                toolbar: 'forecolor backcolor | undo redo | styleselect | link | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | image | media | table tabledelete | tableprops tablerowprops tablecellprops | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol | code',
                                 media_live_embeds: true
                             }"
                             ></editor>
@@ -82,9 +83,10 @@
                                         [init]="{
                                             icons: 'material',
                                             skin: 'borderless',
-                                            plugins: ['wordcount', 'lists', 'image imagetools'],
-                                            menubar: false,
-                                            toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | image | media',
+                                            plugins: ['print', 'preview', 'textcolor', 'wordcount', 'lists', 'image imagetools', 
+                                                    'media', 'table', 'code', 'link'],
+                                            menubar: ['file', 'edit', 'view', 'insert', 'format','table'],
+                                            toolbar: 'forecolor backcolor | undo redo | styleselect | link | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | image | media | table tabledelete | tableprops tablerowprops tablecellprops | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol | code',
                                             media_live_embeds: true
                                         }"
                                         [(ngModel)]="item.answer"></editor>
@@ -112,9 +114,10 @@
                                     [init]="{
                                         icons: 'material',
                                         skin: 'borderless',
-                                        plugins: ['wordcount', 'lists', 'image imagetools'],
-                                        menubar: false,
-                                        toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | image | media',
+                                        plugins: ['print', 'preview', 'textcolor', 'wordcount', 'lists', 'image imagetools', 
+                                                'media', 'table', 'code', 'link'],
+                                        menubar: ['file', 'edit', 'view', 'insert', 'format','table'],
+                                        toolbar: 'forecolor backcolor | undo redo | styleselect | link | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | image | media | table tabledelete | tableprops tablerowprops tablecellprops | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol | code',
                                         media_live_embeds: true
                                     }"
                                     [(ngModel)]="item.answer"></editor>
@@ -148,11 +151,12 @@
                                 [init]="{
                                     icons: 'material',
                                     skin: 'borderless',
-                                    plugins: ['wordcount', 'lists', 'image imagetools', 'media'],
-                                    menubar: false,
+                                    plugins: ['print', 'preview', 'textcolor', 'wordcount', 'lists', 'image imagetools', 
+                                            'media', 'table', 'code', 'link'],
+                                    menubar: ['file', 'edit', 'view', 'insert', 'format','table'],
                                     min_height: 350,
                                     width : '750',
-                                    toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | image | media',
+                                    toolbar: 'forecolor backcolor | undo redo | styleselect | link | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | image | media | table tabledelete | tableprops tablerowprops tablecellprops | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol | code',
                                     media_live_embeds: true
                                 }"
                                 ></editor>
@@ -179,11 +183,12 @@
                                 [init]="{
                                     icons: 'material',
                                     skin: 'borderless',
-                                    plugins: ['wordcount', 'lists', 'image imagetools'],
-                                    menubar: false,
+                                    plugins: ['print', 'preview', 'textcolor', 'wordcount', 'lists', 'image imagetools', 
+                                            'media', 'table', 'code', 'link'],
+                                    menubar: ['file', 'edit', 'view', 'insert', 'format','table'],
                                     min_height: 250,
                                     width : 'auto',
-                                    toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | image',
+                                    toolbar: 'forecolor backcolor | undo redo | styleselect | link | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | image | media | table tabledelete | tableprops tablerowprops tablecellprops | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol | code',
                                     media_live_embeds: true
                                 }"
                                 ></editor>
@@ -220,11 +225,12 @@
                                 [init]="{
                                     icons: 'material',
                                     skin: 'borderless',
-                                    plugins: ['wordcount', 'lists', 'image imagetools'],
-                                    menubar: false,
+                                    plugins: ['print', 'preview', 'textcolor', 'wordcount', 'lists', 'image imagetools', 
+                                            'media', 'table', 'code', 'link'],
+                                    menubar: ['file', 'edit', 'view', 'insert', 'format','table'],
                                     min_height: 250,
                                     width : 'auto',
-                                    toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | image',
+                                    toolbar: 'forecolor backcolor | undo redo | styleselect | link | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | image | media | table tabledelete | tableprops tablerowprops tablecellprops | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol | code',
                                     media_live_embeds: true
                                 }"
                                 ></editor>
@@ -253,11 +259,12 @@
                             [init]="{
                                 icons: 'material',
                                 skin: 'borderless',
-                                plugins: ['wordcount', 'lists', 'image imagetools', 'media'],
-                                menubar: false,
+                                plugins: ['print', 'preview', 'textcolor', 'wordcount', 'lists', 'image imagetools', 
+                                        'media', 'table', 'code', 'link'],
+                                menubar: ['file', 'edit', 'view', 'insert', 'format','table'],
                                 min_height: 350,
                                 width : '750',
-                                toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | image | media',
+                                toolbar: 'forecolor backcolor | undo redo | styleselect | link | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | image | media | table tabledelete | tableprops tablerowprops tablecellprops | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol | code',
                                 media_live_embeds: true
                             }"
                             ></editor>
@@ -286,11 +293,12 @@
                             [init]="{
                                 icons: 'material',
                                 skin: 'borderless',
-                                plugins: ['wordcount', 'lists'],
-                                menubar: false,
+                                plugins: ['print', 'preview', 'textcolor', 'wordcount', 'lists', 'image imagetools', 
+                                        'media', 'table', 'code', 'link'],
+                                menubar: ['file', 'edit', 'view', 'insert', 'format','table'],
                                 min_height: 350,
                                 width : '750',
-                                toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist',
+                                toolbar: 'forecolor backcolor | undo redo | styleselect | link | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | image | media | table tabledelete | tableprops tablerowprops tablecellprops | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol | code',
                                 media_live_embeds: true
                             }"
                             ></editor>
@@ -321,11 +329,12 @@
                             [init]="{
                                 icons: 'material',
                                 skin: 'borderless',
-                                plugins: ['wordcount', 'lists', 'image imagetools', 'media'],
-                                menubar: false,
+                                plugins: ['print', 'preview', 'textcolor', 'wordcount', 'lists', 'image imagetools', 
+                                        'media', 'table', 'code', 'link'],
+                                menubar: ['file', 'edit', 'view', 'insert', 'format','table'],
                                 min_height: 350,
                                 width : '750',
-                                toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | image | media',
+                                toolbar: 'forecolor backcolor | undo redo | styleselect | link | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | image | media | table tabledelete | tableprops tablerowprops tablecellprops | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol | code',
                                 media_live_embeds: true
                             }"
                             ></editor>

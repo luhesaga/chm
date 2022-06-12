@@ -15,8 +15,8 @@ export let Payu = {
     action: 'https://checkout.payulatam.com/ppp-web-gateway-payu/',
     merchantId: '703550',
     accountId: '706622',
-    // responseUrl: 'http://localhost:4200/dashboard/respuesta-pago',
-    responseUrl: 'https://chym-elearning.com/dashboard/respuesta-pago',
+    responseUrl: 'http://localhost:4200/dashboard/respuesta-pago',
+    // responseUrl: 'https://chym-elearning.com/dashboard/respuesta-pago',
     confirmationUrl: 'http://consulta.chym-ndt.com/pendiente',
     apiKey: 'mmONpkg713IC1LjC1H2Jg2U4F0',
     test: 0

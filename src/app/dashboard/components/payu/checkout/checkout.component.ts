@@ -161,6 +161,10 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
   onSubmit(event): void {
     const data = this.setPaymentInfo();
+    // console.log(data);
+    // console.log(event);
+    // console.log(this.precio);
+    // console.log(this.courseToBuy);
     this.payuService
       .createPayment(data)
       .then(() => {
