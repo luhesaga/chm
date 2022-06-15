@@ -37,6 +37,7 @@ export class PayuConfirmationComponent implements OnInit {
 
   getPaymentData(): void {
     const refCode = this.payuResponse.referenceCode;
+    console.log(refCode);
     const paymentData = this.payuService
       .getPaymentByRef(refCode)
       .valueChanges()
@@ -55,6 +56,9 @@ export class PayuConfirmationComponent implements OnInit {
             .catch((err) => console.log(err));
           if (this.transactionState === 'Transacción aprobada') {
             this.courseSubscribe(ref[0]);
+            if (this.PaymentMethod === 'Cupón 100%') {
+              Swal.fire('Felicidades', 'Excelente tu cupón fue aplicado exitosamente.', 'success' );
+            }
           }
         }
         paymentData.unsubscribe();
@@ -89,6 +93,9 @@ export class PayuConfirmationComponent implements OnInit {
       case '14':
         metodo = 'Transferencias bancarias SPEI';
         break;
+      case 'cupon':
+        metodo = 'Cupón 100%';
+        break;
     }
 
     return metodo;
@@ -115,6 +122,7 @@ export class PayuConfirmationComponent implements OnInit {
 
   courseSubscribe(payData: any): void {
     if (payData.tipo === 'curso') {
+      console.log('curso');
       const data = this.dataCourseToSubscribe(payData);
       this.checkUser(data, payData);
     } else {
@@ -127,8 +135,8 @@ export class PayuConfirmationComponent implements OnInit {
     return {
       stdName: payData.usuario,
       fechaMatricula: new Date(),
-      tipoMatricula: 'indefinida',
-      fechaFinalizacionMatricula: 'nunca',
+      fechaFinalizacionMatricula: this.fechaFinalizacionMatricula(3),
+      tipoMatricula: 'mes',
     };
   }
 
@@ -138,6 +146,7 @@ export class PayuConfirmationComponent implements OnInit {
       .valueChanges()
       .subscribe((user) => {
         if (!user) {
+          console.log('matriculando al curso...');
           this.subscribeUserToCourse(data, payData);
         } else {
           console.log('estudiante ya matriculado');
@@ -151,6 +160,7 @@ export class PayuConfirmationComponent implements OnInit {
       .registerUserToCourse(data, payData.courseId, payData.idusuario)
       .then(() => {
         // enviar correo
+        console.log('matriculado exitosamente al curso.');
         this.sendEmailToUser(payData.usuario, payData.correo, payData.course);
       })
       .catch((err) => console.log(err));
@@ -202,7 +212,7 @@ export class PayuConfirmationComponent implements OnInit {
   }
 
   prepareSubscriptionToCareer(payData: any, courses: any): any {
-    const tipoMatricula = 'indefinida';
+    const tipoMatricula = 'mes';
     const matriculaIndividual = [];
     const cursosNoMatriculados = [];
     let totalCourses = 0;
@@ -233,7 +243,7 @@ export class PayuConfirmationComponent implements OnInit {
                 cursosNoMatriculados,
                 tipoMatricula,
                 fechaMatricula: new Date(),
-                fechaFinalizacionMatricula: 'nunca',
+                fechaFinalizacionMatricula: this.fechaFinalizacionMatricula(3),
                 id: payData.idusuario
               };
 
@@ -282,6 +292,7 @@ export class PayuConfirmationComponent implements OnInit {
   changeSubscribeState(element: any, payData: any): void {
     const ultimoCurso = element.matriculaIndividual.length - 1;
     element.matriculaIndividual.forEach(async (curso: any, index) => {
+
       if (
         curso.tipoMatricula === 'mes' &&
         element.tipoMatricula === 'indefinida'
@@ -335,5 +346,11 @@ export class PayuConfirmationComponent implements OnInit {
         );
       }
     });
+  }
+
+  fechaFinalizacionMatricula(valueNumber: number): Date {
+    const fechaFinalizacion = new Date();
+    fechaFinalizacion.setMonth(fechaFinalizacion.getMonth() + valueNumber);
+    return fechaFinalizacion;
   }
 }

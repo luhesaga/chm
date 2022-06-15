@@ -53,7 +53,6 @@ export class PayuService {
   }
 
   createPayment(data: any): Promise<void> {
-    console.log(data);
     const id = this.fireStore.createId();
     const fecha = new Date();
     return this.fireStore.doc(`pagos/${id}`).set({

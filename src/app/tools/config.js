@@ -19,7 +19,8 @@ export let Payu = {
     // responseUrl: 'https://chym-elearning.com/dashboard/respuesta-pago',
     confirmationUrl: 'http://consulta.chym-ndt.com/pendiente',
     apiKey: 'mmONpkg713IC1LjC1H2Jg2U4F0',
-    test: 0
+    test: 0,
+    urlFree: '/dashboard/respuesta-pago'
 
 
 }

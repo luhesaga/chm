@@ -7,6 +7,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { PayuService } from 'src/app/core/services/payu/payu.service';
 import Swal from 'sweetalert2';
 import { Payu, payuSignature } from '../../../../tools/config.js';
@@ -34,7 +35,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       responseUrl: Payu.responseUrl,
       confirmationUrl: Payu.confirmationUrl,
       action: Payu.action,
-      moneda: ''
+      moneda: '',
+      urlFree: Payu.urlFree
   };
 
   moneda = 'COP';
@@ -48,7 +50,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   constructor(
     private payuService: PayuService,
     public dialog: MatDialogRef<CheckoutComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -93,8 +96,9 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
     this.precio.moneda = this.moneda;
 
-    this.precio.valorBase =
-    this.precio.totalCompra - this.precio.descuento - this.precio.iva;
+    this.precio.valorBase = this.precio.iva > 0 ?
+      this.precio.totalCompra - this.precio.descuento - this.precio.iva
+      : 0;
 
     this.precio.totalAPagar = this.precio.totalCompra - this.precio.descuento;
 
@@ -127,7 +131,6 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         .getCouponByCode(cuponReceived)
         .valueChanges()
         .subscribe((c: any) => {
-          // console.log(c);
           if (c) {
             this.precio.descuento =
               (this.precio.totalCompra * c[0].porcentaje) / 100;
@@ -161,14 +164,17 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
   onSubmit(event): void {
     const data = this.setPaymentInfo();
-    // console.log(data);
-    // console.log(event);
-    // console.log(this.precio);
-    // console.log(this.courseToBuy);
     this.payuService
       .createPayment(data)
       .then(() => {
-        event.target.submit();
+        if (data.totalAPagar > 0) {
+          event.target.submit();
+        } else {
+          const url = 
+              `${this.precio.urlFree}?transactionState=4&referenceCode=${data.referenceCode}&polPaymentMethodType=cupon&currency=COP&buyerEmail=${this.user.correo}&processingDate=${new Date().toLocaleDateString()}&TX_VALUE=0`;
+          this.router.navigateByUrl(url);
+          this.dialog.close();
+        }
       })
       .catch((err) => console.log(err));
   }

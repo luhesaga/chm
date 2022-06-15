@@ -194,7 +194,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
   }
 
   goToBuy(item: any): void {
-    console.log(item);
+    // console.log(item);
     if (!this.dashboard) {
       Swal.fire({
         title: 'Comprar curso',

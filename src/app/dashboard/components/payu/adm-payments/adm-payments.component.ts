@@ -114,8 +114,8 @@ export class AdmPaymentsComponent implements OnInit, OnDestroy {
     return {
       stdName: payData.usuario,
       fechaMatricula: new Date(),
-      tipoMatricula: 'indefinida',
-      fechaFinalizacionMatricula: 'nunca',
+      fechaFinalizacionMatricula: this.fechaFinalizacionMatricula(3),
+      tipoMatricula: 'mes',
     };
   }
 
@@ -125,6 +125,7 @@ export class AdmPaymentsComponent implements OnInit, OnDestroy {
       .valueChanges()
       .subscribe((user) => {
         if (!user) {
+          console.log('matriculando al curso...');
           this.subscribeUserToCourse(data, payData);
         } else {
           console.log('estudiante ya matriculado');
@@ -138,6 +139,7 @@ export class AdmPaymentsComponent implements OnInit, OnDestroy {
       .registerUserToCourse(data, payData.courseId, payData.idusuario)
       .then(() => {
         // enviar correo
+        console.log('matriculado exitosamente al curso.');
         this.sendEmailToUser(payData.usuario, payData.correo, payData.course);
       })
       .catch((err) => console.log(err));
@@ -225,8 +227,8 @@ export class AdmPaymentsComponent implements OnInit, OnDestroy {
               cursosNoMatriculados,
               tipoMatricula,
               fechaMatricula: new Date(),
-              fechaFinalizacionMatricula: 'nunca',
-              id: payData.idusuario,
+              fechaFinalizacionMatricula: this.fechaFinalizacionMatricula(3),
+              id: payData.idusuario
             };
 
             this.subscribeUserToCareer(coursesState, payData);
@@ -453,5 +455,11 @@ export class AdmPaymentsComponent implements OnInit, OnDestroy {
     this.careerService.desmatricularUsuario(user, career)
       .then(() => console.log('desmatriculado de la carrera.'))
       .catch(err => console.log(`error al matricular: ${err}`));
+  }
+
+  fechaFinalizacionMatricula(valueNumber: number): Date {
+    const fechaFinalizacion = new Date();
+    fechaFinalizacion.setMonth(fechaFinalizacion.getMonth() + valueNumber);
+    return fechaFinalizacion;
   }
 }
