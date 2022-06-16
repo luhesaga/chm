@@ -136,3 +136,11 @@ td.mat-cell:last-of-type {
 .botonMatricular-texto {
     margin-left: 0.5rem;
 }
+
+.allow-cert {
+    background: red;
+}
+
+.no-cert {
+    background: var(--main-color2);
+}

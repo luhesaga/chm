@@ -66,7 +66,7 @@ export class AddStudentComponent implements OnInit, AfterViewInit {
     this.dataSource.sort = this.sort;
   }
 
-  openDialog() {
+  openDialog(): void {
     const dialogRef = this.dialog.open(MatricularComponent, {
       height: '90%',
       width: '90%',
@@ -74,7 +74,7 @@ export class AddStudentComponent implements OnInit, AfterViewInit {
     });
   }
 
-  getCourse() {
+  getCourse(): void {
     let courseReceived = this.courseService
       .detailCourse(this.idCurso)
       .valueChanges()
@@ -84,7 +84,7 @@ export class AddStudentComponent implements OnInit, AfterViewInit {
       });
   }
 
-  getLessons() {
+  getLessons(): void {
     let unsubscribe = this.lessonService
       .listLessons(this.idCurso)
       .valueChanges()
@@ -95,7 +95,7 @@ export class AddStudentComponent implements OnInit, AfterViewInit {
       });
   }
 
-  getContent() {
+  getContent(): void {
     this.lessons.forEach((lesson) => {
       lesson.realizada = false;
       let unsubscribe = this.lessonService
@@ -138,7 +138,7 @@ export class AddStudentComponent implements OnInit, AfterViewInit {
       });
   }
 
-  sortStudents(students) {
+  sortStudents(students): any {
     return students.sort(function (a, b) {
       if (a.nombre > b.nombre) {
         return 1;
@@ -155,7 +155,7 @@ export class AddStudentComponent implements OnInit, AfterViewInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  deleteStudent(estudiante: any) {
+  deleteStudent(estudiante: any): void {
     Swal.fire({
       title: '¿Esta seguro?',
       text: 'Esta acción desmatricula de este curso al estudiante seleccionado! ¿Esta seguro?',
@@ -190,11 +190,11 @@ export class AddStudentComponent implements OnInit, AfterViewInit {
       .catch((error) => console.log(error));
   }
 
-  goBack() {
+  goBack(): void {
     this.router.navigate([`dashboard/cursos`]);
   }
 
-  massiveUnsubscribe(event: MatCheckboxChange) {
+  massiveUnsubscribe(event: MatCheckboxChange): void {
     if (event.checked) {
       this.displayedColumns = [
         'sel',
@@ -217,7 +217,7 @@ export class AddStudentComponent implements OnInit, AfterViewInit {
     }
   }
 
-  checkAllUsers(event: MatCheckboxChange) {
+  checkAllUsers(event: MatCheckboxChange): void {
     this.dataSource.data.forEach((d: any) => {
       event.checked ? (d.seleccionado = true) : (d.seleccionado = false);
     });
@@ -225,7 +225,7 @@ export class AddStudentComponent implements OnInit, AfterViewInit {
     // console.log(this.usersToUnsubscribe);
   }
 
-  individualStudentSelected(event: MatCheckboxChange) {
+  individualStudentSelected(event: MatCheckboxChange): void {
     if (!event.checked) {
       this.selected = false;
     }
@@ -245,7 +245,7 @@ export class AddStudentComponent implements OnInit, AfterViewInit {
     return unsubscribe;
   }
 
-  unsubscribeSelectedUsers() {
+  unsubscribeSelectedUsers(): void {
     Swal.fire({
       title: '¿Esta seguro?',
       text: `Esta acción desmatriculará de este curso ${this.usersToUnsubscribe.length} 
@@ -287,5 +287,60 @@ export class AddStudentComponent implements OnInit, AfterViewInit {
         }
       })
       .catch((error) => console.log(error));
+  }
+
+  allowOrDenyCert(element): void {
+    console.log(element);
+    if (!element.bloquearCert) {
+      Swal.fire({
+        title: '¿Esta seguro?',
+        text: `Esta acción bloqueara la descarga del certificado para este estudiante. ¿Esta seguro?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, estoy seguro!',
+      })
+      .then((result) => {
+        if (result) {
+          this.courseService.allowOrDenyCert(this.idCurso, element.id, true)
+          .then(() => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Exito!',
+              text: `Certificado bloqueado exitosamente.`,
+              confirmButtonText: 'cerrar',
+            });
+          })
+          .catch(err => console.log(err));
+        }
+      })
+      .catch(err => console.log(err));
+    } else {
+      Swal.fire({
+        title: '¿Esta seguro?',
+        text: `Esta acción habilitara nuevamente la descarga del certificado para este estudiante. ¿Esta seguro?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, estoy seguro!',
+      })
+      .then((result) => {
+        if (result) {
+          this.courseService.allowOrDenyCert(this.idCurso, element.id, false)
+          .then(() => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Exito!',
+              text: `Certificado habilitado exitosamente.`,
+              confirmButtonText: 'cerrar',
+            });
+          })
+          .catch(err => console.log(err));
+        }
+      })
+      .catch(err => console.log(err));
+    }
   }
 }

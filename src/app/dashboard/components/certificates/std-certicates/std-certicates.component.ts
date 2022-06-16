@@ -5,6 +5,7 @@ import { CerticateService } from '../../../../core/services/certificate/certicat
 import { UsersService } from '../../../../core/services/users/users.service';
 import { CarrerasService } from '../../../../core/services/carreras/carreras.service';
 import { CareerCertService } from '../../../../core/services/career-certificate/career-cert.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-std-certicates',
@@ -89,7 +90,20 @@ export class StdCerticatesComponent implements OnInit {
                 cert.vence = c.vence;
                 cert.vencimiento = c.vencimiento;
                 cert.plantilla = c.plantilla;
-                this.certificatesList.push(cert);
+                const allowCert = this.cursos
+                  .registeredUSerDetail(
+                    c.id, this.stdId
+                  )
+                  .valueChanges()
+                  .subscribe(data => {
+                    if (data.bloquearCert) {
+                      cert.bloquearCert = true;
+                    } else {
+                      cert.bloquearCert = false;
+                    }
+                    this.certificatesList.push(cert);
+                    allowCert.unsubscribe();
+                  });
                 courseInfo.unsubscribe();
               });
           }
@@ -157,10 +171,14 @@ export class StdCerticatesComponent implements OnInit {
   downloadPDF(data): void {
     // console.log(data);
     if (!data.careerCert) {
-      if (data.plantilla === 'default') {
-        this.certificados.downloadPDF(data);
+      if (data.bloquearCert) {
+        Swal.fire('Error', 'No tiene permitido descargar este certificado.', 'error');
       } else {
-        this.certificados.getCertDesign(data);
+        if (data.plantilla === 'default') {
+          this.certificados.downloadPDF(data);
+        } else {
+          this.certificados.getCertDesign(data);
+        }
       }
     } else {
       if (data.plantilla === 'default') {

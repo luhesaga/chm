@@ -154,6 +154,13 @@ export class CourseService {
       .delete();
   }
 
+  allowOrDenyCert(courseId: string, stdId: string, cert: boolean): Promise<void> {
+    return this.fireStore.doc(`cursos/${courseId}/matriculados/${stdId}`)
+      .update({
+        bloquearCert: cert,
+      });
+  }
+
   getRegisteredUSers(idCurso: string): AngularFirestoreCollection {
     return this.fireStore.collection(`cursos/${idCurso}/matriculados`);
   }

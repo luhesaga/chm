@@ -6,6 +6,7 @@ import { UsersService } from 'src/app/core/services/users/users.service';
 import { ExercisesService } from '../../../../core/services/exercises/exercises.service';
 import { ForumService } from '../../../../core/services/forums/forum.service';
 import { CerticateService } from '../../../../core/services/certificate/certicate.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-std-evaluation',
@@ -55,7 +56,21 @@ export class StdEvaluationComponent implements OnInit {
     const curso = this.courseService.detailCourse(this.courseId)
       .valueChanges()
       .subscribe(course => {
-        this.courseReceived = course;
+        const allowCert = this.courseService
+          .registeredUSerDetail(
+            this.courseId, this.stdId
+          )
+          .valueChanges()
+          .subscribe(data => {
+            // console.log(data);
+            if (data.bloquearCert) {
+              course.bloquearCert = true;
+            } else {
+              course.bloquearCert = false;
+            }
+            this.courseReceived = course;
+            allowCert.unsubscribe();
+          });
         curso.unsubscribe();
       });
   }
@@ -199,9 +214,12 @@ export class StdEvaluationComponent implements OnInit {
   }
 
   downloadPDFCerticate(): void {
-
-    const data = this.getCerticateData();
-    this.certificate.generateCerticate(data, true);
+    if (this.courseReceived.bloquearCert) {
+      Swal.fire('Error', 'No tiene permitido descargar este certificado.', 'error');
+    } else {
+      const data = this.getCerticateData();
+      this.certificate.generateCerticate(data, true);
+    }
   }
 
   goToProfile(): void {
