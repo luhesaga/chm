@@ -59,7 +59,16 @@ main {
             flex-direction: column;
             justify-content: center;
 
+            .course-name {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                align-items: center;
+            }
+
             .course-name p {
+                margin: 0;
+                text-align: justify;
+
                 span {
                     font-weight: 600;
                     margin-left: 2rem;
