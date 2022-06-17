@@ -113,7 +113,7 @@ export class CareerCertService {
     }`;
     let dias;
     if (data.vence) {
-      dias = 365 * data.vencimiento
+      dias = 365 * data.vencimiento;
     } else {
       dias = 365 * 5;
     }

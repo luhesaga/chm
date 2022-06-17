@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
@@ -14,7 +14,7 @@ import { CourseService } from 'src/app/core/services/courses/course.service';
   templateUrl: './add-estudiantes.component.html',
   styleUrls: ['./add-estudiantes.component.scss'],
 })
-export class AddEstudiantesComponent implements OnInit, AfterViewInit {
+export class AddEstudiantesComponent implements OnInit, AfterViewInit, OnDestroy {
   displayedColumns: string[] = ['nombre', 'matricula'];
   dataSource = new MatTableDataSource();
 
@@ -23,6 +23,7 @@ export class AddEstudiantesComponent implements OnInit, AfterViewInit {
 
   idCarreras: string;
   matriculados: any[];
+  careerUsers: any;
 
   constructor(
     public dialog: MatDialog,
@@ -42,6 +43,12 @@ export class AddEstudiantesComponent implements OnInit, AfterViewInit {
     this.dataSource.sort = this.sort;
   }
 
+  ngOnDestroy(): void {
+    if (this.careerUsers) {
+      this.careerUsers.unsubscribe();
+    }
+  }
+
   openDialog(): void {
     this.dialog.open(MatricularEstudiantesCarreraComponent, {
       height: '90%',
@@ -51,16 +58,12 @@ export class AddEstudiantesComponent implements OnInit, AfterViewInit {
   }
 
   obtenerUsuarios(): void {
-    this.carrerasService
+    this.careerUsers = this.carrerasService
       .matriculadosObtener(this.idCarreras)
       .valueChanges()
-      .subscribe(
-        (users) => {
-          this.dataSource.data = users;
-        },
-        () =>
-          this.mensajeError('Error de conexión, por favor recargue la pagina')
-      );
+      .subscribe((users) => {
+        this.dataSource.data = users;
+      });
   }
 
   applyFilter(filterValue: string): void {
@@ -166,5 +169,59 @@ export class AddEstudiantesComponent implements OnInit, AfterViewInit {
         this.deleteStudent(element);
       }
     });
+  }
+
+  allowOrDenyCert(element): void {
+    if (!element.bloquearCert) {
+      Swal.fire({
+        title: '¿Esta seguro?',
+        text: `Esta acción bloqueara la descarga del certificado para este estudiante. ¿Esta seguro?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, estoy seguro!',
+      })
+      .then((result) => {
+        if (result) {
+          this.carrerasService.allowOrDenyCert(this.idCarreras, element.id, true)
+          .then(() => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Exito!',
+              text: `Certificado bloqueado exitosamente.`,
+              confirmButtonText: 'cerrar',
+            });
+          })
+          .catch(err => console.log(err));
+        }
+      })
+      .catch(err => console.log(err));
+    } else {
+      Swal.fire({
+        title: '¿Esta seguro?',
+        text: `Esta acción habilitara nuevamente la descarga del certificado para este estudiante. ¿Esta seguro?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, estoy seguro!',
+      })
+      .then((result) => {
+        if (result) {
+          this.carrerasService.allowOrDenyCert(this.idCarreras, element.id, false)
+          .then(() => {
+            Swal.fire({
+              icon: 'success',
+              title: 'Exito!',
+              text: `Certificado habilitado exitosamente.`,
+              confirmButtonText: 'cerrar',
+            });
+          })
+          .catch(err => console.log(err));
+        }
+      })
+      .catch(err => console.log(err));
+    }
   }
 }

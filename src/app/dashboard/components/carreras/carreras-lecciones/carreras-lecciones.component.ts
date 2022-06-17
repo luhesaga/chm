@@ -10,6 +10,7 @@ import { LessonsService } from 'src/app/core/services/lessons/lessons.service';
 import { CarrerasService } from '../../../../core/services/carreras/carreras.service';
 import { UsersService } from '../../../../core/services/users/users.service';
 import { CareerCertService } from '../../../../core/services/career-certificate/career-cert.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-carreras-lecciones',
@@ -83,7 +84,6 @@ export class CarrerasLeccionesComponent implements OnInit, AfterViewInit, OnDest
           this.hasCC = false;
         }
         this.stdReceived = user;
-        // console.log(this.stdReceived);
         userInfo.unsubscribe();
       });
   }
@@ -92,8 +92,19 @@ export class CarrerasLeccionesComponent implements OnInit, AfterViewInit, OnDest
     const careerInfo = this.careerService.obtenerCarrera(this.careerId)
       .valueChanges()
       .subscribe(career => {
-        this.careerReceived = career;
-        // console.log(this.careerReceived);
+        const allowCert = this.careerService.getRegisteredUser(
+          this.careerId, this.stdId
+        )
+        .valueChanges()
+        .subscribe(data => {
+          if (data?.bloquearCert) {
+            career.bloquearCert = true;
+          } else {
+            career.bloquearCert = false;
+          }
+          this.careerReceived = career;
+          allowCert.unsubscribe();
+        });
         careerInfo.unsubscribe();
       });
   }
@@ -367,8 +378,12 @@ export class CarrerasLeccionesComponent implements OnInit, AfterViewInit, OnDest
   }
 
   downloadPDFCerticate(): void {
-    const data = this.getCerticateData();
-    this.certificado.generateCerticate(data, true);
+    if (this.careerReceived.bloquearCert) {
+      Swal.fire('Error', 'No tiene permitido descargar este certificado.', 'error');
+    } else {
+      const data = this.getCerticateData();
+      this.certificado.generateCerticate(data, true);
+    }
   }
 
   getCerticateData(): any {

@@ -80,6 +80,14 @@ export class CarrerasService {
     return this.fireStore.doc(`carreras/${careerId}/matriculados/${stdId}`);
   }
 
+  allowOrDenyCert(careerId: string, stdId: string, cert: boolean): Promise<void> {
+    return this.fireStore
+      .doc(`carreras/${careerId}/matriculados/${stdId}`)
+      .update({
+        bloquearCert: cert,
+      });
+  }
+
   matricularUsuario(data: any, idCarreras: string): Promise<void> {
     return this.fireStore
       .doc(`carreras/${idCarreras}/matriculados/${data.id}`)

@@ -90,3 +90,13 @@ cursor: pointer;
 .botonMatricular-texto {
     margin-left: 0.5rem;
 }
+
+.allow-cert {
+    background: red;
+    margin-left: 0.5rem;
+}
+
+.no-cert {
+    background: var(--main-color2);
+    margin-left: 0.5rem;
+}

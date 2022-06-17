@@ -49,6 +49,22 @@
                     <span class="material-icons">person_off</span>
                 </mat-icon>
                 </button>
+                <button
+                    mat-mini-fab
+                    [class]="!element.bloquearCert ? 'no-cert' : 'allow-cert'"
+                    [matTooltip]="element.bloquearCert ?
+                        'Desbloquear Certificado' :
+                        'Certificado habilitado. Click para Bloquearlo.'"
+                    (click)="allowOrDenyCert(element)"
+                >
+                    <mat-icon>
+                    <span
+                        class="material-icons"
+                        >
+                        remove_moderator
+                    </span>
+                    </mat-icon>
+                </button>
             </td>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

@@ -63,7 +63,7 @@ export class StdEvaluationComponent implements OnInit {
           .valueChanges()
           .subscribe(data => {
             // console.log(data);
-            if (data.bloquearCert) {
+            if (data?.bloquearCert) {
               course.bloquearCert = true;
             } else {
               course.bloquearCert = false;

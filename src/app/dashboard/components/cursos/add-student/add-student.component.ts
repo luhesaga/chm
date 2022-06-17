@@ -75,7 +75,7 @@ export class AddStudentComponent implements OnInit, AfterViewInit {
   }
 
   getCourse(): void {
-    let courseReceived = this.courseService
+    const courseReceived = this.courseService
       .detailCourse(this.idCurso)
       .valueChanges()
       .subscribe((c) => {
@@ -85,7 +85,7 @@ export class AddStudentComponent implements OnInit, AfterViewInit {
   }
 
   getLessons(): void {
-    let unsubscribe = this.lessonService
+    const unsubscribe = this.lessonService
       .listLessons(this.idCurso)
       .valueChanges()
       .subscribe((lessons) => {
@@ -98,7 +98,7 @@ export class AddStudentComponent implements OnInit, AfterViewInit {
   getContent(): void {
     this.lessons.forEach((lesson) => {
       lesson.realizada = false;
-      let unsubscribe = this.lessonService
+      const unsubscribe = this.lessonService
         .listLessonContent(this.idCurso, lesson.id)
         .valueChanges()
         .subscribe((content) => {
@@ -290,7 +290,6 @@ export class AddStudentComponent implements OnInit, AfterViewInit {
   }
 
   allowOrDenyCert(element): void {
-    console.log(element);
     if (!element.bloquearCert) {
       Swal.fire({
         title: '¿Esta seguro?',

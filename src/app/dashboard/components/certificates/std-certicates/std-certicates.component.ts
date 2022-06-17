@@ -52,63 +52,84 @@ export class StdCerticatesComponent implements OnInit {
         certs.forEach((cert: any) => {
           // console.log(cert);
           if (cert.careerCert) {
-            const careerInfo = this.careerService.obtenerCarrera(cert.courseId)
-              .valueChanges()
-              .subscribe((c: any) => {
-                cert.fechaFinalizacion = this.formatDate(cert.fechaFin);
-                let dias;
-                if (c.vence) {
-                  dias = 365 * c.vencimiento;
-                } else {
-                  dias = 365 * 5;
-                }
-                cert.fechaExpiracion = cert.fechaExp ? this.fixDates(cert.fechaFin, dias) : '';
-                cert.imagen = c.image;
-                cert.profesor = 'Geovanny Alvarez G.';
-                cert.cc = user.identificacion ? user.identificacion : '1111';
-                cert.horas = `${c.duracionCarrera} HORAS`;
-                cert.plantilla = c.plantilla;
-                cert.vence = c.vence;
-                cert.vencimiento = c.vencimiento;
-                this.certificatesList.unshift(cert);
-                careerInfo.unsubscribe();
-              });
+            this.getCareerDetail(cert, user);
           } else {
-            const courseInfo = this.cursos.detailCourse(cert.courseId)
-              .valueChanges()
-              .subscribe(c => {
-                cert.fechaFinalizacion = this.formatDate(cert.fechaFin);
-                let dias;
-                if (c.vence) {
-                  dias = 365 * c.vencimiento;
-                } else {
-                  dias = 365 * 5;
-                }
-                cert.fechaExpiracion = cert.fechaExp ? this.fixDates(cert.fechaFin, dias) : '';
-                cert.imagen = c.imagen;
-                cert.cc = user.identificacion ? user.identificacion : '1111';
-                cert.vence = c.vence;
-                cert.vencimiento = c.vencimiento;
-                cert.plantilla = c.plantilla;
-                const allowCert = this.cursos
-                  .registeredUSerDetail(
-                    c.id, this.stdId
-                  )
-                  .valueChanges()
-                  .subscribe(data => {
-                    if (data.bloquearCert) {
-                      cert.bloquearCert = true;
-                    } else {
-                      cert.bloquearCert = false;
-                    }
-                    this.certificatesList.push(cert);
-                    allowCert.unsubscribe();
-                  });
-                courseInfo.unsubscribe();
-              });
+            this.getCourseDetail(cert, user);
           }
         });
         stdCert.unsubscribe();
+      });
+  }
+
+  getCareerDetail(cert: any, user: any): void {
+    const careerInfo = this.careerService.obtenerCarrera(cert.courseId)
+      .valueChanges()
+      .subscribe((c: any) => {
+        cert.fechaFinalizacion = this.formatDate(cert.fechaFin);
+        let dias;
+        if (c.vence) {
+          dias = 365 * c.vencimiento;
+        } else {
+          dias = 365 * 5;
+        }
+        cert.fechaExpiracion = cert.fechaExp ? this.fixDates(cert.fechaFin, dias) : '';
+        cert.imagen = c.image;
+        cert.profesor = 'Geovanny Alvarez G.';
+        cert.cc = user.identificacion ? user.identificacion : '1111';
+        cert.horas = `${c.duracionCarrera} HORAS`;
+        cert.plantilla = c.plantilla;
+        cert.vence = c.vence;
+        cert.vencimiento = c.vencimiento;
+        const allowCert = this.careerService
+          .getRegisteredUser(
+            c.id, this.stdId
+          )
+          .valueChanges()
+          .subscribe(data => {
+            if (data?.bloquearCert) {
+              cert.bloquearCert = true;
+            } else {
+              cert.bloquearCert = false;
+            }
+            this.certificatesList.unshift(cert);
+            allowCert.unsubscribe();
+          });
+        careerInfo.unsubscribe();
+      });
+  }
+
+  getCourseDetail(cert: any, user: any): void {
+    const courseInfo = this.cursos.detailCourse(cert.courseId)
+      .valueChanges()
+      .subscribe(c => {
+        cert.fechaFinalizacion = this.formatDate(cert.fechaFin);
+        let dias;
+        if (c.vence) {
+          dias = 365 * c.vencimiento;
+        } else {
+          dias = 365 * 5;
+        }
+        cert.fechaExpiracion = cert.fechaExp ? this.fixDates(cert.fechaFin, dias) : '';
+        cert.imagen = c.imagen;
+        cert.cc = user.identificacion ? user.identificacion : '1111';
+        cert.vence = c.vence;
+        cert.vencimiento = c.vencimiento;
+        cert.plantilla = c.plantilla;
+        const allowCert = this.cursos
+          .registeredUSerDetail(
+            c.id, this.stdId
+          )
+          .valueChanges()
+          .subscribe(data => {
+            if (data?.bloquearCert) {
+              cert.bloquearCert = true;
+            } else {
+              cert.bloquearCert = false;
+            }
+            this.certificatesList.push(cert);
+            allowCert.unsubscribe();
+          });
+        courseInfo.unsubscribe();
       });
   }
 
@@ -181,10 +202,14 @@ export class StdCerticatesComponent implements OnInit {
         }
       }
     } else {
-      if (data.plantilla === 'default') {
-        this.careerCert.downloadPDF(data);
+      if (data.bloquearCert) {
+        Swal.fire('Error', 'No tiene permitido descargar este certificado.', 'error');
       } else {
-        this.careerCert.getCertDesign(data);
+        if (data.plantilla === 'default') {
+          this.careerCert.downloadPDF(data);
+        } else {
+          this.careerCert.getCertDesign(data);
+        }
       }
     }
   }
