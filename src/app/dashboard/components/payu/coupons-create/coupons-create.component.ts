@@ -1,3 +1,4 @@
+import { state } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
@@ -5,9 +6,13 @@ import {
   Validators,
   AbstractControl,
 } from '@angular/forms';
+import { MatSelectChange } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
+import { stat } from 'fs';
+import { CourseService } from 'src/app/core/services/courses/course.service';
 import { PayuService } from 'src/app/core/services/payu/payu.service';
 import Swal from 'sweetalert2';
+import { CarrerasService } from '../../../../core/services/carreras/carreras.service';
 
 @Component({
   selector: 'app-coupons-create',
@@ -18,12 +23,18 @@ export class CouponsCreateComponent implements OnInit {
   form: FormGroup;
   edit = false;
   couponId;
+  coursesList: any;
+  careersList: any;
+  tipos: string[] = ['Curso', 'Carrera'];
+  typeSelected: string;
 
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
     private cupon: PayuService,
-    private parametros: ActivatedRoute
+    private parametros: ActivatedRoute,
+    private courseService: CourseService,
+    private careerService: CarrerasService,
   ) {
     this.couponId = this.parametros.snapshot.params.couponId;
     if (this.couponId) {
@@ -36,6 +47,8 @@ export class CouponsCreateComponent implements OnInit {
     if (this.edit) {
       this.getCouponInfo();
     }
+    this.getCourses();
+    this.getCareers();
   }
 
   getCouponInfo(): void {
@@ -45,7 +58,28 @@ export class CouponsCreateComponent implements OnInit {
         this.cuponField.setValue(c.cupon);
         this.porcentajeField.setValue(c.porcentaje);
         this.activoField.setValue(c.activo);
+        this.tipoField.setValue(c.tipo);
+        this.cursoField.setValue(c.curso);
+        this.typeSelected = c.tipo;
         couponReceived.unsubscribe();
+      });
+  }
+
+  getCourses(): void {
+    const courses = this.courseService.listCourses()
+      .valueChanges()
+      .subscribe(c => {
+        this.coursesList = c;
+        courses.unsubscribe();
+      });
+  }
+
+  getCareers(): void {
+    const careers = this.careerService.obtenerCarreras()
+      .valueChanges()
+      .subscribe(c => {
+        this.careersList = c;
+        careers.unsubscribe();
       });
   }
 
@@ -55,6 +89,8 @@ export class CouponsCreateComponent implements OnInit {
       cupon: ['', Validators.required],
       porcentaje: [0, Validators.required],
       activo: [true],
+      tipo: ['', Validators.required],
+      curso: ['', Validators.required],
     });
   }
 
@@ -70,18 +106,76 @@ export class CouponsCreateComponent implements OnInit {
     return this.form.get('activo');
   }
 
+  get tipoField(): AbstractControl {
+    return this.form.get('tipo');
+  }
+
+  get cursoField(): AbstractControl {
+    return this.form.get('curso');
+  }
+
   saveOrEditCoupon(event: Event): void {
     event.preventDefault();
+    const xhr = new XMLHttpRequest();
+    const imgTest = 'assets/img/header-logo-custom1.png';
 
-    this.form.markAllAsTouched();
-    if (this.form.valid) {
-      // this.form.disable();
-      if (!this.edit) {
-        this.createCoupon();
-      } else {
-        this.editCoupon();
+    xhr.open('HEAD', imgTest, true);
+    xhr.send();
+
+    const processRequest = () => {
+        if (xhr.readyState === 4) {
+            if (xhr.status >= 200 && xhr.status < 304) {
+                console.log('On line!');
+                this.form.markAllAsTouched();
+                if (this.form.valid) {
+                  // this.form.disable();
+                  if (!this.edit) {
+                    this.createCoupon();
+                  } else {
+                    this.editCoupon();
+                  }
+                }
+            } else {
+                console.log('Offline :(');
+                Swal.fire('Error', 'No estas conectado a internet. Valida tu conexión y vuelve a inentarlo.', 'error');
+            }
+        }
+    };
+
+    xhr.addEventListener('readystatechange', processRequest, false);
+  }
+
+  conectionValidation(): any {
+    const xhr = new XMLHttpRequest();
+
+    const imgTest = 'assets/img/header-logo-custom1.png';
+
+
+    xhr.open('HEAD', imgTest, true);
+    xhr.send();
+
+    xhr.addEventListener('readystatechange', processRequest(this.form), false);
+
+    function processRequest(form): any {
+
+      if (xhr.readyState === 4) {
+          if (xhr.status >= 200 && xhr.status < 304) {
+              console.log('On line!');
+              form.markAllAsTouched();
+              if (form.valid) {
+                if (!this.edit) {
+                  this.createCoupon();
+                } else {
+                  this.editCoupon();
+                }
+              }
+          } else {
+              console.log('Offline :(');
+          }
       }
+
     }
+
   }
 
   createCoupon(): void {
@@ -117,5 +211,11 @@ export class CouponsCreateComponent implements OnInit {
 
   goBack(): void {
     this.router.navigate(['dashboard/cupones']);
+  }
+
+  typeSelectedEvent(event: MatSelectChange): void {
+    console.log(event);
+    this.typeSelected = event.value;
+    console.log(this.typeSelected);
   }
 }

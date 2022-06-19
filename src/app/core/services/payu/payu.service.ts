@@ -21,6 +21,8 @@ export class PayuService {
       cupon: data.cupon,
       porcentaje: data.porcentaje,
       activo: data.activo,
+      tipo: data.tipo,
+      curso: data.curso,
       fecha
     });
   }
@@ -31,6 +33,8 @@ export class PayuService {
         cupon: data.cupon,
         porcentaje: data.porcentaje,
         activo: data.activo,
+        tipo: data.tipo,
+        curso: data.curso,
       });
   }
 

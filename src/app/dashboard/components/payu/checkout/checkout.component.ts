@@ -131,19 +131,29 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         .getCouponByCode(cuponReceived)
         .valueChanges()
         .subscribe((c: any) => {
-          if (c) {
-            this.precio.descuento =
+          if (c.length > 0) {
+            if (c[0].curso === this.courseToBuy.id) {
+              this.precio.descuento =
               (this.precio.totalCompra * c[0].porcentaje) / 100;
-            if (!this.couponApplied) {
+              if (!this.couponApplied) {
+                Swal.fire({
+                  icon: 'success',
+                  title: `Cupón de ${c[0].porcentaje}% aplicado.`,
+                  text: '',
+                  confirmButtonText: 'OK',
+                });
+                this.couponApplied = true;
+              }
+              this.preparePayuForm();
+            } else {
               Swal.fire({
-                icon: 'success',
-                title: `Cupón de ${c[0].porcentaje}% aplicado.`,
-                text: '',
-                confirmButtonText: 'OK',
+                icon: 'error',
+                title: 'Error',
+                text: '¡Cupón no valido para este programa de formación!',
+                confirmButtonText: 'cerrar',
               });
-              this.couponApplied = true;
+              this.precio.descuento = 0;
             }
-            this.preparePayuForm();
           } else {
             Swal.fire({
               icon: 'error',
@@ -164,18 +174,22 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
   onSubmit(event): void {
     const data = this.setPaymentInfo();
-    this.payuService
-      .createPayment(data)
-      .then(() => {
-        if (data.totalAPagar > 0) {
-          event.target.submit();
-        } else {
-          const url = 
-              `${this.precio.urlFree}?transactionState=4&referenceCode=${data.referenceCode}&polPaymentMethodType=cupon&currency=COP&buyerEmail=${this.user.correo}&processingDate=${new Date().toLocaleDateString()}&TX_VALUE=0`;
-          this.router.navigateByUrl(url);
-          this.dialog.close();
-        }
-      })
-      .catch((err) => console.log(err));
+    if (data.usuarioCC) {
+      this.payuService
+        .createPayment(data)
+        .then(() => {
+          if (data.totalAPagar > 0) {
+            event.target.submit();
+          } else {
+            const url = 
+                `${this.precio.urlFree}?transactionState=4&referenceCode=${data.referenceCode}&polPaymentMethodType=cupon&currency=COP&buyerEmail=${this.user.correo}&processingDate=${new Date().toLocaleDateString()}&TX_VALUE=0`;
+            this.router.navigateByUrl(url);
+            this.dialog.close();
+          }
+        })
+        .catch((err) => console.log(err));
+    } else {
+      Swal.fire('Error', 'No tenemos registrada su identificación, por favor complete sus datos en la opción editar perfil.', 'error');
+    }
   }
 }

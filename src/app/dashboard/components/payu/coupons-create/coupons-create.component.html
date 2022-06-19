@@ -17,6 +17,36 @@
                     <ng-container *ngIf="cuponField.hasError('required')">campo requerido</ng-container>
                 </mat-error>
             </mat-form-field>
+            <!-- Curso o carrera? -->
+            <mat-form-field appearance="fill">
+                <mat-label>Tipo de programa de formación</mat-label>
+                <mat-select tabIndex=2 matNativeControl formControlName="tipo" (selectionChange)="typeSelectedEvent($event)">
+                    <mat-option value="" selected></mat-option>
+                    <mat-option *ngFor="let item of tipos" [value]="item">
+                        {{item}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <!-- programa -->
+            <mat-form-field appearance="fill" *ngIf="typeSelected">
+                <mat-label>Programa de formación</mat-label>
+                <mat-select formControlName="curso" tabIndex="10" *ngIf="typeSelected === 'Curso'">
+                    <mat-option *ngFor="let item of coursesList" [value]="item.id">
+                        {{ item.nombre }}
+                    </mat-option>
+                    <mat-error *ngIf="cursoField.touched && cursoField.invalid">
+                        <ng-container *ngIf="cursoField.hasError('required')">Este campo es requerido</ng-container>
+                    </mat-error>
+                </mat-select>
+                <mat-select formControlName="curso" tabIndex="10" *ngIf="typeSelected === 'Carrera'">
+                    <mat-option *ngFor="let item of careersList" [value]="item.id">
+                        {{ item.nombre }}
+                    </mat-option>
+                    <mat-error *ngIf="cursoField.touched && cursoField.invalid">
+                        <ng-container *ngIf="cursoField.hasError('required')">Este campo es requerido</ng-container>
+                    </mat-error>
+                </mat-select>
+            </mat-form-field>
             <!-- porcentaje -->
             <mat-form-field>
                 <mat-label>Porcentaje de descuento (1-100)</mat-label>

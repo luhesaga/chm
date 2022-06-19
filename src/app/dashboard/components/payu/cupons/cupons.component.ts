@@ -5,6 +5,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { PayuService } from 'src/app/core/services/payu/payu.service';
 import Swal from 'sweetalert2';
+import { CourseService } from '../../../../core/services/courses/course.service';
+import { CarrerasService } from '../../../../core/services/carreras/carreras.service';
 
 @Component({
   selector: 'app-cupons',
@@ -15,12 +17,17 @@ export class CuponsComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  displayedColumns: string[] = ['cupon', 'descuento', 'fecha', 'actions'];
+  displayedColumns: string[] = ['cupon', 'descuento', 'fecha', 'tipo', 'curso', 'actions'];
   dataSource = new MatTableDataSource();
 
   couponsList;
 
-  constructor(private router: Router, private cupones: PayuService) {}
+  constructor(
+    private router: Router,
+    private cupones: PayuService,
+    private courses: CourseService,
+    private careers: CarrerasService,
+  ) {}
 
   ngOnInit(): void {
     this.getCouponsList();
@@ -42,6 +49,23 @@ export class CuponsComponent implements OnInit, OnDestroy {
       .subscribe(coupons => {
         coupons.forEach(c => {
           c.fecha = new Date(c.fecha.seconds * 1000).toLocaleDateString();
+          if (c.tipo) {
+            if (c.tipo === 'Curso') {
+              const cursos = this.courses.detailCourse(c.curso)
+              .valueChanges()
+              .subscribe(curso => {
+                c.nombreCurso = curso.nombre;
+                cursos.unsubscribe();
+              });
+            } else {
+              const carreras = this.careers.obtenerCarrera(c.curso)
+                .valueChanges()
+                .subscribe(carrera => {
+                  c.nombreCurso = carrera.nombre;
+                  carreras.unsubscribe();
+                });
+            }
+          }
         });
         this.dataSource.data = coupons;
         // console.log(coupons);
