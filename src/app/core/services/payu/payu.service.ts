@@ -53,7 +53,9 @@ export class PayuService {
   }
 
   listCoupons(): AngularFirestoreCollection {
-    return this.fireStore.collection(`cupones`);
+    return this.fireStore.collection(`cupones`, (ref) =>
+      ref.orderBy('cupon', 'asc')
+    );
   }
 
   createPayment(data: any): Promise<void> {

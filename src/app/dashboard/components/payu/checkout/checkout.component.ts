@@ -127,18 +127,35 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   checkCoupon(): void {
     const cuponReceived = this.cupon.nativeElement.value;
     if (cuponReceived) {
-      const getcoupon = this.payuService
+      this.getCoupon(cuponReceived);
+    } else {
+      this.precio.descuento = 0;
+      this.couponApplied = false;
+      this.preparePayuForm();
+    }
+  }
+
+  getCoupon(cuponReceived): void {
+    const getcoupon = this.payuService
         .getCouponByCode(cuponReceived)
         .valueChanges()
-        .subscribe((c: any) => {
-          if (c.length > 0) {
-            if (c[0].curso === this.courseToBuy.id) {
+        .subscribe((coupons: any) => {
+          let validation = false;
+          let percentage;
+          if (coupons.length > 0) {
+            coupons.forEach(c => {
+              if (c.curso === this.courseToBuy.id) {
+                validation = true;
+                percentage = c.porcentaje;
+              }
+            });
+            if (validation) {
               this.precio.descuento =
-              (this.precio.totalCompra * c[0].porcentaje) / 100;
+              (this.precio.totalCompra * percentage) / 100;
               if (!this.couponApplied) {
                 Swal.fire({
                   icon: 'success',
-                  title: `Cupón de ${c[0].porcentaje}% aplicado.`,
+                  title: `Cupón de ${coupons[0].porcentaje}% aplicado.`,
                   text: '',
                   confirmButtonText: 'OK',
                 });
@@ -165,11 +182,6 @@ export class CheckoutComponent implements OnInit, OnDestroy {
           }
           getcoupon.unsubscribe();
         });
-    } else {
-      this.precio.descuento = 0;
-      this.couponApplied = false;
-      this.preparePayuForm();
-    }
   }
 
   onSubmit(event): void {
