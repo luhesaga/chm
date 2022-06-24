@@ -14,7 +14,7 @@ import { CheckoutComponent } from 'src/app/dashboard/components/payu/checkout/ch
   styleUrls: ['./courses.component.scss'],
 })
 export class CoursesComponent implements OnInit, OnDestroy {
-  cursos;
+  cursos = [];
   userId;
   dashboard = false;
   coursesReceived;
@@ -72,25 +72,28 @@ export class CoursesComponent implements OnInit, OnDestroy {
 
   getUsersRating(courses): void {
     courses.forEach((c) => {
-      c.precioAMostrar = c.precioCOP ? c.precioCOP : 0;
-      c.moneda = 'COP';
-      c.mensajeMoneda = 'Ver precio en USD.';
-      c.promedio = c.estrellas
-        ? Number.parseFloat((c.estrellas / c.votos).toString()).toFixed(1)
-        : '0';
-      const userRating = this.courseService
-        .getUserStars(this.userId, c.id)
-        .valueChanges()
-        .subscribe((u) => {
-          if (u) {
-            c.haVotado = true;
-          } else {
-            c.haVotado = false;
-          }
-          userRating.unsubscribe();
-        });
+      if (c.visible) {
+        c.precioAMostrar = c.precioCOP ? c.precioCOP : 0;
+        c.moneda = 'COP';
+        c.mensajeMoneda = 'Ver precio en USD.';
+        c.promedio = c.estrellas
+          ? Number.parseFloat((c.estrellas / c.votos).toString()).toFixed(1)
+          : '0';
+        const userRating = this.courseService
+          .getUserStars(this.userId, c.id)
+          .valueChanges()
+          .subscribe((u) => {
+            if (u) {
+              c.haVotado = true;
+            } else {
+              c.haVotado = false;
+            }
+            this.cursos.push(c);
+            userRating.unsubscribe();
+          });
+      }
     });
-    this.cursos = courses;
+    // this.cursos = courses;
   }
 
   openDialog(data): void {

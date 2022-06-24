@@ -45,6 +45,7 @@ export class CreateComponent implements OnInit, AfterViewInit {
   changeImg = false;
   certs: any;
   vence = false;
+  visible = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -109,6 +110,7 @@ export class CreateComponent implements OnInit, AfterViewInit {
         this.percentageField.setValue(curso.porcentaje);
         this.plantillaField.setValue(curso.plantilla);
         this.venceField.setValue(curso.vence ? true : false);
+        this.visibleField.setValue(curso.visible ? true : false);
         this.vencimientoField.setValue(curso.vencimiento ? curso.vencimiento : 0);
         this.copField.setValue(curso.precioCOP ? curso.precioCOP : 0);
         this.usdField.setValue(curso.precioUSD ? curso.precioUSD : 0);
@@ -170,6 +172,7 @@ export class CreateComponent implements OnInit, AfterViewInit {
       vence: [false, Validators.required],
       cop: [0, Validators.required],
       usd: [0, Validators.required],
+      visible: [false, Validators.required],
     });
   }
 
@@ -215,6 +218,10 @@ export class CreateComponent implements OnInit, AfterViewInit {
 
   get venceField(): AbstractControl {
     return this.form.get('vence');
+  }
+
+  get visibleField(): AbstractControl {
+    return this.form.get('visible');
   }
 
   get copField(): AbstractControl {

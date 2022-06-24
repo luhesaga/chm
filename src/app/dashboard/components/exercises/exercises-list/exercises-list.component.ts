@@ -15,6 +15,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { ExercisesService } from '../../../../core/services/exercises/exercises.service';
 import { ExercisesCreateComponent } from '../exercises-create/exercises-create.component';
 import { CarrerasService } from '../../../../core/services/carreras/carreras.service';
+import { MatRadioChange } from '@angular/material/radio';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-exercises-list',
@@ -37,6 +39,11 @@ export class ExercisesListComponent
   careerId;
   careerView = false;
   careerCourses;
+  existingExercises: any;
+  addExercise = false;
+  selectedExercise;
+  panelOpenState = false;
+  exerciseToSave: any;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -44,6 +51,7 @@ export class ExercisesListComponent
     private cursosService: CourseService,
     private exercise: ExercisesService,
     private careerService: CarrerasService,
+    public fireStore: AngularFirestore,
     public dialog: MatDialog
   ) {
     this.courseId = this.activatedRoute.snapshot.params.courseId;
@@ -86,12 +94,13 @@ export class ExercisesListComponent
   }
 
   getCourseInfo(): void {
-    this.courseReceived = this.cursosService
+    const courseReceived = this.cursosService
       .detailCourse(this.courseId)
       .valueChanges()
       .subscribe((curso) => {
         this.course = curso;
         this.getExercisesList(curso);
+        courseReceived.unsubscribe();
       });
   }
 
@@ -105,12 +114,13 @@ export class ExercisesListComponent
   }
 
   getCareerCourses(): void {
-    this.careerService
+    const carreras = this.careerService
       .getCareerCourses(this.careerId)
       .valueChanges()
       .subscribe((courses) => {
         // console.log(courses);
         this.getCareerExercises(courses);
+        carreras.unsubscribe();
       });
   }
 
@@ -268,5 +278,96 @@ export class ExercisesListComponent
     });
 
     return largo;
+  }
+
+  addExistingExercise(): void {
+    const ejercicios = [];
+    if (!this.careerView) {
+      if (this.addExercise) {
+        this.addExercise = false;
+      } else {
+        this.addExercise = true;
+        this.getCoursesList(ejercicios);
+      }
+    }
+  }
+
+  getCoursesList(ejercicios: any): void {
+    let cont = 0;
+    const cursos = this.cursosService.listCourses()
+      .valueChanges()
+      .subscribe(c => {
+        c.forEach((curso) => {
+          if (curso.id !== this.courseId) {
+            ejercicios[cont] = {
+              curso: 'Ejercicios curso ' + curso.nombre,
+              ejercicios: []
+            };
+            this.getCourseExercises(curso, ejercicios[cont]);
+            cont += 1;
+          }
+        });
+        this.existingExercises = ejercicios;
+        console.log(this.existingExercises);
+        cursos.unsubscribe();
+      });
+  }
+
+  getCareerList(ejercicios: any): void {
+    const largo = ejercicios.length;
+    const carreras = this.careerService.obtenerCarreras()
+      .valueChanges()
+      .subscribe(c => {
+        c.forEach((carrera, index) => {
+          ejercicios[largo + index] = {
+            curso: 'Carrera ' + carrera.nombre,
+            ejercicios: []
+          };
+          this.getCourseExercises(carrera, ejercicios[largo + index]);
+        });
+        this.existingExercises = ejercicios;
+        console.log(this.existingExercises);
+        carreras.unsubscribe();
+      });
+  }
+
+  getCourseExercises(curso: any, ejerc: any): any {
+    const ejercicios = this.exercise.listExercises(curso.id)
+      .valueChanges()
+      .subscribe((ex: any) => {
+        if (ex.length > 0) {
+          ex.forEach(e => {
+            ejerc.ejercicios.push(e);
+          });
+        }
+        ejercicios.unsubscribe();
+      });
+  }
+
+  selectionChange(event: MatRadioChange): void {
+    this.exerciseToSave = event.value;
+    this.panelOpenState = false;
+  }
+
+  saveExercise(): void {
+    const id = this.fireStore.createId();
+    const data = this.exerciseToSave;
+    const questions = this.exerciseToSave.preguntas;
+    if (this.exerciseToSave) {
+      console.log(this.exerciseToSave);
+      this.exercise.addExistingExercise(data, this.courseId, id)
+        .then(() => {
+          this.exercise.addQuestion(this.courseId, id, questions)
+            .then(() => {
+              Swal.fire('Agregado', 'Ejercicio agregado exitosamente!', 'success');
+            })
+            .catch(err => Swal.fire('error', `Error al agregar las preguntas del ejercicio. ${err}`, 'error'));
+        })
+        .catch(err => Swal.fire('error', `Error al agregar el ejercicio. ${err}`, 'error'));
+      this.addExercise = false;
+      this.exerciseToSave = undefined;
+    } else {
+      Swal.fire('Error', 'No ha seleccionado ningún ejercicio.', 'error');
+    }
   }
 }

@@ -54,6 +54,7 @@ export class CourseService {
       plantilla: data.plantilla,
       vence: data.vence,
       vencimiento: data.vencimiento,
+      visible: data.visible,
       precioCOP: data.cop,
       precioUSD: data.usd,
     });
@@ -73,6 +74,7 @@ export class CourseService {
       plantilla: data.plantilla,
       vence: data.vence,
       vencimiento: data.vencimiento,
+      visible: data.visible,
       precioCOP: data.cop,
       precioUSD: data.usd,
     });

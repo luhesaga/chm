@@ -17,7 +17,60 @@
   >
     Crear nuevo
   </button>
-  <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+  <button
+    mat-raised-button
+    (click)="addExistingExercise()"
+    style="margin-left: 1rem;"
+    color="primary"
+  >
+  {{ addExercise ? 'Ver listado' : 'Agregar ejercicio creado'}}
+  </button>
+
+  <section *ngIf="addExercise">
+    <div *ngFor="let item of existingExercises">
+      <mat-accordion>
+        <mat-expansion-panel
+          style="margin: 1rem;"
+          (opened)="panelOpenState = true"
+          (closed)="panelOpenState = false">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{ item.curso }}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div>
+            <mat-radio-group
+              aria-labelledby="example-radio-group-label"
+              class="example-radio-group"
+              [(ngModel)]="selectedExercise"
+              (change)="selectionChange($event)">
+                <div class="question-opt">
+                  <mat-radio-button class="example-radio-button" *ngFor="let ejercicio of item.ejercicios" [value]="ejercicio">
+                    {{ ejercicio.nombre }}
+                  </mat-radio-button>
+                </div>
+            </mat-radio-group>
+          </div>
+
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="saveExercise()"
+      style="margin: 1rem 1rem 2rem 1rem;"
+    >
+      Agregar ejercicio seleccionado
+    </button>
+  </section>
+
+  <table
+    *ngIf="!addExercise"
+    mat-table
+    [dataSource]="dataSource"
+    matSort class="mat-elevation-z8"
+    aria-describedby="Ejercicios">
     <!-- nombre del curso -->
     <ng-container matColumnDef="nombre">
       <th mat-header-cell *matHeaderCellDef mat-sort-header id="nombre">
@@ -80,6 +133,7 @@
   </table>
 
   <mat-paginator
+    *ngIf="!addExercise"
     [pageSizeOptions]="[10, 15, 20]"
     showFirstLastButtons
   ></mat-paginator>

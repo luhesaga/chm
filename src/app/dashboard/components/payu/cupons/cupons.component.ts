@@ -1,4 +1,10 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  OnDestroy,
+  AfterViewInit,
+} from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -13,11 +19,18 @@ import { CarrerasService } from '../../../../core/services/carreras/carreras.ser
   templateUrl: './cupons.component.html',
   styleUrls: ['./cupons.component.scss'],
 })
-export class CuponsComponent implements OnInit, OnDestroy {
+export class CuponsComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  displayedColumns: string[] = ['cupon', 'descuento', 'fecha', 'tipo', 'curso', 'actions'];
+  displayedColumns: string[] = [
+    'cupon',
+    'porcentaje',
+    'fecha',
+    'tipo',
+    'nombreCurso',
+    'actions',
+  ];
   dataSource = new MatTableDataSource();
 
   couponsList;
@@ -26,7 +39,7 @@ export class CuponsComponent implements OnInit, OnDestroy {
     private router: Router,
     private cupones: PayuService,
     private courses: CourseService,
-    private careers: CarrerasService,
+    private careers: CarrerasService
   ) {}
 
   ngOnInit(): void {
@@ -39,28 +52,37 @@ export class CuponsComponent implements OnInit, OnDestroy {
     }
   }
 
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
   applyFilter(filterValue: string): void {
+    console.log(filterValue);
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
   getCouponsList(): void {
-    this.couponsList = this.cupones.listCoupons()
+    this.couponsList = this.cupones
+      .listCoupons()
       .valueChanges()
-      .subscribe(coupons => {
-        coupons.forEach(c => {
+      .subscribe((coupons) => {
+        coupons.forEach((c) => {
           c.fecha = new Date(c.fecha.seconds * 1000).toLocaleDateString();
           if (c.tipo) {
             if (c.tipo === 'Curso') {
-              const cursos = this.courses.detailCourse(c.curso)
-              .valueChanges()
-              .subscribe(curso => {
-                c.nombreCurso = curso.nombre;
-                cursos.unsubscribe();
-              });
-            } else {
-              const carreras = this.careers.obtenerCarrera(c.curso)
+              const cursos = this.courses
+                .detailCourse(c.curso)
                 .valueChanges()
-                .subscribe(carrera => {
+                .subscribe((curso) => {
+                  c.nombreCurso = curso.nombre;
+                  cursos.unsubscribe();
+                });
+            } else {
+              const carreras = this.careers
+                .obtenerCarrera(c.curso)
+                .valueChanges()
+                .subscribe((carrera) => {
                   c.nombreCurso = carrera.nombre;
                   carreras.unsubscribe();
                 });
@@ -89,17 +111,19 @@ export class CuponsComponent implements OnInit, OnDestroy {
       showCancelButton: true,
       confirmButtonText: `Si`,
       cancelButtonText: `No`,
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.cupones.deleteCoupon(element.id)
-          .then(() => {
-            Swal.fire('Cupón eliminado', '', 'success');
-          })
-          .catch((err) => {
-            Swal.fire('Cupón eliminado', `Error al eliminar ${err}`, 'error');
-          });
-      }
     })
-    .catch(err => console.log(err));
+      .then((result) => {
+        if (result.isConfirmed) {
+          this.cupones
+            .deleteCoupon(element.id)
+            .then(() => {
+              Swal.fire('Cupón eliminado', '', 'success');
+            })
+            .catch((err) => {
+              Swal.fire('Cupón eliminado', `Error al eliminar ${err}`, 'error');
+            });
+        }
+      })
+      .catch((err) => console.log(err));
   }
 }

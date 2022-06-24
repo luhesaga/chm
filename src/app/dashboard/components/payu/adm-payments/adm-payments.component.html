@@ -9,7 +9,7 @@
 
     <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" aria-describedby="Listado de cupones">
         <!-- referencia -->
-        <ng-container matColumnDef="referencia">
+        <ng-container matColumnDef="referenceCode">
             <th
             mat-header-cell
             *matHeaderCellDef
@@ -43,7 +43,7 @@
             </td>
         </ng-container>
         <!-- valor -->
-        <ng-container matColumnDef="valor">
+        <ng-container matColumnDef="totalAPagar">
             <th
             mat-header-cell
             *matHeaderCellDef
@@ -60,7 +60,7 @@
             </td>
         </ng-container>
         <!-- metodo -->
-        <ng-container matColumnDef="metodo">
+        <ng-container matColumnDef="metodoPago">
             <th
             mat-header-cell
             *matHeaderCellDef
@@ -77,7 +77,7 @@
             </td>
         </ng-container>
         <!-- estudiante -->
-        <ng-container matColumnDef="estudiante">
+        <ng-container matColumnDef="usuario">
             <th
             mat-header-cell
             *matHeaderCellDef
@@ -94,7 +94,7 @@
             </td>
         </ng-container>
         <!-- cedula -->
-        <ng-container matColumnDef="cedula">
+        <ng-container matColumnDef="usuarioCC">
             <th
             mat-header-cell
             *matHeaderCellDef
@@ -145,7 +145,7 @@
             </td>
         </ng-container> -->
         <!-- fecha -->
-        <ng-container matColumnDef="fecha">
+        <ng-container matColumnDef="fechaPago">
             <th
             mat-header-cell
             *matHeaderCellDef

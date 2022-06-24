@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -13,19 +13,19 @@ import { CarrerasService } from '../../../../core/services/carreras/carreras.ser
   templateUrl: './adm-payments.component.html',
   styleUrls: ['./adm-payments.component.scss'],
 })
-export class AdmPaymentsComponent implements OnInit, OnDestroy {
+export class AdmPaymentsComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   displayedColumns: string[] = [
-    'referencia',
+    'referenceCode',
     'moneda',
-    'valor',
-    'metodo',
-    'estudiante',
-    'cedula',
+    'totalAPagar',
+    'metodoPago',
+    'usuario',
+    'usuarioCC',
     'tipo',
-    'fecha',
+    'fechaPago',
     'estado',
     'actions',
   ];
@@ -50,6 +50,11 @@ export class AdmPaymentsComponent implements OnInit, OnDestroy {
     if (this.paymentsList) {
       this.paymentsList.unsubscribe();
     }
+  }
+
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 
   applyFilter(filterValue: string): void {

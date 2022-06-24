@@ -116,66 +116,35 @@ export class CouponsCreateComponent implements OnInit {
 
   saveOrEditCoupon(event: Event): void {
     event.preventDefault();
-    const xhr = new XMLHttpRequest();
-    const imgTest = 'assets/img/header-logo-custom1.png';
+    // const xhr = new XMLHttpRequest();
+    // const imgTest = 'assets/img/header-logo-custom1.png';
 
-    xhr.open('HEAD', imgTest, true);
-    xhr.send();
+    // xhr.open('HEAD', imgTest, true);
+    // xhr.send();
 
-    const processRequest = () => {
-        if (xhr.readyState === 4) {
-            if (xhr.status >= 200 && xhr.status < 304) {
-                console.log('On line!');
-                this.form.markAllAsTouched();
-                if (this.form.valid) {
-                  // this.form.disable();
-                  if (!this.edit) {
-                    this.createCoupon();
-                  } else {
-                    this.editCoupon();
-                  }
-                }
-            } else {
-                console.log('Offline :(');
-                Swal.fire('Error', 'No estas conectado a internet. Valida tu conexión y vuelve a inentarlo.', 'error');
-            }
-        }
-    };
+    // const processRequest = () => {
+    //     if (xhr.readyState === 4) {
+    //         if (xhr.status >= 200 && xhr.status < 304) {
+    //             console.log('On line!');
+                
+    //         } else {
+    //             console.log('Offline :(');
+    //             Swal.fire('Error', 'No estas conectado a internet. Valida tu conexión y vuelve a inentarlo.', 'error');
+    //         }
+    //     }
+    // };
 
-    xhr.addEventListener('readystatechange', processRequest, false);
-  }
+    // xhr.addEventListener('readystatechange', processRequest, false);
 
-  conectionValidation(): any {
-    const xhr = new XMLHttpRequest();
-
-    const imgTest = 'assets/img/header-logo-custom1.png';
-
-
-    xhr.open('HEAD', imgTest, true);
-    xhr.send();
-
-    xhr.addEventListener('readystatechange', processRequest(this.form), false);
-
-    function processRequest(form): any {
-
-      if (xhr.readyState === 4) {
-          if (xhr.status >= 200 && xhr.status < 304) {
-              console.log('On line!');
-              form.markAllAsTouched();
-              if (form.valid) {
-                if (!this.edit) {
-                  this.createCoupon();
-                } else {
-                  this.editCoupon();
-                }
-              }
-          } else {
-              console.log('Offline :(');
-          }
+    this.form.markAllAsTouched();
+    if (this.form.valid) {
+      // this.form.disable();
+      if (!this.edit) {
+        this.createCoupon();
+      } else {
+        this.editCoupon();
       }
-
     }
-
   }
 
   createCoupon(): void {

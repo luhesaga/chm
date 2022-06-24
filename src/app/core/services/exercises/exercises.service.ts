@@ -79,6 +79,23 @@ export class ExercisesService {
       });
   }
 
+  addExistingExercise(data, courseId, id): Promise<void> {
+    return this.fireStore.doc(`ejercicios/${courseId}/ejercicios/${id}`).set({
+      id,
+      nombre: data.nombre,
+      fecha: data.fecha,
+      duracion: data.duracion,
+      retroalimentacion: data.retroalimentacion * 1,
+      intentos: data.intentos * 1,
+      barajar: data.barajar * 1,
+      porcentaje: data.porcentaje,
+      seleccion: data.seleccion * 1,
+      mostrarResultados: data.mostrarResultados * 1,
+      textoFinal: data.textoFinal ? data.textoFinal : '',
+      questionsNumber: data.questionsNumber * 1
+    });
+  }
+
   addUserAnswers(
     courseId: string,
     exercId: string,
