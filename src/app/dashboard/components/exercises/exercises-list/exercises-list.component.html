@@ -30,6 +30,7 @@
     <div *ngFor="let item of existingExercises">
       <mat-accordion>
         <mat-expansion-panel
+          *ngIf="item.ejercicios.length > 0"
           style="margin: 1rem;"
           (opened)="panelOpenState = true"
           (closed)="panelOpenState = false">

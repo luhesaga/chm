@@ -17,6 +17,7 @@ import { ExercisesCreateComponent } from '../exercises-create/exercises-create.c
 import { CarrerasService } from '../../../../core/services/carreras/carreras.service';
 import { MatRadioChange } from '@angular/material/radio';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { Console } from 'console';
 
 @Component({
   selector: 'app-exercises-list',
@@ -39,11 +40,12 @@ export class ExercisesListComponent
   careerId;
   careerView = false;
   careerCourses;
-  existingExercises: any;
+  existingExercises = [];
   addExercise = false;
   selectedExercise;
   panelOpenState = false;
   exerciseToSave: any;
+  position = 1;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -63,8 +65,10 @@ export class ExercisesListComponent
 
   ngOnInit(): void {
     if (!this.careerView) {
+      console.log('Listado de cursos.');
       this.getCourseInfo();
     } else {
+      console.log('Listado de carreras.');
       this.getCareerCourses();
     }
   }
@@ -114,13 +118,16 @@ export class ExercisesListComponent
   }
 
   getCareerCourses(): void {
-    const carreras = this.careerService
+    this.exercisesReceived = this.careerService
       .getCareerCourses(this.careerId)
       .valueChanges()
       .subscribe((courses) => {
         // console.log(courses);
+        if (courses.length > 0) {
+          this.position = courses.length + 1;
+        }
         this.getCareerExercises(courses);
-        carreras.unsubscribe();
+        // carreras.unsubscribe();
       });
   }
 
@@ -282,12 +289,16 @@ export class ExercisesListComponent
 
   addExistingExercise(): void {
     const ejercicios = [];
-    if (!this.careerView) {
-      if (this.addExercise) {
-        this.addExercise = false;
-      } else {
-        this.addExercise = true;
+    if (this.addExercise) {
+      this.addExercise = false;
+    } else {
+      this.addExercise = true;
+      if (!this.careerView) {
+        console.log('obteniendo ejercicios de cursos...');
         this.getCoursesList(ejercicios);
+      } else {
+        console.log('obteniendo ejercicios de carreras...');
+        this.getCareerList(ejercicios);
       }
     }
   }
@@ -313,24 +324,6 @@ export class ExercisesListComponent
       });
   }
 
-  getCareerList(ejercicios: any): void {
-    const largo = ejercicios.length;
-    const carreras = this.careerService.obtenerCarreras()
-      .valueChanges()
-      .subscribe(c => {
-        c.forEach((carrera, index) => {
-          ejercicios[largo + index] = {
-            curso: 'Carrera ' + carrera.nombre,
-            ejercicios: []
-          };
-          this.getCourseExercises(carrera, ejercicios[largo + index]);
-        });
-        this.existingExercises = ejercicios;
-        console.log(this.existingExercises);
-        carreras.unsubscribe();
-      });
-  }
-
   getCourseExercises(curso: any, ejerc: any): any {
     const ejercicios = this.exercise.listExercises(curso.id)
       .valueChanges()
@@ -350,24 +343,92 @@ export class ExercisesListComponent
   }
 
   saveExercise(): void {
-    const id = this.fireStore.createId();
-    const data = this.exerciseToSave;
-    const questions = this.exerciseToSave.preguntas;
     if (this.exerciseToSave) {
-      console.log(this.exerciseToSave);
-      this.exercise.addExistingExercise(data, this.courseId, id)
-        .then(() => {
-          this.exercise.addQuestion(this.courseId, id, questions)
-            .then(() => {
-              Swal.fire('Agregado', 'Ejercicio agregado exitosamente!', 'success');
-            })
-            .catch(err => Swal.fire('error', `Error al agregar las preguntas del ejercicio. ${err}`, 'error'));
-        })
-        .catch(err => Swal.fire('error', `Error al agregar el ejercicio. ${err}`, 'error'));
-      this.addExercise = false;
-      this.exerciseToSave = undefined;
+      const id = this.fireStore.createId();
+      const data = this.exerciseToSave;
+      const questions = this.exerciseToSave.preguntas;
+      // console.log(this.exerciseToSave);
+      if (!this.careerView) {
+        this.saveCourseExercise(data, id, questions);
+      } else {
+        this.saveCareerExercise(data, id, questions);
+      }
     } else {
       Swal.fire('Error', 'No ha seleccionado ningún ejercicio.', 'error');
     }
+  }
+
+  saveCourseExercise(data: any, id: string, questions: any): void {
+    this.exercise.addExistingExercise(data, this.courseId, id)
+      .then(() => {
+        this.exercise.addQuestion(this.courseId, id, questions)
+          .then(() => {
+            Swal.fire('Agregado', 'Ejercicio agregado exitosamente!', 'success');
+          })
+          .catch(err => Swal.fire('error', `Error al agregar las preguntas del ejercicio. ${err}`, 'error'));
+      })
+      .catch(err => Swal.fire('error', `Error al agregar el ejercicio. ${err}`, 'error'));
+    this.addExercise = false;
+    this.exerciseToSave = undefined;
+  }
+
+  saveCareerExercise(data: any, id: string, questions: any): void {
+    data.posicion = this.position;
+    this.careerService.addExistingExercise(data, this.careerId, id)
+      .then(() => {
+        this.careerService.addQuestion(this.careerId, id, questions)
+          .then(() => {
+            Swal.fire('Agregado', 'Ejercicio agregado exitosamente!', 'success');
+          })
+          .catch((err) => {
+            Swal.fire('error', `Error al agregar las preguntas del ejercicio. ${err}`, 'error');
+          })
+      })
+      .catch((err) => {
+        Swal.fire('error', `Error al agregar el ejercicio. ${err}`, 'error');
+      });
+    this.addExercise = false;
+    this.exerciseToSave = undefined;
+    this.position += 1;
+  }
+
+  getCareerList(ejercicios: any): void {
+    let cont = 0;
+    const carreras = this.careerService.obtenerCarreras()
+      .valueChanges()
+      .subscribe(c => {
+        c.forEach((carrera) => {
+          if (carrera.id !== this.careerId) {
+            ejercicios[cont] = {
+              curso: 'Ejercicios carrera ' + carrera.nombre,
+              ejercicios: []
+            };
+            this.getCareerCoursesToAdd(carrera, ejercicios[cont]);
+            cont += 1;
+          }
+        });
+        this.existingExercises = ejercicios;
+        // console.log(this.existingExercises);
+        carreras.unsubscribe();
+      });
+  }
+
+  getCareerCoursesToAdd(carrera: any, ejercicios: any): void {
+    const carreras = this.careerService
+      .getCareerCourses(carrera.id)
+      .valueChanges()
+      .subscribe((courses) => {
+        // console.log(courses);
+        this.getCareerExercisesToAdd(courses, ejercicios);
+        carreras.unsubscribe();
+      });
+  }
+
+  getCareerExercisesToAdd(courses: any, ejercicios: any): void {
+    courses.forEach((c) => {
+      if (c.tipo === 'ejercicio') {
+        ejercicios.ejercicios.push(c);
+      }
+    });
   }
 }
