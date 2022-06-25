@@ -10,7 +10,6 @@ import Swal from 'sweetalert2';
 import { CarrerasService } from 'src/app/core/services/carreras/carreras.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CertificateDesignService } from 'src/app/core/services/certificate-design/certificate-design.service';
-import { cursorTo } from 'readline';
 
 @Component({
   selector: 'app-edit-carreras',
@@ -23,6 +22,7 @@ export class EditCarrerasComponent implements OnInit {
   idCarreras: string;
   certs: any;
   vence = false;
+  visible = false;
 
   constructor(
     private fireStorage: AngularFireStorage,
@@ -68,6 +68,7 @@ export class EditCarrerasComponent implements OnInit {
       vence: [false, Validators.required],
       cop: [0, Validators.required],
       usd: [0, Validators.required],
+      visible: [false, Validators.required],
     });
   }
 
@@ -84,6 +85,7 @@ export class EditCarrerasComponent implements OnInit {
         this.plantillaField.setValue(carrera.plantilla);
         this.venceField.setValue(carrera.vence ? true : false);
         this.vencimientoField.setValue(carrera.vencimiento ? carrera.vencimiento : 0);
+        this.visibleField.setValue(carrera.visible ? true : false);
         this.copField.setValue(carrera.precioCOP ? carrera.precioCOP : 0);
         this.usdField.setValue(carrera.precioUSD ? carrera.precioUSD : 0);
         unsubscribeCarrera.unsubscribe();
@@ -128,6 +130,10 @@ export class EditCarrerasComponent implements OnInit {
 
   get usdField(): AbstractControl {
     return this.formCarreras.get('usd');
+  }
+
+  get visibleField(): AbstractControl {
+    return this.formCarreras.get('visible');
   }
 
   obtenerImagen(event: any): void {

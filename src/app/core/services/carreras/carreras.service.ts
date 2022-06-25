@@ -31,13 +31,16 @@ export class CarrerasService {
       plantilla: data.plantilla,
       vence: data.vence,
       vencimiento: data.vencimiento,
+      visible: data.visible,
       precioCOP: data.cop,
       precioUSD: data.usd,
     });
   }
 
   obtenerCarreras(): AngularFirestoreCollection {
-    return this.fireStore.collection('carreras');
+    return this.fireStore.collection('carreras', (ref) =>
+      ref.orderBy('nombre', 'asc')
+    );
   }
 
   obtenerCarrera(id: string): AngularFirestoreDocument {
@@ -53,6 +56,7 @@ export class CarrerasService {
       plantilla: data.plantilla,
       vence: data.vence,
       vencimiento: data.vencimiento,
+      visible: data.visible,
       precioCOP: data.cop,
       precioUSD: data.usd,
     });

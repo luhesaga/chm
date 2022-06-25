@@ -89,15 +89,24 @@
                     </mat-error>
                 </mat-select>
             </mat-form-field>
+            <!-- Visible? -->
+            <mat-checkbox
+                class="example-margin"
+                formControlName="visible"
+                tabIndex=7
+                [(ngModel)]="visible"
+                color="primary">
+                    Visible en lista de carreras?
+            </mat-checkbox>
             <!-- Vencimiento certificado -->
-            <mat-checkbox class="example-margin" tabIndex="7" formControlName="vence" [(ngModel)]="vence">Certificado vence?</mat-checkbox>
+            <mat-checkbox class="example-margin" tabIndex="8" formControlName="vence" [(ngModel)]="vence">Certificado vence?</mat-checkbox>
             <mat-form-field *ngIf="vence">
             <mat-label>Vencimiento certificado (años)</mat-label>
             <input
                 type="number"
                 matInput
                 formControlName="vencimiento"
-                tabIndex=8/>
+                tabIndex=9/>
             <mat-error *ngIf="vencimientoField.touched && vencimientoField.invalid">
                 <ng-container *ngIf="vencimientoField.hasError('required')">Este campo es requerido</ng-container>
             </mat-error>
@@ -106,10 +115,10 @@
         <div class="buttons">
             <button
                 type="submit"
-                tabIndex=9
+                tabIndex=10
                 mat-raised-button
                 >Editar carrera</button>
-                <a mat-raised-button (click)="volverAListaCarreras()" tabIndex=10>Cancelar</a>
+                <a mat-raised-button (click)="volverAListaCarreras()" tabIndex=11>Cancelar</a>
         </div>
     </form>
 </main>

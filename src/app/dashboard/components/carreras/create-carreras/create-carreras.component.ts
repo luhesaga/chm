@@ -17,6 +17,7 @@ export class CreateCarrerasComponent implements OnInit {
   showImage: any;
   certs: any;
   vence = false;
+  visible = false;
 
   constructor(
     private fireStore: AngularFirestore,
@@ -59,6 +60,7 @@ export class CreateCarrerasComponent implements OnInit {
       vence: [false, Validators.required],
       cop: [0, Validators.required],
       usd: [0, Validators.required],
+      visible: [false, Validators.required],
     });
   }
 
@@ -168,6 +170,10 @@ export class CreateCarrerasComponent implements OnInit {
 
   get usdField(): AbstractControl {
     return this.formCarreras.get('usd');
+  }
+
+  get visibleField(): AbstractControl {
+    return this.formCarreras.get('visible');
   }
 
   mensajeDeError(): void {

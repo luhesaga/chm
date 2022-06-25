@@ -14,7 +14,7 @@ import { CheckoutComponent } from 'src/app/dashboard/components/payu/checkout/ch
   styleUrls: ['./careers.component.scss'],
 })
 export class CareersComponent implements OnInit, OnDestroy {
-  carreras;
+  carreras = [];
   userId;
   dashboard = false;
   careersReceived;
@@ -49,11 +49,17 @@ export class CareersComponent implements OnInit, OnDestroy {
   }
 
   getCareers(): void {
+    let careers;
     this.careersReceived = this.careerService
       .obtenerCarreras()
       .valueChanges()
-      .subscribe((careers) => {
-        this.carreras = this.getUsersRating(careers);
+      .subscribe((c) => {
+        careers = this.getUsersRating(c);
+        careers.forEach(car => {
+          if (car.visible) {
+            this.carreras.push(car);
+          }
+        });
       });
   }
 
