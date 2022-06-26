@@ -304,7 +304,7 @@ export class ExercisesListComponent
   }
 
   getCoursesList(ejercicios: any): void {
-    let cont = 0;
+    let cont = ejercicios.length;
     const cursos = this.cursosService.listCourses()
       .valueChanges()
       .subscribe(c => {
@@ -319,7 +319,7 @@ export class ExercisesListComponent
           }
         });
         this.existingExercises = ejercicios;
-        console.log(this.existingExercises);
+        // console.log(this.existingExercises);
         cursos.unsubscribe();
       });
   }
@@ -407,8 +407,7 @@ export class ExercisesListComponent
             cont += 1;
           }
         });
-        this.existingExercises = ejercicios;
-        // console.log(this.existingExercises);
+        this.getCoursesList(ejercicios);
         carreras.unsubscribe();
       });
   }
