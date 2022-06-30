@@ -25,13 +25,18 @@
   >
     {{ showExistingQ ? 'Ver listado' : 'Agregar pregunta existente'}}
   </button>
+  <p
+    *ngIf="showExistingQ"
+    style="margin-left: 1rem; font-size: 1.2rem; font-weight: 600;">
+      Preguntas seleccionadas: {{ questionsToAdd.length }}
+  </p>
   <section *ngIf="showExistingQ">
     <div *ngFor="let c of existingQuestions">
       <mat-accordion *ngIf="c.evaluation.length > 0">
         <mat-expansion-panel style="margin: 1rem;" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
           <mat-expansion-panel-header>
             <mat-panel-title>
-              <h3>Preguntas de curso {{c.curso}}</h3>
+              <h3>Preguntas de {{c.curso}}</h3>
             </mat-panel-title>  
           </mat-expansion-panel-header>
           <div *ngFor="let ex of c.evaluation">
@@ -47,7 +52,97 @@
                     </p>
                   </mat-panel-title>  
                 </mat-expansion-panel-header>
-                <mat-radio-group
+                <div *ngIf="ex.q1.length > 0">
+                  <h4 style="font-weight: 600;">Preguntas de selección única</h4>
+                  <div *ngFor="let q of ex.q1">
+                    <mat-checkbox
+                      class="example-margin"
+                      color="primary"
+                      (change)="questionSelected($event)"
+                      [(ngModel)]="q.selected"
+                      [value]="q"
+                      >
+                        {{parseHTML(q.question)}}
+                    </mat-checkbox>
+                  </div>
+                </div>
+
+                <div *ngIf="ex.q2.length > 0">
+                  <h4 style="font-weight: 600;">Preguntas de selección multiple</h4>
+                  <div *ngFor="let q of ex.q2">
+                    <mat-checkbox
+                      class="example-margin"
+                      color="primary"
+                      (change)="questionSelected($event)"
+                      [(ngModel)]="q.selected"
+                      [value]="q"
+                      >
+                        {{parseHTML(q.question)}}
+                    </mat-checkbox>
+                  </div>
+                </div>
+
+                <div *ngIf="ex.q3.length > 0">
+                  <h4 style="font-weight: 600;">Preguntas de Rellenar blancos</h4>
+                  <div *ngFor="let q of ex.q3">
+                    <mat-checkbox
+                      class="example-margin"
+                      color="primary"
+                      (change)="questionSelected($event)"
+                      [(ngModel)]="q.selected"
+                      [value]="q"
+                      >
+                        {{parseHTML(q.question)}}
+                    </mat-checkbox>
+                  </div>
+                </div>
+
+                <div *ngIf="ex.q4.length > 0">
+                  <h4 style="font-weight: 600;">Preguntas de Relacionar</h4>
+                  <div *ngFor="let q of ex.q4">
+                    <mat-checkbox
+                      class="example-margin"
+                      color="primary"
+                      (change)="questionSelected($event)"
+                      [(ngModel)]="q.selected"
+                      [value]="q"
+                      >
+                        {{parseHTML(q.question)}}
+                    </mat-checkbox>
+                  </div>
+                </div>
+
+                <div *ngIf="ex.q5.length > 0">
+                  <h4 style="font-weight: 600;">Preguntas de Respuesta libre</h4>
+                  <div *ngFor="let q of ex.q5">
+                    <mat-checkbox
+                      class="example-margin"
+                      color="primary"
+                      (change)="questionSelected($event)"
+                      [(ngModel)]="q.selected"
+                      [value]="q"
+                      >
+                        {{parseHTML(q.question)}}
+                    </mat-checkbox>
+                  </div>
+                </div>
+
+                <div *ngIf="ex.q6.length > 0">
+                  <h4 style="font-weight: 600;">Tareas</h4>
+                  <div *ngFor="let q of ex.q6">
+                    <mat-checkbox
+                      class="example-margin"
+                      color="primary"
+                      (change)="questionSelected($event)"
+                      [(ngModel)]="q.selected"
+                      [value]="q"
+                      >
+                        {{parseHTML(q.question)}}
+                    </mat-checkbox>
+                  </div>
+                </div>
+                
+                <!-- <mat-radio-group
                   aria-labelledby="example-radio-group-label"
                   class="example-radio-group"
                   *ngIf="ex.q1.length > 0"
@@ -59,8 +154,8 @@
                       {{parseHTML(q.question)}}
                     </mat-radio-button>
                   </div>
-                </mat-radio-group>
-                <mat-radio-group
+                </mat-radio-group> -->
+                <!-- <mat-radio-group
                   aria-labelledby="example-radio-group-label"
                   class="example-radio-group"
                   *ngIf="ex.q2.length > 0"
@@ -72,8 +167,8 @@
                       {{parseHTML(q.question)}}
                     </mat-radio-button>
                   </div>
-                </mat-radio-group>
-                <mat-radio-group
+                </mat-radio-group> -->
+                <!-- <mat-radio-group
                   aria-labelledby="example-radio-group-label"
                   class="example-radio-group"
                   *ngIf="ex.q3.length > 0"
@@ -85,8 +180,8 @@
                       {{parseHTML(q.question)}}
                     </mat-radio-button>
                   </div>
-                </mat-radio-group>
-                <mat-radio-group
+                </mat-radio-group> -->
+                <!-- <mat-radio-group
                   aria-labelledby="example-radio-group-label"
                   class="example-radio-group"
                   *ngIf="ex.q4.length > 0"
@@ -98,8 +193,8 @@
                       {{parseHTML(q.question)}}
                     </mat-radio-button>
                   </div>
-                </mat-radio-group>
-                <mat-radio-group
+                </mat-radio-group> -->
+                <!-- <mat-radio-group
                   aria-labelledby="example-radio-group-label"
                   class="example-radio-group"
                   *ngIf="ex.q5.length > 0"
@@ -111,8 +206,8 @@
                       {{parseHTML(q.question)}}
                     </mat-radio-button>
                   </div>
-                </mat-radio-group>
-                <mat-radio-group
+                </mat-radio-group> -->
+                <!-- <mat-radio-group
                   aria-labelledby="example-radio-group-label"
                   class="example-radio-group"
                   *ngIf="ex.q6.length > 0"
@@ -124,7 +219,7 @@
                       {{parseHTML(q.question)}}
                     </mat-radio-button>
                   </div>
-                </mat-radio-group>
+                </mat-radio-group> -->
             </mat-expansion-panel>
           </div>
           

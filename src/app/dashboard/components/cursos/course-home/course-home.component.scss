@@ -13,7 +13,16 @@ main {
     align-items: center;
 }
 
+.description {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
 #descripcion {
+    width: 100%;
     font-size: 1.2rem;
     margin-top: 32px;
 }
@@ -22,6 +31,7 @@ main {
     background: var(--main-color-rgb2);
     color: whitesmoke;
     padding: 8px;
+    width: 100%;
 }
 
 .course-title h1 {

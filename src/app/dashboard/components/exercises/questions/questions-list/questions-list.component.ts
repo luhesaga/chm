@@ -14,6 +14,7 @@ import Swal, { SweetAlertResult } from 'sweetalert2';
 import { CarrerasService } from '../../../../../core/services/carreras/carreras.service';
 import { CourseService } from '../../../../../core/services/courses/course.service';
 import { MatRadioChange } from '@angular/material/radio';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 
 @Component({
   selector: 'app-questions-list',
@@ -40,8 +41,8 @@ export class QuestionsListComponent
   exerciseReceived;
 
   existingQuestions: any;
-  selectedQuestion: any;
   showExistingQ = false;
+  questionsToAdd = [];
 
   questions = [];
 
@@ -100,7 +101,7 @@ export class QuestionsListComponent
   }
 
   getCareerExerciseDetail(): void {
-    this.exercise = this.careerService
+    const exercise = this.careerService
       .exerciseDetail(this.careerId, this.exerciseId)
       .valueChanges()
       .subscribe((ex: any) => {
@@ -111,6 +112,7 @@ export class QuestionsListComponent
         } else {
           this.dataSource.data = [];
         }
+        exercise.unsubscribe();
       });
   }
 
@@ -285,6 +287,8 @@ export class QuestionsListComponent
     return t.content.firstChild.textContent;
   }
 
+  // obtener preguntas de cursos
+
   getExistingQuestions(): any {
     const preguntas = [];
     this.getCourseQuestions(preguntas);
@@ -299,11 +303,12 @@ export class QuestionsListComponent
       .subscribe((c) => {
         c.forEach((curso, index) => {
           preguntas.push({
-            curso: curso.nombre,
+            curso: 'curso ' + curso.nombre,
             evaluation: [],
           });
           this.getQuestions(curso, index, preguntas);
         });
+        this.obtenerListaDeCarreras(preguntas);
         courses.unsubscribe();
       });
   }
@@ -355,6 +360,74 @@ export class QuestionsListComponent
       });
   }
 
+  obtenerListaDeCarreras(preguntas: any): void {
+    let pos = preguntas.length;
+    const listaCarreras = this.careerService.obtenerCarreras()
+      .valueChanges()
+      .subscribe(carreras => {
+        carreras.forEach(carrera => {
+          // console.log(carrera);
+          preguntas.push({
+            curso: 'carrera ' + carrera.nombre,
+            evaluation: [],
+          });
+          this.obtenerCursosCarrera(carrera, preguntas, pos);
+          pos += 1;
+        });
+        // console.log(preguntas);
+        listaCarreras.unsubscribe();
+      });
+  }
+
+  obtenerCursosCarrera(carrera: any, preguntas: any, pos: number): void {
+    let posE = 0;
+    const listaCursos = this.careerService.getCareerCourses(carrera.id)
+      .valueChanges()
+      .subscribe(cursos => {
+        cursos.forEach((curso) => {
+          if (curso.tipo === 'ejercicio') {
+            if (curso.preguntas) {
+              preguntas[pos].evaluation.push({
+                evaluation: curso.nombre,
+                q1: [],
+                q2: [],
+                q3: [],
+                q4: [],
+                q5: [],
+                q6: [],
+              });
+              curso.preguntas.forEach((q) => {
+                switch (q.type) {
+                  case 1:
+                    preguntas[pos].evaluation[posE].q1.push(q);
+                    break;
+                  case 2:
+                    preguntas[pos].evaluation[posE].q2.push(q);
+                    break;
+                  case 3:
+                    preguntas[pos].evaluation[posE].q3.push(q);
+                    break;
+                  case 4:
+                    preguntas[pos].evaluation[posE].q4.push(q);
+                    break;
+                  case 5:
+                    preguntas[pos].evaluation[posE].q5.push(q);
+                    break;
+                  case 6:
+                    preguntas[pos].evaluation[posE].q6.push(q);
+                    break;
+                }
+              });
+            }
+            posE += 1;
+          }
+        });
+        listaCursos.unsubscribe();
+      });
+  }
+
+  // Agregar preguntas existentes
+
   selectionChange(event: MatRadioChange): void {
     this.panelOpenState = false;
   }
@@ -368,37 +441,46 @@ export class QuestionsListComponent
   }
 
   saveQuestion(): void {
-    let pos: number;
-    if (!this.questions) {
-      this.questions = [];
-      pos = 1;
-    } else {
-      pos = this.questions.length + 1;
-    }
-    const q = this.selectedQuestion;
 
-    if (this.selectedQuestion) {
-      this.questions.push({
-        question: q.question,
-        type: q.type,
-        answers: q.answers,
-        position: pos,
-        tarea: q.tarea ? q.tarea : '',
+    if (this.questionsToAdd.length > 0) {
+      let pos: number;
+      // validar si hay preguntas y posicion a asignar
+      if (!this.questions) {
+        this.questions = [];
+        pos = 1;
+      } else {
+        pos = this.questions.length + 1;
+      }
+
+      this.questionsToAdd.forEach(q => {
+        this.questions.push({
+          question: q.question,
+          type: q.type,
+          answers: q.answers,
+          position: pos,
+          tarea: q.tarea ? q.tarea : '',
+        });
+        pos += 1;
       });
+
       this.dataSource.data = this.questions;
+
       if (!this.careerView) {
         this.saveCourseQuestion();
       } else {
+        // console.log(this.questions);
         this.saveCareerQuestion();
       }
+
     } else {
       Swal.fire({
         icon: 'error',
         title: 'error',
-        text: 'Debe seleccionar una pregunta.',
+        text: 'Debe seleccionar al menos una pregunta.',
         confirmButtonText: 'cerrar',
       });
     }
+
   }
 
   saveCourseQuestion(): void {
@@ -443,5 +525,19 @@ export class QuestionsListComponent
       text: 'Ocurrió un error' + error,
       confirmButtonText: 'cerrar',
     });
+  }
+
+  questionSelected(event): void {
+    if (event.checked) {
+      this.questionsToAdd.push(event.source.value);
+    } else {
+      const pregunta = event.source.value.question;
+      this.questionsToAdd = this.quitarPreguntaDelArray(pregunta);
+    }
+  }
+
+  quitarPreguntaDelArray(pregunta: any): any {
+    return this.questionsToAdd
+      .filter(x => x.question !== pregunta);
   }
 }
