@@ -30,6 +30,11 @@ export class MailService {
     return this.http.post(url, JSON.stringify(data), { headers: this.headers });
   }
 
+  exerciseRevition(data: any): any {
+    const url = `https://chym-ndt.com/phpMailer/revisionEjercicioStd.php/`;
+    return this.http.post(url, JSON.stringify(data), { headers: this.headers });
+  }
+
   sendEmailIndividual(data: any): any {
     const url = `https://chym-ndt.com/phpMailer/correoIndividual.php/`;
     return this.http.post(url, JSON.stringify(data), { headers: this.headers });

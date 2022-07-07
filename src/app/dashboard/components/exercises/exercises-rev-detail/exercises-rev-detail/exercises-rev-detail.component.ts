@@ -4,6 +4,7 @@ import { ExercisesService } from 'src/app/core/services/exercises/exercises.serv
 import { UsersService } from '../../../../../core/services/users/users.service';
 import Swal from 'sweetalert2';
 import { CarrerasService } from '../../../../../core/services/carreras/carreras.service';
+import { MailService } from 'src/app/core/services/mail/mail.service';
 
 @Component({
   selector: 'app-exercises-rev-detail',
@@ -53,12 +54,15 @@ export class ExercisesRevDetailComponent implements OnInit {
   careerId: string;
   careerView = false;
 
+  sendMailCheck = true;
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private exerciseService: ExercisesService,
     private userService: UsersService,
-    private careerService: CarrerasService
+    private careerService: CarrerasService,
+    private mailService: MailService,
   ) {
     this.courseId = this.activatedRoute.snapshot.params.courseId;
     this.exerciseId = this.activatedRoute.snapshot.params.exerciseId;
@@ -183,6 +187,9 @@ export class ExercisesRevDetailComponent implements OnInit {
           text: 'Calificación guardada exitosamente',
           confirmButtonText: 'cerrar',
         });
+        if (this.sendMailCheck) {
+          this.sendEmailToStudent();
+        }
         this.goBack();
       })
       .catch((err) => console.log(err));
@@ -221,5 +228,28 @@ export class ExercisesRevDetailComponent implements OnInit {
       q = this.parseHTML(q.replace(q.substring(inicio, final + 1), '________'));
     }
     return q;
+  }
+
+  async sendEmailToStudent(): Promise<void> {
+    const data = {
+      asunto: this.user.nombres + ', te han calificado.',
+      nombre: this.user.nombres,
+      correo: this.user.correo,
+      prueba: this.exercise.nombre,
+    };
+    /*convertir el array en objeto, poner los datos en la constante data
+    y todo hacerlo un objeto tipo JSON*/
+    JSON.stringify(Object.assign(data));
+    await this.mailService
+      .exerciseRevition(data)
+      .toPromise()
+      .then(
+        () => {
+          console.log(`mail enviado a ${this.user.correo}`);
+        },
+        (e) => {
+          console.log(e);
+        }
+      );
   }
 }

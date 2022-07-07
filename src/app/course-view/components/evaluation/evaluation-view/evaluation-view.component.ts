@@ -611,6 +611,7 @@ export class EvaluationViewComponent implements OnInit, OnDestroy {
       posRespuestaSel: event.value * 1,
       tipoPregunta: this.qType,
       valor: correct ? 100 : 0,
+      comentario: this.questions[this.qNumber].answers[pos].comment,
     };
     this.totalAnswers[this.qNumber] = answer;
     // console.log(this.totalAnswers);
@@ -648,6 +649,7 @@ export class EvaluationViewComponent implements OnInit, OnDestroy {
       correctoption,
       userOption,
       correct,
+      comentario: this.questions[this.qNumber].answers[pos].comment,
     };
     this.relationAnswers[pos] = userAnswer;
   }

@@ -160,6 +160,7 @@ export class EvaluationFinishComponent implements OnInit, OnDestroy {
       .exerciseDetail(this.idCurso, this.exercId)
       .valueChanges()
       .subscribe((ex: any) => {
+        // console.log(ex);
         this.ejercicio = ex;
         if (totalTest < ex.intentos) {
           this.revitionAll = false;
@@ -203,6 +204,7 @@ export class EvaluationFinishComponent implements OnInit, OnDestroy {
       .detailTest(cid, this.exercId, this.stdId, this.testId)
       .valueChanges()
       .subscribe((u) => {
+        // console.log(u);
         if (u) {
           this.validateQuestionsType(u);
         }

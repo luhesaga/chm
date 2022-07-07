@@ -53,6 +53,8 @@
                 <p>{{ item.respuestaSeleccionada }}</p>
                 <p class="q-a-title">Respuesta Correcta</p>
                 <p>{{ item.respuestaCorrecta }}</p>
+                <p class="q-a-title" *ngIf="item.comentario">Comentario</p>
+                <p *ngIf="item.comentario">{{ item.comentario }}</p>
             </div>
             <!-- opcion multiple -->
             <div *ngIf="item.tipoPregunta === 2">
@@ -64,8 +66,11 @@
                 </div>
                 <p class="q-a-title">Respuestas Correctas</p>
                 <div class="q-mult" *ngFor="let r of item.respuestasorg">
-                    <p *ngIf="r.respuesta">{{ letters[r.value - 1] + '. ' + parseHTML(r.answer) }}</p>
+                    <p style="color: var(--main-color2); font-weight: 500;" *ngIf="r.respuesta">{{ letters[r.value - 1] + '. ' + parseHTML(r.answer) }}</p>
+                    <p style="font-weight: 600; font-size: 0.9rem" *ngIf="r.comment">Comentario</p>
+                    <p *ngIf="r.comment">{{ r.comment }}</p>
                 </div>
+                
             </div>
             <!-- preguntas rellenar blancos -->
             <div *ngIf="item.tipoPregunta === 3">
@@ -79,6 +84,8 @@
                 <div class="q-free" *ngFor="let r of item.respuestas">
                     <p>{{ r }}</p>
                 </div>
+                <p class="q-a-title" *ngIf="item.comentario">Comentario</p>
+                <p *ngIf="item.comentario">{{ item.comentario }}</p>
             </div>
             <!-- preguntas de relacionar -->
             <div *ngIf="item.tipoPregunta === 4">
@@ -98,6 +105,8 @@
                     <h5>relación</h5>
                     <p>{{ q.option }}</p>
                 </div>
+                <p class="q-a-title" *ngIf="item.comentario">Comentario</p>
+                <p *ngIf="item.comentario">{{ item.comentario }}</p>
             </div>
             <!-- respuesta libre -->
             <div *ngIf="item.tipoPregunta === 5">
@@ -107,6 +116,8 @@
                 <p>{{ parseHTML(item.opcionesEscogidas) }}</p>
                 <p class="q-a-title">Respuesta Correcta</p>
                 <p>{{ testReceived?.revisado ? 'Revisada por el tutor.' : 'Debe revisarla el tutor.' }}</p>
+                <p class="q-a-title" *ngIf="item.comentario">Comentario</p>
+                <p *ngIf="item.comentario">{{ item.comentario }}</p>
             </div>
             <!-- retro del tutor -->
             <p class="q-a-title" *ngIf="item.retro">Comentario del tutor</p>

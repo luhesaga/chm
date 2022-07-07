@@ -17,6 +17,15 @@
         </div>
     </section>
     <section class="buttons" *ngIf="!tarea">
+        <div class="mailCheck">
+            <mat-checkbox
+                class="example-margin"
+                [(ngModel)]="sendMailCheck"
+                color="primary"
+                >
+                    ¿Enviar correo a estudiante?
+            </mat-checkbox>
+        </div>
         <button mat-raised-button color="primary" (click)="saveRevition()">Guardar todos los cambios</button>
         <button mat-raised-button color="warn" (click)="goBack()">Cancelar</button>
     </section>
@@ -349,6 +358,15 @@
         </div>
     </section>
     <section class="buttons">
+        <div class="mailCheck">
+            <mat-checkbox
+                class="example-margin"
+                [(ngModel)]="sendMailCheck"
+                color="primary"
+                >
+                    ¿Enviar correo a estudiante?
+            </mat-checkbox>
+        </div>
         <button mat-raised-button color="primary" (click)="saveRevition()">Guardar todos los cambios</button>
         <button mat-raised-button color="warn" (click)="goBack()">Cancelar</button>
     </section>
