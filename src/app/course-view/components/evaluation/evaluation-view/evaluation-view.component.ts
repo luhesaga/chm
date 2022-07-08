@@ -498,6 +498,8 @@ export class EvaluationViewComponent implements OnInit, OnDestroy {
       valor = (cont / a.length) * 100;
     }
 
+    const correct = valor === 100 ? true : false;
+
     const answer = {
       pregunta: this.parseHTML(this.questions[this.qNumber].question),
       respuestas: a,
@@ -505,6 +507,7 @@ export class EvaluationViewComponent implements OnInit, OnDestroy {
       tipoPregunta: this.qType,
       valor,
       visto: true,
+      correcta: correct,
     };
     this.totalAnswers[this.qNumber] = answer;
     // console.log(this.totalAnswers);
@@ -542,6 +545,7 @@ export class EvaluationViewComponent implements OnInit, OnDestroy {
         valor = (cont / this.questions[this.qNumber].answers.length) * 100;
       }
     });
+    const correct = valor === 100 ? true : false;
     const answer = {
       pregunta: this.parseHTML(this.questions[this.qNumber].question),
       opcionesEscogidas,
@@ -550,6 +554,7 @@ export class EvaluationViewComponent implements OnInit, OnDestroy {
       tipoPregunta: this.qType,
       valor,
       visto: true,
+      correcta: correct
     };
     this.totalAnswers[this.qNumber] = answer;
     // console.log(this.totalAnswers);
@@ -569,11 +574,13 @@ export class EvaluationViewComponent implements OnInit, OnDestroy {
     this.relOpt.forEach((o) => {
       opcionesEscogidas.push(o);
     });
+    const valor = Math.ceil((cont / this.relationAnswers.length) * 100);
     const answer = {
       pregunta: this.parseHTML(this.questions[this.qNumber].question),
       respuestas,
       tipoPregunta: this.qType,
-      valor: Math.ceil((cont / this.relationAnswers.length) * 100),
+      valor,
+      correcta: valor === 100 ? true : false,
       visto: true,
       opcionesEscogidas,
     };

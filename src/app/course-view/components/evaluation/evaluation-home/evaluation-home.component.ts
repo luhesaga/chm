@@ -92,8 +92,8 @@ export class EvaluationHomeComponent implements OnInit, OnDestroy, DoCheck {
   ngOnInit(): void {
     if (!this.careerView) {
       this.getCourse();
-      this.getLesson();
-      this.getLessonEvaluation();
+      // this.getLesson();
+      // this.getLessonEvaluation();
     } else {
       this.getCareerInfo();
     }
@@ -127,6 +127,7 @@ export class EvaluationHomeComponent implements OnInit, OnDestroy, DoCheck {
       .valueChanges()
       .subscribe((course) => {
         this.course = course;
+        this.getLesson();
       });
   }
 
@@ -136,6 +137,7 @@ export class EvaluationHomeComponent implements OnInit, OnDestroy, DoCheck {
       .valueChanges()
       .subscribe((lesson) => {
         this.lesson = lesson;
+        this.getLessonEvaluation();
         lessonReceived.unsubscribe();
       });
   }
@@ -287,7 +289,7 @@ export class EvaluationHomeComponent implements OnInit, OnDestroy, DoCheck {
           pta.respuestas.forEach((r) => {
             if (r.valor) {
               valor += r.valor;
-              if (r.correcta) {
+              if (r.correcta || r.valor === 100) {
                 cont += 1;
               }
             }
