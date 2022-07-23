@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -17,7 +17,7 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
   templateUrl: './add-student.component.html',
   styleUrls: ['./add-student.component.scss'],
 })
-export class AddStudentComponent implements OnInit, AfterViewInit {
+export class AddStudentComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
@@ -40,6 +40,7 @@ export class AddStudentComponent implements OnInit, AfterViewInit {
   selected;
   unsubscribe = false;
   usersToUnsubscribe: any[] = [];
+  estudiantesRegistrados: any;
 
   constructor(
     private courseService: CourseService,
@@ -64,6 +65,12 @@ export class AddStudentComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+  }
+
+  ngOnDestroy(): void {
+      if (this.estudiantesRegistrados) {
+        this.estudiantesRegistrados.unsubscribe();
+      }
   }
 
   openDialog(): void {
@@ -118,24 +125,32 @@ export class AddStudentComponent implements OnInit, AfterViewInit {
   }
 
   getRegisteredUSers(): void {
-    this.courseService
+    this.estudiantesRegistrados = this.courseService
       .getRegisteredUSers(this.idCurso)
       .valueChanges()
       .subscribe((students) => {
-        students.forEach((std) => {
-          this.userService
-            .detailUser(std.id)
-            .valueChanges()
-            .subscribe((user: any) => {
-              std.perfil = user.perfil;
-              std.correo = user.correo;
-              std.fechaCreacion = user.fechaCreacion
-                ? new Date(user.fechaCreacion).toLocaleDateString()
-                : '';
-            });
-        });
-        this.dataSource.data = this.sortStudents(students);
+        const estudiantes = students.slice();
+        this.getUserInfo(estudiantes);
+        //estudiantesRegistrados.unsubscribe();
       });
+  }
+
+  getUserInfo(students: any): void {
+    students.forEach((std, i) => {
+      const estudiantesDetalle = this.userService
+        .detailUser(std.id)
+        .valueChanges()
+        .subscribe((user: any) => {
+          std.perfil = user.perfil;
+          std.correo = user.correo;
+          std.eliminado = user.eliminado ? true : false;
+          std.fechaCreacion = user.fechaCreacion
+            ? new Date(user.fechaCreacion).toLocaleDateString()
+            : '';
+          this.dataSource.data = this.sortStudents(students.filter(x => !x.eliminado));
+          estudiantesDetalle.unsubscribe();
+        });
+    });
   }
 
   sortStudents(students): any {

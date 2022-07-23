@@ -32,7 +32,7 @@ export class UserEditComponent implements OnInit {
       apellidos: this.data.content.apellidos,
       correo: this.data.content.correo,
       perfil: this.data.content.perfil
-    }
+    };
   }
 
   private buildForm(): void {
@@ -41,7 +41,7 @@ export class UserEditComponent implements OnInit {
       apellidos: ['', Validators.required],
       //correo: ['', [Validators.required, Validators.email]],
       perfil: ['', Validators.required],
-    })
+    });
   }
 
   get nombresField() {

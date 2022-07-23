@@ -12,14 +12,22 @@ export class UsersService {
   constructor(public fireStore: AngularFirestore) {}
 
   listUsers(): AngularFirestoreCollection {
-    return this.fireStore.collection(`usuarios`);
+    return this.fireStore.collection(`usuarios`, (ref) =>
+      ref.orderBy('apellidos', 'asc')
+    );
   }
 
-  detailUser(userId: string) {
+  detailUser(userId: string): AngularFirestoreDocument {
     return this.fireStore.doc(`usuarios/${userId}`);
   }
 
-  updateUserInfo(data, userId) {
+  usuarioPorCorreo(mail: string): AngularFirestoreCollection {
+    return this.fireStore.collection('usuarios', (ref) =>
+      ref.where('correo', '==', mail)
+    );
+  }
+
+  updateUserInfo(data, userId): Promise<void> {
     return this.fireStore.doc(`usuarios/${userId}`).update({
       nombres: data.nombres ? data.nombres : '',
       apellidos: data.apellidos ? data.apellidos : '',
@@ -34,7 +42,14 @@ export class UsersService {
     });
   }
 
-  updateCreateDate(userId, fecha) {
+  actualizarEstado(userId: string, estado: boolean): Promise<void> {
+    return this.fireStore.doc(`usuarios/${userId}`)
+      .update({
+        eliminado: estado,
+      });
+  }
+
+  updateCreateDate(userId, fecha): Promise<void> {
     return this.fireStore.doc(`usuarios/${userId}`).update({
       fechaCreacion: fecha,
     });
@@ -64,7 +79,7 @@ export class UsersService {
     });
   }
 
-  becomeAdmin(id, admin) {
+  becomeAdmin(id, admin): Promise<void> {
     return this.fireStore.doc(`usuarios/${id}`).update({
       admin,
       perfil: 'administrador',
@@ -85,7 +100,10 @@ export class UsersService {
     });
   }
 
-  obtenerElEstadoMatriculaEstudiante(idUsuario: string, idCurso: string) {
+  obtenerElEstadoMatriculaEstudiante(
+    idUsuario: string,
+    idCurso: string
+  ): AngularFirestoreDocument {
     return this.fireStore.doc(`usuarios/${idUsuario}/miscursos/${idCurso}`);
   }
 
@@ -94,7 +112,7 @@ export class UsersService {
     idCurso: string,
     contenidoCurso: any
   ): void {
-    let subscribe = this.fireStore
+    const subscribe = this.fireStore
       .doc(`usuarios/${idUsuario}/miscursos/${idCurso}`)
       .valueChanges()
       .subscribe((cursos: any) => {
@@ -115,7 +133,7 @@ export class UsersService {
     idUsuario: string,
     idCurso: string,
     contenidoCurso: any
-  ) {
+  ): void {
     this.fireStore.doc(`usuarios/${idUsuario}/miscursos/${idCurso}`).set({
       idUsuario,
       idCurso,
@@ -129,7 +147,7 @@ export class UsersService {
     idUsuario: string,
     idCurso: string,
     estadoMatricula: boolean
-  ) {
+  ): void {
     this.fireStore.doc(`usuarios/${idUsuario}/miscursos/${idCurso}`).update({
       matriculado: estadoMatricula,
     });
@@ -149,7 +167,10 @@ export class UsersService {
       });
   }
 
-  eliminarAnuncioEstudiante(idUsuario: string, idAnuncio: string): Promise<void> {
+  eliminarAnuncioEstudiante(
+    idUsuario: string,
+    idAnuncio: string
+  ): Promise<void> {
     return this.fireStore
       .doc(`usuarios/${idUsuario}/anuncios/${idAnuncio}`)
       .delete();
@@ -164,7 +185,10 @@ export class UsersService {
       });
   }
 
-  obtenerAnuncioEstudiante(idUsuario: string, idAnuncio: string) {
+  obtenerAnuncioEstudiante(
+    idUsuario: string,
+    idAnuncio: string
+  ): AngularFirestoreDocument {
     return this.fireStore.doc(`usuarios/${idUsuario}/anuncios/${idAnuncio}`);
   }
 }

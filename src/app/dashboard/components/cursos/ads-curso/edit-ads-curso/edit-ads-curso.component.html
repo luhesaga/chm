@@ -37,8 +37,13 @@
                 <mat-checkbox [(ngModel)]="this.opciones.estudiantesSeleccionados">Enviar solamente a los usuarios seleccionados</mat-checkbox>
                 <div class="contenedorMatriculados" *ngIf="this.opciones.estudiantesSeleccionados">
                     <section class="matriculados">
-                        <mat-checkbox *ngFor="let matriculado of matriculados"
-                        (change)="seleccionarEstudiantes(matriculado,$event.checked)">{{matriculado.nombre}}</mat-checkbox>
+                        <div *ngFor="let matriculado of matriculados">
+                            <mat-checkbox
+                                *ngIf="!matriculado.eliminado"
+                                (change)="seleccionarEstudiantes(matriculado,$event.checked)">
+                                    <p style="margin: 0;">{{matriculado.nombre}}</p>
+                            </mat-checkbox>
+                        </div>
                     </section>
                 </div>
             </section>

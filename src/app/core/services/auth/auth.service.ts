@@ -40,7 +40,7 @@ export class AuthService {
 
   }
 
-  getDate() {
+  getDate(): Observable<firebase.User> {
     return this.af.authState;
   }
 

@@ -218,6 +218,19 @@ export class StdEvaluationComponent implements OnInit {
       Swal.fire('Error', 'No tiene permitido descargar este certificado.', 'error');
     } else {
       const data = this.getCerticateData();
+      Swal.fire({
+        confirmButtonColor: '#005691',
+        showConfirmButton: false,
+        title: 'Generando el certificado...',
+        timer: 4000,
+        timerProgressBar: false,
+        onBeforeOpen: () => {
+          Swal.showLoading();
+        },
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        allowEnterKey: false
+      });
       this.certificate.generateCerticate(data, true);
     }
   }

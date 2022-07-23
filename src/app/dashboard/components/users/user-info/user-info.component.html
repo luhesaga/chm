@@ -1,0 +1,46 @@
+<main>
+    <h2 mat-dialog-title>{{ user.nombres + ' ' + user.apellidos }}</h2>
+    <h3>{{ user.correo }}</h3>
+    <mat-dialog-content class="mat-typography">
+        <h2>Cursos inscritos</h2>
+        <div class="contenedor" *ngIf="cursosUsuario.length > 0">
+            <div class="lista" *ngFor="let curso of cursosUsuario">
+                <h3>{{ curso.nombre }}</h3>
+                <div class="detalles">
+                    <p class="resaltar">Estado:</p>
+                    <p>{{ curso.finalizado }}</p>
+                    <p class="resaltar">Fecha Matricula:</p>
+                    <p>{{ curso.fechaMatricula }}</p>
+                    <p class="resaltar">Fecha Finalizacion Matricula:</p>
+                    <p>{{ curso.fechaFinMatricula }}</p>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="cursosUsuario.length === 0">
+            <p style="margin: 0.5rem 1rem;">
+                No esta inscrito en cursos.
+            </p>
+        </div>
+        <h2>Carreras inscritas</h2>
+        <div class="contenedor" *ngIf="carrerasUsuario.length > 0">
+            <div class="lista" *ngFor="let carrera of carrerasUsuario">
+                <h3>{{ carrera.nombre }}</h3>
+                <div class="detalles">
+                    <p class="resaltar">Fecha Matricula:</p>
+                    <p>{{ carrera.fechaMatricula }}</p>
+                    <p class="resaltar">Fecha Finalizacion Matricula:</p>
+                    <p>{{ carrera.fechaFinMatricula }}</p>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="carrerasUsuario.length === 0">
+            <p style="margin: 0.5rem 1rem;">
+                No esta inscrito en carreras.
+            </p>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="center">
+        <button mat-button cdkFocusInitial mat-dialog-close>Cerrar</button>
+        <button mat-button [color]="user.eliminado ? 'primary' : 'warn'" (click)="eliminarUsuario()">{{ user.eliminado ? 'Activar' : 'Dar de baja'}} usuario</button>
+    </mat-dialog-actions>
+</main>

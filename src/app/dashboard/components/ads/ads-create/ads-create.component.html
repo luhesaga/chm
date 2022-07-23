@@ -1,5 +1,5 @@
 <main>
-    <form [formGroup]="formAds" (ngSubmit)="saveAds(formAds.value)"> <!--(ngSubmit)="saveOrEditCourse($event)"-->
+    <form [formGroup]="formAds" (ngSubmit)="saveAds(formAds.value)">
         <div class="title">
             <mat-icon>volume_up</mat-icon>
             <h2>Crear nuevo anuncio</h2>
@@ -114,7 +114,7 @@
                 (click)="cancelar()"
             >
                 Cancelar
-            </a> <!--(click)="cancel()"-->
+            </a>
         </div>
     </form>
 </main>

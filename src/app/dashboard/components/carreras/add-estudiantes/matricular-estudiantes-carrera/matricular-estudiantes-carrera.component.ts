@@ -38,7 +38,7 @@ export class MatricularEstudiantesCarreraComponent
   dataSource = new MatTableDataSource();
   career: any;
 
-  users: any[];
+  users = [];
   cursosCarrera: any[];
   unsubscribe: Subscription[];
 
@@ -87,7 +87,12 @@ export class MatricularEstudiantesCarreraComponent
       .listUsers()
       .valueChanges()
       .subscribe((users) => {
-        this.users = users;
+        users.forEach(user => {
+          if (!user.eliminado) {
+            this.users.push(user);
+          }
+        });
+        // this.users = users;
         this.obtenerMatriculados();
       });
     this.unsubscribe.push(unsubscribe);

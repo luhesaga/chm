@@ -196,8 +196,10 @@ export class StdCerticatesComponent implements OnInit {
         Swal.fire('Error', 'No tiene permitido descargar este certificado.', 'error');
       } else {
         if (data.plantilla === 'default') {
+          this.mostrarMensajeCargando();
           this.certificados.downloadPDF(data);
         } else {
+          this.mostrarMensajeCargando();
           this.certificados.getCertDesign(data);
         }
       }
@@ -206,8 +208,10 @@ export class StdCerticatesComponent implements OnInit {
         Swal.fire('Error', 'No tiene permitido descargar este certificado.', 'error');
       } else {
         if (data.plantilla === 'default') {
+          this.mostrarMensajeCargando();
           this.careerCert.downloadPDF(data);
         } else {
+          this.mostrarMensajeCargando();
           this.careerCert.getCertDesign(data);
         }
       }
@@ -228,6 +232,22 @@ export class StdCerticatesComponent implements OnInit {
       0
     );
     return ultimoDia.toLocaleDateString();
+  }
+
+  mostrarMensajeCargando(): void {
+    Swal.fire({
+      confirmButtonColor: '#005691',
+      showConfirmButton: false,
+      title: 'Generando el certificado...',
+      timer: 4000,
+      timerProgressBar: false,
+      onBeforeOpen: () => {
+        Swal.showLoading();
+      },
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      allowEnterKey: false
+    });
   }
 
 }

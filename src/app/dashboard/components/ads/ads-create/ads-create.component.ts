@@ -53,10 +53,20 @@ export class AdsCreateComponent implements OnInit {
     this.userService
       .listUsers()
       .valueChanges()
-      .subscribe(
-        (users) => this.obtenerCorreoUsuario(users),
-        () => this.mensajeErrorObtenerUsuario()
+      .subscribe((users) => {
+        this.validarUsuariosActivos(users);
+      }
       );
+  }
+
+  validarUsuariosActivos(users: any): void {
+    const usuariosActivos = [];
+    users.forEach((user: any) => {
+      if (!user.eliminado) {
+        usuariosActivos.push(user);
+      }
+    });
+    this.obtenerCorreoUsuario(usuariosActivos);
   }
 
   obtenerCorreoUsuario(users: any[]): void {

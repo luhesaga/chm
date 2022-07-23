@@ -97,7 +97,6 @@ export class AdsCursoComponent implements OnInit, AfterViewInit, OnDestroy {
       .valueChanges()
       .subscribe((matriculados) => {
         this.matriculados = matriculados;
-        console.log(this.matriculados);
       },
         () => this.mensajeErrorIdMatriculados()
       );

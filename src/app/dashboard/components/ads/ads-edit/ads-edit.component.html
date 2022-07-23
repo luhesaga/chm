@@ -102,6 +102,11 @@
                 (change)="timeUpdate($event)">
                 ¿Desea actualizar fecha y hora?
             </mat-slide-toggle>
+            <mat-slide-toggle
+                (change)="sendEmails($event)">                
+                ¿Desea reenviar correos?
+            </mat-slide-toggle>
+            
         </div>
         <div class="buttons">
             <button

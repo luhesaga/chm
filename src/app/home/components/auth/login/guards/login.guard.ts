@@ -20,9 +20,9 @@ export class LoginGuard implements CanActivate {
       take(1),
       map(user => user != null),
       tap(canEdit => {
-        if(!canEdit)
+        if (!canEdit)
         {
-          this.router.navigateByUrl('login')
+          this.router.navigateByUrl('login');
         }
       }));
   }

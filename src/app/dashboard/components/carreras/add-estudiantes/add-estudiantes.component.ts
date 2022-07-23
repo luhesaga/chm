@@ -8,6 +8,7 @@ import { CarrerasService } from 'src/app/core/services/carreras/carreras.service
 import Swal from 'sweetalert2';
 import { MatricularEstudiantesCarreraComponent } from './matricular-estudiantes-carrera/matricular-estudiantes-carrera.component';
 import { CourseService } from 'src/app/core/services/courses/course.service';
+import { UsersService } from '../../../../core/services/users/users.service';
 
 @Component({
   selector: 'app-add-estudiantes',
@@ -15,7 +16,7 @@ import { CourseService } from 'src/app/core/services/courses/course.service';
   styleUrls: ['./add-estudiantes.component.scss'],
 })
 export class AddEstudiantesComponent implements OnInit, AfterViewInit, OnDestroy {
-  displayedColumns: string[] = ['nombre', 'matricula'];
+  displayedColumns: string[] = ['nombre', 'correo', 'matricula'];
   dataSource = new MatTableDataSource();
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -29,7 +30,8 @@ export class AddEstudiantesComponent implements OnInit, AfterViewInit, OnDestroy
     public dialog: MatDialog,
     private activatedRoute: ActivatedRoute,
     private carrerasService: CarrerasService,
-    private courseService: CourseService
+    private courseService: CourseService,
+    private userService: UsersService
   ) {
     this.idCarreras = this.activatedRoute.snapshot.params.idCarreras;
   }
@@ -62,8 +64,21 @@ export class AddEstudiantesComponent implements OnInit, AfterViewInit, OnDestroy
       .matriculadosObtener(this.idCarreras)
       .valueChanges()
       .subscribe((users) => {
-        this.dataSource.data = users;
+        this.getUserInfo(users);
       });
+  }
+
+  getUserInfo(users: any): void {
+    users.forEach(user => {
+      const userInfo = this.userService.detailUser(user.id)
+      .valueChanges()
+      .subscribe(u => {
+        user.correo = u.correo;
+        user.eliminado = u.eliminado ? true : false;
+        this.dataSource.data = users.filter(x => !x.eliminado);
+        userInfo.unsubscribe();
+      });
+    });
   }
 
   applyFilter(filterValue: string): void {
@@ -110,9 +125,18 @@ export class AddEstudiantesComponent implements OnInit, AfterViewInit, OnDestroy
     if (!error) {
       this.desmatricularUsuario(element.id);
     } else {
-      this.mensajeError(
-        `${element.nombre} no se pudo desmatricular, intentelo otra vez`
-      );
+      this.carrerasService.desmatricularUsuario(element.id, this.idCarreras)
+        .then(() => {
+          this.mensajeError(
+            `${element.nombre} desmatriculado de la carrera, pero hubo error en algunos cursos individuales, debe validar en los cursos.`
+          );
+        })
+        .catch((err) => {
+          this.mensajeError(
+            `${element.nombre} no se pudo desmatricular, intentelo otra vez. ${{err}}`
+          );
+        });
+      
     }
   }
 

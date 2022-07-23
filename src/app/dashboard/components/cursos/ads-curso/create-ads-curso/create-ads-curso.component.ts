@@ -53,6 +53,12 @@ export class CreateAdsCursoComponent implements OnInit {
     };
   }
 
+  ngOnInit(): void {
+    this.getlogguedUser();
+    this.obtenerIdMatriculados();
+    this.getCourse();
+  }
+
   getlogguedUser(): void {
     this.auth.user$.subscribe(
       (usuario) => (this.usuarioEnSeccion = usuario),
@@ -66,7 +72,16 @@ export class CreateAdsCursoComponent implements OnInit {
       .getRegisteredUSers(this.idCurso)
       .valueChanges()
       .subscribe((matriculados) => {
+        matriculados.forEach((usuario: any) => {
+          const user = this.datosUsuario(usuario)
+            .subscribe(u => {
+              usuario.eliminado = u.eliminado ? true : false;
+              usuario.correo = u.correo;
+              user.unsubscribe();
+            });
+        });
         this.matriculados = matriculados;
+        // console.log(this.matriculados);
       },
         () => this.mensajeErrorIdMatriculados()
       );
@@ -74,11 +89,23 @@ export class CreateAdsCursoComponent implements OnInit {
       this.careerService.matriculadosObtener(this.careerId)
         .valueChanges()
         .subscribe((matriculados) => {
+          matriculados.forEach((usuario: any) => {
+            const user = this.datosUsuario(usuario)
+              .subscribe(u => {
+                usuario.eliminado = u.eliminado ? true : false;
+                usuario.correo = u.correo;
+                user.unsubscribe();
+              });
+          });
           this.matriculados = matriculados;
         },
           () => this.mensajeErrorIdMatriculados()
         );
     }
+  }
+
+  datosUsuario(usuario: any): any {
+    return this.userService.detailUser(usuario.id).valueChanges();
   }
 
   mensajeErrorIdMatriculados(): void {
@@ -87,12 +114,6 @@ export class CreateAdsCursoComponent implements OnInit {
       title: 'Hay un error de conexión',
       text: 'Por favor recargue la página',
     });
-  }
-
-  ngOnInit(): void {
-    this.getlogguedUser();
-    this.obtenerIdMatriculados();
-    this.getCourse();
   }
 
   getCourse(): void {
@@ -128,7 +149,8 @@ export class CreateAdsCursoComponent implements OnInit {
   async opcionesElegidas(idAnuncio: string): Promise<void> {
     if (this.opciones.todoCurso) {
       await this.obtenerUsuariosMatriculados(idAnuncio);
-      this.enviarEmailEstudiantes(this.matriculados);
+      const activos = this.matriculados.filter(x => !x.eliminado);
+      this.enviarEmailEstudiantes(activos);
     } else if (this.opciones.estudiantesSeleccionados) {
       await this.obtenerUsuarioSeleccionados(idAnuncio);
       this.enviarEmailEstudiantes(this.estudiantesSeleccionados);
@@ -161,9 +183,10 @@ export class CreateAdsCursoComponent implements OnInit {
         titulo: this.contenido.titulo,
         idAnuncios: idAnuncio,
       };
-      for (let i = 0; this.matriculados.length > i; ++i) {
+      const activos = this.matriculados.filter(x => !x.elimiando);
+      for (let i = 0; activos.length > i; ++i) {
         await this.userService
-          .agregarAnuncios(data, this.matriculados[i].id, idAnuncio)
+          .agregarAnuncios(data, activos[i].id, idAnuncio)
           .then(() => '');
       }
     }

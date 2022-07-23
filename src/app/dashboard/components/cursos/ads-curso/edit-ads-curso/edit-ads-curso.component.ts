@@ -112,6 +112,14 @@ export class EditAdsCursoComponent implements OnInit {
       .getRegisteredUSers(this.idCurso)
       .valueChanges()
       .subscribe((matriculados) => {
+        matriculados.forEach((usuario: any) => {
+          const user = this.datosUsuario(usuario)
+            .subscribe(u => {
+              usuario.eliminado = u.eliminado ? true : false;
+              usuario.correo = u.correo;
+              user.unsubscribe();
+            });
+        });
         this.matriculados = matriculados;
       },
         () => this.mensajeErrorIdMatriculados()
@@ -120,11 +128,23 @@ export class EditAdsCursoComponent implements OnInit {
       this.careerService.matriculadosObtener(this.careerId)
         .valueChanges()
         .subscribe((matriculados) => {
+          matriculados.forEach((usuario: any) => {
+            const user = this.datosUsuario(usuario)
+              .subscribe(u => {
+                usuario.eliminado = u.eliminado ? true : false;
+                usuario.correo = u.correo;
+                user.unsubscribe();
+              });
+          });
           this.matriculados = matriculados;
         },
           () => this.mensajeErrorIdMatriculados()
         );
     }
+  }
+
+  datosUsuario(usuario: any): any {
+    return this.userService.detailUser(usuario.id).valueChanges();
   }
 
   mensajeErrorIdMatriculados(): void {
@@ -172,7 +192,8 @@ export class EditAdsCursoComponent implements OnInit {
   opcionesElegidas(): void {
     if (this.opciones.todoCurso) {
       this.obtenerAnuncioEstudiante();
-      this.enviarEmailEstudiantes(this.matriculados);
+      const activos = this.matriculados.filter(x => !x.eliminado);
+      this.enviarEmailEstudiantes(activos);
     } else if (this.opciones.estudiantesSeleccionados) {
       this.obtenerUsuarioSeleccionados();
       this.enviarEmailEstudiantes(this.estudiantesSeleccionados);

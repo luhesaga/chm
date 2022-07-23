@@ -51,13 +51,14 @@ export class MatricularComponent implements OnInit, AfterViewInit {
     public dialogRef: MatDialogRef<MatricularComponent>,
     @Inject(MAT_DIALOG_DATA) public dataReceived: any
   ) {
-    this.getUserList();
     this.courseId = this.dataReceived[0].id;
     this.course = this.dataReceived[0];
     this.courseUsers = this.dataReceived[1];
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getUserList();
+  }
 
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
@@ -65,25 +66,29 @@ export class MatricularComponent implements OnInit, AfterViewInit {
   }
 
   getUserList(): void {
-    this.userService
-      .listUsers()
+    this.userService.listUsers()
       .valueChanges()
       .subscribe((users) => {
         this.students = users;
-        this.students.forEach((user) => {
-          user.estado = 'no matriculado';
-          user.fechaCreacion = user.fechaCreacion
-            ? new Date(user.fechaCreacion).toLocaleDateString()
-            : '';
-          this.courseUsers.forEach((std) => {
-            if (user.id === std.id) {
-              user.estado = 'matriculado';
-            }
-          });
+        this.students.forEach((user, index) => {
+          if (!user.eliminado) {
+            user.estado = 'no matriculado';
+            user.fechaCreacion = user.fechaCreacion
+              ? new Date(user.fechaCreacion).toLocaleDateString()
+              : '';
+            this.courseUsers.forEach((std) => {
+              if (user.id === std.id) {
+                user.estado = 'matriculado';
+              }
+            });
+          } else {
+            // console.log(user);
+            this.students.splice(index, 1);
+          }
         });
         this.dataSource.data = this.students
           .filter((e: any) => e.estado !== 'matriculado')
-          .sort(function (a, b) {
+          .sort((a, b) => {
             if (a.nombres > b.nombres) {
               return 1;
             }
@@ -104,7 +109,7 @@ export class MatricularComponent implements OnInit, AfterViewInit {
     estudiante: any,
     estadoMatricula: string,
     fechaFinalizacionMatricula: Date | string
-  ) {
+  ): void {
     Swal.fire({
       title: 'Matricular estudiante',
       text: `Va a registrar al usuario ${estudiante.nombres} ${estudiante.apellidos} en el curso, ¿esta seguro?`,
@@ -142,7 +147,7 @@ export class MatricularComponent implements OnInit, AfterViewInit {
     estudiante: any,
     matricula: string,
     fechaFinalizacionMatricula: Date | string
-  ) {
+  ): any {
     const data = {
       stdName: `${estudiante.nombres} ${estudiante.apellidos}`,
       fechaMatricula: new Date(),
@@ -152,7 +157,7 @@ export class MatricularComponent implements OnInit, AfterViewInit {
     return data;
   }
 
-  inputMesesMatricula(estudiante: any, estadoMatricula: string) {
+  inputMesesMatricula(estudiante: any, estadoMatricula: string): void {
     Swal.fire({
       title: 'Meses',
       input: 'number',
@@ -187,7 +192,7 @@ export class MatricularComponent implements OnInit, AfterViewInit {
     return fechaFinalizacion;
   }
 
-  async sendEmailAnuncio(estudiante) {
+  async sendEmailAnuncio(estudiante): Promise<void> {
     const data = {
       nombre: estudiante.nombres,
       correo: estudiante.correo,
@@ -224,7 +229,7 @@ export class MatricularComponent implements OnInit, AfterViewInit {
     meses: number,
     fechaFin: string | Date,
     tipo: string
-  ) {
+  ): void {
     console.log(`${this.MassiveRegister.length} estudiantes seleccionados.`);
     const data = {
       meses,
@@ -273,14 +278,14 @@ export class MatricularComponent implements OnInit, AfterViewInit {
     }
   }
 
-  individualStudentSelected(event: MatCheckboxChange) {
+  individualStudentSelected(event: MatCheckboxChange): void {
     if (!event.checked) {
       this.selected = false;
     }
     this.MassiveRegister = this.getSelectedStudents();
   }
 
-  allSelected(event: MatCheckboxChange) {
+  allSelected(event: MatCheckboxChange): void {
     this.dataSource.data.forEach((d: any) => {
       event.checked ? (d.seleccionado = true) : (d.seleccionado = false);
     });
@@ -291,7 +296,7 @@ export class MatricularComponent implements OnInit, AfterViewInit {
     return this.dataSource.data.filter((x: any) => x.seleccionado === true);
   }
 
-  setRegisterTime() {
+  setRegisterTime(): void {
     Swal.fire({
       title: 'Meses',
       input: 'number',
@@ -320,7 +325,7 @@ export class MatricularComponent implements OnInit, AfterViewInit {
     });
   }
 
-  massiveRegister(data) {
+  massiveRegister(data): void {
     this.MassiveRegister.forEach((estudiante) => {
       const dataMatricula = this.datosMatricula(
         estudiante,
@@ -348,7 +353,7 @@ export class MatricularComponent implements OnInit, AfterViewInit {
     }).then(() => this.dialogRef.close());
   }
 
-  async sendEmailMassive(estudiante) {
+  async sendEmailMassive(estudiante): Promise<void> {
     const data = {
       nombre: estudiante.nombres,
       correo: estudiante.correo,

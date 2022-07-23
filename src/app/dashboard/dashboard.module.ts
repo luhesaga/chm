@@ -83,6 +83,7 @@ import { CouponsCreateComponent } from './components/payu/coupons-create/coupons
 import { PayuConfirmationComponent } from './components/payu/payu-confirmation/payu-confirmation.component';
 import { AdmPaymentsComponent } from './components/payu/adm-payments/adm-payments.component';
 import { StdPaymentsComponent } from './components/payu/std-payments/std-payments.component';
+import { UserInfoComponent } from './components/users/user-info/user-info.component';
 
 @NgModule({
   declarations: [
@@ -160,6 +161,7 @@ import { StdPaymentsComponent } from './components/payu/std-payments/std-payment
     PayuConfirmationComponent,
     AdmPaymentsComponent,
     StdPaymentsComponent,
+    UserInfoComponent,
   ],
   imports: [
     CommonModule,
