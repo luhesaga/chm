@@ -497,4 +497,9 @@ export class CerticateService {
     );
     return ultimoDia.toLocaleDateString();
   }
+
+  deleteCert(id: string): Promise<void> {
+    return this.fireStore.doc(`certificados/${id}`)
+    .delete();
+  }
 }

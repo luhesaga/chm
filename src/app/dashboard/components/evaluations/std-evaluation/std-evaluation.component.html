@@ -3,7 +3,7 @@
         <h2>{{ courseReceived?.nombre }}</h2>
         <h4>Notas del curso</h4>
     </section>
-    <section class="congrats" *ngIf="isCertifiable()">
+    <section class="congrats" *ngIf="stdIsCertifiable">
         <h3>¡Felicidades! has aprobado el curso.</h3>
         <button
             *ngIf="hasCC"

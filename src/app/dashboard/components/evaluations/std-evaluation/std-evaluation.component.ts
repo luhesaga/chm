@@ -27,6 +27,7 @@ export class StdEvaluationComponent implements OnInit {
   hasCC = true;
   careerId: string;
   careerView = false;
+  stdIsCertifiable = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -142,6 +143,7 @@ export class StdEvaluationComponent implements OnInit {
         contenido.valor = mayor;
         ejercicio.contenido = contenido;
         this.totalContents += 1;
+        this.stdIsCertifiable = this.isCertifiable(this.lastLessonValidation());
         this.lessonsReceived[index].notasLecciones.push(ejercicio.contenido);
         userTest.unsubscribe();
       });
@@ -159,6 +161,7 @@ export class StdEvaluationComponent implements OnInit {
         this.totalGrade += contenido.valor;
         this.totalContents += 1;
         ejercicio.contenido = contenido;
+        this.stdIsCertifiable = this.isCertifiable(this.lastLessonValidation());
         this.lessonsReceived[index].notasLecciones.push(ejercicio.contenido);
         forumResult.unsubscribe();
       });
@@ -176,16 +179,20 @@ export class StdEvaluationComponent implements OnInit {
     return Math.ceil(a / b);
   }
 
-  isCertifiable(): boolean {
+  isCertifiable(lastLessonValidation: boolean): boolean {
+    console.log('porcentaje aprobación: ' + this.courseReceived.porcentaje);
+    console.log('porcentaje curso: ' + this.getTotal(this.totalGrade, this.totalContents));
+    // console.log(this.totalContents);
     this.cont += 1;
     let certifiable = false;
     if (this.totalGrade && this.totalContents) {
       const porcentaje = this.courseReceived.porcentaje ? this.courseReceived.porcentaje : 0;
-      if ((this.totalGrade / this.totalContents) >= porcentaje && this.lastLessonValidation()) {
+      console.log(porcentaje);
+      if (this.getTotal(this.totalGrade, this.totalContents) >= porcentaje && lastLessonValidation) {
         certifiable = true;
       }
     }
-    if (this.cont === 123 && certifiable) {
+    if (certifiable) {
       const data = this.getCerticateData();
       if (data.cc) {
         this.hasCC = true;
@@ -194,7 +201,7 @@ export class StdEvaluationComponent implements OnInit {
         this.hasCC = false;
       }
     }
-
+    console.log(certifiable);
     return certifiable;
   }
 

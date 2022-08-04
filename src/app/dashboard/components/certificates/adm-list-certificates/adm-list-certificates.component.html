@@ -115,6 +115,14 @@
             (click)="goToEdit(element)">
             <mat-icon style="color: darkgoldenrod;">edit</mat-icon>
             </button>
+
+            <button
+            mat-stroked-button
+            color="primary"
+            matTooltip="Eliminar certificado"
+            (click)="deleteCert(element)">
+            <mat-icon style="color: grey;">delete</mat-icon>
+            </button>
         </td>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
