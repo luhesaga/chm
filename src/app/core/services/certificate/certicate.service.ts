@@ -445,8 +445,7 @@ export class CerticateService {
   }
 
   formatDate(date): string {
-    const fecha = new Date(date.seconds * 1000).toLocaleDateString();
-    return fecha;
+    return new Date(date.seconds * 1000).toLocaleDateString();
   }
 
   addCommas(nStr): string {
