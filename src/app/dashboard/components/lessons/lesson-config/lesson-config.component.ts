@@ -1,5 +1,12 @@
-import { Component, OnInit, ViewChild, OnDestroy, ChangeDetectorRef, AfterContentChecked } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  OnDestroy,
+  ChangeDetectorRef,
+  AfterContentChecked,
+} from '@angular/core';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AsyncSubject, Subject } from 'rxjs';
 import { LessonsService } from '../../../../core/services/lessons/lessons.service';
@@ -12,9 +19,11 @@ import { ExercisesService } from '../../../../core/services/exercises/exercises.
 @Component({
   selector: 'app-lesson-config',
   templateUrl: './lesson-config.component.html',
-  styleUrls: ['./lesson-config.component.scss']
+  styleUrls: ['./lesson-config.component.scss'],
 })
-export class LessonConfigComponent implements OnInit, OnDestroy, AfterContentChecked {
+export class LessonConfigComponent
+  implements OnInit, OnDestroy, AfterContentChecked
+{
   // datos recibidos componente lesson-list
   courseId: string;
   lessonId: string;
@@ -43,31 +52,29 @@ export class LessonConfigComponent implements OnInit, OnDestroy, AfterContentChe
     'Agregar contenido',
     'Agregar archivo PDF',
     'Agregar foro',
-    'Agregar ejercicio'
+    'Agregar ejercicio',
   ];
 
   // para cargar el PDF
   percentageProgressBar = 0;
-	showProgressBar = false;
-	archives: any = [];
+  showProgressBar = false;
+  archives: any = [];
   fsId;
   changePDF;
   confirmDelPDF;
   public url = new URL('http://pdfviewer.net/assets/pdfs/GraalVM.pdf');
 
-  //ejercicios del curso
+  // ejercicios del curso
   exercises;
   exercisesReceived;
   exerciseSelected;
 
-  public objectComparisonFunction = function( option, value ) : boolean {
+  public objectComparisonFunction = (option, value): boolean => {
     // console.log(option);
     return option.nombre === value.nombre;
   }
 
-
   @ViewChild('tabGroup') tabGroup;
-
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -87,24 +94,19 @@ export class LessonConfigComponent implements OnInit, OnDestroy, AfterContentChe
     } else {
       this.edit = true;
     }
-    //console.log(`id curso: ${this.courseId}, id lección: ${this.lessonId}, id contenido: ${this.contentId}`);
+    // console.log(`id curso: ${this.courseId}, id lección: ${this.lessonId}, id contenido: ${this.contentId}`);
 
-    this.buildForm()
+    this.buildForm();
   }
 
-  ngAfterContentChecked() {
-
+  ngAfterContentChecked(): void {
     this.cdref.detectChanges();
-
   }
 
   ngOnInit(): void {
     if (this.edit) {
-      this.contentReceived = this.lessonService.lessonContentDetail(
-        this.courseId,
-        this.lessonId,
-        this.contentId
-        )
+      this.contentReceived = this.lessonService
+        .lessonContentDetail(this.courseId, this.lessonId, this.contentId)
         .valueChanges()
         .subscribe((content: any) => {
           this.content = content;
@@ -114,8 +116,8 @@ export class LessonConfigComponent implements OnInit, OnDestroy, AfterContentChe
           this.confirmDelPDF = content.nombreArchivo;
           this.archivoField.setValue(content.archivo);
           this.foro = content.foro;
-          this.foroCalificable= content.foroCalificable;
-          this.foroTipoCalificacion = content.foroTipoCalificacion
+          this.foroCalificable = content.foroCalificable;
+          this.foroTipoCalificacion = content.foroTipoCalificacion;
           this.fsId = content.id;
           this.exerciseSelected = content.ejercicio;
           switch (content.tipo) {
@@ -132,110 +134,116 @@ export class LessonConfigComponent implements OnInit, OnDestroy, AfterContentChe
               this.contentOption = 'Agregar ejercicio';
               break;
           }
-        })
+        });
     } else {
-      this.contentReceived = this.lessonService.listLessonContent(this.courseId, this.lessonId)
+      this.contentReceived = this.lessonService
+        .listLessonContent(this.courseId, this.lessonId)
         .valueChanges()
-        .subscribe(c => {
+        .subscribe((c) => {
           this.noContenidos = c.length;
           // console.log(this.noContenidos)
-        })
+        });
       this.fsId = this.fireStore.createId();
     }
 
     this.getExercises();
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.contentReceived.unsubscribe();
     this.exercisesReceived.unsubscribe();
   }
 
-  getExercises() {
-    this.exercisesReceived = this.exercisesSercice.listExercises(this.courseId)
+  getExercises(): void {
+    this.exercisesReceived = this.exercisesSercice
+      .listExercises(this.courseId)
       .valueChanges()
-      .subscribe(exerc => {
+      .subscribe((exerc) => {
         this.exercises = exerc;
-      })
+      });
   }
 
-  exerciseSelect(event) {
+  exerciseSelect(event): void {
     this.titulo = event.value.nombre;
     this.ejercicioField.setValue(event.value);
   }
 
-  handleEditorInit(e) {
+  handleEditorInit(e): void {
     this.editorSubject.next(e.editor);
     this.editorSubject.complete();
   }
 
   private buildForm(): void {
     this.form = this.formBuilder.group({
-      titulo: ['', Validators.required,],
+      titulo: ['', Validators.required],
       tipo: [''],
       contenido: [''],
       archivo: [''],
       foro: [''],
-      foroCalificable:[false],
-      foroTipoCalificacion:[''],
+      foroCalificable: [false],
+      foroTipoCalificacion: [''],
       ejercicio: [''],
-    })
+    });
   }
 
-  get tituloField() {
+  get tituloField(): AbstractControl {
     return this.form.get('titulo');
   }
 
-  get tipoField() {
+  get tipoField(): AbstractControl {
     return this.form.get('tipo');
   }
 
-  get contenidoField() {
+  get contenidoField(): AbstractControl {
     return this.form.get('contenido');
   }
 
-  get archivoField() {
+  get archivoField(): AbstractControl {
     return this.form.get('archivo');
   }
 
-  get foroField() {
+  get foroField(): AbstractControl {
     return this.form.get('foro');
   }
 
-  get foroCalificableField()
-  {
+  get foroCalificableField(): AbstractControl {
     return this.form.get('foroCalificable');
   }
 
-  get foroTipoCalificacionField()
-  {
+  get foroTipoCalificacionField(): AbstractControl {
     return this.form.get('foroTipoCalificacion');
   }
 
-  get ejercicioField() {
+  get ejercicioField(): AbstractControl {
     return this.form.get('ejercicio');
   }
 
-  cancel() {
+  cancel(): void {
     if (this.changePDF) {
       // borrar PDF cargado si cancela
-      this.fs.ref(`cursos/${this.courseId}/lecciones/${this.lessonId}/contenidos/${this.fsId}/${this.archivo}`).delete();
+      this.fs
+        .ref(
+          `cursos/${this.courseId}/lecciones/${this.lessonId}/contenidos/${this.fsId}/${this.archivo}`
+        )
+        .delete();
     } else {
       if (this.archives.length > 0) {
         this.deletePDF(this.archivo);
       }
     }
-    this.route.navigate([`cursos/${this.courseId}/lecciones/content-list/${this.lessonId}`]);
+    this.route.navigate([
+      `cursos/${this.courseId}/lecciones/content-list/${this.lessonId}`,
+    ]);
   }
 
-  onSubmit(event: Event){
-    // console.log(this.form.value);
+  onSubmit(event: Event): void {
     event.preventDefault();
     this.form.markAllAsTouched();
     if (this.form.valid) {
-      //this.form.disable();
+      // this.form.disable();
       this.validateContent();
-      // console.log(this.form.value)
+      console.log(this.form.value);
+      console.log(this.form.value)
       if (this.edit) {
         this.updateContent();
       } else {
@@ -244,13 +252,17 @@ export class LessonConfigComponent implements OnInit, OnDestroy, AfterContentChe
     }
   }
 
-  validateContent() {
+  validateContent(): void {
     if (this.contentOption === 'Agregar contenido') {
       if (this.contenido) {
         this.archivoField.setValue(null);
         if (this.archivo) {
           this.archivo = null;
-          this.fs.ref(`cursos/${this.courseId}/lecciones/${this.lessonId}/contenidos/${this.fsId}/${this.archivo}`).delete();
+          this.fs
+            .ref(
+              `cursos/${this.courseId}/lecciones/${this.lessonId}/contenidos/${this.fsId}/${this.archivo}`
+            )
+            .delete();
         }
         this.archivo = null;
         this.foroField.setValue(null);
@@ -285,11 +297,18 @@ export class LessonConfigComponent implements OnInit, OnDestroy, AfterContentChe
     } else if (this.contentOption === 'Agregar foro') {
       if (this.foro) {
         this.contenidoField.setValue(null);
+        if (!this.foroCalificableField.value) {
+          this.foroCalificableField.setValue(false);
+        }
         this.archivoField.setValue(null);
         this.ejercicioField.setValue(null);
         if (this.archivo) {
           this.archivo = null;
-          this.fs.ref(`cursos/${this.courseId}/lecciones/${this.lessonId}/contenidos/${this.fsId}/${this.archivo}`).delete();
+          this.fs
+            .ref(
+              `cursos/${this.courseId}/lecciones/${this.lessonId}/contenidos/${this.fsId}/${this.archivo}`
+            )
+            .delete();
         }
         this.archivo = null;
       } else {
@@ -310,7 +329,11 @@ export class LessonConfigComponent implements OnInit, OnDestroy, AfterContentChe
         this.foroField.setValue(null);
         if (this.archivo) {
           this.archivo = null;
-          this.fs.ref(`cursos/${this.courseId}/lecciones/${this.lessonId}/contenidos/${this.fsId}/${this.archivo}`).delete();
+          this.fs
+            .ref(
+              `cursos/${this.courseId}/lecciones/${this.lessonId}/contenidos/${this.fsId}/${this.archivo}`
+            )
+            .delete();
         }
         this.archivo = null;
       } else {
@@ -327,66 +350,72 @@ export class LessonConfigComponent implements OnInit, OnDestroy, AfterContentChe
     }
   }
 
-  createContent() {
+  createContent(): void {
     this.form.value.posicion = this.noContenidos + 1;
     // console.log(this.form.value.posicion);
-    this.lessonService.addLessonContent(
-      this.form.value,
-      this.courseId,
-      this.lessonId,
-      this.archivo,
-      this.fsId
-    )
-    .then(() => {
-			Swal.fire({
-				icon: 'success',
-				title: 'Exito!',
-				text: 'contenido creado exitosamente',
-				confirmButtonText: 'cerrar',
-			});
-			this.route.navigate([`cursos/${this.courseId}/lecciones/content-list/${this.lessonId}`]);
-		})
-		.catch((error) => {
-			Swal.fire({
-				icon: 'error',
-				title: 'error',
-				text: 'Ocurrió un error' + error,
-				confirmButtonText: 'cerrar',
+    this.lessonService
+      .addLessonContent(
+        this.form.value,
+        this.courseId,
+        this.lessonId,
+        this.archivo,
+        this.fsId
+      )
+      .then(() => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Exito!',
+          text: 'contenido creado exitosamente',
+          confirmButtonText: 'cerrar',
+        });
+        this.route.navigate([
+          `cursos/${this.courseId}/lecciones/content-list/${this.lessonId}`,
+        ]);
+      })
+      .catch((error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'error',
+          text: 'Ocurrió un error' + error,
+          confirmButtonText: 'cerrar',
+        });
       });
-		});
   }
 
-  updateContent() {
+  updateContent(): void {
     if (this.contentOption === 'Agregar archivo PDF') {
       this.deletePDF(this.archivo);
     }
-    this.lessonService.editLessonContent(
-      this.form.value,
-      this.courseId,
-      this.lessonId,
-      this.fsId,
-      this.archivo,
-    )
-    .then(() => {
-			Swal.fire({
-				icon: 'success',
-				title: 'Exito!',
-				text: 'contenido actualizado exitosamente',
-				confirmButtonText: 'cerrar',
-			});
-			this.route.navigate([`cursos/${this.courseId}/lecciones/content-list/${this.lessonId}`]);
-		})
-		.catch((error) => {
-			Swal.fire({
-				icon: 'error',
-				title: 'error',
-				text: 'Ocurrió un error' + error,
-				confirmButtonText: 'cerrar',
+    this.lessonService
+      .editLessonContent(
+        this.form.value,
+        this.courseId,
+        this.lessonId,
+        this.fsId,
+        this.archivo
+      )
+      .then(() => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Exito!',
+          text: 'contenido actualizado exitosamente',
+          confirmButtonText: 'cerrar',
+        });
+        this.route.navigate([
+          `cursos/${this.courseId}/lecciones/content-list/${this.lessonId}`,
+        ]);
+      })
+      .catch((error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'error',
+          text: 'Ocurrió un error' + error,
+          confirmButtonText: 'cerrar',
+        });
       });
-		});
   }
 
-  uploadPDF(event) {
+  uploadPDF(event): void {
     if (this.edit) {
       this.editPDF(event);
     } else {
@@ -394,87 +423,99 @@ export class LessonConfigComponent implements OnInit, OnDestroy, AfterContentChe
     }
   }
 
-  uploadNewPDF(event) {
-
-    this.showProgressBar = true
+  uploadNewPDF(event): void {
+    this.showProgressBar = true;
     const file = event.target.files[0] as File;
     const name = file.name;
-    const fileRef = this.fs.ref(`cursos/${this.courseId}/lecciones/${this.lessonId}/contenidos/${this.fsId}/${name}`);
+    const fileRef = this.fs.ref(
+      `cursos/${this.courseId}/lecciones/${this.lessonId}/contenidos/${this.fsId}/${name}`
+    );
     const path = `cursos/${this.courseId}/lecciones/${this.lessonId}/contenidos/${this.fsId}/${file.name}`;
     const task = this.fs.upload(path, file);
 
-    task.percentageChanges()
+    task
+      .percentageChanges()
       .pipe(map(Math.ceil))
-      .pipe(finalize(() => {
-        const urlFile = fileRef.getDownloadURL()
-        urlFile.subscribe(url => {
-          this.archivoField.setValue(url);
-          //console.log(this.archivoField);
-          // borrar imagen previamente cargada
-          if (this.archives.length > 0) {
-            this.deletePDF(file.name);
-            this.archives.length = 0;
-          }
-          this.archives.push(name);
-          this.archivo = file.name;
-        })
+      .pipe(
+        finalize(() => {
+          const urlFile = fileRef.getDownloadURL();
+          urlFile.subscribe((url) => {
+            this.archivoField.setValue(url);
+            // console.log(this.archivoField);
+            // borrar imagen previamente cargada
+            if (this.archives.length > 0) {
+              this.deletePDF(file.name);
+              this.archives.length = 0;
+            }
+            this.archives.push(name);
+            this.archivo = file.name;
+          });
           this.showProgressBar = false;
-        }))
-        .subscribe(per => {
-          this.percentageProgressBar = per;
-        });
+        })
+      )
+      .subscribe((per) => {
+        this.percentageProgressBar = per;
+      });
   }
 
-  editPDF(event) {
-    this.showProgressBar = true
+  editPDF(event): void {
+    this.showProgressBar = true;
     const file = event.target.files[0] as File;
     const name = file.name;
-    const fileRef = this.fs.ref(`cursos/${this.courseId}/lecciones/${this.lessonId}/contenidos/${this.fsId}/${name}`);
+    const fileRef = this.fs.ref(
+      `cursos/${this.courseId}/lecciones/${this.lessonId}/contenidos/${this.fsId}/${name}`
+    );
     const path = `cursos/${this.courseId}/lecciones/${this.lessonId}/contenidos/${this.fsId}/${file.name}`;
     const task = this.fs.upload(path, file);
 
-    task.percentageChanges()
+    task
+      .percentageChanges()
       .pipe(map(Math.ceil))
-      .pipe(finalize(() => {
-        const urlFile = fileRef.getDownloadURL()
-        urlFile.subscribe(url => {
-          this.archivoField.setValue(url);
-          this.archivo = file.name;
-          this.changePDF = true;
-        })
+      .pipe(
+        finalize(() => {
+          const urlFile = fileRef.getDownloadURL();
+          urlFile.subscribe((url) => {
+            this.archivoField.setValue(url);
+            this.archivo = file.name;
+            this.changePDF = true;
+          });
           this.showProgressBar = false;
-        }))
-        .subscribe(per => {
-          this.percentageProgressBar = per;
         })
+      )
+      .subscribe((per) => {
+        this.percentageProgressBar = per;
+      });
   }
 
-  deletePDF(PDFName) {
+  deletePDF(PDFName): void {
     let url;
     if (this.edit) {
       if (this.confirmDelPDF !== PDFName && this.confirmDelPDF !== null) {
         url = this.confirmDelPDF;
-        this.fs.ref(`cursos/${this.courseId}/lecciones/${this.lessonId}/contenidos/${this.fsId}/${url}`).delete();
+        this.fs
+          .ref(
+            `cursos/${this.courseId}/lecciones/${this.lessonId}/contenidos/${this.fsId}/${url}`
+          )
+          .delete();
       }
     } else {
       url = this.archives[0];
-      this.fs.ref(`cursos/${this.courseId}/lecciones/${this.lessonId}/contenidos/${this.fsId}/${url}`).delete();
+      this.fs
+        .ref(
+          `cursos/${this.courseId}/lecciones/${this.lessonId}/contenidos/${this.fsId}/${url}`
+        )
+        .delete();
     }
   }
 
-  foroTipoCalificacionRequerida()
-  {
-    if(this.foroCalificable)
-    {
+  foroTipoCalificacionRequerida(): void {
+    if (this.foroCalificable) {
       this.foroTipoCalificacionField.setValidators(Validators.required);
-    }
-    else
-    {
+    } else {
       this.foroTipoCalificacionField.clearValidators();
       this.foroTipoCalificacionField.updateValueAndValidity();
       this.foroTipoCalificacion = '';
       this.foroTipoCalificacionField.setValue('');
     }
   }
-
 }
