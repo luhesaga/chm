@@ -128,17 +128,20 @@ export class EvaluationsHomeComponent implements OnInit, AfterViewInit {
       .subscribe((content) => {
         if (content.length > 0) {
           content.forEach((c: any) => {
-            if (index === 0) {
-              this.displayedColumns.push(c.titulo);
-            }
-            if (c.tipo === 'Agregar foro') {
+            if (c.tipo === 'Agregar foro' && c.foroCalificable) {
+              if (index === 0) {
+                this.displayedColumns.push(c.titulo);
+              }
               const ejercicio: any = {
                 idContenido: c.id,
                 tituloContenido: c.titulo,
                 idLeccion: lesson.id,
               };
               this.getForumResult(ejercicio, this.data[index].idUsuario, index);
-            } else {
+            } else if (c.tipo !== 'Agregar foro') {
+              if (index === 0) {
+                this.displayedColumns.push(c.titulo);
+              }
               const ejercicio: any = {
                 idContenido: c.ejercicio.id,
                 tituloContenido: c.ejercicio.nombre,

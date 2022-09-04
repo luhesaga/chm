@@ -107,7 +107,9 @@ export class StdEvaluationComponent implements OnInit {
         };
         content.forEach((ctn) => {
           if (ctn.tipo === 'Agregar foro') {
-            this.getForumResult(ctn, lesson.id, ejercicio, index);
+            if (ctn.foroCalificable) {
+              this.getForumResult(ctn, lesson.id, ejercicio, index);
+            }
           } else {
             this.getUSerResult(ctn, ejercicio, index);
           }

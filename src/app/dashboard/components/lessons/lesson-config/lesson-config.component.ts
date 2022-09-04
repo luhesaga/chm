@@ -242,8 +242,7 @@ export class LessonConfigComponent
     if (this.form.valid) {
       // this.form.disable();
       this.validateContent();
-      console.log(this.form.value);
-      console.log(this.form.value)
+      // console.log(this.form.value);
       if (this.edit) {
         this.updateContent();
       } else {
