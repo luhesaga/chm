@@ -2,20 +2,22 @@ import { Injectable } from '@angular/core';
 import {
   AngularFirestore,
   AngularFirestoreCollection,
-  AngularFirestoreDocument
+  AngularFirestoreDocument,
 } from '@angular/fire/firestore';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ForumService {
-
-  constructor(public fireStore: AngularFirestore) { }
+  constructor(public fireStore: AngularFirestore) {}
 
   forumAnswer(data: any, courseId, lessonId, contentId) {
-    let answerId = this.fireStore.createId();
-    let fecha = new Date().toUTCString();
-    this.fireStore.doc(`cursos/${courseId}/lecciones/${lessonId}/contenido/${contentId}/respuestas-foro/${data.id}/respuestas-user/${answerId}`)
+    const answerId = this.fireStore.createId();
+    const fecha = new Date().toUTCString();
+    this.fireStore
+      .doc(
+        `cursos/${courseId}/lecciones/${lessonId}/contenido/${contentId}/respuestas-foro/${data.id}/respuestas-user/${answerId}`
+      )
       .set({
         tiempo: data.tiempo,
         fecha,
@@ -24,19 +26,25 @@ export class ForumService {
         nombreCompleto: data.nombreCompleto,
         usuarioId: data.id,
         id: answerId,
-        valor: 100
+        valor: data.calificacion,
       });
   }
 
   editForumAnswer(data: any, courseId, lessonId, contentId, userId, foroId) {
-    this.fireStore.doc(`cursos/${courseId}/lecciones/${lessonId}/contenido/${contentId}/respuestas-foro/${userId}/respuestas-user/${foroId}`)
+    this.fireStore
+      .doc(
+        `cursos/${courseId}/lecciones/${lessonId}/contenido/${contentId}/respuestas-foro/${userId}/respuestas-user/${foroId}`
+      )
       .update({
         contenido: data,
       });
   }
 
   setForumRevition(data: any, courseId, lessonId, contentId, userId, foroId) {
-    return this.fireStore.doc(`cursos/${courseId}/lecciones/${lessonId}/contenido/${contentId}/respuestas-foro/${userId}/respuestas-user/${foroId}`)
+    return this.fireStore
+      .doc(
+        `cursos/${courseId}/lecciones/${lessonId}/contenido/${contentId}/respuestas-foro/${userId}/respuestas-user/${foroId}`
+      )
       .update({
         valor: data.valor,
         estado: data.estado,
@@ -45,14 +53,22 @@ export class ForumService {
   }
 
   getDetailAnswer(courseId, lessonId, contentId, userId, foroId) {
-    return this.fireStore.doc(`cursos/${courseId}/lecciones/${lessonId}/contenido/${contentId}/respuestas-foro/${userId}/respuestas-user/${foroId}`);
+    return this.fireStore.doc(
+      `cursos/${courseId}/lecciones/${lessonId}/contenido/${contentId}/respuestas-foro/${userId}/respuestas-user/${foroId}`
+    );
   }
 
   deleteUserAnswer(courseId, lessonId, contentId, userId, foroId) {
-    return this.fireStore.doc(`cursos/${courseId}/lecciones/${lessonId}/contenido/${contentId}/respuestas-foro/${userId}/respuestas-user/${foroId}`).delete();
+    return this.fireStore
+      .doc(
+        `cursos/${courseId}/lecciones/${lessonId}/contenido/${contentId}/respuestas-foro/${userId}/respuestas-user/${foroId}`
+      )
+      .delete();
   }
 
   getUserAnswers(courseId, lessonId, contentId, stdId) {
-    return this.fireStore.collection(`cursos/${courseId}/lecciones/${lessonId}/contenido/${contentId}/respuestas-foro/${stdId}/respuestas-user/`);
+    return this.fireStore.collection(
+      `cursos/${courseId}/lecciones/${lessonId}/contenido/${contentId}/respuestas-foro/${stdId}/respuestas-user/`
+    );
   }
 }
