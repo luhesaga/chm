@@ -40,6 +40,11 @@ export class MailService {
     return this.http.post(url, JSON.stringify(data), { headers: this.headers });
   }
 
+  studentRegisterConfirmation(data: any): any {
+    const url = `https://chym-ndt.com/phpMailer/registerConfirmation.php/`;
+    return this.http.post(url, JSON.stringify(data), { headers: this.headers });
+  }
+
 
   sendEmailIndividual(data: any): any {
     const url = `https://chym-ndt.com/phpMailer/correoIndividual.php/`;

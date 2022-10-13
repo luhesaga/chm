@@ -58,6 +58,7 @@ export class MatricularComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.getUserList();
+    this.getTeacherInfo();
   }
 
   ngAfterViewInit(): void {
@@ -101,6 +102,20 @@ export class MatricularComponent implements OnInit, AfterViewInit {
       });
   }
 
+  getTeacherInfo(): void {
+    const teacherData = this.userService.listTeachers()
+      .valueChanges()
+      .subscribe(teachers => {
+        teachers.forEach(teacher => {
+          if (teacher.nombres + ' ' + teacher.apellidos === this.course.profesor) {
+            this.course.emailProfesor = teacher.correo;
+            // console.log(this.course);
+          }
+        });
+        teacherData.unsubscribe();
+      });
+  }
+
   applyFilter(filterValue: string): void {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
@@ -130,6 +145,7 @@ export class MatricularComponent implements OnInit, AfterViewInit {
             .registerUserToCourse(dataMatricula, this.courseId, estudiante.id)
             .then(() => {
               this.sendEmailAnuncio(estudiante);
+              this.enviarCorreoProfesor(estudiante);
             })
             .catch((error) => {
               Swal.fire(
@@ -221,6 +237,31 @@ export class MatricularComponent implements OnInit, AfterViewInit {
             text: 'El correo de confirmación no pudo ser enviado.',
             confirmButtonText: 'cerrar',
           });
+        }
+      );
+  }
+
+  async enviarCorreoProfesor(estudiante: any): Promise<void> {
+    const dataCorreo = {
+      profesor: this.course.profesor,
+      mailProfesor: this.course.emailProfesor,
+      estudiante: estudiante.nombres + ' ' + estudiante.apellidos,
+      curso: this.course.nombre,
+      tipo: 'curso'
+    };
+
+    /*convertir el array en objeto, poner los datos en la constante data
+    y todo hacerlo un objeto tipo JSON*/
+    JSON.stringify(Object.assign(dataCorreo));
+    await this.mailService
+      .studentRegisterConfirmation(dataCorreo)
+      .toPromise()
+      .then(
+        () => {
+          console.log(`mail enviado a ${this.course.profesor}`);
+        },
+        (e) => {
+          console.log(e);
         }
       );
   }
