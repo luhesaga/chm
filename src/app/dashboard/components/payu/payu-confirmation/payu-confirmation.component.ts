@@ -5,6 +5,7 @@ import { PayuService } from 'src/app/core/services/payu/payu.service';
 import { CourseService } from '../../../../core/services/courses/course.service';
 import Swal from 'sweetalert2';
 import { CarrerasService } from '../../../../core/services/carreras/carreras.service';
+import { UsersService } from '../../../../core/services/users/users.service';
 
 @Component({
   selector: 'app-payu-confirmation',
@@ -23,6 +24,7 @@ export class PayuConfirmationComponent implements OnInit {
     private courseService: CourseService,
     private mailService: MailService,
     private careerService: CarrerasService,
+    private userService: UsersService
   ) {
     this.payuResponse = this.activatedRoute.snapshot.queryParams;
   }
@@ -162,6 +164,7 @@ export class PayuConfirmationComponent implements OnInit {
         // enviar correo
         console.log('matriculado exitosamente al curso.');
         this.sendEmailToUser(payData.usuario, payData.correo, payData.course);
+        this.getCourseData(payData);
       })
       .catch((err) => console.log(err));
   }
@@ -184,6 +187,54 @@ export class PayuConfirmationComponent implements OnInit {
       .toPromise()
       .then(() => console.log('correo enviado'))
       .catch((err) => console.log(err));
+  }
+
+  getCourseData(payData: any): void {
+    const courseData = this.courseService.detailCourse(payData.courseId)
+      .valueChanges()
+      .subscribe(course => {
+        this.getTeacherData(course, payData);
+        courseData.unsubscribe();
+      });
+  }
+
+  getTeacherData(curso: any, payData: any): void {
+    const teachersList = this.userService.listTeachers()
+      .valueChanges()
+      .subscribe(teachers => {
+        teachers.forEach(teacher => {
+          if (teacher.nombres + ' ' + teacher.apellidos === curso.profesor) {
+            curso.emailProfesor = teacher.correo;
+          }
+        });
+        this.enviarCorreoProfesor(curso, payData);
+        teachersList.unsubscribe();
+      });
+  }
+
+  async enviarCorreoProfesor(curso: any, payData: any): Promise<void> {
+    const dataCorreo = {
+      profesor: curso.profesor,
+      mailProfesor: curso.emailProfesor,
+      estudiante: payData.usuario,
+      curso: curso.nombre,
+      tipo: 'curso'
+    };
+
+    /*convertir el array en objeto, poner los datos en la constante data
+    y todo hacerlo un objeto tipo JSON*/
+    JSON.stringify(Object.assign(dataCorreo));
+    await this.mailService
+      .studentRegisterConfirmation(dataCorreo)
+      .toPromise()
+      .then(
+        () => {
+          console.log(`mail enviado a ${curso.profesor}`);
+        },
+        (e) => {
+          console.log(e);
+        }
+      );
   }
 
   checkUserCareer(payData): void {
