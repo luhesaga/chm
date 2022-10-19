@@ -257,4 +257,18 @@ export class CourseService {
   getUserStars(userdId: string, courseId: string): AngularFirestoreDocument {
     return this.fireStore.doc(`cursos/${courseId}/estrellas/${userdId}`);
   }
+
+  finalizarCurso(courseId: string, userId: string, porcentaje: number): Promise<void> {
+    const fecha = new Date();
+    return this.fireStore.doc(`cursos-finalizados/${courseId}/estudiantes/${userId}`)
+      .set({
+        finalizado: true,
+        porcentaje,
+        fechaFin: fecha,
+      });
+  }
+
+  obtenerCursoFinalizado(courseId: string, userId: string): AngularFirestoreDocument {
+    return this.fireStore.doc(`cursos-finalizados/${courseId}/estudiantes/${userId}`);
+  }
 }

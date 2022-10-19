@@ -7,14 +7,14 @@ import { ExercisesService } from '../../../../core/services/exercises/exercises.
 import { ForumService } from '../../../../core/services/forums/forum.service';
 import { CerticateService } from '../../../../core/services/certificate/certicate.service';
 import Swal from 'sweetalert2';
+import { MailService } from 'src/app/core/services/mail/mail.service';
 
 @Component({
   selector: 'app-std-evaluation',
   templateUrl: './std-evaluation.component.html',
-  styleUrls: ['./std-evaluation.component.scss']
+  styleUrls: ['./std-evaluation.component.scss'],
 })
 export class StdEvaluationComponent implements OnInit {
-
   courseId;
   courseReceived;
   stdId;
@@ -24,10 +24,12 @@ export class StdEvaluationComponent implements OnInit {
   totalContents = 0;
   certificado = false;
   cont = 0;
+  contador = 0;
   hasCC = true;
   careerId: string;
   careerView = false;
   stdIsCertifiable = false;
+  cursoFinalizado = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -38,6 +40,7 @@ export class StdEvaluationComponent implements OnInit {
     private lessonService: LessonsService,
     private userService: UsersService,
     private router: Router,
+    private mailService: MailService
   ) {
     this.courseId = this.activatedRoute.snapshot.params.courseId;
     this.careerId = this.activatedRoute.snapshot.params.careerId;
@@ -48,21 +51,34 @@ export class StdEvaluationComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.validarAprobado();
     this.getCourseInfo();
     this.getCourseLessons();
     this.getStudentInfo();
   }
 
-  getCourseInfo(): void {
-    const curso = this.courseService.detailCourse(this.courseId)
+  validarAprobado(): void {
+    const validar = this.courseService.obtenerCursoFinalizado(this.courseId, this.stdId)
       .valueChanges()
-      .subscribe(course => {
+      .subscribe(aprobado => {
+        if (aprobado) {
+          this.cursoFinalizado = true;
+        }
+        console.log(this.cursoFinalizado);
+        validar.unsubscribe();
+      });
+  }
+
+  getCourseInfo(): void {
+    const curso = this.courseService
+      .detailCourse(this.courseId)
+      .valueChanges()
+      .subscribe((course) => {
+        this.getTeacherInfo(course);
         const allowCert = this.courseService
-          .registeredUSerDetail(
-            this.courseId, this.stdId
-          )
+          .registeredUSerDetail(this.courseId, this.stdId)
           .valueChanges()
-          .subscribe(data => {
+          .subscribe((data) => {
             // console.log(data);
             if (data?.bloquearCert) {
               course.bloquearCert = true;
@@ -70,6 +86,7 @@ export class StdEvaluationComponent implements OnInit {
               course.bloquearCert = false;
             }
             this.courseReceived = course;
+            // console.log(this.courseReceived);
             allowCert.unsubscribe();
           });
         curso.unsubscribe();
@@ -77,16 +94,32 @@ export class StdEvaluationComponent implements OnInit {
   }
 
   getStudentInfo(): void {
-    const std = this.userService.detailUser(this.stdId)
+    const std = this.userService
+      .detailUser(this.stdId)
       .valueChanges()
-      .subscribe(student => {
+      .subscribe((student) => {
         this.stdReceived = student;
         std.unsubscribe();
       });
   }
 
+  getTeacherInfo(curso: any): void {
+    const teacherData = this.userService
+      .listTeachers()
+      .valueChanges()
+      .subscribe((teachers) => {
+        teachers.forEach((teacher) => {
+          if (teacher.nombres + ' ' + teacher.apellidos === curso.profesor) {
+            curso.emailProfesor = teacher.correo;
+          }
+        });
+        teacherData.unsubscribe();
+      });
+  }
+
   getCourseLessons(): void {
-    const lessonsList = this.lessonService.listLessons(this.courseId)
+    const lessonsList = this.lessonService
+      .listLessons(this.courseId)
       .valueChanges()
       .subscribe((lessons: any) => {
         this.lessonsReceived = lessons;
@@ -99,7 +132,8 @@ export class StdEvaluationComponent implements OnInit {
   }
 
   getlessonContent(lesson, index): void {
-    const contentList = this.lessonService.listCalificableLessons(this.courseId, lesson.id)
+    const contentList = this.lessonService
+      .listCalificableLessons(this.courseId, lesson.id)
       .valueChanges()
       .subscribe((content: any) => {
         const ejercicio = {
@@ -120,19 +154,22 @@ export class StdEvaluationComponent implements OnInit {
 
   getUSerResult(contenido, ejercicio, index): void {
     const ctnId = contenido.ejercicio.id;
-    const userTest = this.exerciseService.getUserAnswers(this.courseId, ctnId, this.stdId)
+    const userTest = this.exerciseService
+      .getUserAnswers(this.courseId, ctnId, this.stdId)
       .valueChanges()
       .subscribe((item: any) => {
         let valor = 0;
         let mayor = 0;
         if (item.length > 0) {
-          item.forEach(prueba => {
+          item.forEach((prueba) => {
             valor = 0;
-            prueba.respuestas.forEach(r => {
+            prueba.respuestas.forEach((r) => {
               valor += r.valor;
             });
             if (valor > 0) {
-              valor = Math.ceil((valor / (prueba.respuestas.length * 100)) * 100);
+              valor = Math.ceil(
+                (valor / (prueba.respuestas.length * 100)) * 100
+              );
               if (valor > mayor) {
                 mayor = valor;
               }
@@ -152,7 +189,8 @@ export class StdEvaluationComponent implements OnInit {
   }
 
   getForumResult(contenido, lessonId, ejercicio, index): void {
-    const forumResult = this.foroService.getUserAnswers(this.courseId, lessonId, contenido.id, this.stdId)
+    const forumResult = this.foroService
+      .getUserAnswers(this.courseId, lessonId, contenido.id, this.stdId)
       .valueChanges()
       .subscribe((f: any) => {
         if (f.length > 0) {
@@ -173,7 +211,11 @@ export class StdEvaluationComponent implements OnInit {
     if (!this.careerView) {
       this.router.navigate([`cursos/index/${this.courseId}/${this.stdId}`]);
     } else {
-      this.router.navigate([`cursos-carrera/index/${this.courseId}/${this.stdId}/${this.careerId}/${'std'}`]);
+      this.router.navigate([
+        `cursos-carrera/index/${this.courseId}/${this.stdId}/${
+          this.careerId
+        }/${'std'}`,
+      ]);
     }
   }
 
@@ -182,36 +224,88 @@ export class StdEvaluationComponent implements OnInit {
   }
 
   isCertifiable(lastLessonValidation: boolean): boolean {
-    console.log('porcentaje aprobación: ' + this.courseReceived.porcentaje);
-    console.log('porcentaje curso: ' + this.getTotal(this.totalGrade, this.totalContents));
-    // console.log(this.totalContents);
-    this.cont += 1;
     let certifiable = false;
-    if (this.totalGrade && this.totalContents) {
-      const porcentaje = this.courseReceived.porcentaje ? this.courseReceived.porcentaje : 0;
-      console.log(porcentaje);
-      if (this.getTotal(this.totalGrade, this.totalContents) >= porcentaje && lastLessonValidation) {
-        certifiable = true;
+    if (!this.cursoFinalizado) {
+      console.log('porcentaje aprobación: ' + this.courseReceived.porcentaje);
+      console.log(
+        'porcentaje curso: ' + this.getTotal(this.totalGrade, this.totalContents)
+      );
+      // console.log(this.totalContents);
+      this.cont += 1;
+      if (this.totalGrade && this.totalContents) {
+        const porcentaje = this.courseReceived.porcentaje
+          ? this.courseReceived.porcentaje
+          : 0;
+        console.log(porcentaje);
+        if (
+          this.getTotal(this.totalGrade, this.totalContents) >= porcentaje &&
+          lastLessonValidation
+        ) {
+          certifiable = true;
+        }
       }
-    }
-    if (certifiable) {
-      const data = this.getCerticateData();
-      if (data.cc) {
-        this.hasCC = true;
-        this.certificate.generateCerticate(data, false);
-      } else {
-        this.hasCC = false;
+      if (certifiable) {
+        const data = this.getCerticateData();
+        if (data.cc) {
+          this.hasCC = true;
+          this.certificate.generateCerticate(data, false);
+          if (this.contador === 0) {
+            this.courseService
+            .finalizarCurso(
+              this.courseId,
+              this.stdId,
+              this.getTotal(this.totalGrade, this.totalContents)
+            )
+            .then(() => console.log('curso finalizado'))
+            .catch((err) => console.log(err));
+            this.enviarCorreoProfesor(data);
+          }
+        } else {
+          this.hasCC = false;
+        }
       }
+      this.contador += 1;
+    } else {
+      this.hasCC = true;
+      certifiable = true;
     }
+
     console.log(certifiable);
     return certifiable;
+
+  }
+
+  async enviarCorreoProfesor(data: any): Promise<void> {
+    const dataCorreo = {
+      profesor: data.profesor,
+      mailProfesor: this.courseReceived.emailProfesor,
+      estudiante: data.estudiante,
+      curso: data.curso,
+      tipo: 'curso',
+    };
+
+    /*convertir el array en objeto, poner los datos en la constante data
+    y todo hacerlo un objeto tipo JSON*/
+    JSON.stringify(Object.assign(dataCorreo));
+    await this.mailService
+      .courseFinalization(dataCorreo)
+      .toPromise()
+      .then(
+        () => {
+          console.log(`mail enviado a ${data.profesor}`);
+        },
+        (e) => {
+          console.log(e);
+        }
+      );
   }
 
   lastLessonValidation(): boolean {
     let check = false;
-    const notas = this.lessonsReceived[this.lessonsReceived.length - 1].notasLecciones;
+    const notas =
+      this.lessonsReceived[this.lessonsReceived.length - 1].notasLecciones;
     let cont = 0;
-    notas.forEach(n => {
+    notas.forEach((n) => {
       if (n.valor > 0) {
         cont += 1;
       }
@@ -224,21 +318,25 @@ export class StdEvaluationComponent implements OnInit {
 
   downloadPDFCerticate(): void {
     if (this.courseReceived.bloquearCert) {
-      Swal.fire('Error', 'No tiene permitido descargar este certificado.', 'error');
+      Swal.fire(
+        'Error',
+        'No tiene permitido descargar este certificado.',
+        'error'
+      );
     } else {
       const data = this.getCerticateData();
       Swal.fire({
         confirmButtonColor: '#005691',
         showConfirmButton: false,
         title: 'Generando el certificado...',
-        timer: 4000,
+        timer: 10000,
         timerProgressBar: false,
         onBeforeOpen: () => {
           Swal.showLoading();
         },
         allowOutsideClick: false,
         allowEscapeKey: false,
-        allowEnterKey: false
+        allowEnterKey: false,
       });
       this.certificate.generateCerticate(data, true);
     }
@@ -252,7 +350,9 @@ export class StdEvaluationComponent implements OnInit {
     return {
       horas: this.courseReceived.duracionCurso,
       estudiante: `${this.stdReceived.nombres} ${this.stdReceived.apellidos}`,
-      documento: 'Con documento de identidad ' + this.addCommas(this.stdReceived.identificacion),
+      documento:
+        'Con documento de identidad ' +
+        this.addCommas(this.stdReceived.identificacion),
       documento2: this.addCommas(this.stdReceived.identificacion),
       profesor: `${this.courseReceived.profesor}`,
       curso: `${this.courseReceived.nombre}`,
@@ -263,9 +363,8 @@ export class StdEvaluationComponent implements OnInit {
       tipo: this.courseReceived.tipoCerticado,
       plantilla: this.courseReceived.plantilla,
       vence: this.courseReceived.vence,
-      vencimiento: this.courseReceived.vencimiento
+      vencimiento: this.courseReceived.vencimiento,
     };
-
   }
 
   addCommas(nStr): string {
@@ -279,5 +378,4 @@ export class StdEvaluationComponent implements OnInit {
     }
     return x1 + x2;
   }
-
 }

@@ -45,6 +45,11 @@ export class MailService {
     return this.http.post(url, JSON.stringify(data), { headers: this.headers });
   }
 
+  courseFinalization(data: any): any {
+    const url = `https://chym-ndt.com/phpMailer/courseFinalizationConfirmation.php/`;
+    return this.http.post(url, JSON.stringify(data), { headers: this.headers });
+  }
+
 
   sendEmailIndividual(data: any): any {
     const url = `https://chym-ndt.com/phpMailer/correoIndividual.php/`;
