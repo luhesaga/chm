@@ -1,0 +1,47 @@
+<main>
+    <section class="general">
+        <h1>Responder Pregunta.</h1>
+        <p>Estudiante: {{ pregunta?.estudiante}}</p>
+        <p>curso: {{ pregunta?.curso }}</p>
+        <p>fecha: {{ pregunta?.fechaPregunta }}</p>
+    </section>
+
+    <section class="pregunta-estudiante">
+        <div class="pregunta">
+            <h3>{{ pregunta?.pregunta }}</h3>
+        </div>
+    </section>
+
+    <section class="chat-index">
+        <p>Escribe tu respuesta y da clic en enviar.</p>
+        <form class="example-form" [formGroup]="form" (ngSubmit)="saveAnswer($event)">
+            <mat-form-field class="example-full-width" appearance="fill">
+                <mat-label>Escribe tu respuesta...</mat-label>
+                <textarea matInput placeholder="..." formControlName="respuesta"></textarea>
+            </mat-form-field>
+
+            <button
+                mat-raised-button
+                type="submit"
+                color="primary"
+                [disabled]="form.invalid">
+                    Enviar
+            </button>
+            <button class="bck-btn" mat-raised-button (click)="goBack()">Regresar</button>
+        </form>
+    </section>
+
+    <section class="respuestas" *ngIf="pregunta?.respuestas?.length > 0 ">
+        <h2>Respuestas enviadas</h2>
+        <div class="lista-respuestas">
+            <div class="respuesta" *ngFor="let respuesta of pregunta.respuestas">
+                <div class="texto-respuesta">
+                    <h3>{{ respuesta.respuesta }}</h3>
+                    <mat-icon matTooltip="Eliminar respuesta" (click)="answerDelete(respuesta)">delete</mat-icon>
+                </div>
+                <p class="fecha-respuesta">respuesta enviada: {{ respuesta.fechaRespuesta }}</p>                
+            </div>
+        </div>
+        
+    </section>
+</main>

@@ -32,6 +32,7 @@
                             <mat-checkbox class="example-margin" [(ngModel)]="libraryOpt" color="primary">Biblioteca Virtual</mat-checkbox>
                             <mat-checkbox class="example-margin" [(ngModel)]="glossaryOpt" color="primary">Glosario</mat-checkbox>
                             <mat-checkbox class="example-margin" [(ngModel)]="meetOpt" color="primary">Videoconferencia</mat-checkbox>
+                            <mat-checkbox class="example-margin" [(ngModel)]="chatOpt" color="primary">Chat con profesor</mat-checkbox>
                         </div>
                     </div>
                     <mat-divider style="margin-top: 16px;"></mat-divider>
@@ -126,6 +127,14 @@
 
             <div class="options">
                 <a (click)="goToVideo()">Videoconferencia</a>
+            </div>
+        </div>
+
+        <div class="card" *ngIf="(admin) || (!admin && chatOpt)">
+            <div class="img"><img src="/assets/icons/chat.png" alt=""></div>
+
+            <div class="options">
+                <a (click)="goToChat()">{{ admin ? 'Mensajes estudiantes' : 'Chat con profesor' }}</a>
             </div>
         </div>
 

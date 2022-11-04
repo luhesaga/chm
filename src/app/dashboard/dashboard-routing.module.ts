@@ -68,6 +68,9 @@ import { CareersComponent } from '../home/components/careers/careers.component';
 import { PayuConfirmationComponent } from './components/payu/payu-confirmation/payu-confirmation.component';
 import { AdmPaymentsComponent } from './components/payu/adm-payments/adm-payments.component';
 import { StdPaymentsComponent } from './components/payu/std-payments/std-payments.component';
+import { ChatStdViewComponent } from './components/chat/chat-std-view/chat-std-view.component';
+import { ChatTchViewComponent } from './components/chat/chat-tch-view/chat-tch-view.component';
+import { ChatTchAnswerComponent } from './components/chat/chat-tch-answer/chat-tch-answer.component';
 
 const routes: Routes = [
   {
@@ -130,6 +133,18 @@ const routes: Routes = [
       {
         path: 'cursos-carrera/index/:id/:stdId/:careerId/:std',
         component: CourseHomeComponent,
+      },
+      {
+        path: 'cursos/chat-std/:courseId/:stdId',
+        component: ChatStdViewComponent
+      },
+      {
+        path: 'cursos/chat-adm/:courseId',
+        component: ChatTchViewComponent
+      },
+      {
+        path: 'cursos/chat-pregunta/:courseId/:questionId',
+        component: ChatTchAnswerComponent
       },
       {
         path: 'cursos/list/:userId',

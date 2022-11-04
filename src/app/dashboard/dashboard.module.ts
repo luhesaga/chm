@@ -84,6 +84,9 @@ import { PayuConfirmationComponent } from './components/payu/payu-confirmation/p
 import { AdmPaymentsComponent } from './components/payu/adm-payments/adm-payments.component';
 import { StdPaymentsComponent } from './components/payu/std-payments/std-payments.component';
 import { UserInfoComponent } from './components/users/user-info/user-info.component';
+import { ChatStdViewComponent } from './components/chat/chat-std-view/chat-std-view.component';
+import { ChatTchViewComponent } from './components/chat/chat-tch-view/chat-tch-view.component';
+import { ChatTchAnswerComponent } from './components/chat/chat-tch-answer/chat-tch-answer.component';
 
 @NgModule({
   declarations: [
@@ -162,6 +165,9 @@ import { UserInfoComponent } from './components/users/user-info/user-info.compon
     AdmPaymentsComponent,
     StdPaymentsComponent,
     UserInfoComponent,
+    ChatStdViewComponent,
+    ChatTchViewComponent,
+    ChatTchAnswerComponent,
   ],
   imports: [
     CommonModule,

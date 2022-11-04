@@ -1,0 +1,107 @@
+<div class="container">
+    <h2>Preguntas del curso</h2>
+    <mat-form-field appearance="legacy" class="search">
+        <mat-label>Buscar</mat-label>
+        <input matInput (input)="applyFilter($event.target.value)" placeholder="Buscar pregunta"> <!---->
+        <mat-icon matSuffix>search</mat-icon>
+        <mat-hint>puede buscar por cualquier campo</mat-hint>
+    </mat-form-field>
+
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" aria-describedby="Listado de cupones">
+        <!-- estudiante -->
+        <ng-container matColumnDef="estudiante">
+            <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            id="estudiante">
+                Estudiante
+            </th>
+            <td
+                mat-cell
+                *matCellDef="let element"
+                matTooltip="Nombre del estudiante"
+                class="estudiante">
+                {{ element.estudiante }}
+            </td>
+        </ng-container>
+        <!-- fecha -->
+        <ng-container matColumnDef="fecha">
+            <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            id="fecha">
+                Fecha
+            </th>
+            <td
+                mat-cell
+                *matCellDef="let element"
+                matTooltip="fecha pregunta"
+                class="fecha">
+                {{ element.fechaPregunta }}
+            </td>
+        </ng-container>
+        <!-- estado -->
+        <ng-container matColumnDef="estado">
+            <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            id="estado">
+                Estado
+            </th>
+            <td
+                mat-cell
+                *matCellDef="let element"
+                matTooltip="Estado de la pregunta"
+                class="estado">
+                {{ element.estadoQ }}
+            </td>
+        </ng-container>
+        <!-- botones de acción -->
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef id="acciones">Acciones</th>
+            <td mat-cell *matCellDef="let element" class="buttons">
+                <button
+                    *ngIf="element.estadoQ === 'Pendiente'"
+                    mat-stroked-button
+                    color="primary"
+                    matTooltip="Ver y responder pregunta"
+                    (click)="goToAnswer(element)"
+                    >
+                    <mat-icon style="color: greenyellow;"><span class="material-symbols-outlined">
+                        visibility
+                        </span></mat-icon>
+                </button>
+                <button
+                    *ngIf="element.estadoQ === 'Respondida'"
+                    mat-stroked-button
+                    color="primary"
+                    matTooltip="ver pregunta"
+                    (click)="goToAnswer(element)"
+                    >
+                    <mat-icon style="color: rgba(169, 187, 179, 0.895);"><span class="material-symbols-outlined">
+                        visibility
+                        </span></mat-icon>
+                </button>
+                <button
+                    (click)="questionDelete(element)"
+                    matTooltip="Eliminar pregunta"
+                    mat-stroked-button color="secondary">
+                        <mat-icon>delete</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+    <mat-paginator
+        [pageSizeOptions]="[10, 15, 20]"
+        showFirstLastButtons>
+    </mat-paginator>
+    <div class="btn-bck">
+        <button mat-raised-button (click)="goBack()">Regresar</button>
+    </div>
+</div>
+

@@ -1,0 +1,45 @@
+<main>
+    <section class="general">
+        <h1>Dejale un mensaje o pregunta al profesor.</h1>
+        <p>profesor: {{ dataPregunta.profesor}}</p>
+        <p>curso: {{ dataPregunta.nombreCurso }}</p>
+    </section>
+    <section class="chat-index">
+        <p>Escribe tu pregunta o comentario y da clic en enviar, el profesor respondera lo más pronto posible.</p>
+        <form class="example-form" [formGroup]="form" (ngSubmit)="saveQuestion($event)">
+            <mat-form-field class="example-full-width" appearance="fill">
+                <mat-label>Escribe tu comentario o pregunta al profesor...</mat-label>
+                <textarea matInput placeholder="Ej. Me gustaría saber..." formControlName="pregunta"></textarea>
+            </mat-form-field>
+
+            <button
+                mat-raised-button
+                type="submit"
+                color="primary"
+                [disabled]="form.invalid">
+                    Enviar
+            </button>
+            <button class="bck-btn" mat-raised-button (click)="goBack()">Regresar</button>
+        </form>
+    </section>
+    <section class="preguntas" *ngIf="preguntas">
+        <h2>Mis preguntas</h2>
+        <div class="lista-preguntas">
+            <div class="pregunta" *ngFor="let pregunta of preguntas">
+                <div class="texto-pregunta">
+                    <p>{{ pregunta.pregunta }}</p>
+                    <mat-icon matTooltip="Eliminar pregunta" (click)="questionDelete(pregunta)">delete</mat-icon>
+                </div>
+                <p class="fecha-pregunta">pregunta enviada: {{ pregunta.fechaPregunta }}</p>
+                <div class="respuestas" *ngFor="let respuesta of pregunta.respuestas">
+                    <div class="respuesta">
+                        <p>{{ respuesta.respuesta }}</p>
+                    </div>
+                    <p class="fecha-pregunta">respuesta enviada por {{ pregunta.profesor }} : {{ respuesta.fechaRespuesta }}</p>
+                </div>
+                
+            </div>
+        </div>
+        
+    </section>
+</main>

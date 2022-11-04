@@ -1,0 +1,130 @@
+* {
+    box-sizing: border-box;
+}
+
+main {
+    background: white;
+    box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+    border-radius: 4px;
+    margin: 36px auto;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.general {
+    margin: 1rem;
+
+    h1 {
+        margin-bottom: 0.5rem;
+    }
+
+    p {
+        margin-bottom: 0;
+    }
+}
+
+.pregunta-estudiante {
+    margin: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+
+    .pregunta {
+        border: 1px solid #bdbdbd;
+        border-radius: 5px; 
+        background: #e0e0e0;
+        width: 100%;
+        padding: 1rem;
+    }
+}
+
+.chat-index {
+    margin: 1rem;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #bdbdbd;
+    border-radius: 5px;
+    width: 80%;
+    //background: #f5f5f5;
+
+    .example-form {
+        display: flex;
+        flex-direction: column;
+        // min-width: 600px;
+        // max-width: 800px;
+
+        .example-full-width {
+            width: 100%;
+            background: white;
+        }
+
+        button {
+            margin-top: 1rem;
+        }
+    }
+}
+
+.respuestas {
+    margin: 1rem;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+
+    .lista-respuestas {
+        align-self: flex-start;
+        border: 1px solid #bdbdbd;
+        border-radius: 5px;
+        width: 100%;
+        padding: 1rem;
+
+
+        .respuesta {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+
+            .texto-respuesta {
+                display: flex;
+                align-items: center;
+                justify-items: center;
+                align-self: flex-start;
+                background: #c5e1a5;
+                border: 1px solid #bdbdbd;
+                border-radius: 5px;
+                width: 80%;
+                margin: 1rem;
+                padding: 1rem;
+
+                h3 {
+                    width: 95%;
+                }
+
+                mat-icon {
+                    color: #424242;
+                    align-self: flex-end;
+                    justify-self: flex-end;
+                    cursor: pointer;
+                }
+            }
+
+            .fecha-respuesta {
+                margin: 0 1rem;
+                align-self: flex-start;
+                color: grey;
+            }
+
+        }
+
+    }
+}
+
+.bck-btn {
+    background: var(--main-color2);
+    color: white;
+}

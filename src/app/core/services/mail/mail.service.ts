@@ -75,4 +75,14 @@ export class MailService {
     const url = `https://chym-ndt.com/phpMailer/daysValidation.php/`;
     return this.http.post(url, JSON.stringify(data), { headers: this.headers });
   }
+
+  chatToTeacher(data: any): any {
+    const url = `https://chym-ndt.com/phpMailer/chatTeacher.php/`;
+    return this.http.post(url, JSON.stringify(data), { headers: this.headers });
+  }
+
+  chatToStudent(data: any): any {
+    const url = `https://chym-ndt.com/phpMailer/chatStudent.php/`;
+    return this.http.post(url, JSON.stringify(data), { headers: this.headers });
+  }
 }

@@ -8,6 +8,7 @@ import { CourseInfoComponent } from 'src/app/home/components/courses/course-info
 import Swal from 'sweetalert2';
 import { LogsService } from 'src/app/core/services/logs/logs.service';
 import { CarrerasService } from '../../../../core/services/carreras/carreras.service';
+import { UsersService } from '../../../../core/services/users/users.service';
 
 @Component({
   selector: 'app-course-home',
@@ -37,6 +38,7 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
   glossaryOpt = true;
   meetOpt = true;
   forumOpt = true;
+  chatOpt = true;
 
   isMobile = false;
 
@@ -62,7 +64,8 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
     private logs: LogsService,
     private breakpointObserver: BreakpointObserver,
     public dialog: MatDialog,
-    private route: Router
+    private route: Router,
+    private userService: UsersService,
   ) {
     this.courseId = this.activatedRoute.snapshot.params.id;
     this.stdId = this.activatedRoute.snapshot.params.stdId;
@@ -72,6 +75,7 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
     if (this.stdId) {
       this.admin = false;
       this.setCourseLog();
+      //this.getUserInfo(); pendiente para definir perfil de usuario
     }
 
     if (this.careerId) {
@@ -126,6 +130,15 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
     if (this.ReceivedCourse) {
       this.ReceivedCourse.unsubscribe();
     }
+  }
+
+  getUserInfo(): void {
+    const userInfo = this.userService.detailUser(this.stdId)
+      .valueChanges()
+      .subscribe(user => {
+        console.log(user);
+        userInfo.unsubscribe();
+      });
   }
 
   setCourseLog(): void {
@@ -221,6 +234,7 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
       this.glossaryOpt = opt.glosario ? opt.glosario : false;
       this.meetOpt = opt.videoconferencia ? opt.videoconferencia : opt.meet;
       this.forumOpt = opt.foros ? opt.foros : false;
+      this.chatOpt = opt.chat ? opt.chat : false;
     }
   }
 
@@ -303,6 +317,14 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
       this.route.navigate([`cursos/foros/revisar/${this.courseId}`]);
     } else {
       console.log('foros');
+    }
+  }
+
+  goToChat(): void {
+    if (!this.admin) {
+      this.route.navigate([`cursos/chat-std/${this.courseId}/${this.stdId}`]);
+    } else {
+      this.route.navigate([`cursos/chat-adm/${this.courseId}`]);
     }
   }
 
@@ -416,6 +438,7 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
       glosario: this.glossaryOpt,
       videoconferencia: this.meetOpt,
       foros: this.forumOpt,
+      chat: this.chatOpt,
     };
 
     this.courseService
