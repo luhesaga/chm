@@ -18,8 +18,8 @@ export class ChatTchViewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   displayedColumns: string[] = [
     'estudiante',
-    'fecha',
-    'estado',
+    'fechaPregunta',
+    'estadoQ',
     'actions',
   ];
   dataSource = new MatTableDataSource();
@@ -60,6 +60,7 @@ export class ChatTchViewComponent implements OnInit, AfterViewInit, OnDestroy {
     this.preguntasSubs = this.chatService.getCourseQuestions(this.courseId)
       .valueChanges()
       .subscribe(questions => {
+        this.orderQuestions(questions);
         questions.forEach(q => {
           q.fechaPregunta = this.formatDate(q.fechaPregunta);
           if (q.leida) {
@@ -70,6 +71,20 @@ export class ChatTchViewComponent implements OnInit, AfterViewInit, OnDestroy {
         });
         this.dataSource.data = questions;
       });
+  }
+
+  orderQuestions(preguntas: any): void {
+    preguntas = preguntas.sort((a, b) => {
+      if (a.fechaPregunta < b.fechaPregunta) {
+        return 1;
+      }
+
+      if (a.fechaPregunta > b.fechaPregunta) {
+        return -1;
+      }
+
+      return 0;
+    });
   }
 
   goToAnswer(element): void {

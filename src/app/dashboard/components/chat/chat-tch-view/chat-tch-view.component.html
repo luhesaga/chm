@@ -26,12 +26,12 @@
             </td>
         </ng-container>
         <!-- fecha -->
-        <ng-container matColumnDef="fecha">
+        <ng-container matColumnDef="fechaPregunta">
             <th
             mat-header-cell
             *matHeaderCellDef
             mat-sort-header
-            id="fecha">
+            id="fechaPregunta">
                 Fecha
             </th>
             <td
@@ -43,19 +43,19 @@
             </td>
         </ng-container>
         <!-- estado -->
-        <ng-container matColumnDef="estado">
+        <ng-container matColumnDef="estadoQ">
             <th
             mat-header-cell
             *matHeaderCellDef
             mat-sort-header
-            id="estado">
+            id="estadoQ">
                 Estado
             </th>
             <td
                 mat-cell
                 *matCellDef="let element"
                 matTooltip="Estado de la pregunta"
-                class="estado">
+                class="estadoQ">
                 {{ element.estadoQ }}
             </td>
         </ng-container>

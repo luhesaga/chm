@@ -232,7 +232,7 @@ export class CourseHomeComponent implements OnInit, OnDestroy {
       this.adsOpt = opt.anuncios ? opt.anuncios : false;
       this.libraryOpt = opt.biblioteca ? opt.biblioteca : false;
       this.glossaryOpt = opt.glosario ? opt.glosario : false;
-      this.meetOpt = opt.videoconferencia ? opt.videoconferencia : opt.meet;
+      this.meetOpt = opt.videoconferencia ? opt.videoconferencia : false;
       this.forumOpt = opt.foros ? opt.foros : false;
       this.chatOpt = opt.chat ? opt.chat : false;
     }

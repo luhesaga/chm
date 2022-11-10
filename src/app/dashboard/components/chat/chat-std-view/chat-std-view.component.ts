@@ -109,6 +109,7 @@ export class ChatStdViewComponent implements OnInit, OnDestroy {
       .getStdQuestions(this.courseId, this.stdId)
       .valueChanges()
       .subscribe((preguntas) => {
+        this.orderQuestions(preguntas);
         preguntas.forEach((pregunta) => {
           if (pregunta.fechaPregunta) {
             pregunta.fechaPregunta = this.formatDate(pregunta.fechaPregunta);
@@ -117,6 +118,20 @@ export class ChatStdViewComponent implements OnInit, OnDestroy {
         });
         this.preguntas = preguntas;
       });
+  }
+
+  orderQuestions(preguntas: any): void {
+    preguntas = preguntas.sort((a, b) => {
+      if (a.fechaPregunta < b.fechaPregunta) {
+        return 1;
+      }
+
+      if (a.fechaPregunta > b.fechaPregunta) {
+        return -1;
+      }
+
+      return 0;
+    });
   }
 
   getQuestionAnswers(pregunta: any): void {

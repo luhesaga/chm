@@ -65,7 +65,7 @@ export class ChatService {
     return this.fireStore.collection(`chat/cursos/${courseId}`, (ref) =>
       ref
         .where('idEstudiante', '==', `${stdId}`)
-        .orderBy('fechaPregunta', 'desc')
+        // .orderBy('fechaPregunta', 'desc')
     );
   }
 
