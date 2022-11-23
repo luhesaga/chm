@@ -46,6 +46,7 @@ export class CreateComponent implements OnInit, AfterViewInit {
   certs: any;
   vence = false;
   visible = false;
+  calendly;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -114,6 +115,7 @@ export class CreateComponent implements OnInit, AfterViewInit {
         this.vencimientoField.setValue(curso.vencimiento ? curso.vencimiento : 0);
         this.copField.setValue(curso.precioCOP ? curso.precioCOP : 0);
         this.usdField.setValue(curso.precioUSD ? curso.precioUSD : 0);
+        this.calendlyField.setValue(curso.calendly ? curso.calendly : '');
         console.log(this.usdField.value);
         cursos.unsubscribe();
       });
@@ -173,6 +175,7 @@ export class CreateComponent implements OnInit, AfterViewInit {
       cop: [0, Validators.required],
       usd: [0, Validators.required],
       visible: [false, Validators.required],
+      calendly: [''],
     });
   }
 
@@ -230,6 +233,10 @@ export class CreateComponent implements OnInit, AfterViewInit {
 
   get usdField(): AbstractControl {
     return this.form.get('usd');
+  }
+
+  get calendlyField(): AbstractControl {
+    return this.form.get('calendly');
   }
 
   cancel(): void {

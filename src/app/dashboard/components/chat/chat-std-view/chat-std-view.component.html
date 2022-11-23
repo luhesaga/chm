@@ -1,8 +1,25 @@
 <main>
     <section class="general">
-        <h1>Dejale un mensaje o pregunta al profesor.</h1>
-        <p>profesor: {{ dataPregunta.profesor}}</p>
-        <p>curso: {{ dataPregunta.nombreCurso }}</p>
+        <div class="info">
+            <h1>Dejale un mensaje o pregunta al profesor.</h1>
+            <p>profesor: {{ dataPregunta.profesor}}</p>
+            <p>curso: {{ dataPregunta.nombreCurso }}</p>
+        </div>
+        <div class="btn-meet" *ngIf="linkCalendly">
+            <h3>Programar una sesión con el profesor</h3>
+            <button
+                mat-raised-button
+                color="primary"
+                (click)="goToCalendly()"
+                matTooltip="Seras redirigido a calendly, solo debes escoger 
+                    la fecha y hora que más te convenga para reunirte con el profesor">
+                    Programar reunión
+            </button>
+            <p><strong>Puede programar una reunión con el profesor para resolver dudas.</strong>
+                Al dar click será redirigido a la plataforma Calendly, solo debera escoger la fecha
+                y hora que más le convenga, recibira una confirmación a su correo con el link de la reunión.
+            </p>
+        </div>
     </section>
     <section class="chat-index">
         <p>Escribe tu pregunta o comentario y da clic en enviar, el profesor respondera lo más pronto posible.</p>

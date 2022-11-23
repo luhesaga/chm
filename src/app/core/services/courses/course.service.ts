@@ -57,6 +57,7 @@ export class CourseService {
       visible: data.visible,
       precioCOP: data.cop,
       precioUSD: data.usd,
+      calendly: data.calendly,
     });
   }
 
@@ -77,6 +78,7 @@ export class CourseService {
       visible: data.visible,
       precioCOP: data.cop,
       precioUSD: data.usd,
+      calendly: data.calendly,
     });
   }
 

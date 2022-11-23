@@ -148,17 +148,28 @@
               </mat-error>
           </mat-select>
         </mat-form-field>
+        <!-- Link calendly -->
+        <mat-form-field>
+          <mat-label>Link para reuniones calendly</mat-label>
+          <input
+            type="text"
+            matInput
+            formControlName="calendly"
+            #myinput
+            placeholder="ej: https://calendly.com/luhesaga/sesion-profesor"
+            tabIndex=11/>
+        </mat-form-field>
         <!-- Visible? -->
-        <mat-checkbox class="example-margin" formControlName="visible" tabIndex=11 [(ngModel)]="visible">Visible en lista de cursos?</mat-checkbox>
+        <mat-checkbox class="example-margin" formControlName="visible" tabIndex=12 [(ngModel)]="visible">Visible en lista de cursos?</mat-checkbox>
         <!-- Vencimiento certificado -->
-        <mat-checkbox class="example-margin" formControlName="vence" tabIndex=12 [(ngModel)]="vence">Certificado vence?</mat-checkbox>
+        <mat-checkbox class="example-margin" formControlName="vence" tabIndex=13 [(ngModel)]="vence">Certificado vence?</mat-checkbox>
         <mat-form-field *ngIf="vence">
           <mat-label>Vencimiento certificado (años)</mat-label>
           <input
             type="number"
             matInput
             formControlName="vencimiento"
-            tabIndex=13/>
+            tabIndex=14/>
           <mat-error *ngIf="vencimientoField.touched && vencimientoField.invalid">
             <ng-container *ngIf="vencimientoField.hasError('required')">Este campo es requerido</ng-container>
           </mat-error>
@@ -167,10 +178,10 @@
       <div class="buttons">
         <button
           type="submit"
-          tabIndex=14
+          tabIndex=15
           mat-raised-button
           [disabled]="form.invalid">{{ id ? 'Guardar cambios' : 'Guardar'}}</button>
-				<a mat-raised-button (click)="cancel()" tabIndex=15>Cancelar</a>
+				<a mat-raised-button (click)="cancel()" tabIndex=16>Cancelar</a>
       </div>
     </form>
   </main>

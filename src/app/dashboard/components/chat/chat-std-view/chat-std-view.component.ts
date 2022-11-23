@@ -24,6 +24,7 @@ export class ChatStdViewComponent implements OnInit, OnDestroy {
   form: FormGroup;
   preguntasSubscribe;
   preguntas;
+  linkCalendly;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -70,6 +71,7 @@ export class ChatStdViewComponent implements OnInit, OnDestroy {
         this.dataPregunta.idCurso = curso.id;
         this.dataPregunta.nombreCurso = curso.nombre;
         this.dataPregunta.profesor = curso.profesor;
+        this.linkCalendly = curso.calendly;
         this.getTeacherInfo(curso.profesor);
         this.getStdInfo();
         infoCurso.unsubscribe();
@@ -226,6 +228,10 @@ export class ChatStdViewComponent implements OnInit, OnDestroy {
 
   goBack(): void {
     this.router.navigate([`cursos/index/${this.courseId}/${this.stdId}`]);
+  }
+
+  goToCalendly(): void {
+    window.open(`${this.linkCalendly}`);
   }
 
   formatDate(date): string {
