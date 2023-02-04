@@ -199,7 +199,9 @@ export class CarrerasLeccionesComponent implements OnInit, AfterViewInit, OnDest
         };
         content.forEach((ctn) => {
           if (ctn.tipo === 'Agregar foro') {
-            this.getForumResult(ctn, lesson.id, ejercicio, index, curso);
+            if (ctn.foroCalificable) {
+              this.getForumResult(ctn, lesson.id, ejercicio, index, curso);
+            }
           } else {
             this.getUSerResult(ctn, ejercicio, index, curso);
           }
@@ -331,7 +333,7 @@ export class CarrerasLeccionesComponent implements OnInit, AfterViewInit, OnDest
     this.cont += 1;
     let approved = 0;
     let total = 0;
-
+    //console.log(this.dataSource.data);
     this.dataSource.data.forEach((c: any) => {
       total += 1;
       if (!c.tipo) {
